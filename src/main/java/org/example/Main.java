@@ -5,9 +5,6 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Funziona?");
-        System.out.println("Ciao");
-        System.out.println("java");
-
+        System.out.println("Nuovo Master");
     }
 }
