@@ -7,9 +7,11 @@ package model;
  */
 
 public class User {
+
     private String username;
     private String password;
 
     private void login(){};
     private void search_flight(){};
+
 }
