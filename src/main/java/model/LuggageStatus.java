@@ -1,7 +1,11 @@
 package model;
 
-public enum LuggageStatus {
+/*
+    rivedere status bagaglio
+*/
 
+public enum LuggageStatus {
+    
     loaded,
     withdrawable,
     lost
