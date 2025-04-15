@@ -8,6 +8,10 @@ package model;
 
 public class Admin extends User{
 
+    public Admin(String par_username, String par_password){
+        super(par_username, par_password);
+    }
+
     private void insert_flight(){};
     private void update_flight(){};
     private Passenger search_passenger(){
@@ -18,5 +22,6 @@ public class Admin extends User{
     };
     private void check_in_passenger(){};
     private void check_missing_reports(){};
+    private void update_gate(){};
 
 }

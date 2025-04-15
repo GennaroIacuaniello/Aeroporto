@@ -10,5 +10,6 @@ public class Departing extends Flight{
 
     private String destination;
     private String departure_delay;
+    private Gate gate;
 
 }

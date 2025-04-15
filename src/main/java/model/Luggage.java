@@ -6,6 +6,11 @@ package model;
 
  */
 
+/*POSSIBLE
+    inserire attributi e relative gestioni per il peso del bagaglio
+    private int grammi;     //e poi stampiamo grammi/1000 per stampare il peso in kg
+ */
+
 public class Luggage {
 
     private int id;

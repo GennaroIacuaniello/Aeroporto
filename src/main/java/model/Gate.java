@@ -8,6 +8,6 @@ package model;
 
 public class Gate {
 
-    private int id;
+    private byte id;
 
 }
