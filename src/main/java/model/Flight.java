@@ -5,6 +5,7 @@ import java.util.Date;
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
     - rivedere add/remove booking e passenger
+    - vedere se tenere luggages anche in Flight o lasciarli solo in Passenger
  */
 
 public class Flight {

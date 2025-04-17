@@ -5,6 +5,7 @@ import java.util.ArrayList;
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
     - controllare associazione con Booking
+    - aggiungere una funzione update_flight() dopo l'aggiunta o rimozione di un bagaglio
  */
 
 public class Passenger {

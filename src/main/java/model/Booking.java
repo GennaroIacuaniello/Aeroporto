@@ -1,4 +1,6 @@
 package model;
+import org.postgresql.ssl.SingleCertValidatingFactory;
+
 import java.util.ArrayList;
 
 /*TO DO:
@@ -17,11 +19,17 @@ public class Booking {
     private Flight booked_flight;
     protected ArrayList<Passenger> passengers;
 
-    public Booking(Customer par_owner, Flight par_booked_flight){
-        this.status = BookingStatus.pending;
-        this.owner = par_owner;
-        this.booked_flight = par_booked_flight;
-        this.passengers = new ArrayList<Passenger>(0);
+    public Booking(Customer par_owner, Flight par_booked_flight, ArrayList<Passenger> par_passengers) throws InvalidPassengerNumber{
+
+        if(par_passengers.size() > 0){
+            this.status = BookingStatus.pending;
+            this.owner = par_owner;
+            this.booked_flight = par_booked_flight;
+            this.passengers = par_passengers;
+        }else{
+            throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
+        }
+
     }
 
     public BookingStatus get_status(){

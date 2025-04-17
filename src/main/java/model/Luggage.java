@@ -21,13 +21,12 @@ public class Luggage {
     private Passenger passenger;
     private Flight flight;
 
-    public Luggage(String par_luggage_type, Flight par_flight, Passenger par_passenger,int par_id) {
-
-        this.luggage_type = par_luggage_type;
-        this.flight = par_flight;
-        this.passenger = par_passenger;
+    public Luggage(LuggageType par_type, Flight par_flight, Passenger par_passenger,int par_id) {
         this.id = par_id;
+        this.type = par_type;
         this.status = LuggageStatus.booked;
+        this.passenger = par_passenger;
+        this.flight = par_flight;
     }
 
     public Flight get_Flight() {
