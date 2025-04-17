@@ -14,13 +14,13 @@ public class Passenger {
     private String SSN;
     private String ticket_number;
     private String seat;
-    private ArrayList<Luggage> luggages;
+    protected ArrayList<Luggage> luggages;
 
-    public Passenger(String first_name, String last_name, String SSN, String ticket_number, String seat) {
+    public Passenger(String first_name, String last_name, String SSN, String seat) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.SSN = SSN;
-        this.ticket_number = ticket_number;
+        //this.ticket_number        sarà generato dal sistema
         this.seat = seat;
         this.luggages = new ArrayList<Luggage>(0);
     }

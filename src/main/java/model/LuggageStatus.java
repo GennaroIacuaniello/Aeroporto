@@ -5,7 +5,8 @@ package model;
 */
 
 public enum LuggageStatus {
-    
+
+    booked,
     loaded,
     withdrawable,
     lost

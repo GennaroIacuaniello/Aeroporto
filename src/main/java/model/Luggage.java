@@ -16,16 +16,18 @@ package model;
 public class Luggage {
 
     private int id;
+    private LuggageType type;
     private LuggageStatus status;
     private Passenger passenger;
     private Flight flight;
 
-    public Luggage(Flight par_flight, Passenger par_passenger,int par_id, LuggageStatus par_status) {
+    public Luggage(String par_luggage_type, Flight par_flight, Passenger par_passenger,int par_id) {
 
+        this.luggage_type = par_luggage_type;
         this.flight = par_flight;
         this.passenger = par_passenger;
         this.id = par_id;
-        this.status = par_status;
+        this.status = LuggageStatus.booked;
     }
 
     public Flight get_Flight() {

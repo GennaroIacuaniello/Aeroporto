@@ -17,11 +17,38 @@ public class Booking {
     private Flight booked_flight;
     protected ArrayList<Passenger> passengers;
 
-    public Booking(BookingStatus par_status, Customer par_owner, Flight par_booked_flight){
-        this.status = par_status;
+    public Booking(Customer par_owner, Flight par_booked_flight){
+        this.status = BookingStatus.pending;
         this.owner = par_owner;
         this.booked_flight = par_booked_flight;
         this.passengers = new ArrayList<Passenger>(0);
+    }
+
+    public BookingStatus get_status(){
+        return this.status;
+    }
+
+    public int set_status(BookingStatus par_status){
+        this.status = par_status;
+        return 0;
+    }
+
+    public Customer get_owner(){
+        return this.owner;
+    }
+
+    public int set_owner(Customer par_owner){
+        this.owner = par_owner;
+        return 0;
+    }
+
+    public Flight get_booked_flight(){
+        return this.booked_flight;
+    }
+
+    public int set_booked_flight(Flight par_booked_flight){
+        this.booked_flight = par_booked_flight;
+        return 0;
     }
 
     public int add_passenger(Passenger par_passenger){

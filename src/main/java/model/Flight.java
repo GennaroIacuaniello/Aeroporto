@@ -126,13 +126,25 @@ public class Flight {
     }
 
     public int add_passenger(Passenger par_passenger){
-        this.passengers.add(par_passenger);
-        this.free_seats--;
-        return 0;
+        if(this.free_seats > 0){
+            this.free_seats--;
+            this.passengers.add(par_passenger);
+            this.add_luggages(par_passenger.luggages);
+            return 0;
+        }
+
+        return -1;
     }
 
     public int add_luggage(Luggage par_luggage){
         this.luggages.add(par_luggage);
+        return 0;
+    }
+
+    public int add_luggages(ArrayList<Luggage> par_luggages){
+        for(Luggage x : par_luggages) {
+            this.add_luggage(x);
+        }
         return 0;
     }
 
@@ -143,27 +155,38 @@ public class Flight {
                 this.remove_passenger(x);
             }
             return 0;
-        }else{
-            return -1;
         }
+
+        return -1;
+
     }
 
     public int remove_passenger(Passenger par_passenger){
         boolean control = this.passengers.remove(par_passenger);
         if(control) {
-            this.free_seats--;
+            this.remove_luggages(par_passenger.luggages);
+            this.free_seats++;
             return 0;
-        }else{
-            return -1;
         }
+
+        return -1;
+
     }
 
     public int remove_luggage(Luggage par_luggage){
         boolean control = this.luggages.remove(par_luggage);
         if(control) {
             return 0;
-        }else{
-            return -1;
         }
+
+        return -1;
+
+    }
+
+    public int remove_luggages(ArrayList<Luggage> par_luggages){
+        for(Luggage x : par_luggages) {
+            this.remove_luggage(x);
+        }
+        return 0;
     }
 }
