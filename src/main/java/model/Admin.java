@@ -15,12 +15,8 @@ public class Admin extends User{
     private void insert_flight(){};
     private void update_flight(){};
     /*
-    private Passenger search_passenger(){
-        return new Passenger();
-    };
-    private Luggage search_luggage(){
-        return new Luggage();
-    };
+    private Passenger search_passenger(){};
+    private Luggage search_luggage(){};
      */
     private void check_in_passenger(){};
     private void check_missing_reports(){};
