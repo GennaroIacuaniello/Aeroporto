@@ -8,10 +8,7 @@ import java.util.ArrayList;
 
  */
 
-
-
 public class Customer extends User{
-
 
     private ArrayList<Booking> bookings;
 
@@ -26,12 +23,13 @@ public class Customer extends User{
     private BookingStatus check_booking_status(){
         return BookingStatus.pending;
     };
-    private Passenger search_passenger(){
+    /*private Passenger search_passenger(){
         return new Passenger();
     };
     private Luggage search_luggage(){
         return new Luggage();
     };
+     */
     private void report_missing_luggage(){};
 
     public int add_booking(Booking par_booking){

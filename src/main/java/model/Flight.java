@@ -5,7 +5,6 @@ import java.util.Date;
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
     - rivedere add/remove booking e passenger
-
  */
 
 public class Flight {
@@ -16,10 +15,13 @@ public class Flight {
     private String departure_time;
     private String arrival_time;
     private FlightStatus status;
+    private int max_seats;
+    private int free_seats;
     private ArrayList<Booking> bookings;
     private ArrayList<Passenger> passengers;
+    private ArrayList<Luggage> luggages;
 
-    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time, String par_arrival_time){
+    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time, String par_arrival_time, int par_max_seats){
 
         this.id = par_id;
         this.company_name = par_company_name;
@@ -27,8 +29,11 @@ public class Flight {
         this.departure_time = par_departure_time;
         this.arrival_time = par_arrival_time;
         this.status = FlightStatus.programmed;
+        this.max_seats = par_max_seats;
+        this.free_seats = this.max_seats;
         this.bookings = new ArrayList<Booking>(0);
         this.passengers = new ArrayList<Passenger>(0);
+        this.luggages = new ArrayList<Luggage>(0);
     }
 
     public String get_id(){
@@ -71,9 +76,22 @@ public class Flight {
         return this.arrival_time;
     }
 
-    public int set_arrival_time(String par_arrival_time){
+    public int set_arrival_time (String par_arrival_time) {
         this.arrival_time = par_arrival_time;
         return 0;
+    }
+
+    public int get_max_seats(){
+        return this.max_seats;
+    }
+
+    public int set_max_seats(int par_max_seats){
+        this.max_seats = par_max_seats;
+        return 0;
+    }
+
+    public int get_free_seats(){
+        return this.free_seats;
     }
 
     public FlightStatus get_status(){
@@ -109,6 +127,12 @@ public class Flight {
 
     public int add_passenger(Passenger par_passenger){
         this.passengers.add(par_passenger);
+        this.free_seats--;
+        return 0;
+    }
+
+    public int add_luggage(Luggage par_luggage){
+        this.luggages.add(par_luggage);
         return 0;
     }
 
@@ -127,11 +151,19 @@ public class Flight {
     public int remove_passenger(Passenger par_passenger){
         boolean control = this.passengers.remove(par_passenger);
         if(control) {
+            this.free_seats--;
             return 0;
-        }
-        else{
+        }else{
             return -1;
         }
+    }
 
+    public int remove_luggage(Luggage par_luggage){
+        boolean control = this.luggages.remove(par_luggage);
+        if(control) {
+            return 0;
+        }else{
+            return -1;
+        }
     }
 }
