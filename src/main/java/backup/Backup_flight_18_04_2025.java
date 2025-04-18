@@ -1,4 +1,4 @@
-package model;
+package backup;
 import java.util.ArrayList;
 import java.util.Date;
 /*TO DO:
@@ -8,8 +8,8 @@ import java.util.Date;
     - vedere se tenere luggages anche in Flight o lasciarli solo in Passenger
  */
 
-public class Flight {
-
+public class Backup_flight_18_04_2025 {
+/*
     private String id;
     private String company_name;
     private Date date;
@@ -20,6 +20,7 @@ public class Flight {
     private int free_seats;
     private ArrayList<Booking> bookings;
     private ArrayList<Passenger> passengers;
+    private ArrayList<Luggage> luggages;
 
     public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time, String par_arrival_time, int par_max_seats){
 
@@ -33,6 +34,7 @@ public class Flight {
         this.free_seats = this.max_seats;
         this.bookings = new ArrayList<Booking>(0);
         this.passengers = new ArrayList<Passenger>(0);
+        this.luggages = new ArrayList<Luggage>(0);
     }
 
     public String get_id(){
@@ -128,10 +130,23 @@ public class Flight {
         if(this.free_seats > 0){
             this.free_seats--;
             this.passengers.add(par_passenger);
+            this.add_luggages(par_passenger.luggages);
             return 0;
         }
 
         return -1;
+    }
+
+    public int add_luggage(Luggage par_luggage){
+        this.luggages.add(par_luggage);
+        return 0;
+    }
+
+    public int add_luggages(ArrayList<Luggage> par_luggages){
+        for(Luggage x : par_luggages) {
+            this.add_luggage(x);
+        }
+        return 0;
     }
 
     public int remove_booking(Booking par_booking){
@@ -150,6 +165,7 @@ public class Flight {
     public int remove_passenger(Passenger par_passenger){
         boolean control = this.passengers.remove(par_passenger);
         if(control) {
+            this.remove_luggages(par_passenger.luggages);
             this.free_seats++;
             return 0;
         }
@@ -158,4 +174,22 @@ public class Flight {
 
     }
 
+    public int remove_luggage(Luggage par_luggage){
+        boolean control = this.luggages.remove(par_luggage);
+        if(control) {
+            return 0;
+        }
+
+        return -1;
+
+    }
+
+    public int remove_luggages(ArrayList<Luggage> par_luggages){
+        for(Luggage x : par_luggages) {
+            this.remove_luggage(x);
+        }
+        return 0;
+    }
+
+ */
 }

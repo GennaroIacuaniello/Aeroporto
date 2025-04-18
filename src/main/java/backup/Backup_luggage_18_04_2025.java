@@ -1,5 +1,4 @@
-package model;
-
+package backup;
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
@@ -12,19 +11,33 @@ package model;
     eventuale nuovo possibile status bagaglio ex. "preso in carico",
     se si modificare lo status assengato nel costruttore
  */
+import model.LuggageStatus;
+import model.LuggageType;
+import model.Passenger;
 
-public class Luggage {
-
+public class Backup_luggage_18_04_2025 {
+    /*
     private int id;
     private LuggageType type;
     private LuggageStatus status;
     private Passenger passenger;
+    private Flight flight;
 
-    public Luggage(LuggageType par_type, Passenger par_passenger,int par_id) {
+    public Luggage(LuggageType par_type, Flight par_flight, Passenger par_passenger,int par_id) {
         this.id = par_id;
         this.type = par_type;
         this.status = LuggageStatus.booked;
         this.passenger = par_passenger;
+        this.flight = par_flight;
+    }
+
+    public int set_flight(Flight par_flight){
+        this.flight = par_flight;
+        return 0;
+    }
+
+    public Flight get_flight(){
+        return this.flight;
     }
 
     public Passenger get_Passenger() {
@@ -59,5 +72,5 @@ public class Luggage {
         this.status = par_status;
         return 0;
     }
-
+     */
 }
