@@ -3,7 +3,7 @@ package model;
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
-    -attenzione alle return messe solo per evitare errori //da errore lo stesso
+    - attenzione alle return messe solo per evitare errori //da errore lo stesso
  */
 
 public class Admin extends User{

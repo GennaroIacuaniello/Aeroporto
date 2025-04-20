@@ -7,7 +7,7 @@ package model;
 
  */
 
-public class User {
+abstract public class User {
 
     private String username;
     private String password;
@@ -15,6 +15,7 @@ public class User {
     public User(String par_username, String par_password){
         this.username = par_username;
         this.password = par_password;
+        //Più avanti: cercare l'username nel database e verificare che la password sia corretta
     }
 
     public String get_username(){

@@ -8,7 +8,7 @@ import java.util.Date;
     - vedere se tenere luggages anche in Flight o lasciarli solo in Passenger
  */
 
-public class Flight {
+abstract public class Flight {
 
     private String id;
     private String company_name;
