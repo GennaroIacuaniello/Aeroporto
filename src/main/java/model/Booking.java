@@ -25,7 +25,14 @@ public class Booking {
             this.status = BookingStatus.pending;
             this.owner = par_owner;
             this.booked_flight = par_booked_flight;
-            this.passengers = par_passengers;
+            for(Passenger x : par_passengers){
+                /*try{
+                    this.add_passenger(x);
+                }catch{
+
+                }   vedremo come gestirlo con interfaccia grafica */
+
+            }
         }else{
             throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
         }
@@ -59,7 +66,20 @@ public class Booking {
         return 0;
     }
 
-    public int add_passenger(Passenger par_passenger){
+    public int add_passenger(Passenger par_passenger) throws CarryOnWeightException, CheckedWeightException, FlightWeightCapacityException{
+
+        for(Luggage x : par_passenger.luggages){
+            if(x.type == LuggageType.carry_on){
+                if(x.weight > this.booked_flight.carry_on_max_weight){
+                    throw new CarryOnWeightException("Bagaglio a mano troppo pesante");
+                }
+            }else{
+
+                this.booked_flight.decrease_occupied_luggage_weight_free_space(x.weight);
+
+            }
+        }
+
 
         this.passengers.add(par_passenger);
 

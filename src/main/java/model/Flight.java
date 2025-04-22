@@ -18,10 +18,16 @@ abstract public class Flight {
     private FlightStatus status;
     private int max_seats;
     private int free_seats;
+    private double luggage_weight_capacity;
+    protected double luggage_weight_free_space;
+    protected double carry_on_max_weight;
+    protected ArrayList<Double> checked_type_weight;        //queste saranno le opzioni disponibili da interfaccia grafica, quindi non ci saranno controlli qui sulla correttezza di questi valori
     private ArrayList<Booking> bookings;
     private ArrayList<Passenger> passengers;
 
-    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time, String par_arrival_time, int par_max_seats){
+
+
+    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time, String par_arrival_time, int par_max_seats, double par_luggage_weight_capacity, double par_carry_on_max_weight, ArrayList<Double> par_checked_type_weight){
 
         this.id = par_id;
         this.company_name = par_company_name;
@@ -30,9 +36,14 @@ abstract public class Flight {
         this.arrival_time = par_arrival_time;
         this.status = FlightStatus.programmed;
         this.max_seats = par_max_seats;
-        this.free_seats = this.max_seats;
+        this.free_seats = par_max_seats;
+        this.luggage_weight_capacity = par_luggage_weight_capacity;
+        this.luggage_weight_free_space = par_luggage_weight_capacity;
+        this.carry_on_max_weight = par_carry_on_max_weight;
+        this.checked_type_weight = par_checked_type_weight;
         this.bookings = new ArrayList<Booking>(0);
         this.passengers = new ArrayList<Passenger>(0);
+
     }
 
     public String get_id(){
@@ -91,6 +102,32 @@ abstract public class Flight {
 
     public int get_free_seats(){
         return this.free_seats;
+    }
+
+    public double get_luggage_weight_capacity(){
+        return this.luggage_weight_capacity;
+    }
+
+    public int set_luggage_weight_capacity( double par_luggage_weight_capacity){
+        this.luggage_weight_capacity = par_luggage_weight_capacity;
+        return 0;
+    }
+
+    public double get_luggage_weight_free_space(){
+        return this.luggage_weight_free_space;
+    }
+
+    public int increase_occupied_luggage_weight_free_space(double par_to_remove){
+        this.luggage_weight_free_space += par_to_remove;
+        return 0;
+    }
+
+    public void decrease_occupied_luggage_weight_free_space(double par_to_add) throws FlightWeightCapacityException{
+        if(this.luggage_weight_free_space - par_to_add >= 0){
+            this.luggage_weight_free_space -= par_to_add;
+        }else{
+            throw new FlightWeightCapacityException("Non c'è abbastanza spazio nella stiva!");
+        }
     }
 
     public FlightStatus get_status(){
