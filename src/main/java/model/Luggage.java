@@ -27,9 +27,12 @@ public class Luggage {
         this.passenger = par_passenger;
     }
 
-    public Passenger get_Passenger() {
 
-        return this.passenger;
+
+    public int set_Id(int par_id) {
+
+        this.id = par_id;
+        return 0;
     }
 
     public int get_Id() {
@@ -37,6 +40,20 @@ public class Luggage {
         return this.id;
     }
 
+    public int set_type(LuggageType par_type){
+        this.type = par_type;
+        return 0;
+    }
+
+    public LuggageType get_type(){
+        return this.type;
+    }
+
+    public int set_Status(LuggageStatus par_status) {
+
+        this.status = par_status;
+        return 0;
+    }
     public LuggageStatus get_Status() {
 
         return this.status;
@@ -48,16 +65,11 @@ public class Luggage {
         return 0;
     }
 
-    public int set_Id(int par_id) {
+    public Passenger get_Passenger() {
 
-        this.id = par_id;
-        return 0;
+        return this.passenger;
     }
 
-    public int set_Status(LuggageStatus par_status) {
 
-        this.status = par_status;
-        return 0;
-    }
 
 }
