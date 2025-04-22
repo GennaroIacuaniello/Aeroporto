@@ -19,7 +19,7 @@ public class Customer extends User{
     }
 
     private void book_flight(){};
-    //private Booking search_booking(){};   commentata per evitare errori di compilazione
+    //private Booking search_booking(){};   commentata per evitare errori di compilazione (dovrebbe avere una return)
 
     private void update_boooking( Booking to_modify){
 
