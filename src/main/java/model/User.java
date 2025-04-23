@@ -9,8 +9,8 @@ package model;
 
 abstract public class User {
 
-    private String username;
-    private String password;
+    protected String username;
+    protected String password;
 
     public User(String par_username, String par_password){
         this.username = par_username;
