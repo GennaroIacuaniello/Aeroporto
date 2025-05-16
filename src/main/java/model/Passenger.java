@@ -16,6 +16,7 @@ public class Passenger {
     private String ticket_number;
     private String seat;
     protected ArrayList<Luggage> luggages;
+    private boolean checked_in;
 
     public Passenger(String first_name, String last_name, String SSN, String seat) {
         this.first_name = first_name;
@@ -24,6 +25,7 @@ public class Passenger {
         //this.ticket_number        sarà generato dal sistema
         this.seat = seat;
         this.luggages = new ArrayList<Luggage>(0);
+        this.checked_in = false;
     }
 
     public String get_First_name() {
@@ -93,5 +95,10 @@ public class Passenger {
         }else{
             return -1;
         }
+    }
+
+    public int set_check_in(){
+        this.checked_in = true;
+        return 0;
     }
 }
