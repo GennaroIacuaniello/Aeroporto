@@ -11,30 +11,37 @@ public class Book extends Home
 {
     private JFrame mainframe;
     private TitlePanel titlepanel;
+    private HamburgerPanel hamburgerpanel;
     private UserPanel userpanel;
-    private GridBagConstraints constraints;
     private JPanel mainpanel;
+    private FooterPanel footerpanel;
+
+    private Constraints constraints;
 
     public Book (JFrame calling_f, Controller controller, User user, Flight flight)
     {
         super ();
 
-        constraints = new GridBagConstraints ();
-        constraints.weightx = 0.5;
-        constraints.weighty = 0.5;
+        constraints = new Constraints ();
 
         //imposto mainframe
         this.setMainframe ();
         calling_f.setVisible (false);
 
         //aggiungo il titolo
-        this.addTitle ("AEROPORTO DI NAPOLI");
+        this.addTitlePanel ("AEROPORTO DI NAPOLI");
+
+        //aggiungo hamburger panel
+        this.addHamburgerPanel ("Hamburger Menu");
 
         //aggiungo riferimento a utente
         this.addUserPanel (user);
 
         //mainpanel
         this.addMainPanel ();
+
+        //aggiungo footer
+        this.addFooterPanel ();
     }
 
     private void setMainframe ()
@@ -47,60 +54,51 @@ public class Book extends Home
         mainframe.setVisible (true);
     }
 
-    private void addTitle (String title)
+    private void addTitlePanel (String title)
     {
         titlepanel = new TitlePanel (title);
 
-        setConstraints (constraints, 0, 0, 3, 1, GridBagConstraints.HORIZONTAL, 0, 250, GridBagConstraints.PAGE_START);
+        constraints.setConstraints (0, 0, 3, 1, GridBagConstraints.BOTH, 0, 125, GridBagConstraints.PAGE_START);
 
-        mainframe.add (titlepanel, constraints);
+        mainframe.add (titlepanel, constraints.getConstraints ());
+    }
+
+    private void addHamburgerPanel (String title)
+    {
+        hamburgerpanel = new HamburgerPanel (title);
+
+        constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
+
+        mainframe.add (hamburgerpanel, constraints.getConstraints ());
     }
 
     private void addUserPanel (User user)
     {
         userpanel = new UserPanel (user);
 
-        setConstraints (constraints, 2, GridBagConstraints.RELATIVE, 1, 1, GridBagConstraints.NONE, 0, 30, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints (2, 1, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_END);
 
-        mainframe.add (userpanel, constraints);
+        mainframe.add (userpanel, constraints.getConstraints ());
     }
 
     private void addMainPanel ()
     {
         mainpanel = new JPanel ();
         mainpanel.setLayout (new GridBagLayout ());
-        mainpanel.setBackground(Color.LIGHT_GRAY);
+        mainpanel.setBackground(Color.WHITE);
 
-        setConstraints (constraints, 1, 2, 3, 1, GridBagConstraints.HORIZONTAL, 0, 400, GridBagConstraints.CENTER);
+        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH, 0, 400, GridBagConstraints.CENTER);
 
         mainpanel.setVisible (true);
-        mainframe.add (mainpanel, constraints);
+        mainframe.add (mainpanel, constraints.getConstraints ());
     }
 
-    private void setConstraints (GridBagConstraints constraints, int gridx, int gridy, int gridwidth, int gridheight, int fill, int ipadx, int ipady, int anchor, float weightx, float weighty, Insets insets)
+    private void addFooterPanel ()
     {
-        constraints.gridx = gridx;
-        constraints.gridy = gridy;
-        constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.fill = fill;
-        constraints.ipadx = ipadx;
-        constraints.ipady = ipady;
-        constraints.anchor = anchor;
-        constraints.weightx = weightx;
-        constraints.weighty = weighty;
-        constraints.insets = insets;
-    }
+        footerpanel = new FooterPanel ();
 
-    private void setConstraints (GridBagConstraints constraints, int gridx, int gridy, int gridwidth, int gridheight, int fill, int ipadx, int ipady, int anchor)
-    {
-        constraints.gridx = gridx;
-        constraints.gridy = gridy;
-        constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.fill = fill;
-        constraints.ipadx = ipadx;
-        constraints.ipady = ipady;
-        constraints.anchor = anchor;
+        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.BOTH, 0, 50, GridBagConstraints.PAGE_END);
+
+        mainframe.add (footerpanel, constraints.getConstraints ());
     }
 }
