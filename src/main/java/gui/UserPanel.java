@@ -13,15 +13,14 @@ public class UserPanel extends JPanel
     {
         super ();
 
-        this.setLayout (new BorderLayout ());
+        this.setLayout (new GridBagLayout ());
 
         label = new JLabel ("Ciao, " + user.get_username());
-        //label.setIcon (new ImageIcon (this.getClass ().getResource ("images/img.png")));
-        this.add (label, BorderLayout.WEST);
+        this.add (label);
 
         label.setVisible (true);
 
-        this.setSize(300, 200);
+        this.setBackground (Color.GRAY);
         this.setVisible (true);
     }
 }

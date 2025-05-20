@@ -23,7 +23,6 @@ public class Home {
         Flight flight = new Flight ("01", "Compagnia", new Date (), "", "", 100);
 
         new Book(frameHome, controller, user, flight);
-        frameHome.setVisible(false);
     }
 
     public Home() {

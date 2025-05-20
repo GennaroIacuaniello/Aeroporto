@@ -11,7 +11,7 @@ public class TitlePanel extends JPanel
     {
         super ();
 
-        this.setLayout(new FlowLayout ());
+        this.setLayout(new GridBagLayout());
 
         titleLabel = new JLabel (title);
         this.add (titleLabel);
@@ -21,7 +21,6 @@ public class TitlePanel extends JPanel
         titleLabel.setVisible (true);
 
         this.setBackground(Color.CYAN);
-        this.setSize(1920, 500);
         this.setVisible (true);
 
     }
