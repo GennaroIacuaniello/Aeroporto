@@ -32,7 +32,7 @@ public class Book extends Home
         this.addTitlePanel ("AEROPORTO DI NAPOLI");
 
         //aggiungo hamburger panel
-        this.addHamburgerPanel ("Hamburger Menu");
+        this.addHamburgerPanel ();
 
         //aggiungo riferimento a utente
         this.addUserPanel (user);
@@ -50,7 +50,7 @@ public class Book extends Home
         mainframe.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         mainframe.setLayout(new GridBagLayout ());
         mainframe.setSize (1920, 1080);
-        mainframe.setBackground(Color.WHITE);
+        mainframe.setBackground(Color.BLACK);
         mainframe.setVisible (true);
     }
 
@@ -63,9 +63,9 @@ public class Book extends Home
         mainframe.add (titlepanel, constraints.getConstraints ());
     }
 
-    private void addHamburgerPanel (String title)
+    private void addHamburgerPanel ()
     {
-        hamburgerpanel = new HamburgerPanel (title);
+        hamburgerpanel = new HamburgerPanel ();
 
         constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
 
@@ -87,7 +87,7 @@ public class Book extends Home
         mainpanel.setLayout (new GridBagLayout ());
         mainpanel.setBackground(Color.WHITE);
 
-        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH, 0, 400, GridBagConstraints.CENTER);
+        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH, 0, 600, GridBagConstraints.CENTER);
 
         mainpanel.setVisible (true);
         mainframe.add (mainpanel, constraints.getConstraints ());
@@ -97,7 +97,7 @@ public class Book extends Home
     {
         footerpanel = new FooterPanel ();
 
-        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.BOTH, 0, 50, GridBagConstraints.PAGE_END);
+        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.BOTH, 0, 75, GridBagConstraints.PAGE_END);
 
         mainframe.add (footerpanel, constraints.getConstraints ());
     }

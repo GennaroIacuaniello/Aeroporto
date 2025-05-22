@@ -19,7 +19,6 @@ public class UserPanel extends JPanel
         super ();
 
         constraints = new Constraints ();
-
         this.setLayout (new GridBagLayout ());
 
         this.setLogoutButton ();
@@ -44,7 +43,7 @@ public class UserPanel extends JPanel
             }
         });
 
-        constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.FIRST_LINE_END);
 
         this.add (logoutButton, constraints.getConstraints());
     }
@@ -64,17 +63,16 @@ public class UserPanel extends JPanel
             }
         });
 
-        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH, 0, 50, GridBagConstraints.FIRST_LINE_END);
 
         this.add(userButton, constraints.getConstraints ());
 
         invisiblePanel = new JPanel ();
-        invisiblePanel.setBackground (Color.black);
+        //invisiblePanel.setBackground (Color.GREEN);
         invisiblePanel.setLayout (new GridBagLayout ());
-        invisiblePanel.setSize(10, 10);
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints (0, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.BOTH, 0, 25, GridBagConstraints.FIRST_LINE_END);
 
         this.add(invisiblePanel, constraints.getConstraints ());
     }
