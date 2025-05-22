@@ -6,14 +6,20 @@ import model.Flight;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Book extends Home
 {
     private JFrame mainframe;
+
     private TitlePanel titlepanel;
     private HamburgerPanel hamburgerpanel;
     private UserPanel userpanel;
+
     private JPanel mainpanel;
+    private JPanel flightInfoPanel;
+    private JPanel passengersPanel;
+
     private FooterPanel footerpanel;
 
     private Constraints constraints;
@@ -38,7 +44,9 @@ public class Book extends Home
         this.addUserPanel (user);
 
         //mainpanel
-        this.addMainPanel ();
+        //this.addMainPanel (flight);
+        this.addFlightInfoPanel (flight);
+        this.addPassengersPanel ();
 
         //aggiungo footer
         this.addFooterPanel ();
@@ -81,23 +89,83 @@ public class Book extends Home
         mainframe.add (userpanel, constraints.getConstraints ());
     }
 
-    private void addMainPanel ()
+    private void addFlightInfoPanel (Flight flight)
     {
-        mainpanel = new JPanel ();
-        mainpanel.setLayout (new GridBagLayout ());
-        mainpanel.setBackground(Color.WHITE);
+        flightInfoPanel = new JPanel ();
+        flightInfoPanel.setLayout (new GridBagLayout ());
+        flightInfoPanel.setBackground(Color.ORANGE);
 
-        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH, 0, 600, GridBagConstraints.CENTER);
+        setLabels (flight);
 
-        mainpanel.setVisible (true);
-        mainframe.add (mainpanel, constraints.getConstraints ());
+        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH, 0, 60, GridBagConstraints.PAGE_START);
+
+        flightInfoPanel.setVisible (true);
+        mainframe.add (flightInfoPanel, constraints.getConstraints ());
+    }
+
+    private void setLabels (Flight flight)
+    {
+        setTitleLabels (flight);
+        setInfoLabels (flight);
+    }
+
+    private void setTitleLabels (Flight flight)
+    {
+        ArrayList<JLabel> titlelabels = new ArrayList<JLabel> ();
+
+        titlelabels.add (new JLabel ("Company   "));
+        titlelabels.add (new JLabel ("City  "));
+        titlelabels.add (new JLabel ("Day   "));
+        titlelabels.add (new JLabel ("Departure Time    "));
+        titlelabels.add (new JLabel ("Arrival Time  "));
+        titlelabels.add (new JLabel ("Duration  "));
+        titlelabels.add (new JLabel ("Status    "));
+        titlelabels.add (new JLabel ("Disponibility "));
+
+        for (int i = 0; i < titlelabels.size (); i++)
+        {
+            constraints.setConstraints(i, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+            flightInfoPanel.add (titlelabels.get (i), constraints.getConstraints ());
+        }
+    }
+
+    private void setInfoLabels (Flight flight)
+    {
+        ArrayList<JLabel> infolabels = new ArrayList<JLabel> ();
+
+        infolabels.add (new JLabel (flight.get_company_name()));
+        infolabels.add (new JLabel ());
+        infolabels.add (new JLabel (flight.get_date ().toString()));
+        infolabels.add (new JLabel (flight.get_departure_time()));
+        infolabels.add (new JLabel (flight.get_arrival_time()));
+        infolabels.add (new JLabel ("/"));
+        infolabels.add (new JLabel (flight.get_status().toString()));
+        infolabels.add (new JLabel ("/"));
+
+        for (int i = 0; i < infolabels.size (); i++)
+        {
+            constraints.setConstraints(i, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+            flightInfoPanel.add (infolabels.get (i), constraints.getConstraints ());
+        }
+    }
+
+    private void addPassengersPanel ()
+    {
+        passengersPanel = new JPanel ();
+        passengersPanel.setLayout (new GridBagLayout ());
+        passengersPanel.setBackground(Color.BLUE);
+
+        constraints.setConstraints (0, 4, 3, 1, GridBagConstraints.BOTH, 0, 340, GridBagConstraints.PAGE_START);
+
+        passengersPanel.setVisible (true);
+        mainframe.add (passengersPanel, constraints.getConstraints ());
     }
 
     private void addFooterPanel ()
     {
         footerpanel = new FooterPanel ();
 
-        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.BOTH, 0, 75, GridBagConstraints.PAGE_END);
+        constraints.setConstraints(0, 5, 3, 1, GridBagConstraints.BOTH, 0, 75, GridBagConstraints.PAGE_END);
 
         mainframe.add (footerpanel, constraints.getConstraints ());
     }

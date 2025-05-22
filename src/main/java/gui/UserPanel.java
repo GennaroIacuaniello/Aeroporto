@@ -63,7 +63,7 @@ public class UserPanel extends JPanel
             }
         });
 
-        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH, 0, 50, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH, 70, 30, GridBagConstraints.FIRST_LINE_END);
 
         this.add(userButton, constraints.getConstraints ());
 
@@ -72,7 +72,7 @@ public class UserPanel extends JPanel
         invisiblePanel.setLayout (new GridBagLayout ());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.BOTH, 0, 25, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.BOTH, 0, 30, GridBagConstraints.FIRST_LINE_END);
 
         this.add(invisiblePanel, constraints.getConstraints ());
     }

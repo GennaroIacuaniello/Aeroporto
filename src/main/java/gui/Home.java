@@ -20,7 +20,7 @@ public class Home {
         frameHome.setVisible(true);
 
         User user = new User("Tramontana", "1234");
-        Flight flight = new Flight ("01", "Compagnia", new Date (), "", "", 100);
+        Flight flight = new Flight ("01", "Compagnia", new Date (), "00:00", "00:00", 100);
 
         new Book(frameHome, controller, user, flight);
     }
