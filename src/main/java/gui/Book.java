@@ -113,6 +113,7 @@ public class Book extends Home
     {
         ArrayList<JLabel> titlelabels = new ArrayList<JLabel> ();
 
+        titlelabels.add (new JLabel ("   "));
         titlelabels.add (new JLabel ("Company"));
         titlelabels.add (new JLabel ("City"));
         titlelabels.add (new JLabel ("Day"));
@@ -121,10 +122,11 @@ public class Book extends Home
         titlelabels.add (new JLabel ("Duration"));
         titlelabels.add (new JLabel ("Status"));
         titlelabels.add (new JLabel ("Disponibility"));
+        titlelabels.add (new JLabel ("   "));
 
         for (int i = 0; i < titlelabels.size (); i++)
         {
-            constraints.setConstraints(i, 0, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
+            constraints.setConstraints(i, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             flightInfoPanel.add (titlelabels.get (i), constraints.getConstraints ());
         }
     }
@@ -133,6 +135,7 @@ public class Book extends Home
     {
         ArrayList<JLabel> infolabels = new ArrayList<JLabel> ();
 
+        infolabels.add (new JLabel ("   "));
         infolabels.add (new JLabel (flight.get_company_name()));
         infolabels.add (new JLabel ("/"));
         infolabels.add (new JLabel (flight.get_date ().toString()));
@@ -141,10 +144,11 @@ public class Book extends Home
         infolabels.add (new JLabel ("/"));
         infolabels.add (new JLabel (flight.get_status().toString()));
         infolabels.add (new JLabel ("/"));
+        infolabels.add (new JLabel ("   "));
 
         for (int i = 0; i < infolabels.size (); i++)
         {
-            constraints.setConstraints(i, 1, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
+            constraints.setConstraints(i, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             flightInfoPanel.add (infolabels.get (i), constraints.getConstraints ());
         }
     }
