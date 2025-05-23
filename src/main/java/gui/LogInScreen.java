@@ -65,7 +65,8 @@ public class LogInScreen {
                 mainFrame.setVisible(false);
 
                 Customer customer = getCustomer(mailTextField, passwordField);
-
+                mailTextField.setText("");
+                passwordField.setText("");
                 new MainCustomerScreen(callingFrames, controller, customer);
             }
         });

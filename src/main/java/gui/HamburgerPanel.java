@@ -5,14 +5,14 @@ import model.User;
 
 import javax.swing.*;
 import java.awt.*;
-<<<<<<< HEAD
+
 import java.awt.event.*;
-=======
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
->>>>>>> 51daca17e02cbfbaceaa7f366e82a87aa7981859
+
 import java.util.ArrayList;
 
 public class HamburgerPanel extends JPanel
@@ -57,14 +57,16 @@ public class HamburgerPanel extends JPanel
             }
             @Override
             public void mouseExited(MouseEvent e){
-                myFlightButton.setEnabled(false);
-                myFlightButton.setVisible(false);
+                if(!isClicked){
+                    myFlightButton.setEnabled(false);
+                    myFlightButton.setVisible(false);
 
-                searchFlightButton.setEnabled(false);
-                searchFlightButton.setVisible(false);
+                    searchFlightButton.setEnabled(false);
+                    searchFlightButton.setVisible(false);
+                }
             }
-
         });
+
         searchFlightButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
@@ -98,11 +100,13 @@ public class HamburgerPanel extends JPanel
             }
             @Override
             public void mouseExited(MouseEvent e){
-                myFlightButton.setEnabled(false);
-                myFlightButton.setVisible(false);
+                if(!isClicked){
+                    myFlightButton.setEnabled(false);
+                    myFlightButton.setVisible(false);
 
-                searchFlightButton.setEnabled(false);
-                searchFlightButton.setVisible(false);
+                    searchFlightButton.setEnabled(false);
+                    searchFlightButton.setVisible(false);
+                }
             }
         });
 
@@ -122,27 +126,15 @@ public class HamburgerPanel extends JPanel
 
     private void setHamburgerButton(){
 
-        hamburgerButton = new JButton("test");
+        hamburgerButton = new JButton("≡");
         hamburgerButton.setLayout(new GridBagLayout());
         hamburgerButton.setFocusable(false);
 
-        hamburgerButton.addActionListener (new ActionListener (){
+        hamburgerButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e){
-
-                if(myFlightButton.isVisible()){
-                    myFlightButton.setEnabled(false);
-                    myFlightButton.setVisible(false);
-
-                    searchFlightButton.setEnabled(false);
-                    searchFlightButton.setVisible(false);
-                } else{
-                    myFlightButton.setEnabled(true);
-                    myFlightButton.setVisible(true);
-
-                    searchFlightButton.setEnabled(true);
-                    searchFlightButton.setVisible(true);
-                }
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                isClicked = !isClicked;
             }
         });
 
@@ -157,14 +149,15 @@ public class HamburgerPanel extends JPanel
             }
             @Override
             public void mouseExited(MouseEvent e){
-                myFlightButton.setEnabled(false);
-                myFlightButton.setVisible(false);
+                if(!isClicked){
+                    myFlightButton.setEnabled(false);
+                    myFlightButton.setVisible(false);
 
-                searchFlightButton.setEnabled(false);
-                searchFlightButton.setVisible(false);
+                    searchFlightButton.setEnabled(false);
+                    searchFlightButton.setVisible(false);
+                }
             }
         });
-
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.FIRST_LINE_START);

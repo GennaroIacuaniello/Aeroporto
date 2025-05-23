@@ -72,9 +72,8 @@ public class Book
     private void addNavigatorBarPanel (ArrayList<JFrame> callingFrames)
     {
         navigatorBarPanel = new NavigatorBarPanel (callingFrames);
-
-        constraints.setConstraints (0, 1, 3, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
-
+        constraints.setConstraints (0, 1, 3, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.CENTER);
         mainFrame.add (navigatorBarPanel, constraints.getConstraints ());
         navigatorBarPanel.setVisible (true);
     }

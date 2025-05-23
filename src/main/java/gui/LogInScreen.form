@@ -10,7 +10,6 @@
       <name value=""/>
       <opaque value="true"/>
       <preferredSize width="360" height="480"/>
-      <toolTipText value=""/>
     </properties>
     <border type="none"/>
     <children>

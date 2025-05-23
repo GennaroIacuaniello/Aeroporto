@@ -57,7 +57,8 @@ public class NavigatorBarPanel extends JPanel
             }
         });
 
-        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_START);
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.VERTICAL,
+                0, 0, GridBagConstraints.LINE_START);
         this.add (homeButton, constraints.getConstraints ());
         homeButton.setVisible (true);
     }
@@ -81,7 +82,8 @@ public class NavigatorBarPanel extends JPanel
             }
         });
 
-        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_START);
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.VERTICAL,
+                0, 0, GridBagConstraints.LINE_START);
         this.add (backButton, constraints.getConstraints ());
         backButton.setVisible (true);
     }
