@@ -7,7 +7,7 @@ package model;
 
  */
 
-abstract public class User {
+public class User {
 
     protected String username;
     protected String password;
