@@ -6,15 +6,16 @@ public class Constraints
 {
     private GridBagConstraints constraints;
 
-    public Constraints ()
+    public Constraints()
     {
-        constraints = new GridBagConstraints ();
+        constraints = new GridBagConstraints();
         constraints.weightx = 0.5;
         constraints.weighty = 0.5;
     }
 
-    public void setConstraints (int gridx, int gridy, int gridwidth, int gridheight, int fill, int ipadx, int ipady, int anchor, float weightx, float weighty, Insets insets)
-    {
+    public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
+                               int ipadx, int ipady, int anchor, float weightx, float weighty, Insets insets){
+
         constraints.gridx = gridx;
         constraints.gridy = gridy;
         constraints.gridwidth = gridwidth;
@@ -28,8 +29,9 @@ public class Constraints
         constraints.insets = insets;
     }
 
-    public void setConstraints (int gridx, int gridy, int gridwidth, int gridheight, int fill, int ipadx, int ipady, int anchor)
-    {
+    public void setConstraints (int gridx, int gridy, int gridwidth, int gridheight, int fill,
+                                int ipadx, int ipady, int anchor){
+
         constraints.gridx = gridx;
         constraints.gridy = gridy;
         constraints.gridwidth = gridwidth;
@@ -40,8 +42,5 @@ public class Constraints
         constraints.anchor = anchor;
     }
 
-    public GridBagConstraints getConstraints ()
-    {
-        return constraints;
-    }
+    public GridBagConstraints getConstraints(){return constraints;}
 }

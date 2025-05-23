@@ -6,11 +6,12 @@ import java.awt.*;
 public class TitlePanel extends JPanel
 {
     Constraints constraints;
+
     private JLabel titleLabel;
 
-    public TitlePanel (String title)
-    {
-        super ();
+    public TitlePanel (String title){
+
+        super();
 
         constraints = new Constraints ();
 
