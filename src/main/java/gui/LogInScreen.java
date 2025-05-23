@@ -2,6 +2,7 @@ package gui;
 
 import controller.Controller;
 import model.Customer;
+import model.Admin;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
@@ -9,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class LogInScreen {
@@ -31,10 +33,13 @@ public class LogInScreen {
     private JLabel newPasswordPrompt;
     private static Controller controller;
 
-    public LogInScreen(JFrame calling_f, Controller controller){
+    public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller){
 
-        if(calling_f != null){
-            calling_f.dispose();
+        if(!(callingFrames.isEmpty())){
+            for (JFrame callingFrame : callingFrames) {
+                callingFrame.dispose();
+                callingFrames.removeLast();
+            }
             this.setMainFrame(controller);
         }
 
@@ -50,7 +55,11 @@ public class LogInScreen {
                     return;
                 }
 
-                new MainCustomerScreen(mainFrame, controller, getCustomer(mailTextField, passwordField));
+                if (callingFrames.isEmpty()){
+                    callingFrames.addLast (mainFrame);
+                }
+                mainFrame.setVisible(false);
+                new MainCustomerScreen(callingFrames, controller, getCustomer(mailTextField, passwordField));
             }
         });
 
@@ -83,8 +92,8 @@ public class LogInScreen {
 
     public static void main(String[] args){
         Controller controller = new Controller();
-        mainFrame = new JFrame("Log In");
-        mainFrame.setContentPane(new LogInScreen(null, controller).loginScreen);
+        mainFrame = new JFrame("LogIn");
+        mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -93,7 +102,7 @@ public class LogInScreen {
 
     private void setMainFrame(Controller controller){
         mainFrame = new JFrame("Log In");
-        mainFrame.setContentPane(new LogInScreen(null, controller).loginScreen);
+        mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);

@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Customer;
 import model.User;
 import model.Flight;
 
@@ -26,22 +27,21 @@ public class Book
 
     private Constraints constraints;
 
-    public Book (JFrame callingFrame, Controller controller, User user, Flight flight){
+    public Book (ArrayList<JFrame> callingFrames, Controller controller, Customer customer, Flight flight){
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainframe();
-        callingFrame.setVisible(false);
-        callingFrame.dispose();
+        this.setMainframe(callingFrames);
+        //callingFrame.dispose();
 
         //setting surrounding panels
         this.addTitlePanel("AEROPORTO DI NAPOLI");
-        this.addNavigatorBarPanel ();
-        this.addHamburgerPanel(mainFrame, controller);
-        this.addUserPanel(mainFrame, controller, user);
+        this.addNavigatorBarPanel (callingFrames);
+        this.addHamburgerPanel(callingFrames, controller);
+        this.addUserPanel(callingFrames, controller, customer);
         this.addFooterPanel();
       
         //setting main panels
@@ -51,9 +51,10 @@ public class Book
         mainFrame.setVisible(true);
     }
 
-    private void setMainframe()
+    private void setMainframe(ArrayList<JFrame> callingFrames)
     {
         mainFrame = new JFrame("Book");
+        callingFrames.addLast (mainFrame);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout ());
         mainFrame.setSize(1080, 720);
@@ -68,27 +69,27 @@ public class Book
         mainFrame.add(titlePanel, constraints.getConstraints());
     }
 
-    private void addNavigatorBarPanel ()
+    private void addNavigatorBarPanel (ArrayList<JFrame> callingFrames)
     {
-        navigatorBarPanel = new NavigatorBarPanel ();
+        navigatorBarPanel = new NavigatorBarPanel (callingFrames);
 
         constraints.setConstraints (0, 1, 3, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
 
-        mainframe.add (navigatorBarPanel, constraints.getConstraints ());
+        mainFrame.add (navigatorBarPanel, constraints.getConstraints ());
         navigatorBarPanel.setVisible (true);
     }
 
-    private void addHamburgerPanel(JFrame callingFrame, Controller controller)
+    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller)
     {
-        hamburgerPanel = new HamburgerPanel(callingFrame, controller);
+        hamburgerPanel = new HamburgerPanel(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
     }
 
-    private void addUserPanel(JFrame callingFrame, Controller controller, User user)
+    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer)
     {
-        userPanel = new UserPanel(callingFrame, controller, user);
+        userPanel = new UserPanel(callingFrames, controller, customer);
         constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
         mainFrame.add(userPanel, constraints.getConstraints());

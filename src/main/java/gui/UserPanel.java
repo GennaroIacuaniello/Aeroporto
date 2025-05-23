@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class UserPanel extends JPanel{
     
@@ -15,20 +16,20 @@ public class UserPanel extends JPanel{
     private Constraints constraints;
     private JPanel invisiblePanel;
 
-    public UserPanel(JFrame callingFrame, Controller controller, User user){
+    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller, User user){
         
         super();
 
         constraints = new Constraints();
         this.setLayout(new GridBagLayout());
 
-        this.setLogoutButton(callingFrame, controller);
+        this.setLogoutButton(callingFrames, controller);
         this.setUserButton(user);
 
         this.setVisible(true);
     }
 
-    private void setLogoutButton(JFrame callingFrame, Controller controller){
+    private void setLogoutButton(ArrayList<JFrame> callingFrames, Controller controller){
 
         logoutButton = new JButton("Logout");
         logoutButton.setLayout(new GridBagLayout());
@@ -40,7 +41,7 @@ public class UserPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e){
 
-                new LogInScreen(callingFrame, controller);
+                new LogInScreen(callingFrames, controller);
             }
         });
 

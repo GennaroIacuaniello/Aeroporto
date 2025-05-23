@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class HamburgerPanel extends JPanel
 {
@@ -16,7 +17,7 @@ public class HamburgerPanel extends JPanel
     private JPanel invisiblePanel;
     private Constraints constraints;
 
-    public HamburgerPanel(JFrame callingFrame, Controller controller){
+    public HamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller){
 
         super();
 
@@ -25,7 +26,7 @@ public class HamburgerPanel extends JPanel
 
         this.setMyFlightButton();
         this.setSearchFlightButton();
-        this.setHamburgerButton(callingFrame, controller);
+        this.setHamburgerButton();
 
         this.setVisible(true);
     }
@@ -74,7 +75,7 @@ public class HamburgerPanel extends JPanel
         this.add (myFlightButton, constraints.getConstraints());
     }
 
-    private void setHamburgerButton(JFrame callingFrame, Controller controller){
+    private void setHamburgerButton(){
 
         hamburgerButton = new JButton("test");
         hamburgerButton.setLayout(new GridBagLayout());
