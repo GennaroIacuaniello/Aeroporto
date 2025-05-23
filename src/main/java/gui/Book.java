@@ -8,11 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Book extends Home
+public class Book
 {
     private JFrame mainframe;
 
     private TitlePanel titlepanel;
+    private NavigatorBarPanel navigatorBarPanel;
     private HamburgerPanel hamburgerpanel;
     private UserPanel userpanel;
 
@@ -37,6 +38,9 @@ public class Book extends Home
         //aggiungo il titolo
         this.addTitlePanel ("AEROPORTO DI NAPOLI");
 
+        //aggiungo barra di navigazione
+        this.addNavigatorBarPanel ();
+
         //aggiungo hamburger panel
         this.addHamburgerPanel ();
 
@@ -58,7 +62,7 @@ public class Book extends Home
         mainframe.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         mainframe.setLayout(new GridBagLayout ());
         mainframe.setSize (1920, 1080);
-        mainframe.setBackground(Color.BLACK);
+        mainframe.setBackground(Color.WHITE);
         mainframe.setVisible (true);
     }
 
@@ -71,11 +75,21 @@ public class Book extends Home
         mainframe.add (titlepanel, constraints.getConstraints ());
     }
 
+    private void addNavigatorBarPanel ()
+    {
+        navigatorBarPanel = new NavigatorBarPanel ();
+
+        constraints.setConstraints (0, 1, 3, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
+
+        mainframe.add (navigatorBarPanel, constraints.getConstraints ());
+        navigatorBarPanel.setVisible (true);
+    }
+
     private void addHamburgerPanel ()
     {
         hamburgerpanel = new HamburgerPanel ();
 
-        constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
+        constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
 
         mainframe.add (hamburgerpanel, constraints.getConstraints ());
     }
@@ -84,7 +98,7 @@ public class Book extends Home
     {
         userpanel = new UserPanel (user);
 
-        constraints.setConstraints (2, 1, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_END);
+        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_END);
 
         mainframe.add (userpanel, constraints.getConstraints ());
     }
@@ -97,7 +111,7 @@ public class Book extends Home
 
         setLabels (flight);
 
-        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH, 0, 60, GridBagConstraints.PAGE_START);
+        constraints.setConstraints (0, 3, 3, 1, GridBagConstraints.BOTH, 0, 60, GridBagConstraints.PAGE_START);
 
         flightInfoPanel.setVisible (true);
         mainframe.add (flightInfoPanel, constraints.getConstraints ());
@@ -159,7 +173,7 @@ public class Book extends Home
         passengersPanel.setLayout (new GridBagLayout ());
         passengersPanel.setBackground(Color.BLUE);
 
-        constraints.setConstraints (0, 4, 3, 1, GridBagConstraints.BOTH, 0, 340, GridBagConstraints.PAGE_START);
+        constraints.setConstraints (0, 4, 3, 1, GridBagConstraints.BOTH, 0, 500, GridBagConstraints.PAGE_START);
 
         passengersPanel.setVisible (true);
         mainframe.add (passengersPanel, constraints.getConstraints ());
