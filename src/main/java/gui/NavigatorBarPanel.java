@@ -1,6 +1,8 @@
 package gui;
 
-public class NavigatorBarPanel
+import javax.swing.*;
+
+public class NavigatorBarPanel extends JPanel
 {
 
 }
