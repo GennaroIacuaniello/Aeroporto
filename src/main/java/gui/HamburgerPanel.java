@@ -5,7 +5,14 @@ import model.User;
 
 import javax.swing.*;
 import java.awt.*;
+<<<<<<< HEAD
 import java.awt.event.*;
+=======
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+>>>>>>> 51daca17e02cbfbaceaa7f366e82a87aa7981859
 import java.util.ArrayList;
 
 public class HamburgerPanel extends JPanel
