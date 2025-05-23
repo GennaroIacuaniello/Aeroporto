@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import model.User;
 
 import javax.swing.*;
@@ -14,20 +15,20 @@ public class UserPanel extends JPanel
     private Constraints constraints;
     private JPanel invisiblePanel;
 
-    public UserPanel (User user)
+    public UserPanel (JFrame calling_f, Controller controller, User user)
     {
         super ();
 
         constraints = new Constraints ();
         this.setLayout (new GridBagLayout ());
 
-        this.setLogoutButton ();
-        this.setUserButton (user);
+        this.setLogoutButton(calling_f, controller);
+        this.setUserButton(user);
 
         this.setVisible (true);
     }
 
-    private void setLogoutButton ()
+    private void setLogoutButton (JFrame calling_f, Controller controller)
     {
         logoutButton = new JButton ("Logout");
         logoutButton.setLayout (new GridBagLayout ());
@@ -39,7 +40,7 @@ public class UserPanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //logout
+                new LogInScreen(calling_f, controller);
             }
         });
 

@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import model.User;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class HamburgerPanel extends JPanel
     private JPanel invisiblePanel;
     private Constraints constraints;
 
-    public HamburgerPanel ()
+    public HamburgerPanel (JFrame calling_f, Controller controller)
     {
         super ();
 
@@ -24,7 +25,7 @@ public class HamburgerPanel extends JPanel
 
         this.setMyFlightButton();
         this.setFlightSearchButton();
-        this.setHamburgerButton();
+        this.setHamburgerButton(calling_f, controller);
 
         this.setVisible (true);
     }
@@ -71,7 +72,7 @@ public class HamburgerPanel extends JPanel
         this.add (myFlightButton, constraints.getConstraints());
     }
 
-    private void setHamburgerButton ()
+    private void setHamburgerButton (JFrame calling_f, Controller controller)
     {
         hamburgerButton = new JButton ("test");
         hamburgerButton.setLayout (new GridBagLayout ());

@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Home {
     private JPanel mainPanel;
-    private static JFrame frameHome;
+    /*private static JFrame frameHome;
     private static Controller controller;
 
     public static void main(String[] args) {
@@ -31,5 +31,5 @@ public class Home {
 
     }
 
-
+*/
 }
