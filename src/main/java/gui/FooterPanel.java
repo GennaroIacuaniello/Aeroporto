@@ -9,18 +9,18 @@ public class FooterPanel extends JPanel
 {
     private JLabel label;
 
-    public FooterPanel ()
-    {
-        super ();
+    public FooterPanel(){
 
-        this.setLayout (new GridBagLayout());
+        super();
 
-        label = new JLabel ("Footer");
+        this.setLayout(new GridBagLayout());
+
+        label = new JLabel("Footer");
         this.add (label);
 
-        label.setVisible (true);
+        label.setVisible(true);
 
-        this.setBackground (Color.DARK_GRAY);
-        this.setVisible (true);
+        this.setBackground(Color.DARK_GRAY);
+        this.setVisible(true);
     }
 }

@@ -12,95 +12,99 @@ public class HamburgerPanel extends JPanel
 {
     private JButton hamburgerButton;
     private JButton myFlightButton;
-    private JButton flightSearchButton;
+    private JButton searchFlightButton;
     private JPanel invisiblePanel;
     private Constraints constraints;
 
-    public HamburgerPanel (JFrame calling_f, Controller controller)
-    {
-        super ();
+    public HamburgerPanel(JFrame callingFrame, Controller controller){
 
-        this.setLayout (new GridBagLayout());
-        this.constraints = new Constraints ();
+        super();
+
+        this.setLayout(new GridBagLayout());
+        this.constraints = new Constraints();
 
         this.setMyFlightButton();
-        this.setFlightSearchButton();
-        this.setHamburgerButton(calling_f, controller);
+        this.setSearchFlightButton();
+        this.setHamburgerButton(callingFrame, controller);
 
-        this.setVisible (true);
+        this.setVisible(true);
     }
 
-    private void setFlightSearchButton ()
-    {
-        flightSearchButton = new JButton ("CERCA VOLO");
-        flightSearchButton.setLayout (new GridBagLayout ());
-        flightSearchButton.setEnabled (false);
-        flightSearchButton.setVisible (false);
+    private void setSearchFlightButton(){
 
-        flightSearchButton.addActionListener(new ActionListener()
-        {
+        searchFlightButton = new JButton("CERCA VOLO");
+        searchFlightButton.setLayout(new GridBagLayout());
+        searchFlightButton.setEnabled(false);
+        searchFlightButton.setVisible(false);
+        searchFlightButton.setFocusable(false);
+
+        searchFlightButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e){
+
                 //pagina cerca volo
             }
         });
 
-        constraints.setConstraints(0, 1, 3, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.FIRST_LINE_START);
+        constraints.setConstraints(0, 1, 3, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.FIRST_LINE_START);
 
-        this.add (flightSearchButton, constraints.getConstraints());
+        this.add(searchFlightButton, constraints.getConstraints());
     }
 
-    private void setMyFlightButton ()
-    {
-        myFlightButton = new JButton ("I MIEI VOLI");
-        myFlightButton.setLayout (new GridBagLayout ());
-        myFlightButton.setEnabled (false);
-        myFlightButton.setVisible (false);
+    private void setMyFlightButton(){
 
-        myFlightButton.addActionListener(new ActionListener()
-        {
+        myFlightButton = new JButton("I MIEI VOLI");
+        myFlightButton.setLayout(new GridBagLayout());
+        myFlightButton.setEnabled(false);
+        myFlightButton.setVisible(false);
+        myFlightButton.setFocusable(false);
+
+        myFlightButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e){
+
                 //pagina i miei voli
             }
         });
 
-        constraints.setConstraints(0, 2, 3, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.FIRST_LINE_START);
+        constraints.setConstraints(0, 2, 3, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.FIRST_LINE_START);
 
         this.add (myFlightButton, constraints.getConstraints());
     }
 
-    private void setHamburgerButton (JFrame calling_f, Controller controller)
-    {
-        hamburgerButton = new JButton ("test");
-        hamburgerButton.setLayout (new GridBagLayout ());
+    private void setHamburgerButton(JFrame callingFrame, Controller controller){
 
-        hamburgerButton.addActionListener (new ActionListener ()
-        {
+        hamburgerButton = new JButton("test");
+        hamburgerButton.setLayout(new GridBagLayout());
+        hamburgerButton.setFocusable(false);
+
+        hamburgerButton.addActionListener (new ActionListener (){
             @Override
-            public void actionPerformed (ActionEvent e)
-            {
-                myFlightButton.setEnabled (true);
-                myFlightButton.setVisible (true);
+            public void actionPerformed(ActionEvent e){
 
-                flightSearchButton.setEnabled (true);
-                flightSearchButton.setVisible (true);
+                myFlightButton.setEnabled(true);
+                myFlightButton.setVisible(true);
+
+                searchFlightButton.setEnabled(true);
+                searchFlightButton.setVisible(true);
             }
         });
 
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.FIRST_LINE_START);
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.VERTICAL,
+                0, 0, GridBagConstraints.FIRST_LINE_START);
 
-        this.add(hamburgerButton, constraints.getConstraints ());
+        this.add(hamburgerButton, constraints.getConstraints());
 
-        invisiblePanel = new JPanel ();
-        //invisiblePanel.setBackground (Color.GREEN);
-        invisiblePanel.setLayout (new GridBagLayout ());
+        invisiblePanel = new JPanel();
+        //invisiblePanel.setBackground(Color.GREEN);
+        invisiblePanel.setLayout (new GridBagLayout());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints (0, 1, 3, 2, GridBagConstraints.BOTH, 0, 50, GridBagConstraints.FIRST_LINE_START);
+        constraints.setConstraints (0, 1, 3, 2, GridBagConstraints.BOTH,
+                0, 50, GridBagConstraints.FIRST_LINE_START);
 
-        this.add(invisiblePanel, constraints.getConstraints ());
+        this.add(invisiblePanel, constraints.getConstraints());
     }
 }

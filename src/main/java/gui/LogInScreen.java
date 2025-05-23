@@ -31,21 +31,21 @@ public class LogInScreen {
     private JLabel newPasswordPrompt;
     private static Controller controller;
 
-    public LogInScreen(JFrame calling_f, Controller controller) {
+    public LogInScreen(JFrame calling_f, Controller controller){
 
         if(calling_f != null){
             calling_f.dispose();
             this.setMainFrame(controller);
         }
 
-        logInButton.addActionListener(new ActionListener() {
+        logInButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (mailTextField.getText().equals("non esiste")) {
+            public void actionPerformed(ActionEvent e){
+                if (mailTextField.getText().equals("non esiste")){
                     JOptionPane.showMessageDialog(loginScreen, "Questo utente non esiste");
                     return;
                 }
-                if (passwordField.getText().equals("errata")) {
+                if (passwordField.getText().equals("errata")){
                     JOptionPane.showMessageDialog(loginScreen, "Password errata");
                     return;
                 }
@@ -54,34 +54,34 @@ public class LogInScreen {
             }
         });
 
-        mailTextField.addKeyListener(new KeyAdapter() {
+        mailTextField.addKeyListener(new KeyAdapter(){
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased(KeyEvent e){
                 super.keyReleased(e);
-                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
                     logInButton.setEnabled(true);
                 }
-                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
                     logInButton.setEnabled(false);
                 }
             }
         });
 
-        passwordField.addKeyListener(new KeyAdapter() {
+        passwordField.addKeyListener(new KeyAdapter(){
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased(KeyEvent e){
                 super.keyReleased(e);
-                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
                     logInButton.setEnabled(true);
                 }
-                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
                     logInButton.setEnabled(false);
                 }
             }
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Controller controller = new Controller();
         mainFrame = new JFrame("Log In");
         mainFrame.setContentPane(new LogInScreen(null, controller).loginScreen);
@@ -90,14 +90,15 @@ public class LogInScreen {
         mainFrame.setVisible(true);
 
     }
-    private void setMainFrame(Controller controller)
-    {
+
+    private void setMainFrame(Controller controller){
         mainFrame = new JFrame("Log In");
         mainFrame.setContentPane(new LogInScreen(null, controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
+
     private Customer getCustomer(JTextField mail, JPasswordField password){
         return new Customer(mail.getText(), password.getText());
     }
