@@ -36,10 +36,14 @@ public class LogInScreen {
     public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller){
 
         if(!(callingFrames.isEmpty())){
-            for (JFrame callingFrame : callingFrames) {
-                callingFrame.dispose();
-                callingFrames.removeLast();
+            int size = callingFrames.size();
+
+            for (int i = 0; i < size; i++) {
+                callingFrames.get(i).dispose();
             }
+
+            callingFrames.clear();
+
             this.setMainFrame(controller);
         }
 
