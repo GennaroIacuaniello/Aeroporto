@@ -59,7 +59,10 @@ public class LogInScreen {
                     callingFrames.addLast (mainFrame);
                 }
                 mainFrame.setVisible(false);
-                new MainCustomerScreen(callingFrames, controller, getCustomer(mailTextField, passwordField));
+
+                Customer customer = getCustomer(mailTextField, passwordField);
+
+                new MainCustomerScreen(callingFrames, controller, customer);
             }
         });
 
