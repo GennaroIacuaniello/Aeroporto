@@ -24,7 +24,7 @@ public class NavigatorBarPanel extends JPanel
         super ();
 
         constraints = new Constraints ();
-        this.setLayout (new GridBagLayout ());
+        this.setLayout (new FlowLayout (FlowLayout.LEFT));
         this.setBackground (Color.white);
 
         setHomeButton (callingFrames);
@@ -35,7 +35,7 @@ public class NavigatorBarPanel extends JPanel
     private void setHomeButton (ArrayList<JFrame> callingFrames)
     {
         homeButton = new JButton ("Home");
-        homeButton.setLayout (new GridBagLayout ());
+        //homeButton.setLayout (new FlowLayout ());
 
         homeButton.addActionListener (new ActionListener ()
         {
@@ -60,13 +60,15 @@ public class NavigatorBarPanel extends JPanel
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_START);
         this.add (homeButton, constraints.getConstraints ());
+        //constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_START);
+        this.add (homeButton);
         homeButton.setVisible (true);
     }
 
     private void setBackButton (ArrayList<JFrame> callingFrames)
     {
         backButton = new JButton ("Back");
-        backButton.setLayout (new GridBagLayout ());
+        //backButton.setLayout (new GridBagLayout ());
 
         backButton.addActionListener (new ActionListener ()
         {
@@ -85,22 +87,24 @@ public class NavigatorBarPanel extends JPanel
         constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_START);
         this.add (backButton, constraints.getConstraints ());
+        //constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_START);
+        this.add (backButton);
         backButton.setVisible (true);
     }
 
     private void setPath (ArrayList<JFrame> callingFrames)
     {
-        String path = "Posizione:";
-        for (JFrame callingFrame : callingFrames){
-            path += callingFrame.getTitle()+"/";
+        String path = "Posizione:\"";
+        for (int i = 1; i < callingFrames.size (); i++){
+            path += callingFrames.get(i).getTitle()+"/";
         }
-
+        path += "\"";
         pathLabel = new JLabel (path);
 
-        pathLabel.setLayout (new GridBagLayout ());
+        //pathLabel.setLayout (new GridBagLayout ());
 
-        constraints.setConstraints (2, 0, 1, 1, GridBagConstraints.BOTH, 1800, 0, GridBagConstraints.LINE_START);
-        this.add (pathLabel, constraints.getConstraints ());
+        //constraints.setConstraints (2, 0, 17, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.LINE_START);
+        this.add (pathLabel);
         pathLabel.setVisible (true);
     }
 }
