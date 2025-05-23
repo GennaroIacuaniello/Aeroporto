@@ -65,7 +65,8 @@ public class LogInScreen {
                 mainFrame.setVisible(false);
 
                 Customer customer = getCustomer(mailTextField, passwordField);
-
+                mailTextField.setText("");
+                passwordField.setText("");
                 new MainCustomerScreen(callingFrames, controller, customer);
             }
         });
@@ -108,7 +109,7 @@ public class LogInScreen {
     }
 
     private void setMainFrame(Controller controller){
-        mainFrame = new JFrame("Log In");
+        mainFrame = new JFrame("LogIn");
         mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
