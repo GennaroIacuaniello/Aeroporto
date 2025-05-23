@@ -7,12 +7,14 @@ import model.Flight;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
-public class Book {
+ 
+public class Book
+{
 
     private JFrame mainFrame;
 
     private TitlePanel titlePanel;
+    private NavigatorBarPanel navigatorBarPanel;
     private HamburgerPanel hamburgerPanel;
     private UserPanel userPanel;
 
@@ -37,20 +39,20 @@ public class Book {
 
         //setting surrounding panels
         this.addTitlePanel("AEROPORTO DI NAPOLI");
+        this.addNavigatorBarPanel ();
         this.addHamburgerPanel(mainFrame, controller);
         this.addUserPanel(mainFrame, controller, user);
         this.addFooterPanel();
-
-        //mainPanel
-        //this.addMainPanel(flight);
+      
+        //setting main panels
         this.addFlightInfoPanel(flight);
         this.addPassengersPanel();
 
         mainFrame.setVisible(true);
     }
 
-    private void setMainframe(){
-        
+    private void setMainframe()
+    {
         mainFrame = new JFrame("Book");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout ());
@@ -58,26 +60,36 @@ public class Book {
         mainFrame.setBackground(Color.BLACK);
     }
 
-    private void addTitlePanel(String title){
-
+    private void addTitlePanel(String title)
+    {
         titlePanel = new TitlePanel(title);
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.BOTH,
                 0, 125, GridBagConstraints.PAGE_START);
         mainFrame.add(titlePanel, constraints.getConstraints());
     }
 
-    private void addHamburgerPanel(JFrame callingFrame, Controller controller){
-        
+    private void addNavigatorBarPanel ()
+    {
+        navigatorBarPanel = new NavigatorBarPanel ();
+
+        constraints.setConstraints (0, 1, 3, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
+
+        mainframe.add (navigatorBarPanel, constraints.getConstraints ());
+        navigatorBarPanel.setVisible (true);
+    }
+
+    private void addHamburgerPanel(JFrame callingFrame, Controller controller)
+    {
         hamburgerPanel = new HamburgerPanel(callingFrame, controller);
-        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
     }
 
-    private void addUserPanel(JFrame callingFrame, Controller controller, User user){
-        
+    private void addUserPanel(JFrame callingFrame, Controller controller, User user)
+    {
         userPanel = new UserPanel(callingFrame, controller, user);
-        constraints.setConstraints(2, 1, 1, 1, GridBagConstraints.VERTICAL,
+        constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
         mainFrame.add(userPanel, constraints.getConstraints());
     }
@@ -90,8 +102,7 @@ public class Book {
 
         setLabels(flight);
 
-        constraints.setConstraints (0, 2, 3, 1, GridBagConstraints.BOTH,
-                0, 60, GridBagConstraints.PAGE_START);
+        constraints.setConstraints (0, 3, 3, 1, GridBagConstraints.BOTH, 0, 60, GridBagConstraints.PAGE_START);        
 
         flightInfoPanel.setVisible(true);
         mainFrame.add (flightInfoPanel, constraints.getConstraints());
@@ -152,8 +163,7 @@ public class Book {
         passengersPanel.setLayout(new GridBagLayout());
         passengersPanel.setBackground(Color.BLUE);
 
-        constraints.setConstraints(0, 4, 3, 1, GridBagConstraints.BOTH,
-                0, 340, GridBagConstraints.PAGE_START);
+        constraints.setConstraints (0, 4, 3, 1, GridBagConstraints.BOTH, 0, 500, GridBagConstraints.PAGE_START);
 
         passengersPanel.setVisible(true);
         mainFrame.add(passengersPanel, constraints.getConstraints());
