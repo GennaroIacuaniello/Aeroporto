@@ -50,17 +50,21 @@ public class LogInScreen {
         logInButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                if (mailTextField.getText().equals("non esiste")){
+                if(!isValidMail(mailTextField.getText())){
+                    JOptionPane.showMessageDialog(loginScreen, "La mail inserita non è valida");
+                    return;
+                }
+                if(mailTextField.getText().equals("non esiste")){
                     JOptionPane.showMessageDialog(loginScreen, "Questo utente non esiste");
                     return;
                 }
-                if (passwordField.getText().equals("errata")){
+                if(passwordField.getText().equals("errata")){
                     JOptionPane.showMessageDialog(loginScreen, "Password errata");
                     return;
                 }
 
-                if (callingFrames.isEmpty()){
-                    callingFrames.addLast (mainFrame);
+                if(callingFrames.isEmpty()){
+                    callingFrames.addLast(mainFrame);
                 }
                 mainFrame.setVisible(false);
 
@@ -75,10 +79,10 @@ public class LogInScreen {
             @Override
             public void keyReleased(KeyEvent e){
                 super.keyReleased(e);
-                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
+                if(!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
                     logInButton.setEnabled(true);
                 }
-                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
+                if(mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
                     logInButton.setEnabled(false);
                 }
             }
@@ -88,10 +92,10 @@ public class LogInScreen {
             @Override
             public void keyReleased(KeyEvent e){
                 super.keyReleased(e);
-                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
+                if(!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
                     logInButton.setEnabled(true);
                 }
-                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
+                if(mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
                     logInButton.setEnabled(false);
                 }
             }
@@ -120,5 +124,14 @@ public class LogInScreen {
         return new Customer(mail.getText(), password.getText());
     }
 
+    private boolean isValidMail(String mail){
+        String validCharaters = new String("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_");
+        for(int i = 0; i < mail.length(); i++){
+            if(validCharaters.indexOf(mail.charAt(i)) == -1){ //indexOf returns -1 if string does not contain character
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

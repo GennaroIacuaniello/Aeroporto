@@ -46,8 +46,8 @@ public class NavigatorBarPanel extends JPanel
 
                 for (int i = size - 2; i > 1; i--)
                 {
-                    callingFrames.get (i).dispose ();
-                    callingFrames.remove (i);
+                    callingFrames.get(i).dispose();
+                    callingFrames.remove(i);
                 }
 
                 callingFrames.get (1).setVisible (true);
