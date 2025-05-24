@@ -17,7 +17,7 @@ public class MainCustomerScreen {
     private JFrame mainFrame;
     private TitlePanel titlePanel;
     private NavigatorBarPanel navigatorBarPanel;
-    private Menu_panel hamburgerPanel;
+    private MenuPanel hamburgerPanel;
     private UserPanel userPanel;
     private FooterPanel footerPanel;
     private JPanel arrivingPanel;
@@ -76,7 +76,7 @@ public class MainCustomerScreen {
 
     private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
 
-        hamburgerPanel = new Menu_panel(callingFrames, controller);
+        hamburgerPanel = new MenuPanel(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
