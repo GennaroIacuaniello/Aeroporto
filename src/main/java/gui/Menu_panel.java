@@ -14,7 +14,7 @@ public class Menu_panel extends JPanel {
     private Constraints constraints;
     private JComboBox menu;
 
-    public Menu_panel(ArrayList<JFrame> callingFrames, Controller controller){
+    public Menu_panel(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -22,8 +22,7 @@ public class Menu_panel extends JPanel {
         this.constraints = new Constraints();
 
         menu = new JComboBox<String>();
-
-        this.menu.addItem("Menù");
+        this.menu.addItem("Home");
         this.menu.addItem("Pagina iniziale");
         this.menu.addItem("I miei voli");
 
@@ -33,10 +32,10 @@ public class Menu_panel extends JPanel {
 
         invisiblePanel = new JPanel();
         //invisiblePanel.setBackground(Color.GREEN);
-        invisiblePanel.setLayout (new GridBagLayout());
+        invisiblePanel.setLayout(new GridBagLayout());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints (0, 1, 3, 2, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 1, 3, 2, GridBagConstraints.BOTH,
                 0, 50, GridBagConstraints.FIRST_LINE_START);
 
         this.add(invisiblePanel, constraints.getConstraints());
@@ -64,7 +63,6 @@ public class Menu_panel extends JPanel {
 
         });
     }
-
 
 
 }

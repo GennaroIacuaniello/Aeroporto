@@ -21,7 +21,7 @@ public class Search_flight_customer_main_frame {
     Constraints constraints;
 
 
-    public Search_flight_customer_main_frame(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    public Search_flight_customer_main_frame(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
 
         super();
 
@@ -42,7 +42,7 @@ public class Search_flight_customer_main_frame {
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames){
+    private void setMainFrame(ArrayList<JFrame> callingFrames) {
 
         mainFrame = new JFrame("Cerca voli");
         callingFrames.addLast(mainFrame);
@@ -52,7 +52,7 @@ public class Search_flight_customer_main_frame {
         mainFrame.setBackground(Color.BLACK);
     }
 
-    private void addTitlePanel(String title){
+    private void addTitlePanel(String title) {
 
         titlePanel = new TitlePanel(title);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH,
@@ -61,7 +61,7 @@ public class Search_flight_customer_main_frame {
         titlePanel.setVisible(true);
     }
 
-    private void addNavigatorBarPanel(ArrayList<JFrame> callingFrames){
+    private void addNavigatorBarPanel(ArrayList<JFrame> callingFrames) {
 
         navigatorBarPanel = new NavigatorBarPanel(callingFrames);
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.BOTH,
@@ -72,14 +72,14 @@ public class Search_flight_customer_main_frame {
 
     //private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller){
 
-        //hamburgerPanel = new HamburgerPanel(callingFrames, controller);
-        //constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
-        //        0, 0, GridBagConstraints.FIRST_LINE_START);
-        //mainFrame.add(hamburgerPanel, constraints.getConstraints());
-        //hamburgerPanel.setVisible(true);
+    //hamburgerPanel = new HamburgerPanel(callingFrames, controller);
+    //constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
+    //        0, 0, GridBagConstraints.FIRST_LINE_START);
+    //mainFrame.add(hamburgerPanel, constraints.getConstraints());
+    //hamburgerPanel.setVisible(true);
     //}
 
-    private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller){
+    private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller) {
 
         menu = new Menu_panel(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
@@ -88,7 +88,7 @@ public class Search_flight_customer_main_frame {
         menu.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, User customer){
+    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, User customer) {
 
         userPanel = new UserPanel(callingFrames, controller, customer);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
@@ -97,12 +97,12 @@ public class Search_flight_customer_main_frame {
         userPanel.setVisible(true);
     }
 
-    private void addFooterPanel(){
+    private void addFooterPanel() {
 
-        footerPanel = new FooterPanel ();
+        footerPanel = new FooterPanel();
         constraints.setConstraints(0, 5, 3, 1, GridBagConstraints.BOTH,
                 0, 75, GridBagConstraints.PAGE_END);
-        mainFrame.add (footerPanel, constraints.getConstraints());
+        mainFrame.add(footerPanel, constraints.getConstraints());
         footerPanel.setVisible(true);
     }
 

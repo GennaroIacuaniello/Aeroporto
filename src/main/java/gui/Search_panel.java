@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 
-public class Search_panel extends JPanel{
+public class Search_panel extends JPanel {
 
     private JButton search_arriving_button;
     private JButton search_departing_button;
@@ -30,7 +30,7 @@ public class Search_panel extends JPanel{
     private JLabel search_from_text;
     private JLabel search_to_text;
 
-    public Search_panel(ArrayList<JFrame> callingFrames, Controller controller){
+    public Search_panel(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -56,33 +56,31 @@ public class Search_panel extends JPanel{
     }
 
 
-    private void set_search_from_text_label ()
-    {
+    private void set_search_from_text_label() {
 
         search_from_text = new JLabel("DA");
         search_from_text.setVisible(true);
 
-        search_from_text.setLayout(new GridBagLayout ());
+        search_from_text.setLayout(new GridBagLayout());
 
         //constraints.setConstraints (2, 0, 17, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.LINE_START);
-        this.add (search_from_text);
-        search_from_text.setVisible (true);
+        this.add(search_from_text);
+        search_from_text.setVisible(true);
     }
 
-    private void set_search_to_text_label ()
-    {
+    private void set_search_to_text_label() {
 
         search_to_text = new JLabel("A");
         search_to_text.setVisible(true);
 
-        search_to_text.setLayout(new GridBagLayout ());
+        search_to_text.setLayout(new GridBagLayout());
 
         //constraints.setConstraints (2, 0, 17, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.LINE_START);
-        this.add (search_to_text);
-        search_to_text.setVisible (true);
+        this.add(search_to_text);
+        search_to_text.setVisible(true);
     }
 
-    private void set_search_arriving_button(){
+    private void set_search_arriving_button() {
 
         search_arriving_button = new JButton("Cerca voli in arrivo");
         search_arriving_button.setLayout(new GridBagLayout());

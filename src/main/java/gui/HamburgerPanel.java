@@ -16,8 +16,7 @@ import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 
-public class HamburgerPanel extends JPanel
-{
+public class HamburgerPanel extends JPanel {
     private JButton hamburgerButton;
     private JButton myFlightButton;
     private JButton searchFlightButton;
@@ -25,7 +24,7 @@ public class HamburgerPanel extends JPanel
     private Constraints constraints;
     private boolean isClicked = false;
 
-    public HamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller){
+    public HamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -39,7 +38,7 @@ public class HamburgerPanel extends JPanel
         this.setVisible(true);
     }
 
-    private void setSearchFlightButton(){
+    private void setSearchFlightButton() {
 
         searchFlightButton = new JButton("CERCA VOLO");
         searchFlightButton.setLayout(new GridBagLayout());
@@ -56,9 +55,10 @@ public class HamburgerPanel extends JPanel
                 searchFlightButton.setEnabled(true);
                 searchFlightButton.setVisible(true);
             }
+
             @Override
-            public void mouseExited(MouseEvent e){
-                if(!isClicked){
+            public void mouseExited(MouseEvent e) {
+                if (!isClicked) {
                     myFlightButton.setEnabled(false);
                     myFlightButton.setVisible(false);
 
@@ -68,9 +68,9 @@ public class HamburgerPanel extends JPanel
             }
         });
 
-        searchFlightButton.addActionListener(new ActionListener(){
+        searchFlightButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
 
                 //pagina cerca volo
             }
@@ -82,7 +82,7 @@ public class HamburgerPanel extends JPanel
         this.add(searchFlightButton, constraints.getConstraints());
     }
 
-    private void setMyFlightButton(){
+    private void setMyFlightButton() {
 
         myFlightButton = new JButton("I MIEI VOLI");
         myFlightButton.setLayout(new GridBagLayout());
@@ -99,9 +99,10 @@ public class HamburgerPanel extends JPanel
                 searchFlightButton.setEnabled(true);
                 searchFlightButton.setVisible(true);
             }
+
             @Override
-            public void mouseExited(MouseEvent e){
-                if(!isClicked){
+            public void mouseExited(MouseEvent e) {
+                if (!isClicked) {
                     myFlightButton.setEnabled(false);
                     myFlightButton.setVisible(false);
 
@@ -111,9 +112,9 @@ public class HamburgerPanel extends JPanel
             }
         });
 
-        myFlightButton.addActionListener(new ActionListener(){
+        myFlightButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
 
                 //pagina i miei voli
             }
@@ -122,10 +123,10 @@ public class HamburgerPanel extends JPanel
         constraints.setConstraints(0, 2, 3, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
 
-        this.add (myFlightButton, constraints.getConstraints());
+        this.add(myFlightButton, constraints.getConstraints());
     }
 
-    private void setHamburgerButton(){
+    private void setHamburgerButton() {
 
         hamburgerButton = new JButton("≡");
         hamburgerButton.setLayout(new GridBagLayout());
@@ -148,9 +149,10 @@ public class HamburgerPanel extends JPanel
                 searchFlightButton.setEnabled(true);
                 searchFlightButton.setVisible(true);
             }
+
             @Override
-            public void mouseExited(MouseEvent e){
-                if(!isClicked){
+            public void mouseExited(MouseEvent e) {
+                if (!isClicked) {
                     myFlightButton.setEnabled(false);
                     myFlightButton.setVisible(false);
 
@@ -167,12 +169,13 @@ public class HamburgerPanel extends JPanel
 
         invisiblePanel = new JPanel();
         //invisiblePanel.setBackground(Color.GREEN);
-        invisiblePanel.setLayout (new GridBagLayout());
+        invisiblePanel.setLayout(new GridBagLayout());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints (0, 1, 3, 2, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 1, 3, 2, GridBagConstraints.BOTH,
                 0, 50, GridBagConstraints.FIRST_LINE_START);
 
         this.add(invisiblePanel, constraints.getConstraints());
     }
+
 }
