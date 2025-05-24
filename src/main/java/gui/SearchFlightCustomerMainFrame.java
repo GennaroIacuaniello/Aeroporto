@@ -8,20 +8,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Search_flight_customer_main_frame {
+public class SearchFlightCustomerMainFrame {
 
     private JFrame mainFrame;
     private TitlePanel titlePanel;
     private NavigatorBarPanel navigatorBarPanel;
     //private HamburgerPanel hamburgerPanel;
-    private Menu_panel menu;
+    private MenuPanel menu;
     private UserPanel userPanel;
     private FooterPanel footerPanel;
-    private Search_panel search_panel;
+    private SearchPanel search_panel;
     Constraints constraints;
 
 
-    public Search_flight_customer_main_frame(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    public SearchFlightCustomerMainFrame(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
 
         super();
 
@@ -38,6 +38,7 @@ public class Search_flight_customer_main_frame {
         this.add_menu_panel(callingFrames, controller);
         this.addUserPanel(callingFrames, controller, customer);
         this.addFooterPanel();
+        this.add_search_panel(callingFrames, controller);
 
         mainFrame.setVisible(true);
     }
@@ -81,7 +82,7 @@ public class Search_flight_customer_main_frame {
 
     private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller){
 
-        menu = new Menu_panel(callingFrames, controller);
+        menu = new MenuPanel(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(menu, constraints.getConstraints());
@@ -100,10 +101,20 @@ public class Search_flight_customer_main_frame {
     private void addFooterPanel(){
 
         footerPanel = new FooterPanel ();
-        constraints.setConstraints(0, 5, 3, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 4, 3, 1, GridBagConstraints.BOTH,
                 0, 75, GridBagConstraints.PAGE_END);
         mainFrame.add (footerPanel, constraints.getConstraints());
         footerPanel.setVisible(true);
+    }
+
+    private void add_search_panel(ArrayList<JFrame> callingFrames, Controller controller){
+
+        search_panel = new SearchPanel(callingFrames, controller);
+        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.HORIZONTAL,
+                0, 75, GridBagConstraints.CENTER);
+
+        mainFrame.add (search_panel, constraints.getConstraints());
+        search_panel.setVisible(true);
     }
 
 }

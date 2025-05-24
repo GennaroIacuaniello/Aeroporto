@@ -2,16 +2,10 @@ package gui;
 
 import controller.Controller;
 import model.Customer;
-import model.Admin;
+
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
-import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class LogInScreen {
     private static JFrame mainFrame;
@@ -71,7 +65,8 @@ public class LogInScreen {
                 Customer customer = getCustomer(mailTextField, passwordField);
                 mailTextField.setText("");
                 passwordField.setText("");
-                new MainCustomerScreen(callingFrames, controller, customer);
+                //new MainCustomerScreen(callingFrames, controller, customer);
+                new SearchFlightCustomerMainFrame(callingFrames, controller, customer);
             }
         });
 
