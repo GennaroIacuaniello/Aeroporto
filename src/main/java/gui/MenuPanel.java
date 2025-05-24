@@ -8,13 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class Menu_panel extends JPanel {
+public class MenuPanel extends JPanel {
 
     private JPanel invisiblePanel;
     private Constraints constraints;
     private JComboBox menu;
 
-    public Menu_panel(ArrayList<JFrame> callingFrames, Controller controller){
+    public MenuPanel(ArrayList<JFrame> callingFrames, Controller controller){
 
         super();
 
@@ -24,7 +24,8 @@ public class Menu_panel extends JPanel {
         menu = new JComboBox<String>();
 
         this.menu.addItem("Menù");
-        this.menu.addItem("Pagina iniziale");
+        this.menu.addItem("Home");
+        this.menu.addItem("Cerca voli");
         this.menu.addItem("I miei voli");
 
         this.setVisible(true);
@@ -51,8 +52,11 @@ public class Menu_panel extends JPanel {
                     case "Menu":
                         //Selezionato menù, chiudo solamente la JComboBox
                         break;
-                    case "Pagina iniziale":
+                    case "Home":
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura Pagina Iniziale");
+                        break;
+                    case "Cerca voli":
+                        JOptionPane.showMessageDialog(invisiblePanel, "Apertura Pagina Cerca voli");
                         break;
                     case "I miei voli":
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");

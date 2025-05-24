@@ -10,8 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Book
-{
+public class Book {
 
     private JFrame mainFrame;
 
@@ -34,7 +33,7 @@ public class Book
 
     private Constraints constraints;
 
-    public Book (ArrayList<JFrame> callingFrames, Controller controller, Customer customer, Flight flight){
+    public Book(ArrayList<JFrame> callingFrames, Controller controller, Customer customer, Flight flight) {
 
         super();
 
@@ -54,13 +53,11 @@ public class Book
         mainFrame.setVisible(true);
     }
 
-    private void setMainframe(ArrayList<JFrame> callingFrames)
-    {
+    private void setMainframe(ArrayList<JFrame> callingFrames) {
         mainFrame = new JFrame("Book");
-        callingFrames.addLast (mainFrame);
-
+        callingFrames.addLast(mainFrame);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLayout(new GridBagLayout ());
+        mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
 
         mainFrame.setBackground(Color.YELLOW);
@@ -83,8 +80,7 @@ public class Book
         topPanel.setVisible (true);
     }
 
-    private void addTitlePanel(String title)
-    {
+    private void addTitlePanel(String title) {
         titlePanel = new TitlePanel(title);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
@@ -100,8 +96,7 @@ public class Book
         navigatorBarPanel.setVisible (true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller)
-    {
+    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
         hamburgerPanel = new HamburgerPanel(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
@@ -109,8 +104,7 @@ public class Book
         hamburgerPanel.setVisible (true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer)
-    {
+    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
         userPanel = new UserPanel(callingFrames, controller, customer);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END);
@@ -175,8 +169,9 @@ public class Book
         setInfoLabels(flight);
     }
 
-    private void setTitleLabels(Flight flight)
-    {
+
+    private void setTitleLabels(Flight flight) {
+
         ArrayList<JLabel> titleLabels = new ArrayList<JLabel>();
 
         titleLabels.add(new JLabel("   "));
@@ -187,24 +182,24 @@ public class Book
         titleLabels.add(new JLabel("Arrival Time"));
         titleLabels.add(new JLabel("Duration"));
         titleLabels.add(new JLabel("Status"));
-        titleLabels.add(new JLabel("Disponibility"));
+        titleLabels.add(new JLabel("Availability"));
         titleLabels.add(new JLabel("   "));
 
-        for(int i = 0; i < titleLabels.size(); i++){
+        for (int i = 0; i < titleLabels.size(); i++) {
             constraints.setConstraints(i, 0, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             flightInfoPanel.add(titleLabels.get(i), constraints.getConstraints());
         }
     }
 
-    private void setInfoLabels (Flight flight)
-    {
+
+    private void setInfoLabels(Flight flight) {
         ArrayList<JLabel> infoLabels = new ArrayList<JLabel>();
 
         infoLabels.add(new JLabel("   "));
         infoLabels.add(new JLabel(flight.get_company_name()));
         infoLabels.add(new JLabel("/"));
-        infoLabels.add(new JLabel(flight.get_date ().toString()));
+        infoLabels.add(new JLabel(flight.get_date().toString()));
         infoLabels.add(new JLabel(flight.get_departure_time()));
         infoLabels.add(new JLabel(flight.get_arrival_time()));
         infoLabels.add(new JLabel("/"));
@@ -212,10 +207,10 @@ public class Book
         infoLabels.add(new JLabel("/"));
         infoLabels.add(new JLabel("   "));
 
-        for (int i = 0; i < infoLabels.size(); i++){
+        for (int i = 0; i < infoLabels.size(); i++) {
             constraints.setConstraints(i, 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
-            flightInfoPanel.add (infoLabels.get(i), constraints.getConstraints ());
+            flightInfoPanel.add(infoLabels.get(i), constraints.getConstraints());
         }
     }
 
