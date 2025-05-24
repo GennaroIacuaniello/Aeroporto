@@ -27,9 +27,9 @@ public class NavigatorBarPanel extends JPanel
         this.setLayout (new FlowLayout (FlowLayout.LEFT));
         this.setBackground (Color.white);
 
-        setHomeButton (callingFrames);
-        setBackButton (callingFrames);
-        setPath (callingFrames);
+        this.setHomeButton(callingFrames);
+        this.setBackButton(callingFrames);
+        this.setPath(callingFrames);
     }
 
     private void setHomeButton (ArrayList<JFrame> callingFrames)
