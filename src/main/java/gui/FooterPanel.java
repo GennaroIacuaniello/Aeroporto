@@ -5,22 +5,22 @@ import model.User;
 import javax.swing.*;
 import java.awt.*;
 
-public class FooterPanel extends JPanel
-{
+public class FooterPanel extends JPanel {
     private JLabel label;
 
-    public FooterPanel ()
-    {
-        super ();
+    public FooterPanel() {
 
-        this.setLayout (new GridBagLayout());
+        super();
 
-        label = new JLabel ("Footer");
-        this.add (label);
+        this.setLayout(new GridBagLayout());
 
-        label.setVisible (true);
+        label = new JLabel("Footer");
+        this.add(label);
 
-        this.setBackground (Color.DARK_GRAY);
-        this.setVisible (true);
+        label.setVisible(true);
+
+        this.setBackground(Color.DARK_GRAY);
+        this.setVisible(true);
     }
+
 }
