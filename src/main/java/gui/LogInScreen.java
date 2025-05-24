@@ -27,9 +27,9 @@ public class LogInScreen {
     private JLabel newPasswordPrompt;
     private static Controller controller;
 
-    public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller){
+    public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller) {
 
-        if(!(callingFrames.isEmpty())){
+        if (!(callingFrames.isEmpty())) {
             int size = callingFrames.size();
 
             for (int i = 0; i < size; i++) {
@@ -41,23 +41,23 @@ public class LogInScreen {
             this.setMainFrame(controller);
         }
 
-        logInButton.addActionListener(new ActionListener(){
+        logInButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                if(!isValidMail(mailTextField.getText())){
+            public void actionPerformed(ActionEvent e) {
+                if (!isValidMail(mailTextField.getText())) {
                     JOptionPane.showMessageDialog(loginScreen, "La mail inserita non è valida");
                     return;
                 }
-                if(mailTextField.getText().equals("non esiste")){
+                if (mailTextField.getText().equals("non esiste")) {
                     JOptionPane.showMessageDialog(loginScreen, "Questo utente non esiste");
                     return;
                 }
-                if(passwordField.getText().equals("errata")){
+                if (passwordField.getText().equals("errata")) {
                     JOptionPane.showMessageDialog(loginScreen, "Password errata");
                     return;
                 }
 
-                if(callingFrames.isEmpty()){
+                if (callingFrames.isEmpty()) {
                     callingFrames.addLast(mainFrame);
                 }
                 mainFrame.setVisible(false);
@@ -70,34 +70,34 @@ public class LogInScreen {
             }
         });
 
-        mailTextField.addKeyListener(new KeyAdapter(){
+        mailTextField.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent e){
+            public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if(!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
+                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(true);
                 }
-                if(mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
+                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(false);
                 }
             }
         });
 
-        passwordField.addKeyListener(new KeyAdapter(){
+        passwordField.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent e){
+            public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if(!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()){
+                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(true);
                 }
-                if(mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()){
+                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(false);
                 }
             }
         });
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Controller controller = new Controller();
         mainFrame = new JFrame("LogIn");
         mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
@@ -107,7 +107,7 @@ public class LogInScreen {
 
     }
 
-    private void setMainFrame(Controller controller){
+    private void setMainFrame(Controller controller) {
         mainFrame = new JFrame("LogIn");
         mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,14 +115,14 @@ public class LogInScreen {
         mainFrame.setVisible(true);
     }
 
-    private Customer getCustomer(JTextField mail, JPasswordField password){
+    private Customer getCustomer(JTextField mail, JPasswordField password) {
         return new Customer(mail.getText(), password.getText());
     }
 
-    private boolean isValidMail(String mail){
+    private boolean isValidMail(String mail) {
         String validCharaters = new String("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_");
-        for(int i = 0; i < mail.length(); i++){
-            if(validCharaters.indexOf(mail.charAt(i)) == -1){ //indexOf returns -1 if string does not contain character
+        for (int i = 0; i < mail.length(); i++) {
+            if (validCharaters.indexOf(mail.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
                 return false;
             }
         }

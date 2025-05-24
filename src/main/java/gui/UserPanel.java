@@ -9,15 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class UserPanel extends JPanel{
-    
+public class UserPanel extends JPanel {
+
     private JButton userButton;
     private JButton logoutButton;
     private Constraints constraints;
     private JPanel invisiblePanel;
 
-    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller, User user){
-        
+    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller, User user) {
+
         super();
 
         constraints = new Constraints();
@@ -29,7 +29,7 @@ public class UserPanel extends JPanel{
         this.setVisible(true);
     }
 
-    private void setLogoutButton(ArrayList<JFrame> callingFrames, Controller controller){
+    private void setLogoutButton(ArrayList<JFrame> callingFrames, Controller controller) {
 
         logoutButton = new JButton("Logout");
         logoutButton.setLayout(new GridBagLayout());
@@ -37,9 +37,9 @@ public class UserPanel extends JPanel{
         logoutButton.setVisible(false);
         logoutButton.setFocusable(false);
 
-        logoutButton.addActionListener(new ActionListener(){
+        logoutButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
 
                 new LogInScreen(callingFrames, controller);
             }
@@ -51,15 +51,15 @@ public class UserPanel extends JPanel{
         this.add(logoutButton, constraints.getConstraints());
     }
 
-    private void setUserButton(User user){
+    private void setUserButton(User user) {
 
-        userButton = new JButton("<html>Ciao,<br>" + user.get_username () + "</html>");
-        userButton.setLayout(new GridBagLayout ());
+        userButton = new JButton("<html>Ciao,<br>" + user.get_username() + "</html>");
+        userButton.setLayout(new GridBagLayout());
         userButton.setFocusable(false);
 
-        userButton.addActionListener(new ActionListener(){
+        userButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed (ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
 
                 logoutButton.setEnabled(true);
                 logoutButton.setVisible(true);
@@ -81,4 +81,5 @@ public class UserPanel extends JPanel{
 
         this.add(invisiblePanel, constraints.getConstraints());
     }
+
 }
