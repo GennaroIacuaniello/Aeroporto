@@ -65,8 +65,8 @@ public class LogInScreen {
                 Customer customer = getCustomer(mailTextField, passwordField);
                 mailTextField.setText("");
                 passwordField.setText("");
-                //new MainCustomerScreen(callingFrames, controller, customer);
-                new SearchFlightCustomerMainFrame(callingFrames, controller, customer);
+                new MainCustomerScreen(callingFrames, controller, customer);
+                
             }
         });
 
