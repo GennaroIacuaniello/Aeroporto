@@ -31,12 +31,11 @@ public class HamburgerPanel extends JPanel
 
         this.setLayout(new GridBagLayout());
         this.constraints = new Constraints();
+        this.setBackground(Color.WHITE);
 
         this.setMyFlightButton();
         this.setSearchFlightButton();
         this.setHamburgerButton();
-
-        this.setVisible(true);
     }
 
     private void setSearchFlightButton(){
@@ -166,7 +165,7 @@ public class HamburgerPanel extends JPanel
         this.add(hamburgerButton, constraints.getConstraints());
 
         invisiblePanel = new JPanel();
-        //invisiblePanel.setBackground(Color.GREEN);
+        invisiblePanel.setBackground(Color.WHITE);
         invisiblePanel.setLayout (new GridBagLayout());
         invisiblePanel.setVisible(true);
 
