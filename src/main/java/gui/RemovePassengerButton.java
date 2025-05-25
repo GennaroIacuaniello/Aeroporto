@@ -35,7 +35,7 @@ public class RemovePassengerButton extends JButton {
                 tmppassengerPanel.setVisible(false);
                 tmpremovePassengerButton.setVisible(false);
 
-                Boolean lastPage = (currPage == (passengerPanels.size() - 1) / 3);
+                boolean lastPage = (currPage == (passengerPanels.size() - 1) / 3);
 
                 //rimuovi dalla lista di passeggeri e bottoni
                 passengerPanels.remove(index);
@@ -88,13 +88,13 @@ public class RemovePassengerButton extends JButton {
                 }
 
                 //attivabilità nextPageButton
-                if (lastPage == false && (currPage == (passengerPanels.size() - 1) / 3)) {  //prima non ero all'ultima pagina ora si
+                if (!lastPage && (currPage == (passengerPanels.size() - 1) / 3)) {  //prima non ero all'ultima pagina ora si
                     nextPageButton.setEnabled(false);
                 }
 
                 //attivabilità primo bottone
                 if (removePassengerButtons.size() == 1) {
-                    removePassengerButtons.get(0).setEnabled(false);
+                    removePassengerButtons.getFirst().setEnabled(false);
                 }
             }
         });

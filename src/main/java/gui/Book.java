@@ -48,6 +48,7 @@ public class Book {
         this.addMainPanel (flight, controller);
 
         //this.addFooterPanel();
+        addFooterPanel();
 
         mainFrame.setVisible(true);
     }
@@ -66,7 +67,6 @@ public class Book {
     {
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
-        topPanel.setBackground(Color.WHITE);
 
         addTitlePanel("AEROPORTO DI NAPOLI", controller);
         addNavigatorBarPanel (callingFrames);
@@ -115,7 +115,7 @@ public class Book {
     {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
-        if(controller.developerMode) mainPanel.setBackground(Color.GREEN);
+        /*if(controller.developerMode)*/ //mainPanel.setBackground(Color.WHITE);
 
         addFlightInfoPanel (flight, controller);
 
@@ -153,7 +153,7 @@ public class Book {
     {
         flightInfoPanel = new JPanel();
         flightInfoPanel.setLayout(new GridBagLayout());
-        if(controller.developerMode) flightInfoPanel.setBackground(Color.ORANGE);
+        /*if(controller.developerMode)*/ flightInfoPanel.setBackground(Color.GRAY);
 
         setLabels(flight);
 
@@ -295,7 +295,7 @@ public class Book {
                 passengerPage.setVisible (false);
                 passengerPage.setVisible (true);
 
-                removePassengerButtons.get(0).setEnabled(true);
+                removePassengerButtons.getFirst().setEnabled(true);
             }
         });
 
@@ -394,10 +394,10 @@ public class Book {
 
     private void addFooterPanel()
     {
-       /* footerPanel = new FooterPanel();
-        constraints.setConstraints(0, 2, 3, 1, GridBagConstraints.BOTH,
-                0, 75, GridBagConstraints.PAGE_END);
-        passengersPanel.add (footerPanel, constraints.getConstraints());*/
+       footerPanel = new FooterPanel();
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.BOTH,
+                0, 10, GridBagConstraints.PAGE_END);
+        mainFrame.add (footerPanel, constraints.getConstraints());
     }
 
     public void decreaseCurrPage () {

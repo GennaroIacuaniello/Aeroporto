@@ -41,6 +41,7 @@ public class Constraints {
         constraints.anchor = anchor;
         constraints.weightx = weightx;
         constraints.weighty = weighty;
+        constraints.insets = new Insets(0, 0, 0, 0);
     }
 
     public void setConstraints (int gridx, int gridy, int gridwidth, int gridheight, int fill,
@@ -54,6 +55,9 @@ public class Constraints {
         constraints.ipadx = ipadx;
         constraints.ipady = ipady;
         constraints.anchor = anchor;
+        constraints.weightx = 0.01;
+        constraints.weighty = 0.01;
+        constraints.insets = new Insets(0, 0, 0, 0);
     }
 
     public void resetWeight ()

@@ -22,7 +22,6 @@ public class UserPanel extends JPanel {
 
         constraints = new Constraints();
         this.setLayout(new GridBagLayout());
-        this.setBackground(Color.WHITE);
 
         this.setLogoutButton(callingFrames, controller);
         this.setUserButton(user);
