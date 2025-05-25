@@ -1,79 +1,87 @@
 package gui;
 
+import controller.Controller;
 import model.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class UserPanel extends JPanel
-{
+public class UserPanel extends JPanel {
+
     private JButton userButton;
     private JButton logoutButton;
     private Constraints constraints;
     private JPanel invisiblePanel;
 
-    public UserPanel (User user)
-    {
-        super ();
+    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller, User user) {
 
-        constraints = new Constraints ();
-        this.setLayout (new GridBagLayout ());
+        super();
 
-        this.setLogoutButton ();
-        this.setUserButton (user);
+        constraints = new Constraints();
+        this.setLayout(new GridBagLayout());
 
-        this.setVisible (true);
+        this.setLogoutButton(callingFrames, controller);
+        this.setUserButton(user);
     }
 
-    private void setLogoutButton ()
-    {
-        logoutButton = new JButton ("Logout");
-        logoutButton.setLayout (new GridBagLayout ());
-        logoutButton.setEnabled (false);
-        logoutButton.setVisible (false);
+    private void setLogoutButton(ArrayList<JFrame> callingFrames, Controller controller) {
 
-        logoutButton.addActionListener(new ActionListener()
-        {
+        logoutButton = new JButton("Logout");
+        logoutButton.setLayout(new GridBagLayout());
+        logoutButton.setEnabled(false);
+        logoutButton.setVisible(false);
+        logoutButton.setFocusable(false);
+
+        logoutButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //logout
+            public void actionPerformed(ActionEvent e) {
+
+                new LogInScreen(callingFrames, controller);
             }
         });
 
-        constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.FIRST_LINE_END);
 
-        this.add (logoutButton, constraints.getConstraints());
+        this.add(logoutButton, constraints.getConstraints());
     }
 
-    private void setUserButton (User user)
-    {
-        userButton = new JButton ("Ciao,\n" + user.get_username ());
-        userButton.setLayout (new GridBagLayout ());
+    private void setUserButton(User user) {
 
-        userButton.addActionListener (new ActionListener ()
-        {
+        userButton = new JButton("<html>Ciao,<br>" + user.get_username() + "</html>");
+        userButton.setLayout(new GridBagLayout());
+        userButton.setFocusable(false);
+
+        userButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed (ActionEvent e)
-            {
-                logoutButton.setEnabled (true);
-                logoutButton.setVisible (true);
+            public void actionPerformed(ActionEvent e) {
+                if (!logoutButton.isVisible()) {
+                    logoutButton.setEnabled(true);
+                    logoutButton.setVisible(true);
+                } else {
+                    logoutButton.setEnabled(false);
+                    logoutButton.setVisible(false);
+                }
             }
         });
 
-        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH, 70, 30, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.FIRST_LINE_END);
 
-        this.add(userButton, constraints.getConstraints ());
+        this.add(userButton, constraints.getConstraints());
 
-        invisiblePanel = new JPanel ();
-        //invisiblePanel.setBackground (Color.GREEN);
-        invisiblePanel.setLayout (new GridBagLayout ());
+        invisiblePanel = new JPanel();
+        //invisiblePanel.setBackground(Color.GREEN);
+        invisiblePanel.setLayout(new GridBagLayout());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.BOTH, 0, 30, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(1, 1, 2, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.PAGE_END);
 
-        this.add(invisiblePanel, constraints.getConstraints ());
+        this.add(invisiblePanel, constraints.getConstraints());
     }
+
 }

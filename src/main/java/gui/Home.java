@@ -1,10 +1,13 @@
 package gui;
 
 import controller.Controller;
+import model.Customer;
 import model.Flight;
 import model.User;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Home {
@@ -13,23 +16,24 @@ public class Home {
     private static Controller controller;
 
     public static void main(String[] args) {
+        controller = new Controller();
         frameHome = new JFrame("Home");
         frameHome.setContentPane(new Home().mainPanel);
         frameHome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameHome.pack();
         frameHome.setVisible(true);
 
-        User user = new User("Tramontana", "1234");
-        Flight flight = new Flight ("01", "Compagnia", new Date (), "00:00", "00:00", 100);
+        Customer customer = new Customer("Tramontana", "1234");
+        Flight flight = new Flight("01", "Compagnia", new Date(),
+                "00:00", "00:00", 100);
 
-        new Book(frameHome, controller, user, flight);
+        ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
+        callingFrames.add(frameHome);
+        new Book(callingFrames, controller, customer, flight);
     }
 
     public Home() {
-        controller = new Controller();
         // Add action listeners or other initialization code here
 
     }
-
-
 }
