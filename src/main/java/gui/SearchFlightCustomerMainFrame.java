@@ -44,7 +44,7 @@ public class SearchFlightCustomerMainFrame {
         this.add_menu_panel(callingFrames, controller, customer);
         this.addUserPanel(callingFrames, controller, customer);
         this.addFooterPanel();
-        this.add_search_panel(callingFrames, controller);
+        this.add_search_panel(callingFrames, controller, customer);
 
         mainFrame.setVisible(true);
     }
@@ -113,9 +113,9 @@ public class SearchFlightCustomerMainFrame {
         footerPanel.setVisible(true);
     }
 
-    private void add_search_panel(ArrayList<JFrame> callingFrames, Controller controller){
+    private void add_search_panel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
 
-        search_panel = new SearchPanel(callingFrames, controller);
+        search_panel = new SearchPanel(callingFrames, controller, customer);
         constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.HORIZONTAL,
                 0, 75, GridBagConstraints.CENTER);
 
