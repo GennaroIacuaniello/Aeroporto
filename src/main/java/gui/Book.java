@@ -127,6 +127,7 @@ public class Book {
 
         PassengerPanel newPassenger = new PassengerPanel();
         JButton newremovePassengerButton = new JButton("RIMUOVI PASSEGGERO");
+        newremovePassengerButton.setFocusable(false);
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
         passengerPage.add (newPassenger, constraints.getConstraints());
@@ -217,6 +218,7 @@ public class Book {
     private void addAddPassengerButton (ArrayList<PassengerPanel> passengersPanels, ArrayList<JButton> removePassengerButtons , JPanel modifyPanel, JPanel passengerPage)
     {
         JButton addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
+        addPassengerButton.setFocusable(false);
 
         addPassengerButton.addActionListener(new ActionListener() {
             @Override
@@ -289,6 +291,7 @@ public class Book {
 
 
         JButton confirmButton = new JButton("CONFERMA");
+        confirmButton.setFocusable(false);
         modifyPanel.add (confirmButton);
 
         constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.HORIZONTAL,
@@ -302,6 +305,9 @@ public class Book {
         prevPageButton = new JButton("←");
         nextPageButton = new JButton("→");
         currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
+
+        prevPageButton.setFocusable(false);
+        nextPageButton.setFocusable(false);
 
         prevPageButton.addActionListener(new ActionListener()
             {

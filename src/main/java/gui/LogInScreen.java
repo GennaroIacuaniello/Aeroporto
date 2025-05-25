@@ -95,6 +95,12 @@ public class LogInScreen {
                 }
             }
         });
+        mailTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+            }
+        });
     }
 
     public static void main(String[] args) {
