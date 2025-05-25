@@ -120,13 +120,14 @@ public class Book {
         addFlightInfoPanel (flight, controller);
 
         ArrayList<PassengerPanel> passengerPanels = new ArrayList<PassengerPanel> ();
-        ArrayList<JButton> removePassengerButtons = new ArrayList<JButton> ();
+        ArrayList<RemovePassengerButton> removePassengerButtons = new ArrayList<RemovePassengerButton> ();
         JPanel passengerPage = new JPanel();
         passengerPage.setLayout(new GridBagLayout());
 
         PassengerPanel newPassenger = new PassengerPanel(controller);
-        JButton newremovePassengerButton = new JButton("RIMUOVI PASSEGGERO");
+        RemovePassengerButton newremovePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, 0, passengerPage, currPage, nextPageButton);
         newremovePassengerButton.setFocusable(false);
+        newremovePassengerButton.setEnabled(false);
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
         passengerPage.add (newPassenger, constraints.getConstraints());
@@ -214,7 +215,27 @@ public class Book {
         }
     }
 
-    private void addAddPassengerButton (ArrayList<PassengerPanel> passengersPanels, ArrayList<JButton> removePassengerButtons , JPanel modifyPanel, JPanel passengerPage, Controller controller)
+    private void addModifyPanel (ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons, JPanel passengerPage, Controller controller)
+    {
+        modifyPanel = new JPanel();
+        modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
+
+        addAddPassengerButton(this, passengerPanels, removePassengerButtons, modifyPanel, passengerPage, controller);
+        addPageChangeButtons (passengerPanels, removePassengerButtons, modifyPanel, passengerPage);
+
+
+        JButton confirmButton = new JButton("CONFERMA");
+        confirmButton.setFocusable(false);
+        modifyPanel.add (confirmButton);
+
+        constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.PAGE_END);
+        mainPanel.add (modifyPanel, constraints.getConstraints());
+        modifyPanel.setVisible (true);
+    }
+
+    private void addAddPassengerButton (Book book, ArrayList<PassengerPanel> passengersPanels, ArrayList<RemovePassengerButton> removePassengerButtons , JPanel modifyPanel, JPanel passengerPage, Controller controller)
     {
         JButton addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
         addPassengerButton.setFocusable(false);
@@ -227,7 +248,7 @@ public class Book {
                 constraints.setConstraints(0, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
                 passengerPage.add (newPassengerPanel, constraints.getConstraints());
 
-                JButton newRemovePassengerButton = new JButton("RIMUOVI PASSEGGERO");
+                RemovePassengerButton newRemovePassengerButton = new RemovePassengerButton(book, controller, passengersPanels, removePassengerButtons, removePassengerButtons.size(), passengerPage, currPage, nextPageButton);
                 constraints.setConstraints(1, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
                 passengerPage.add (newRemovePassengerButton, constraints.getConstraints());
 
@@ -273,33 +294,15 @@ public class Book {
 
                 passengerPage.setVisible (false);
                 passengerPage.setVisible (true);
+
+                removePassengerButtons.get(0).setEnabled(true);
             }
         });
 
         modifyPanel.add (addPassengerButton);
     }
 
-    private void addModifyPanel (ArrayList<PassengerPanel> passengerPanels, ArrayList<JButton> removePassengerButtons, JPanel passengerPage, Controller controller)
-    {
-        modifyPanel = new JPanel();
-        modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
-
-        addAddPassengerButton(passengerPanels, removePassengerButtons, modifyPanel, passengerPage, controller);
-        addPageChangeButtons (passengerPanels, removePassengerButtons, modifyPanel, passengerPage);
-
-
-        JButton confirmButton = new JButton("CONFERMA");
-        confirmButton.setFocusable(false);
-        modifyPanel.add (confirmButton);
-
-        constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.HORIZONTAL,
-                0, 0, GridBagConstraints.PAGE_END);
-        mainPanel.add (modifyPanel, constraints.getConstraints());
-        modifyPanel.setVisible (true);
-    }
-
-    private void addPageChangeButtons (ArrayList<PassengerPanel> passengerPanels, ArrayList<JButton> removePassengerButtons, JPanel modifyPanel, JPanel passengerPage)
+    private void addPageChangeButtons (ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons, JPanel modifyPanel, JPanel passengerPage)
     {
         prevPageButton = new JButton("←");
         nextPageButton = new JButton("→");
@@ -351,6 +354,7 @@ public class Book {
         modifyPanel.add (currentPageLabel);
 
         nextPageButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed (ActionEvent e)
             {
@@ -390,9 +394,16 @@ public class Book {
 
     private void addFooterPanel()
     {
-        footerPanel = new FooterPanel();
+       /* footerPanel = new FooterPanel();
         constraints.setConstraints(0, 2, 3, 1, GridBagConstraints.BOTH,
                 0, 75, GridBagConstraints.PAGE_END);
-        //passengersPanel.add (footerPanel, constraints.getConstraints());
+        passengersPanel.add (footerPanel, constraints.getConstraints());*/
+    }
+
+    public void decreaseCurrPage () {
+        currPage--;
+        currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
+
+        if (currPage == 0) prevPageButton.setEnabled (false);
     }
 }

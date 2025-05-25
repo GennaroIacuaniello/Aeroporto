@@ -44,7 +44,7 @@ public class LogInScreen {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isValidMail(nickTextField.getText())) {
+                if (!isValidNick(nickTextField.getText())) {
                     JOptionPane.showMessageDialog(loginScreen, "La mail inserita non è valida");
                     return;
                 }
@@ -96,8 +96,6 @@ public class LogInScreen {
                 }
             }
         });
-        loginMenu.addKeyListener(new KeyAdapter() {
-        });
     }
 
     public static void main(String[] args) {
@@ -118,14 +116,14 @@ public class LogInScreen {
         mainFrame.setVisible(true);
     }
 
-    private Customer getCustomer(JTextField mail, JPasswordField password) {
-        return new Customer(mail.getText(), password.getText());
+    private Customer getCustomer(JTextField nick, JPasswordField password) {
+        return new Customer(nick.getText(), password.getText());
     }
 
-    private boolean isValidMail(String mail) {
+    private boolean isValidNick(String nick) {
         String validCharaters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
-        for (int i = 0; i < mail.length(); i++) {
-            if (validCharaters.indexOf(mail.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
+        for (int i = 0; i < nick.length(); i++) {
+            if (validCharaters.indexOf(nick.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
                 return false;
             }
         }
