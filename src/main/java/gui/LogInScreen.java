@@ -44,7 +44,7 @@ public class LogInScreen {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isValidMail(nickTextField.getText())) {
+                if (!isValidNick(nickTextField.getText())) {
                     JOptionPane.showMessageDialog(loginScreen, "La mail inserita non è valida");
                     return;
                 }
