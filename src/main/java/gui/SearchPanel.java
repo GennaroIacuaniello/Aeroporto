@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Flight;
 
 import javax.swing.*;
 import java.awt.*;
@@ -249,7 +250,7 @@ public class SearchPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //controller.search_flight(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText() );
+                ArrayList<Flight> searching = controller.search_flight_customer(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText() );
 
             }
         });
