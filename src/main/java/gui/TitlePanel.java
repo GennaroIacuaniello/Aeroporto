@@ -18,13 +18,13 @@ public class TitlePanel extends JPanel {
 
         this.setLayout(new GridBagLayout());
 
-        setLabel(title);
+        setTitleLabel(title);
 
         if(controller.developerMode) this.setBackground(Color.CYAN);
         this.setVisible(true);
     }
 
-    private void setLabel(String title) {
+    private void setTitleLabel(String title) {
 
         titleLabel = new JLabel ("<html><h1>" + title + "</h1></html>");
 
