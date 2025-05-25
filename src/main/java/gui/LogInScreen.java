@@ -16,8 +16,8 @@ public class LogInScreen {
     private JPanel rightPadding;
     private JPanel loginMenu;
     private JLabel pageTitle;
-    private JTextField mailTextField;
-    private JLabel mailLabel;
+    private JTextField nickTextField;
+    private JLabel nickLabel;
     private JPasswordField passwordField;
     private JLabel passwordLabel;
     private JButton logInButton;
@@ -44,11 +44,11 @@ public class LogInScreen {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!isValidMail(mailTextField.getText())) {
+                if (!isValidMail(nickTextField.getText())) {
                     JOptionPane.showMessageDialog(loginScreen, "La mail inserita non è valida");
                     return;
                 }
-                if (mailTextField.getText().equals("non esiste")) {
+                if (nickTextField.getText().equals("non esiste")) {
                     JOptionPane.showMessageDialog(loginScreen, "Questo utente non esiste");
                     return;
                 }
@@ -60,24 +60,25 @@ public class LogInScreen {
                 if (callingFrames.isEmpty()) {
                     callingFrames.addLast(mainFrame);
                 }
-                mainFrame.setVisible(false);
 
-                Customer customer = getCustomer(mailTextField, passwordField);
-                mailTextField.setText("");
+                Customer customer = getCustomer(nickTextField, passwordField);
+                nickTextField.setText("");
                 passwordField.setText("");
+                logInButton.setEnabled(false);
+                mainFrame.setVisible(false);
                 new MainCustomerScreen(callingFrames, controller, customer);
                 
             }
         });
 
-        mailTextField.addKeyListener(new KeyAdapter() {
+        nickTextField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+                if (!nickTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(true);
                 }
-                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+                if (nickTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(false);
                 }
             }
@@ -87,19 +88,15 @@ public class LogInScreen {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if (!mailTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+                if (!nickTextField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(true);
                 }
-                if (mailTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+                if (nickTextField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                     logInButton.setEnabled(false);
                 }
             }
         });
-        mailTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
-            }
+        loginMenu.addKeyListener(new KeyAdapter() {
         });
     }
 

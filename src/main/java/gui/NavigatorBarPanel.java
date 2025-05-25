@@ -68,9 +68,8 @@ public class NavigatorBarPanel extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int size = callingFrames.size();
 
-                callingFrames.get(size - 2).setVisible(true);
+                callingFrames.get(callingFrames.size() - 2).setVisible(true);
                 JFrame tmp = callingFrames.getLast();
                 callingFrames.removeLast();
                 tmp.dispose();

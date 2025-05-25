@@ -19,7 +19,7 @@ public class FooterPanel extends JPanel {
 
         label.setVisible(true);
 
-        this.setBackground(Color.DARK_GRAY);
+        this.setBackground(Color.LIGHT_GRAY);
         this.setVisible(true);
     }
 

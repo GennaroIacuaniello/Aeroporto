@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,13 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class MenuPanel extends JPanel {
+public class MenuPanelCustomer extends JPanel {
 
     private JPanel invisiblePanel;
     private Constraints constraints;
     private JComboBox menu;
 
-    public MenuPanel(ArrayList<JFrame> callingFrames, Controller controller){
+    public MenuPanelCustomer(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
 
         super();
 
@@ -27,6 +28,8 @@ public class MenuPanel extends JPanel {
         this.menu.addItem("Home");
         this.menu.addItem("Cerca voli");
         this.menu.addItem("I miei voli");
+        //this.menu.addItem("Colora");
+
 
         this.setVisible(true);
         this.menu.setVisible(true);
@@ -53,14 +56,22 @@ public class MenuPanel extends JPanel {
                         //Selezionato menù, chiudo solamente la JComboBox
                         break;
                     case "Home":
-                        JOptionPane.showMessageDialog(invisiblePanel, "Apertura Pagina Iniziale");
+                        callingFrames.get(callingFrames.size() - 1).setVisible(false);
+                        callingFrames.getLast().dispose();
+                        callingFrames.removeLast();
+                        new MainCustomerScreen(callingFrames, controller, customer);
                         break;
                     case "Cerca voli":
-                        JOptionPane.showMessageDialog(invisiblePanel, "Apertura Pagina Cerca voli");
+                        callingFrames.get(callingFrames.size() - 1).setVisible(false);
+                        callingFrames.getLast().dispose();
+                        callingFrames.removeLast();
+                        new SearchFlightCustomerMainFrame(callingFrames, controller, customer);
                         break;
                     case "I miei voli":
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");
                         break;
+                    case "Colora":
+                        controller.developerMode = !controller.developerMode;
                     default:
                         break;
                 }

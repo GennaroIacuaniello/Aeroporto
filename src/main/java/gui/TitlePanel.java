@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ public class TitlePanel extends JPanel {
 
     private JLabel titleLabel;
 
-    public TitlePanel(String title) {
+    public TitlePanel(String title, Controller controller) {
 
         super();
 
@@ -18,7 +20,7 @@ public class TitlePanel extends JPanel {
 
         setLabel(title);
 
-        this.setBackground(Color.CYAN);
+        if(controller.developerMode) this.setBackground(Color.CYAN);
         this.setVisible(true);
     }
 

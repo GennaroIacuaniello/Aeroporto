@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -13,13 +15,13 @@ public class PassengerPanel extends JPanel
     Color displayedTextColor = new Color(128, 128, 128);
     Color userTextColor = new Color(32, 32, 32);
 
-    public PassengerPanel ()
+    public PassengerPanel (Controller controller)
     {
         super ();
 
         this.setLayout (new GridBagLayout());
         Constraints constraints = new Constraints ();
-        this.setBackground (Color.BLUE);
+        if(controller.developerMode) this.setBackground (Color.BLUE);
 
         JLabel label = new JLabel ("Passenger");
         JTextField passengerNameField = new JTextField(displayedNameText, 20);

@@ -9,6 +9,8 @@ import java.util.Date;
 
 public class Controller {
 
+    public boolean developerMode = false;
+
     public ArrayList<Arriving> getImminentArrivingFlights(){
 
         ArrayList<Arriving> arrivingFlights = new ArrayList<Arriving>();

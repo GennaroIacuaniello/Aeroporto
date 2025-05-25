@@ -14,7 +14,7 @@ public class SearchFlightCustomerMainFrame {
     private TitlePanel titlePanel;
     private NavigatorBarPanel navigatorBarPanel;
     //private HamburgerPanel hamburgerPanel;
-    private MenuPanel menu;
+    private MenuPanelCustomer menu;
     private UserPanel userPanel;
     private FooterPanel footerPanel;
     private SearchPanel search_panel;
@@ -29,13 +29,19 @@ public class SearchFlightCustomerMainFrame {
 
         //makes this the operating frame
         this.setMainFrame(callingFrames);
+        if(controller.developerMode){
+            for(JFrame frame : callingFrames){
+                System.out.println(frame.getName());
+            }
+            System.out.println();
+        }
         //callingFrame.dispose();
 
         //Setting surrounding panels
-        this.addTitlePanel("AEROPORTO DI NAPOLI");
+        this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
         this.addNavigatorBarPanel(callingFrames);
         //this.addHamburgerPanel(callingFrames, controller);
-        this.add_menu_panel(callingFrames, controller);
+        this.add_menu_panel(callingFrames, controller, customer);
         this.addUserPanel(callingFrames, controller, customer);
         this.addFooterPanel();
         this.add_search_panel(callingFrames, controller);
@@ -53,9 +59,9 @@ public class SearchFlightCustomerMainFrame {
         mainFrame.setBackground(Color.BLACK);
     }
 
-    private void addTitlePanel(String title){
+    private void addTitlePanel(String title, Controller controller){
 
-        titlePanel = new TitlePanel(title);
+        titlePanel = new TitlePanel(title, controller);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH,
                 0, 125, GridBagConstraints.PAGE_START);
         mainFrame.add(titlePanel, constraints.getConstraints());
@@ -80,9 +86,9 @@ public class SearchFlightCustomerMainFrame {
         //hamburgerPanel.setVisible(true);
     //}
 
-    private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller){
+    private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
 
-        menu = new MenuPanel(callingFrames, controller);
+        menu = new MenuPanelCustomer(callingFrames, controller, customer);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(menu, constraints.getConstraints());

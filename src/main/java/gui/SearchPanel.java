@@ -119,6 +119,7 @@ public class SearchPanel extends JPanel{
         //search_arriving_button.setLayout(new GridBagLayout());
         search_arriving_button.setEnabled(true);
         search_arriving_button.setVisible(true);
+        search_arriving_button.setFocusable(false);
         //search_arriving_button.setFocusable(false);
 
         search_arriving_button.addActionListener(new ActionListener() {
@@ -145,6 +146,7 @@ public class SearchPanel extends JPanel{
         //search_arriving_button.setLayout(new GridBagLayout());
         search_departing_button.setEnabled(true);
         search_departing_button.setVisible(true);
+        search_departing_button.setFocusable(false);
         //search_departing_button.setEnabled(false);
         //search_from.setText("Napoli");
         //search_from.setEnabled(false);
@@ -209,7 +211,8 @@ public class SearchPanel extends JPanel{
 
         //search_from.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (4, 2, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 0.3f, 0.0f, new Insets(10,2,5,5));
+        constraints.setConstraints (4, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 1.0f, 0.0f, new Insets(10,2,5,5));
         //search_from.setSize(30,30);
         this.add(time_from_field, constraints.getConstraints());
         time_from_field.setVisible(true);
@@ -221,7 +224,8 @@ public class SearchPanel extends JPanel{
 
         //search_from_text.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (5, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(10,5,5,0));
+        constraints.setConstraints (5, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(10,5,5,0));
         this.add(time_separator_label, constraints.getConstraints());
         time_separator_label.setVisible (true);
     }
@@ -232,7 +236,8 @@ public class SearchPanel extends JPanel{
 
         //search_from.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (6, 2, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 0.3f, 0.0f, new Insets(10,2,5,5));
+        constraints.setConstraints (6, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10,5,5,2));
         //search_from.setSize(30,30);
         this.add(time_to_field, constraints.getConstraints());
         time_to_field.setVisible(true);
@@ -244,6 +249,7 @@ public class SearchPanel extends JPanel{
         //search_arriving_button.setLayout(new GridBagLayout());
         search_button.setEnabled(true);
         search_button.setVisible(true);
+        search_button.setFocusable(false);
         //search_arriving_button.setFocusable(false);
 
         search_button.addActionListener(new ActionListener() {
