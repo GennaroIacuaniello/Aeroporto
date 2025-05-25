@@ -57,14 +57,17 @@ public class MenuPanelCustomer extends JPanel {
                         break;
                     case "Home":
                         callingFrames.get(callingFrames.size() - 1).setVisible(false);
-                        callingFrames.getLast().dispose();
+                        //callingFrames.getLast().dispose();
+                        for (int i = 1; i < callingFrames.size(); i++) {
+                            callingFrames.get(i).dispose();
+                        }
                         callingFrames.removeLast();
                         new MainCustomerScreen(callingFrames, controller, customer);
                         break;
                     case "Cerca voli":
                         callingFrames.get(callingFrames.size() - 1).setVisible(false);
-                        callingFrames.getLast().dispose();
-                        callingFrames.removeLast();
+                        //callingFrames.getLast().dispose();
+                        //callingFrames.removeLast();
                         new SearchFlightCustomerMainFrame(callingFrames, controller, customer);
                         break;
                     case "I miei voli":
