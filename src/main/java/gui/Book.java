@@ -21,7 +21,6 @@ public class Book {
     private JPanel flightInfoPanel;
 
     private JPanel mainPanel;
-    private JScrollPane scrollPane;
     private JPanel modifyPanel;
     private int currPage = 0;
     private JButton prevPageButton;
