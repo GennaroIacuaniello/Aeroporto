@@ -21,7 +21,8 @@ public class Flight {
     protected ArrayList<Booking> bookings;
     protected ArrayList<Passenger> passengers;
 
-    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time, String par_arrival_time, int par_max_seats){
+    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time,
+                  String par_arrival_time, int par_max_seats){
 
         this.id = par_id;
         this.company_name = par_company_name;
@@ -155,7 +156,13 @@ public class Flight {
         }
 
         return -1;
+    }
 
+    public String getMonthName(){
+
+        String[] monthNames = {"Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"};
+
+        return monthNames[this.get_date().getMonth()];
     }
 
 }

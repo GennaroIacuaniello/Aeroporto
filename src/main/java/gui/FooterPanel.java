@@ -4,23 +4,27 @@ import model.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Console;
 
-public class FooterPanel extends JPanel
-{
+public class FooterPanel extends JPanel {
     private JLabel label;
+    private Constraints constraints;
 
-    public FooterPanel ()
-    {
-        super ();
+    public FooterPanel() {
 
-        this.setLayout (new GridBagLayout());
+        super();
 
-        label = new JLabel ("Footer");
-        this.add (label);
+        this.setLayout(new GridBagLayout());
+        constraints = new Constraints();
 
-        label.setVisible (true);
+        label = new JLabel("Footer");
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        this.add(label, constraints.getConstraints());
 
-        this.setBackground (Color.DARK_GRAY);
-        this.setVisible (true);
+        label.setVisible(true);
+
+        this.setBackground(Color.GRAY);
+        this.setVisible(true);
     }
+
 }

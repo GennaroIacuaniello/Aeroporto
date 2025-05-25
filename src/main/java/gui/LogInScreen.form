@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.LogInScreen">
+  <grid id="27dc6" binding="loginScreen" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="110" y="39" width="800" height="633"/>
+    </constraints>
+    <properties>
+      <background color="-4934476"/>
+      <foreground color="-10033877"/>
+      <name value=""/>
+      <opaque value="true"/>
+      <preferredSize width="360" height="480"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="a030f" binding="topPadding" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="36" right="0"/>
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-3618596"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <grid id="21325" binding="bottomPadding" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="36" left="0" bottom="0" right="0"/>
+        <constraints border-constraint="South"/>
+        <properties>
+          <background color="-3618596"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <grid id="76757" binding="leftPadding" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="27"/>
+        <constraints border-constraint="West"/>
+        <properties>
+          <background color="-3618596"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <grid id="ae549" binding="rightPadding" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="27" bottom="0" right="0"/>
+        <constraints border-constraint="East"/>
+        <properties>
+          <background color="-3618596"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <grid id="e470d" binding="loginMenu" layout-manager="GridBagLayout">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <background color="-2302736"/>
+          <enabled value="false"/>
+          <font/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="4c95f" class="javax.swing.JLabel" binding="passwordLabel">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+              <gridbag top="16" left="16" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <foreground color="-15461356"/>
+              <labelFor value="50bd7"/>
+              <text value="Password"/>
+            </properties>
+          </component>
+          <component id="50bd7" class="javax.swing.JPasswordField" binding="passwordField">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <gridbag top="0" left="16" bottom="0" right="16" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <focusable value="true"/>
+              <horizontalAlignment value="10"/>
+            </properties>
+          </component>
+          <component id="fc050" class="javax.swing.JTextField" binding="nickTextField">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <gridbag top="0" left="16" bottom="0" right="16" weightx="1.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <autoscrolls value="true"/>
+              <focusable value="true"/>
+              <maximumSize width="2147483647" height="2147483647"/>
+            </properties>
+          </component>
+          <component id="3384a" class="javax.swing.JLabel" binding="nickLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+              <gridbag top="32" left="16" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <foreground color="-15461356"/>
+              <labelFor value="fc050"/>
+              <text value="Nome Utente"/>
+            </properties>
+          </component>
+          <component id="e7137" class="javax.swing.JButton" binding="registerButton">
+            <constraints>
+              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="16" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <focusable value="false"/>
+              <text value="Registrati"/>
+            </properties>
+          </component>
+          <component id="33e93" class="javax.swing.JButton" binding="logInButton" default-binding="true">
+            <constraints>
+              <grid row="5" column="0" row-span="5" col-span="4" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="64" left="16" bottom="0" right="16" weightx="0.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <enabled value="false"/>
+              <focusable value="false"/>
+              <text value="Log In"/>
+            </properties>
+          </component>
+          <component id="d4903" class="javax.swing.JLabel" binding="registerPrompt">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="16" bottom="8" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <foreground color="-15461356"/>
+              <text value="&lt;html&gt;Non sei ancora&lt;br&gt;registrato?&lt;/html&gt;"/>
+            </properties>
+          </component>
+          <component id="c2766" class="javax.swing.JButton" binding="newPasswordButton">
+            <constraints>
+              <grid row="11" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="16" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <focusable value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="11"/>
+              <text value="Recupera Password"/>
+            </properties>
+          </component>
+          <component id="b7b89" class="javax.swing.JLabel" binding="newPasswordPrompt">
+            <constraints>
+              <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="8" right="77" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <autoscrolls value="false"/>
+              <foreground color="-15461356"/>
+              <horizontalAlignment value="0"/>
+              <minimumSize width="73" height="34"/>
+              <text value="&lt;html&gt;Hai dimenticato&lt;br&gt;la password?&lt;/html&gt;"/>
+            </properties>
+          </component>
+          <component id="73fcc" class="javax.swing.JLabel" binding="pageTitle">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="16" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <font size="24" style="1"/>
+              <foreground color="-15132391"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Log In"/>
+              <verticalTextPosition value="3"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+  <inspectionSuppressions>
+    <suppress inspection="NoLabelFor" id="6e8fe"/>
+  </inspectionSuppressions>
+</form>
