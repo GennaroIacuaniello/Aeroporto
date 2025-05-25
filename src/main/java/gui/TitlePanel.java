@@ -23,7 +23,8 @@ public class TitlePanel extends JPanel {
     }
 
     private void setLabel(String title) {
-        titleLabel = new JLabel(title);
+
+        titleLabel = new JLabel ("<html><h1>" + title + "</h1></html>");
 
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setVerticalAlignment(JLabel.CENTER);

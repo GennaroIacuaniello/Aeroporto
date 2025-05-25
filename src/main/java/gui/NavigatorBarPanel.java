@@ -33,6 +33,7 @@ public class NavigatorBarPanel extends JPanel {
     private void setHomeButton(ArrayList<JFrame> callingFrames) {
         homeButton = new JButton("Home");
         //homeButton.setLayout (new FlowLayout ());
+        homeButton.setFocusable(false);
 
         homeButton.addActionListener(new ActionListener() {
             @Override
@@ -62,6 +63,7 @@ public class NavigatorBarPanel extends JPanel {
     private void setBackButton(ArrayList<JFrame> callingFrames) {
         backButton = new JButton("Back");
         //backButton.setLayout (new GridBagLayout ());
+        backButton.setFocusable(false);
 
         backButton.addActionListener(new ActionListener() {
             @Override

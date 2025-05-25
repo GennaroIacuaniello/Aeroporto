@@ -65,8 +65,8 @@ public class LogInScreen {
                 Customer customer = getCustomer(mailTextField, passwordField);
                 mailTextField.setText("");
                 passwordField.setText("");
-                //new MainCustomerScreen(callingFrames, controller, customer);
-                new SearchFlightCustomerMainFrame(callingFrames, controller, customer);
+                new MainCustomerScreen(callingFrames, controller, customer);
+                
             }
         });
 
@@ -95,6 +95,12 @@ public class LogInScreen {
                 }
             }
         });
+        mailTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -120,7 +126,7 @@ public class LogInScreen {
     }
 
     private boolean isValidMail(String mail) {
-        String validCharaters = new String("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_");
+        String validCharaters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
         for (int i = 0; i < mail.length(); i++) {
             if (validCharaters.indexOf(mail.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
                 return false;
