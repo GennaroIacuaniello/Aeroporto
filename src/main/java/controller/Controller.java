@@ -43,18 +43,18 @@ public class Controller {
 
         ArrayList<Flight> res = new ArrayList<Flight>(0);
 
-        res.add(new Arriving("01", "Compagnia", new Date(),
+        res.add(new Arriving("01", "Ciao", new Date(),
                 "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "Compagnia", new Date(),
+        res.add(new Arriving("02", "IO", new Date(),
                 "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "Compagnia", new Date(),
+        res.add(new Arriving("03", "TU", new Date(),
                 "00:00", "00:02", 100, "Dubai"));
 
-        res.add(new Departing("01", "Compagnia", new Date(),
+        res.add(new Departing("04", "HELLO", new Date(),
                 "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("02", "Compagnia", new Date(),
+        res.add(new Departing("05", "ME", new Date(),
                 "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("03", "Compagnia", new Date(),
+        res.add(new Departing("06", "YOU", new Date(),
                 "00:00", "00:02", 100, "Dubai"));
 
         return res;
