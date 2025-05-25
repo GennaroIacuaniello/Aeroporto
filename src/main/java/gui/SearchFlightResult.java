@@ -250,11 +250,11 @@ public class SearchFlightResult {
             @Override
             public void actionPerformed(ActionEvent e) {
                 callingFrames.get(callingFrames.size() - 2).setVisible(false);
-                callingFrames.get(callingFrames.size() - 2).dispose();
+                //callingFrames.get(callingFrames.size() - 2).dispose();
                 callingFrames.get(callingFrames.size() - 1).setVisible(false);
                 callingFrames.getLast().dispose();
                 callingFrames.removeLast();
-                callingFrames.removeLast();
+                //callingFrames.removeLast();
                 new Book(callingFrames, controller, customer, flight);
 
             }
