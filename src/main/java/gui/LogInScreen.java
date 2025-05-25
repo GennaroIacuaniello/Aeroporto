@@ -96,8 +96,6 @@ public class LogInScreen {
                 }
             }
         });
-        loginMenu.addKeyListener(new KeyAdapter() {
-        });
     }
 
     public static void main(String[] args) {
@@ -118,8 +116,8 @@ public class LogInScreen {
         mainFrame.setVisible(true);
     }
 
-    private Customer getCustomer(JTextField mail, JPasswordField password) {
-        return new Customer(mail.getText(), password.getText());
+    private Customer getCustomer(JTextField nick, JPasswordField password) {
+        return new Customer(nick.getText(), password.getText());
     }
 
     private boolean isValidMail(String mail) {
