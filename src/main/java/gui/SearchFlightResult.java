@@ -31,7 +31,6 @@ public class SearchFlightResult {
     Constraints constraints;
 
 
-
     public SearchFlightResult(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_flights, Customer customer) {
 
         this.search_result = new ArrayList<Flight>(searched_flights);
@@ -153,7 +152,6 @@ public class SearchFlightResult {
                      constraints.setConstraints (j, x + 1 + i, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);//, 0.0f, 0.0f, new Insets(10,5,5,2));
                      result_panel.add(current_flights_shown.get(j), constraints.getConstraints());
                      current_flights_shown.get(j).setVisible (true);
-                     this.add_booking_button(j, x + 1 + i, callingFrames, controller, searched_results.get(x*par_flights_per_pages + i), customer);
                  }
                  this.add_booking_button(9, x + 1 + i, callingFrames, controller, searched_results.get(x*par_flights_per_pages + i), customer);
 
