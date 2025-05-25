@@ -59,7 +59,7 @@ public class SearchPanel extends JPanel{
         this.set_time_separator_label();
         this.set_time_to_text_field();
 
-        this.set_search_button(controller);
+        this.set_search_button(callingFrames, controller);
 
         this.setVisible(true);
     }
@@ -243,7 +243,7 @@ public class SearchPanel extends JPanel{
         time_to_field.setVisible(true);
     }
 
-    private void set_search_button(Controller controller){
+    private void set_search_button(ArrayList<JFrame> callingFrames, Controller controller){
 
         search_button = new JButton("Cerca");
         //search_arriving_button.setLayout(new GridBagLayout());
@@ -256,9 +256,9 @@ public class SearchPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                ArrayList<Flight> searching = controller.search_flight_customer(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText() );
+                ArrayList<Flight> searched_flights = controller.search_flight_customer(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText() );
 
-
+                new SearchFlightResult(callingFrames, controller, searched_flights);
             }
         });
 
