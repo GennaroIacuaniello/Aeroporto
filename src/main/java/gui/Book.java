@@ -235,7 +235,8 @@ public class Book {
         modifyPanel.setVisible (true);
     }
 
-    private void addAddPassengerButton (Book book, ArrayList<PassengerPanel> passengersPanels, ArrayList<RemovePassengerButton> removePassengerButtons , JPanel modifyPanel, JPanel passengerPage, Controller controller)
+    private void addAddPassengerButton (Book book, ArrayList<PassengerPanel> passengersPanels, ArrayList<RemovePassengerButton> removePassengerButtons,
+                                        JPanel modifyPanel, JPanel passengerPage, Controller controller)
     {
         JButton addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
         addPassengerButton.setFocusable(false);
@@ -302,7 +303,8 @@ public class Book {
         modifyPanel.add (addPassengerButton);
     }
 
-    private void addPageChangeButtons (ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons, JPanel modifyPanel, JPanel passengerPage)
+    private void addPageChangeButtons (ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons,
+                                       JPanel modifyPanel, JPanel passengerPage)
     {
         prevPageButton = new JButton("←");
         nextPageButton = new JButton("→");

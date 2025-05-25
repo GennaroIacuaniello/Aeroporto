@@ -16,6 +16,13 @@ import java.awt.event.MouseEvent;
 
 import java.util.ArrayList;
 
+/*
+ * HamburgerPanel is an alternative for MenuPanelCustomer
+ * We have decided to use MenuPanelCustomer for practicality
+ * and ease of use
+ * Still, HamburgerPanel is a viable alternative
+ */
+
 public class HamburgerPanel extends JPanel {
     private JButton hamburgerButton;
     private JButton myFlightButton;

@@ -13,7 +13,9 @@ public class RemovePassengerButton extends JButton {
     int index;
     Constraints constraints;
 
-    public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, int currPage, JButton nextPageButton) {
+    public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
+                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage,
+                                 int currPage, JButton nextPageButton) {
 
         super();
 
