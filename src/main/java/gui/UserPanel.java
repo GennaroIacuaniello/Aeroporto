@@ -58,9 +58,13 @@ public class UserPanel extends JPanel {
         userButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                logoutButton.setEnabled(true);
-                logoutButton.setVisible(true);
+                if (!logoutButton.isVisible()) {
+                    logoutButton.setEnabled(true);
+                    logoutButton.setVisible(true);
+                } else {
+                    logoutButton.setEnabled(false);
+                    logoutButton.setVisible(false);
+                }
             }
         });
 
@@ -74,8 +78,8 @@ public class UserPanel extends JPanel {
         invisiblePanel.setLayout(new GridBagLayout());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.FIRST_LINE_END);
+        constraints.setConstraints(1, 1, 2, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.PAGE_END);
 
         this.add(invisiblePanel, constraints.getConstraints());
     }
