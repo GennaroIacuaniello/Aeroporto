@@ -120,10 +120,10 @@ public class LogInScreen {
         return new Customer(nick.getText(), password.getText());
     }
 
-    private boolean isValidMail(String mail) {
+    private boolean isValidNick(String nick) {
         String validCharaters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
-        for (int i = 0; i < mail.length(); i++) {
-            if (validCharaters.indexOf(mail.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
+        for (int i = 0; i < nick.length(); i++) {
+            if (validCharaters.indexOf(nick.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
                 return false;
             }
         }
