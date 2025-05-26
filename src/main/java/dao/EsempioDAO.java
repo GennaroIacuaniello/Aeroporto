@@ -1,7 +1,8 @@
 package dao;
 
 public interface EsempioDAO {
-    	public EsempioImplementazionePostgresDAO();
+		//ho aggiunto void per evitare errori di compilazione, non penso sia per forza void
+    	public void EsempioImplementazionePostgresDAO();
 
 
 }
