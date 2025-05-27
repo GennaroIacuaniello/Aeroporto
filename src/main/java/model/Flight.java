@@ -10,16 +10,16 @@ import java.util.Date;
 
 public class Flight {
 
-    protected String id;
-    protected String company_name;
-    protected Date date;
-    protected String departure_time;
-    protected String arrival_time;
-    protected FlightStatus status;
-    protected int max_seats;
-    protected int free_seats;
-    protected ArrayList<Booking> bookings;
-    protected ArrayList<Passenger> passengers;
+    private String id;
+    private String company_name;
+    private Date date;
+    private String departure_time;
+    private String arrival_time;
+    private FlightStatus status;
+    private int max_seats;
+    private int free_seats;
+    private ArrayList<Booking> bookings;
+    private ArrayList<Passenger> passengers;
 
     public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time,
                   String par_arrival_time, int par_max_seats){
