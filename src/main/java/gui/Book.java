@@ -124,7 +124,7 @@ public class Book {
         passengerPage.setLayout(new GridBagLayout());
 
         PassengerPanel newPassenger = new PassengerPanel(controller);
-        RemovePassengerButton newremovePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, 0, passengerPage, currPage, nextPageButton);
+        RemovePassengerButton newremovePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, 0, passengerPage, nextPageButton);
         newremovePassengerButton.setFocusable(false);
         newremovePassengerButton.setEnabled(false);
 
@@ -248,7 +248,7 @@ public class Book {
                 constraints.setConstraints(0, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
                 passengerPage.add (newPassengerPanel, constraints.getConstraints());
 
-                RemovePassengerButton newRemovePassengerButton = new RemovePassengerButton(book, controller, passengersPanels, removePassengerButtons, removePassengerButtons.size(), passengerPage, currPage, nextPageButton);
+                RemovePassengerButton newRemovePassengerButton = new RemovePassengerButton(book, controller, passengersPanels, removePassengerButtons, removePassengerButtons.size(), passengerPage, nextPageButton);
                 constraints.setConstraints(1, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
                 passengerPage.add (newRemovePassengerButton, constraints.getConstraints());
 
@@ -296,6 +296,12 @@ public class Book {
                 passengerPage.setVisible (true);
 
                 removePassengerButtons.getFirst().setEnabled(true);
+
+                System.out.println("Current state:");
+                System.out.println ("Current Page: " + (currPage));
+                System.out.println ("#PassengerPanels: " + passengersPanels.size());
+                System.out.println ("#Pages: " + (((passengersPanels.size() - 1) / 3) + 1));
+                System.out.println ();
             }
         });
 
@@ -406,5 +412,9 @@ public class Book {
         currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
 
         if (currPage == 0) prevPageButton.setEnabled (false);
+    }
+
+    public int getCurrPage () {
+        return currPage;
     }
 }

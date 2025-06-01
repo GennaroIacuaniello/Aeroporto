@@ -14,8 +14,7 @@ public class RemovePassengerButton extends JButton {
     Constraints constraints;
 
     public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
-                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage,
-                                 int currPage, JButton nextPageButton) {
+                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, JButton nextPageButton) {
 
         super();
 
@@ -36,8 +35,6 @@ public class RemovePassengerButton extends JButton {
                 RemovePassengerButton tmpremovePassengerButton = removePassengerButtons.get(index);
                 tmppassengerPanel.setVisible(false);
                 tmpremovePassengerButton.setVisible(false);
-
-                boolean lastPage = (currPage == (passengerPanels.size() - 1) / 3);
 
                 //rimuovi dalla lista di passeggeri e bottoni
                 passengerPanels.remove(index);
@@ -90,7 +87,7 @@ public class RemovePassengerButton extends JButton {
                 }
 
                 //attivabilità nextPageButton
-                if (!lastPage && (currPage == (passengerPanels.size() - 1) / 3)) {  //prima non ero all'ultima pagina ora si
+                if (book.getCurrPage () == ((passengerPanels.size() - 1) / 3)) {  //ora sono all'ultima pagina
                     nextPageButton.setEnabled(false);
                 }
 
@@ -98,6 +95,12 @@ public class RemovePassengerButton extends JButton {
                 if (removePassengerButtons.size() == 1) {
                     removePassengerButtons.getFirst().setEnabled(false);
                 }
+
+                System.out.println("Current state:");
+                System.out.println ("Current Page: " + (book.getCurrPage ()));
+                System.out.println ("#PassengerPanels: " + passengerPanels.size());
+                System.out.println ("#Pages: " + (((passengerPanels.size() - 1) / 3) + 1));
+                System.out.println ();
             }
         });
 
