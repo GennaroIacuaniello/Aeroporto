@@ -123,6 +123,10 @@ public class Book {
         JPanel passengerPage = new JPanel();
         passengerPage.setLayout(new GridBagLayout());
 
+        prevPageButton = new JButton("←");
+        nextPageButton = new JButton("→");
+        currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
+
         PassengerPanel newPassenger = new PassengerPanel(controller);
         RemovePassengerButton newremovePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, 0, passengerPage, nextPageButton);
         newremovePassengerButton.setFocusable(false);
@@ -191,7 +195,6 @@ public class Book {
             flightInfoPanel.add(titleLabels.get(i), constraints.getConstraints());
         }
     }
-
 
     private void setInfoLabels(Flight flight) {
         ArrayList<JLabel> infoLabels = new ArrayList<JLabel>();
@@ -309,11 +312,7 @@ public class Book {
     }
 
     private void addPageChangeButtons (ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons,
-                                       JPanel modifyPanel, JPanel passengerPage)
-    {
-        prevPageButton = new JButton("←");
-        nextPageButton = new JButton("→");
-        currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
+                                       JPanel modifyPanel, JPanel passengerPage) {
 
         prevPageButton.setFocusable(false);
         nextPageButton.setFocusable(false);
