@@ -242,6 +242,9 @@ public class FlightInfo {
         addAddPassengerButton(this, passengerPanels, removePassengerButtons, modifyPanel, passengerPage, controller);
         addPageChangeButtons (passengerPanels, removePassengerButtons, modifyPanel, passengerPage);
 
+        JButton cancelButton = new JButton("CANCELLA PRENOTAZIONE");
+        cancelButton.setFocusable(false);
+        modifyPanel.add (cancelButton);
 
         JButton confirmButton = new JButton("CONFERMA MODIFICA");
         confirmButton.setFocusable(false);
