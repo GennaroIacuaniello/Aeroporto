@@ -28,7 +28,7 @@ public class MenuPanelCustomer extends JPanel {
         this.menu.addItem("Home");
         this.menu.addItem("Cerca voli");
         this.menu.addItem("I miei voli");
-        //this.menu.addItem("Colora");
+        //this.menu.addItem("Developer Mode");
 
 
         this.setVisible(true);
