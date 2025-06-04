@@ -14,11 +14,11 @@ public class Passenger {
     private String last_name;
     private String SSN;
     private String ticket_number;
-    private String seat;
+    private Integer seat;
     protected ArrayList<Luggage> luggages;
     private boolean checked_in;
 
-    public Passenger(String first_name, String last_name, String SSN, String seat) {
+    public Passenger(String first_name, String last_name, String SSN, Integer seat) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.SSN = SSN;
@@ -48,7 +48,7 @@ public class Passenger {
         return this.ticket_number;
     }
 
-    public String get_Seat() {
+    public Integer get_Seat() {
 
         return this.seat;
     }
@@ -77,7 +77,7 @@ public class Passenger {
         return 0;
     }
 
-    public int set_Seat(String par_seat) {
+    public int set_Seat(Integer par_seat) {
 
         this.seat = par_seat;
         return 0;

@@ -25,7 +25,7 @@ public class Home {
 
         Customer customer = new Customer("Tramontana", "1234");
         Flight flight = new Flight("01", "Compagnia", new Date(),
-                "00:00", "00:00", 5);
+                "00:00", "00:00", 66);
 
         ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
         callingFrames.add(frameHome);

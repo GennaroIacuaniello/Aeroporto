@@ -269,7 +269,7 @@ public class FlightInfo {
             public void actionPerformed(ActionEvent e) {
                 if (booking.get_booked_flight().get_free_seats() + booking.get_passengers().size() - passengersPanels.size() > 0) {
 
-                    PassengerPanel newPassengerPanel = new PassengerPanel(controller);
+                    PassengerPanel newPassengerPanel = new PassengerPanel(controller, booking.get_booked_flight(), passengersPanels);
                     constraints.setConstraints(0, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
                     passengerPage.add(newPassengerPanel, constraints.getConstraints());
 

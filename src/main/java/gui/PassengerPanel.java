@@ -1,12 +1,16 @@
 package gui;
 
 import controller.Controller;
+import model.Flight;
 import model.Passenger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.ArrayList;
 
 public class PassengerPanel extends JPanel
 {
@@ -15,8 +19,9 @@ public class PassengerPanel extends JPanel
     String displayedCFText = "Codice Fiscale";
     Color displayedTextColor = new Color(128, 128, 128);
     Color userTextColor = new Color(32, 32, 32);
+    SeatChooser seatChooser;
 
-    public PassengerPanel (Controller controller)
+    public PassengerPanel (Controller controller, Flight flight, ArrayList<PassengerPanel> passengerPanels)
     {
         super ();
 
@@ -121,6 +126,13 @@ public class PassengerPanel extends JPanel
             }
         });
 
+        seatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seatChooser = new SeatChooser (controller, flight, passengerPanels);
+            }
+        });
+
         this.setVisible (true);
     }
 
@@ -139,7 +151,7 @@ public class PassengerPanel extends JPanel
         passengerSurnameField.setForeground(displayedTextColor);
         JTextField passengerCFField = new JTextField (passenger.get_SSN(), 20);
         passengerCFField.setForeground(displayedTextColor);
-        JButton seatButton = new JButton(passenger.get_Seat());
+        JButton seatButton = new JButton(passenger.get_Seat().toString());
 
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);

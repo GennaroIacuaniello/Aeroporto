@@ -129,7 +129,7 @@ public class Book {
         nextPageButton = new JButton("→");
         currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
-        PassengerPanel newPassenger = new PassengerPanel(controller);
+        PassengerPanel newPassenger = new PassengerPanel(controller, flight, passengerPanels);
         RemovePassengerButton newremovePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, 0, passengerPage, nextPageButton);
         newremovePassengerButton.setFocusable(false);
         newremovePassengerButton.setEnabled(false);
@@ -251,7 +251,7 @@ public class Book {
 
                 if (flight.get_free_seats() - passengersPanels.size() > 0) {
 
-                    PassengerPanel newPassengerPanel = new PassengerPanel(controller);
+                    PassengerPanel newPassengerPanel = new PassengerPanel(controller, flight, passengersPanels);
                     constraints.setConstraints(0, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
                     passengerPage.add(newPassengerPanel, constraints.getConstraints());
 

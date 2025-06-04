@@ -29,13 +29,13 @@ public class TestFlightInfo {
         //creo passeggeri
         passengers = new ArrayList<>();
 
-        passengers.add (new Passenger("anna", "marino", "qwe", "3a"));
-        passengers.add (new Passenger("maria", "giglio", "rty", "1b"));
-        passengers.add (new Passenger("carmela", "tedesco", "uio", "4c"));
-        passengers.add (new Passenger("sara", "zumbolo", "asd", "7l"));
-        passengers.add (new Passenger("carla", "chirico", "fgh", "6d"));
-        passengers.add (new Passenger("chiara", "russo", "jkl", "2a"));
-        passengers.add (new Passenger("rosa", "manzo", "zxc", "1y"));
+        passengers.add (new Passenger("anna", "marino", "qwe", 3));
+        passengers.add (new Passenger("maria", "giglio", "rty", 5));
+        passengers.add (new Passenger("carmela", "tedesco", "uio", 14));
+        passengers.add (new Passenger("sara", "zumbolo", "asd", 57));
+        passengers.add (new Passenger("carla", "chirico", "fgh", 26));
+        passengers.add (new Passenger("chiara", "russo", "jkl", 32));
+        passengers.add (new Passenger("rosa", "manzo", "zxc", 15));
 
         //creo volo
         flight = new Flight("03", "che ne so", new Date(2025, 2, 14), "12:25",
