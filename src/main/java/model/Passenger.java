@@ -101,4 +101,23 @@ public class Passenger {
         this.checked_in = true;
         return 0;
     }
+
+    public String print_seat(){
+
+        if (this.seat == -1) return "/";
+
+        String literal;
+
+        switch(this.seat%6){
+            case 0: literal = "A"; break;
+            case 1: literal = "B"; break;
+            case 2: literal = "C"; break;
+            case 3: literal = "D"; break;
+            case 4: literal = "E"; break;
+            case 5: literal = "F"; break;
+            default: literal = "";
+        }
+
+        return Integer.toString((this.seat/6)+1) + literal;
+    }
 }

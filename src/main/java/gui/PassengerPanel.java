@@ -14,12 +14,14 @@ import java.util.ArrayList;
 
 public class PassengerPanel extends JPanel
 {
-    String displayedNameText = "Nome";
-    String displayedSurnameText = "Cognome";
-    String displayedCFText = "Codice Fiscale";
-    Color displayedTextColor = new Color(128, 128, 128);
-    Color userTextColor = new Color(32, 32, 32);
-    SeatChooser seatChooser;
+    private String displayedNameText = "Nome";
+    private String displayedSurnameText = "Cognome";
+    private String displayedCFText = "Codice Fiscale";
+    private Color displayedTextColor = new Color(128, 128, 128);
+    private Color userTextColor = new Color(32, 32, 32);
+    private SeatChooser seatChooser;
+    private int seat = -1;
+    private JLabel seatLabel;
 
     public PassengerPanel (Controller controller, Flight flight, ArrayList<PassengerPanel> passengerPanels)
     {
@@ -37,8 +39,9 @@ public class PassengerPanel extends JPanel
         JTextField passengerCFField = new JTextField (displayedCFText, 20);
         passengerCFField.setForeground(displayedTextColor);
         JButton seatButton = new JButton("Scegli Posto");
+        seatLabel = new JLabel (print_seat());
 
-        constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
+        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
         this.add (label, constraints.getConstraints());
         label.setVisible (true);
@@ -48,7 +51,7 @@ public class PassengerPanel extends JPanel
         this.add (passengerNameField, constraints.getConstraints());
         passengerNameField.setVisible (true);
 
-        constraints.setConstraints (1, 1, 1, 1, GridBagConstraints.NONE,
+        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
         this.add (passengerSurnameField, constraints.getConstraints());
         passengerSurnameField.setVisible (true);
@@ -59,9 +62,14 @@ public class PassengerPanel extends JPanel
         passengerCFField.setVisible (true);
 
         constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
+                0, 0, GridBagConstraints.LINE_END);
         this.add (seatButton, constraints.getConstraints());
         seatButton.setVisible (true);
+
+        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_START);
+        this.add (seatLabel, constraints.getConstraints());
+        seatLabel.setVisible (true);
 
         /* Removing the displayed text and changing the font color if user focuses
          * Putting it back if user unfocuses without writing anything
@@ -129,7 +137,7 @@ public class PassengerPanel extends JPanel
         seatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                seatChooser = new SeatChooser (controller, flight, passengerPanels);
+                seatChooser = new SeatChooser (controller, thisPanel(), flight, passengerPanels);
             }
         });
 
@@ -151,9 +159,11 @@ public class PassengerPanel extends JPanel
         passengerSurnameField.setForeground(displayedTextColor);
         JTextField passengerCFField = new JTextField (passenger.get_SSN(), 20);
         passengerCFField.setForeground(displayedTextColor);
-        JButton seatButton = new JButton(passenger.get_Seat().toString());
+        seat = passenger.get_Seat();
+        JButton seatButton = new JButton("Scegli Posto");
+        seatLabel = new JLabel (print_seat());
 
-        constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
+        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
         this.add (label, constraints.getConstraints());
         label.setVisible (true);
@@ -163,7 +173,7 @@ public class PassengerPanel extends JPanel
         this.add (passengerNameField, constraints.getConstraints());
         passengerNameField.setVisible (true);
 
-        constraints.setConstraints (1, 1, 1, 1, GridBagConstraints.NONE,
+        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
         this.add (passengerSurnameField, constraints.getConstraints());
         passengerSurnameField.setVisible (true);
@@ -174,9 +184,14 @@ public class PassengerPanel extends JPanel
         passengerCFField.setVisible (true);
 
         constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
+                0, 0, GridBagConstraints.LINE_END);
         this.add (seatButton, constraints.getConstraints());
         seatButton.setVisible (true);
+
+        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_START);
+        this.add (seatLabel, constraints.getConstraints());
+        seatLabel.setVisible (true);
 
         /* Removing the displayed text and changing the font color if user focuses
          * Putting it back if user unfocuses without writing anything
@@ -242,5 +257,37 @@ public class PassengerPanel extends JPanel
         });
 
         this.setVisible (true);
+    }
+
+    public String print_seat(){
+
+        if (seat == -1) return "/";
+
+        String literal;
+
+        switch(seat%6){
+            case 0: literal = "A"; break;
+            case 1: literal = "B"; break;
+            case 2: literal = "C"; break;
+            case 3: literal = "D"; break;
+            case 4: literal = "E"; break;
+            case 5: literal = "F"; break;
+            default: literal = "";
+        }
+
+        return Integer.toString((seat/6)+1) + literal;
+    }
+
+    public int getSeat(){
+        return seat;
+    }
+
+    public void setSeat(int par_seat){
+        seat = par_seat;
+        seatLabel.setText(print_seat());
+    }
+
+    private PassengerPanel thisPanel (){
+        return this;
     }
 }
