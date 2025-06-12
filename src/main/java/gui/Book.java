@@ -539,8 +539,8 @@ public class Book {
         errorWindow.setAlwaysOnTop(true);
 
         JPanel errorPanel = new JPanel(new BorderLayout());
-        errorPanel.setBackground(new Color(200, 100, 100));
-        errorPanel.setBorder (BorderFactory.createLineBorder(new Color(150, 40, 30), 2));
+        errorPanel.setBackground(new Color(255, 255, 255));
+        errorPanel.setBorder (BorderFactory.createLineBorder(new Color(255, 255, 255), 2));
 
         JLabel errorLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
         errorLabel.setForeground(Color.BLACK);
@@ -557,34 +557,39 @@ public class Book {
 
         errorWindow.setOpacity(0.75f);
 
-        Timer timer2 = new Timer(10, new ActionListener() {
+        Timer disposeTimer;
+        Timer decreaseOpacityTimer;
+        Timer startDecreaseOpacityTimer;
+
+
+        decreaseOpacityTimer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 errorWindow.setOpacity(errorWindow.getOpacity()-0.01f);
             }
         });
-        timer2.setRepeats(true);
+        decreaseOpacityTimer.setRepeats(true);
 
-        Timer timer3 = new Timer(1500, new ActionListener() {
+        startDecreaseOpacityTimer = new Timer(1500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 ((Timer) e.getSource()).stop();
-                timer2.start();
+                decreaseOpacityTimer.start();
             }
         });
-        timer3.setRepeats(false);
+        startDecreaseOpacityTimer.setRepeats(false);
 
-        Timer timer1 = new Timer(2500, new ActionListener() {
+        disposeTimer = new Timer(2500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 errorWindow.dispose();
                 ((Timer) e.getSource()).stop();
-                timer2.setRepeats(false);
-                timer2.stop();
+                decreaseOpacityTimer.setRepeats(false);
+                decreaseOpacityTimer.stop();
             }
         });
 
-        timer1.start();
-        timer3.start();
+        disposeTimer.start();
+        startDecreaseOpacityTimer.start();
     }
 }
