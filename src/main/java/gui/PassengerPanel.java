@@ -14,13 +14,17 @@ import java.util.ArrayList;
 
 public class PassengerPanel extends JPanel
 {
-    private String displayedNameText = "Nome";
-    private String displayedSurnameText = "Cognome";
-    private String displayedCFText = "Codice Fiscale";
+    private String displayedNameText = "~Nome~";
+    private String displayedSurnameText = "~Cognome~";
+    private String displayedCFText = "~Codice Fiscale~";
     private Color displayedTextColor = new Color(128, 128, 128);
     private Color userTextColor = new Color(32, 32, 32);
     private SeatChooser seatChooser;
     private int seat = -1;
+
+    private JTextField passengerNameField;
+    private JTextField passengerSurnameField;
+    private JTextField passengerCFField;
     private JLabel seatLabel;
 
     public PassengerPanel (Controller controller, Flight flight, ArrayList<PassengerPanel> passengerPanels)
@@ -32,11 +36,11 @@ public class PassengerPanel extends JPanel
         if(controller.developerMode) this.setBackground (Color.BLUE);
 
         JLabel label = new JLabel ("Passenger");
-        JTextField passengerNameField = new JTextField(displayedNameText, 20);
+        passengerNameField = new JTextField(displayedNameText, 20);
         passengerNameField.setForeground(displayedTextColor);
-        JTextField passengerSurnameField = new JTextField (displayedSurnameText, 20);
+        passengerSurnameField = new JTextField (displayedSurnameText, 20);
         passengerSurnameField.setForeground(displayedTextColor);
-        JTextField passengerCFField = new JTextField (displayedCFText, 20);
+        passengerCFField = new JTextField (displayedCFText, 20);
         passengerCFField.setForeground(displayedTextColor);
         JButton seatButton = new JButton("Scegli Posto");
         seatLabel = new JLabel (print_seat());
@@ -289,5 +293,33 @@ public class PassengerPanel extends JPanel
 
     private PassengerPanel thisPanel (){
         return this;
+    }
+
+    public String getPassengerName(){
+        return passengerNameField.getText ();
+    }
+
+    public String getPassengerSurname(){
+        return passengerSurnameField.getText ();
+    }
+
+    public String getPassengerCF(){
+        return passengerCFField.getText ();
+    }
+
+    public boolean checkPassengerName (){
+        return passengerNameField.getText().equals(displayedNameText);
+    }
+
+    public boolean checkPassengerSurname (){
+        return passengerSurnameField.getText().equals(displayedSurnameText);
+    }
+
+    public boolean checkPassengerCF (){
+        return passengerCFField.getText().equals(displayedCFText);
+    }
+
+    public boolean checkPassengerSeat (){
+        return seat == -1;
     }
 }

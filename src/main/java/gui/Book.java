@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -28,6 +29,10 @@ public class Book {
     private JButton prevPageButton;
     private JButton nextPageButton;
     private JLabel currentPageLabel;
+    private JPanel confirmPanel;
+    private JButton leftConfirmButton;
+    private JButton rightConfirmButton;
+    private JButton centerConfirmButton;
 
     private FooterPanel footerPanel;
 
@@ -146,6 +151,7 @@ public class Book {
         mainPanel.add (passengerPage, constraints.getConstraints ());
 
         addModifyPanel (flight, passengerPanels, removePassengerButtons, passengerPage, controller);
+        addConfirmPanel (flight, passengerPanels, controller);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
@@ -228,15 +234,121 @@ public class Book {
         addAddPassengerButton(this, flight, passengerPanels, removePassengerButtons, modifyPanel, passengerPage, controller);
         addPageChangeButtons (passengerPanels, removePassengerButtons, modifyPanel, passengerPage);
 
-
-        JButton confirmButton = new JButton("CONFERMA");
-        confirmButton.setFocusable(false);
-        modifyPanel.add (confirmButton);
-
-        constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.HORIZONTAL,
+        constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_END);
-        mainPanel.add (modifyPanel, constraints.getConstraints());
+        mainFrame.add (modifyPanel, constraints.getConstraints());
         modifyPanel.setVisible (true);
+    }
+
+    private void addConfirmPanel (Flight flight, ArrayList<PassengerPanel> passengerPanels, Controller controller)
+    {
+        ArrayList<JButton> confirmButtons = new ArrayList<JButton>();
+        confirmPanel = new JPanel();
+        confirmPanel.setLayout(new GridLayout());
+        if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
+
+        rightConfirmButton = new JButton("CONFERMA");
+        rightConfirmButton.addActionListener (new ActionListener () {
+            public void actionPerformed (ActionEvent e) {
+                boolean flag = true;
+
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerSeat()){
+                        flag = false;
+                    }
+                }
+
+                if (flag) {
+                    showMessageDialog(new JPanel(), "La tua richiesta di prenotazione è stata presa in carico", "Booking", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    rightConfirmButton.setVisible (false);
+                    confirmButtons.get(new Random().nextInt(2) + 1).setVisible (true);
+
+                    showMessageDialog(new JPanel(), "I dati dei passeggeri sono incompleti", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        });
+        confirmButtons.add (rightConfirmButton);
+        rightConfirmButton.setVisible(true);
+
+        leftConfirmButton = new JButton("CONFERMA");
+        leftConfirmButton.addActionListener (new ActionListener () {
+            public void actionPerformed (ActionEvent e) {
+                boolean flag = true;
+
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerSeat()){
+                        flag = false;
+                    }
+                }
+
+                if (flag) {
+                    showMessageDialog(new JPanel(), "La tua richiesta di prenotazione è stata presa in carico", "Booking", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    leftConfirmButton.setVisible (false);
+                    confirmButtons.get(new Random().nextInt(2) * 2).setVisible (true);
+
+                    showMessageDialog(new JPanel(), "I dati dei passeggeri sono incompleti", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        confirmButtons.add (leftConfirmButton);
+        leftConfirmButton.setVisible(false);
+
+        centerConfirmButton = new JButton("CONFERMA");
+        centerConfirmButton.addActionListener (new ActionListener () {
+            public void actionPerformed (ActionEvent e) {
+                boolean flag = true;
+
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerSeat()) {
+                        flag = false;
+                    }
+                }
+
+                if (flag) {
+                    showMessageDialog(new JPanel(), "La tua richiesta di prenotazione è stata presa in carico", "Booking", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    centerConfirmButton.setVisible(false);
+                    confirmButtons.get(new Random().nextInt(2)).setVisible(true);
+
+                    showMessageDialog(new JPanel(), "I dati dei passeggeri sono incompleti", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        confirmButtons.add (centerConfirmButton);
+        centerConfirmButton.setVisible(false);
+
+        leftConfirmButton.setFocusable(false);
+        rightConfirmButton.setFocusable(false);
+        centerConfirmButton.setFocusable(false);
+
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_START, 0.015f, 0.015f);
+        confirmPanel.add (leftConfirmButton, constraints.getConstraints());
+
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.CENTER, 0.01f,0.01f);
+        confirmPanel.add (new JPanel(), constraints.getConstraints());
+
+        constraints.setConstraints (2, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 0.015f, 0.015f);
+        confirmPanel.add (rightConfirmButton, constraints.getConstraints());
+
+        constraints.setConstraints (3, 0, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.CENTER, 0.01f,0.01f);
+        confirmPanel.add (new JPanel(), constraints.getConstraints());
+
+        constraints.setConstraints (4, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, 0.015f, 0.015f);
+        confirmPanel.add (centerConfirmButton, constraints.getConstraints());
+
+        constraints.setConstraints (0, 3, 3, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.CENTER);
+        mainFrame.add (confirmPanel, constraints.getConstraints());
+        confirmPanel.setVisible (true);
     }
 
     private void addAddPassengerButton (Book book, Flight flight, ArrayList<PassengerPanel> passengersPanels, ArrayList<RemovePassengerButton> removePassengerButtons,
@@ -406,7 +518,7 @@ public class Book {
     private void addFooterPanel()
     {
        footerPanel = new FooterPanel();
-        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 4, 1, 1, GridBagConstraints.BOTH,
                 0, 10, GridBagConstraints.PAGE_END);
         mainFrame.add (footerPanel, constraints.getConstraints());
     }
