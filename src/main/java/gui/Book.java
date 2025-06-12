@@ -265,7 +265,7 @@ public class Book {
                     rightConfirmButton.setVisible (false);
                     confirmButtons.get(new Random().nextInt(2) + 1).setVisible (true);
 
-                    showMessageDialog(new JPanel(), "I dati dei passeggeri sono incompleti", "Error", JOptionPane.ERROR_MESSAGE);
+                    errorMessage ("I dati dei passeggeri sono incompleti");
                 }
 
             }
@@ -290,7 +290,7 @@ public class Book {
                     leftConfirmButton.setVisible (false);
                     confirmButtons.get(new Random().nextInt(2) * 2).setVisible (true);
 
-                    showMessageDialog(new JPanel(), "I dati dei passeggeri sono incompleti", "Error", JOptionPane.ERROR_MESSAGE);
+                    errorMessage ("I dati dei passeggeri sono incompleti");
                 }
             }
         });
@@ -314,7 +314,7 @@ public class Book {
                     centerConfirmButton.setVisible(false);
                     confirmButtons.get(new Random().nextInt(2)).setVisible(true);
 
-                    showMessageDialog(new JPanel(), "I dati dei passeggeri sono incompleti", "Error", JOptionPane.ERROR_MESSAGE);
+                    errorMessage ("I dati dei passeggeri sono incompleti");
                 }
             }
         });
@@ -532,5 +532,59 @@ public class Book {
 
     public int getCurrPage () {
         return currPage;
+    }
+
+    private void errorMessage (String msg){
+        final JWindow errorWindow = new JWindow();
+        errorWindow.setAlwaysOnTop(true);
+
+        JPanel errorPanel = new JPanel(new BorderLayout());
+        errorPanel.setBackground(new Color(200, 100, 100));
+        errorPanel.setBorder (BorderFactory.createLineBorder(new Color(150, 40, 30), 2));
+
+        JLabel errorLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
+        errorLabel.setForeground(Color.BLACK);
+
+        errorPanel.add(errorLabel, BorderLayout.CENTER);
+
+
+        errorWindow.setSize(300, 100);
+        int x = (Toolkit.getDefaultToolkit().getScreenSize().width - errorWindow.getWidth()) / 2;
+        int y = (Toolkit.getDefaultToolkit().getScreenSize().height - errorWindow.getHeight()) / 2;
+        errorWindow.setLocation(x, y);
+        errorWindow.add(errorPanel);
+        errorWindow.setVisible(true);
+
+        errorWindow.setOpacity(0.75f);
+
+        Timer timer2 = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                errorWindow.setOpacity(errorWindow.getOpacity()-0.01f);
+            }
+        });
+        timer2.setRepeats(true);
+
+        Timer timer3 = new Timer(1500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                ((Timer) e.getSource()).stop();
+                timer2.start();
+            }
+        });
+        timer3.setRepeats(false);
+
+        Timer timer1 = new Timer(2500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                errorWindow.dispose();
+                ((Timer) e.getSource()).stop();
+                timer2.setRepeats(false);
+                timer2.stop();
+            }
+        });
+
+        timer1.start();
+        timer3.start();
     }
 }
