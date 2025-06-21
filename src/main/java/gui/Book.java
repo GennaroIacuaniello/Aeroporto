@@ -263,9 +263,11 @@ public class Book {
                 }
                 else {
                     rightConfirmButton.setVisible (false);
-                    confirmButtons.get(new Random().nextInt(2) + 1).setVisible (true);
 
-                    errorMessage ("I dati dei passeggeri sono incompleti");
+                    int random = new Random().nextInt(2) + 1;
+                    confirmButtons.get(random).setVisible (true);
+
+                    errorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
                 }
 
             }
@@ -288,9 +290,11 @@ public class Book {
                     showMessageDialog(new JPanel(), "La tua richiesta di prenotazione è stata presa in carico", "Booking", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     leftConfirmButton.setVisible (false);
-                    confirmButtons.get(new Random().nextInt(2) * 2).setVisible (true);
 
-                    errorMessage ("I dati dei passeggeri sono incompleti");
+                    int random = new Random().nextInt(2) * 2;
+                    confirmButtons.get(random).setVisible (true);
+
+                    errorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
                 }
             }
         });
@@ -312,9 +316,11 @@ public class Book {
                     showMessageDialog(new JPanel(), "La tua richiesta di prenotazione è stata presa in carico", "Booking", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     centerConfirmButton.setVisible(false);
-                    confirmButtons.get(new Random().nextInt(2)).setVisible(true);
 
-                    errorMessage ("I dati dei passeggeri sono incompleti");
+                    int random = new Random().nextInt(2);
+                    confirmButtons.get(random).setVisible(true);
+
+                    errorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
                 }
             }
         });
@@ -534,13 +540,13 @@ public class Book {
         return currPage;
     }
 
-    private void errorMessage (String msg){
+    private void errorMessage (String msg, JButton callingButton){
         final JWindow errorWindow = new JWindow();
         errorWindow.setAlwaysOnTop(true);
 
         JPanel errorPanel = new JPanel(new BorderLayout());
-        errorPanel.setBackground(new Color(255, 255, 255));
-        errorPanel.setBorder (BorderFactory.createLineBorder(new Color(255, 255, 255), 2));
+        errorPanel.setBackground(new Color(200, 60, 60));
+        errorPanel.setBorder (BorderFactory.createLineBorder(new Color(120, 0, 10), 2));
 
         JLabel errorLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
         errorLabel.setForeground(Color.BLACK);
@@ -548,10 +554,11 @@ public class Book {
         errorPanel.add(errorLabel, BorderLayout.CENTER);
 
 
-        errorWindow.setSize(300, 100);
-        int x = (Toolkit.getDefaultToolkit().getScreenSize().width - errorWindow.getWidth()) / 2;
-        int y = (Toolkit.getDefaultToolkit().getScreenSize().height - errorWindow.getHeight()) / 2;
-        errorWindow.setLocation(x, y);
+        errorWindow.setSize(mainFrame.getWidth() / 7 + 30, mainFrame.getHeight() / 10);
+
+        Point point = new Point(callingButton.getLocationOnScreen());
+        errorWindow.setLocation((int)point.getX() + (callingButton.getWidth() - errorWindow.getWidth()) / 2, (int)point.getY() - errorWindow.getHeight() - 10);
+
         errorWindow.add(errorPanel);
         errorWindow.setVisible(true);
 
