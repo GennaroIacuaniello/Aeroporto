@@ -544,15 +544,18 @@ public class Book {
         final JWindow errorWindow = new JWindow();
         errorWindow.setAlwaysOnTop(true);
 
-        JPanel errorPanel = new JPanel(new BorderLayout());
+        errorWindow.setBackground(new Color(0, 0, 0, 0));
+        JPanel contentPanel = (JPanel) errorWindow.getContentPane();
+        contentPanel.setOpaque(false);
+
+        RoundedPanel errorPanel = new RoundedPanel(new BorderLayout());
         errorPanel.setBackground(new Color(200, 60, 60));
-        errorPanel.setBorder (BorderFactory.createLineBorder(new Color(120, 0, 10), 2));
+        errorPanel.setRoundBorderColor (new Color(120, 0, 10));
 
         JLabel errorLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
         errorLabel.setForeground(Color.BLACK);
 
         errorPanel.add(errorLabel, BorderLayout.CENTER);
-
 
         errorWindow.setSize(mainFrame.getWidth() / 7 + 30, mainFrame.getHeight() / 10);
 
