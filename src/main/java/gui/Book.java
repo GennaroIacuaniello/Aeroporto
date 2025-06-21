@@ -121,7 +121,7 @@ public class Book {
     {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
-        /*if(controller.developerMode)*/ //mainPanel.setBackground(Color.WHITE);
+        //if(controller.developerMode) mainPanel.setBackground(Color.GREEN);
 
         addFlightInfoPanel (flight, controller);
 
@@ -147,7 +147,7 @@ public class Book {
         passengerPage.add (newremovePassengerButton, constraints.getConstraints());
         removePassengerButtons.add (newremovePassengerButton);
 
-        constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
         mainPanel.add (passengerPage, constraints.getConstraints ());
 
         addModifyPanel (flight, passengerPanels, removePassengerButtons, passengerPage, controller);
