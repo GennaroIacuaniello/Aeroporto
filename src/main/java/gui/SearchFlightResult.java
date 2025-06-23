@@ -77,7 +77,7 @@ public class SearchFlightResult {
 
         main_frame = new JFrame("Risultati ricerca");
         callingFrames.addLast(main_frame);
-        main_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        main_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         main_frame.setLayout(new GridBagLayout());
         main_frame.setSize(640, 480);
         main_frame.setBackground(Color.BLACK);

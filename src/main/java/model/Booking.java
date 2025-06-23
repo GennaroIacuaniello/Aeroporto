@@ -86,4 +86,7 @@ public class Booking {
 
     }
 
+    public ArrayList<Passenger> get_passengers(){
+        return this.passengers;
+    }
 }

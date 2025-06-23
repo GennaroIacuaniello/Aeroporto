@@ -53,7 +53,7 @@ public class Customer extends User{
                     System.out.println("Inserisci codife fiscale passegero: ");
                     String tmp_SSN = scanner.nextLine();
 
-                    to_modify.add_passenger( new Passenger(tmp_name, tmp_lastname, tmp_SSN, "a"/*choose_seat()*/) );
+                    to_modify.add_passenger( new Passenger(tmp_name, tmp_lastname, tmp_SSN, 1/*choose_seat()*/) );
                     //choose_seat();        sarà implementata poi
                     break;
                 case 4:

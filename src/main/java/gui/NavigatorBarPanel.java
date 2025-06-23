@@ -38,17 +38,18 @@ public class NavigatorBarPanel extends JPanel {
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int size = callingFrames.size();
 
-                for (int i = size - 2; i > 1; i--) {
+                for (int i = callingFrames.size() - 2; i > 1; i--) {
                     callingFrames.get(i).dispose();
                     callingFrames.remove(i);
                 }
 
                 callingFrames.get(1).setVisible(true);
-                JFrame tmp = callingFrames.getLast();
-                callingFrames.removeLast();
-                tmp.dispose();
+                if (callingFrames.size() > 2) {
+                    JFrame tmp = callingFrames.getLast();
+                    callingFrames.removeLast();
+                    tmp.dispose();
+                }
             }
         });
 
