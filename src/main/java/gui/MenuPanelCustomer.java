@@ -28,7 +28,7 @@ public class MenuPanelCustomer extends JPanel {
         this.menu.addItem("Home");
         this.menu.addItem("Cerca voli");
         this.menu.addItem("I miei voli");
-        //this.menu.addItem("Developer Mode");
+        //this.menu.addItem("DeveloperMode");
 
 
         this.setVisible(true);
@@ -73,7 +73,7 @@ public class MenuPanelCustomer extends JPanel {
                     case "I miei voli":
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");
                         break;
-                    case "Colora":
+                    case "DeveloperMode":
                         controller.developerMode = !controller.developerMode;
                     default:
                         break;
