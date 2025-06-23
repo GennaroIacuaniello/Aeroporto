@@ -27,7 +27,7 @@ public class PassengerPanel extends JPanel
     private JTextField passengerCFField;
     private JLabel seatLabel;
 
-    public PassengerPanel (Controller controller, Flight flight, ArrayList<PassengerPanel> passengerPanels)
+    public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels)
     {
         super ();
 
@@ -141,7 +141,7 @@ public class PassengerPanel extends JPanel
         seatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                seatChooser = new SeatChooser (controller, thisPanel(), flight, passengerPanels);
+                seatChooser = new SeatChooser (controller, thisPanel(), passengerPanels);
             }
         });
 

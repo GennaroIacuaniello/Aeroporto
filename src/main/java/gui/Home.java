@@ -24,12 +24,12 @@ public class Home {
         frameHome.setVisible(true);
 
         Customer customer = new Customer("Tramontana", "1234");
-        Flight flight = new Flight("01", "Compagnia", new Date(),
+        Flight flight = new Flight("01", "Compagnia", (java.sql.Date) new Date(),
                 "00:00", "00:00", 66);
 
         ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
         callingFrames.add(frameHome);
-        new Book(callingFrames, controller, customer, flight);
+        new Book(callingFrames, controller);
     }
 
     public Home() {

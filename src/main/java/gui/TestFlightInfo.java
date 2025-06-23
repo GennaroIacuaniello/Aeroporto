@@ -38,7 +38,7 @@ public class TestFlightInfo {
         passengers.add (new Passenger("rosa", "manzo", "zxc", 15));
 
         //creo volo
-        flight = new Flight("03", "che ne so", new Date(2025, 2, 14), "12:25",
+        flight = new Flight("03", "che ne so", (java.sql.Date) new Date(2025, 2, 14), "12:25",
                 "14:10", 10);
 
         //creo prenotazione

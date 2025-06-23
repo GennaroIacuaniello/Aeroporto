@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import controller.FlightController;
 import model.Customer;
 import model.Flight;
 
@@ -38,7 +39,7 @@ public class Book {
 
     private Constraints constraints;
 
-    public Book(ArrayList<JFrame> callingFrames, Controller controller, Customer customer, Flight flight) {
+    public Book(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -48,10 +49,10 @@ public class Book {
         this.setMainframe(callingFrames, controller);
 
         //setting top panels
-        this.addTopPanel (callingFrames, controller, customer);
+        this.addTopPanel (callingFrames, controller);
 
         //setting mainPanel
-        this.addMainPanel (flight, controller);
+        this.addMainPanel (controller);
 
         //this.addFooterPanel();
         addFooterPanel();
@@ -69,15 +70,15 @@ public class Book {
         if(controller.developerMode) mainFrame.setBackground(Color.YELLOW);
     }
 
-    private void addTopPanel (ArrayList<JFrame> callingFrames, Controller controller, Customer customer)
+    private void addTopPanel (ArrayList<JFrame> callingFrames, Controller controller)
     {
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
 
         addTitlePanel("AEROPORTO DI NAPOLI", controller);
         addNavigatorBarPanel (callingFrames);
-        addHamburgerPanel(callingFrames, controller, customer);
-        addUserPanel(callingFrames, controller, customer);
+        addHamburgerPanel(callingFrames, controller);
+        addUserPanel(callingFrames, controller);
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
@@ -101,29 +102,29 @@ public class Book {
         navigatorBarPanel.setVisible (true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller, customer);
+    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         topPanel.add(hamburgerPanel, constraints.getConstraints());
         hamburgerPanel.setVisible (true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
-        userPanel = new UserPanel(callingFrames, controller, customer);
+    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+        userPanel = new UserPanel(callingFrames, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END);
         topPanel.add(userPanel, constraints.getConstraints());
         userPanel.setVisible (true);
     }
 
-    private void addMainPanel (Flight flight, Controller controller)
+    private void addMainPanel (Controller controller)
     {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
         //if(controller.developerMode) mainPanel.setBackground(Color.GREEN);
 
-        addFlightInfoPanel (flight, controller);
+        addFlightInfoPanel (controller);
 
         ArrayList<PassengerPanel> passengerPanels = new ArrayList<PassengerPanel> ();
         ArrayList<RemovePassengerButton> removePassengerButtons = new ArrayList<RemovePassengerButton> ();
@@ -134,7 +135,7 @@ public class Book {
         nextPageButton = new JButton("→");
         currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
-        PassengerPanel newPassenger = new PassengerPanel(controller, flight, passengerPanels);
+        PassengerPanel newPassenger = new PassengerPanel(controller, passengerPanels);
         RemovePassengerButton newremovePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, 0, passengerPage, nextPageButton);
         newremovePassengerButton.setFocusable(false);
         newremovePassengerButton.setEnabled(false);
@@ -150,8 +151,8 @@ public class Book {
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
         mainPanel.add (passengerPage, constraints.getConstraints ());
 
-        addModifyPanel (flight, passengerPanels, removePassengerButtons, passengerPage, controller);
-        addConfirmPanel (flight, passengerPanels, controller);
+        addModifyPanel (passengerPanels, removePassengerButtons, passengerPage, controller);
+        addConfirmPanel (passengerPanels, controller);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
@@ -160,13 +161,13 @@ public class Book {
         mainFrame.setVisible (true);
     }
 
-    private void addFlightInfoPanel(Flight flight, Controller controller)
+    private void addFlightInfoPanel(Controller controller)
     {
         flightInfoPanel = new JPanel();
         flightInfoPanel.setLayout(new GridBagLayout());
         /*if(controller.developerMode)*/ flightInfoPanel.setBackground(Color.GRAY);
 
-        setLabels(flight);
+        setLabels(controller.getFlightController());
 
         constraints.setConstraints (0, 0, 3, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
@@ -175,14 +176,14 @@ public class Book {
         flightInfoPanel.setVisible(true);
     }
 
-    private void setLabels(Flight flight)
+    private void setLabels(FlightController flightController)
     {
-        setTitleLabels(flight);
-        setInfoLabels(flight);
+        setTitleLabels();
+        setInfoLabels(flightController);
     }
 
 
-    private void setTitleLabels(Flight flight) {
+    private void setTitleLabels() {
 
         ArrayList<JLabel> titleLabels = new ArrayList<JLabel>();
 
@@ -204,17 +205,17 @@ public class Book {
         }
     }
 
-    private void setInfoLabels(Flight flight) {
+    private void setInfoLabels(FlightController flightController) {
         ArrayList<JLabel> infoLabels = new ArrayList<JLabel>();
 
         infoLabels.add(new JLabel("   "));
-        infoLabels.add(new JLabel(flight.get_company_name()));
+        infoLabels.add(new JLabel(flightController.getCompanyName()));
         infoLabels.add(new JLabel("/"));
-        infoLabels.add(new JLabel(flight.get_date().toString()));
-        infoLabels.add(new JLabel(flight.get_departure_time()));
-        infoLabels.add(new JLabel(flight.get_arrival_time()));
+        infoLabels.add(new JLabel(flightController.getDateString()));
+        infoLabels.add(new JLabel(flightController.getDepartureTime()));
+        infoLabels.add(new JLabel(flightController.getArrivalTime()));
         infoLabels.add(new JLabel("/"));
-        infoLabels.add(new JLabel(flight.get_status().toString()));
+        infoLabels.add(new JLabel(flightController.getStatusString()));
         infoLabels.add(new JLabel("/"));
         infoLabels.add(new JLabel("   "));
 
@@ -225,13 +226,13 @@ public class Book {
         }
     }
 
-    private void addModifyPanel (Flight flight, ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons, JPanel passengerPage, Controller controller)
+    private void addModifyPanel (ArrayList<PassengerPanel> passengerPanels, ArrayList<RemovePassengerButton> removePassengerButtons, JPanel passengerPage, Controller controller)
     {
         modifyPanel = new JPanel();
         modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
 
-        addAddPassengerButton(this, flight, passengerPanels, removePassengerButtons, modifyPanel, passengerPage, controller);
+        addAddPassengerButton(this, passengerPanels, removePassengerButtons, modifyPanel, passengerPage, controller);
         addPageChangeButtons (passengerPanels, removePassengerButtons, modifyPanel, passengerPage);
 
         constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.BOTH,
@@ -240,7 +241,7 @@ public class Book {
         modifyPanel.setVisible (true);
     }
 
-    private void addConfirmPanel (Flight flight, ArrayList<PassengerPanel> passengerPanels, Controller controller)
+    private void addConfirmPanel (ArrayList<PassengerPanel> passengerPanels, Controller controller)
     {
         ArrayList<JButton> confirmButtons = new ArrayList<JButton>();
         confirmPanel = new JPanel();
@@ -357,7 +358,7 @@ public class Book {
         confirmPanel.setVisible (true);
     }
 
-    private void addAddPassengerButton (Book book, Flight flight, ArrayList<PassengerPanel> passengersPanels, ArrayList<RemovePassengerButton> removePassengerButtons,
+    private void addAddPassengerButton (Book book, ArrayList<PassengerPanel> passengersPanels, ArrayList<RemovePassengerButton> removePassengerButtons,
                                         JPanel modifyPanel, JPanel passengerPage, Controller controller) {
 
         JButton addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
@@ -367,9 +368,9 @@ public class Book {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (flight.get_free_seats() - passengersPanels.size() > 0) {
+                if (controller.getFlightController().getFreeSeats() - passengersPanels.size() > 0) {
 
-                    PassengerPanel newPassengerPanel = new PassengerPanel(controller, flight, passengersPanels);
+                    PassengerPanel newPassengerPanel = new PassengerPanel(controller, passengersPanels);
                     constraints.setConstraints(0, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
                     passengerPage.add(newPassengerPanel, constraints.getConstraints());
 

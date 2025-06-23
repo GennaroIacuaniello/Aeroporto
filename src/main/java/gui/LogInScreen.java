@@ -6,6 +6,7 @@ import model.Customer;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LogInScreen {
 
@@ -68,12 +69,14 @@ public class LogInScreen {
                     return;
                 }
 
-                Customer customer = getCustomer(nickTextField, passwordField);
+                controller.getCustomerController().setCustomer(nickTextField.getText(), Arrays.toString(passwordField.getPassword()));
+                controller.getUserController().setUser(nickTextField.getText(), Arrays.toString(passwordField.getPassword()));
+                //Customer customer = getCustomer(nickTextField, passwordField);
                 nickTextField.setText("");
                 passwordField.setText("");
                 logInButton.setEnabled(false);
                 mainFrame.setVisible(false);
-                new MainCustomerScreen(callingFrames, controller, customer);
+                new MainCustomerScreen(callingFrames, controller);
                 
             }
         });
@@ -130,11 +133,11 @@ public class LogInScreen {
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
-
+/*
     private Customer getCustomer(JTextField nick, JPasswordField password) {
         return new Customer(nick.getText(), password.getText());
     }
-
+*/
     private boolean isValidNick(String nick) {
         String validCharaters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
         for (int i = 0; i < nick.length(); i++) {

@@ -85,4 +85,43 @@ public class Controller {
         return res;
     }
 
+    public AdminController getAdminController() {
+        return adminController;
+    }
+
+    public ArrivingController getArrivingController() {
+        return arrivingController;
+    }
+
+    public BookingController getBookingController() {
+        return bookingController;
+    }
+
+    public CustomerController getCustomerController() {
+        return customerController;
+    }
+
+    public DepartingController getDepartingController() {
+        return departingController;
+    }
+
+    public FlightController getFlightController() {
+        return flightController;
+    }
+
+    public GateController getGateController() {
+        return gateController;
+    }
+
+    public LuggageController getLuggageController() {
+        return luggageController;
+    }
+
+    public PassengerController getPassengerController() {
+        return passengerController;
+    }
+
+    public UserController getUserController() {
+        return userController;
+    }
 }
