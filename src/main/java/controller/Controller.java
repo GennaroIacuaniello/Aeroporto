@@ -9,6 +9,12 @@ import java.util.Date;
 
 public class Controller {
 
+    public BookingController bookingController;
+
+    public Controller() {
+        bookingController = new BookingController();
+    }
+
     public boolean developerMode = false;
 
     public ArrayList<Arriving> getImminentArrivingFlights(){
