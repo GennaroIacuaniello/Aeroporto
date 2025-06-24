@@ -1,8 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Flight;
-import model.Passenger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -147,7 +145,7 @@ public class PassengerPanel extends JPanel
 
         this.setVisible (true);
     }
-
+/*
     public PassengerPanel (Controller controller, Passenger passenger)
     {
         super ();
@@ -197,12 +195,12 @@ public class PassengerPanel extends JPanel
         this.add (seatLabel, constraints.getConstraints());
         seatLabel.setVisible (true);
 
-        /* Removing the displayed text and changing the font color if user focuses
+         Removing the displayed text and changing the font color if user focuses
          * Putting it back if user unfocuses without writing anything
          * Using focus to avoid problem with:
          * - mouse clicking followed by quick typing
          * - changing pages and being (focusing) already on a field without clicking
-         */
+
         passengerNameField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -261,7 +259,7 @@ public class PassengerPanel extends JPanel
         });
 
         this.setVisible (true);
-    }
+    }*/
 
     public String print_seat(){
 

@@ -1,8 +1,6 @@
 package gui;
 
-import model.Customer;
 import controller.Controller;
-import model.User;
 
 import javax.swing.*;
 import java.awt.*;

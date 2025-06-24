@@ -3,7 +3,6 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 

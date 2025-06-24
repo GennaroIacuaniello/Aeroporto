@@ -140,7 +140,7 @@ public class FlightInfo {
 
         for (int i = 0; i < booking.get_passengers().size(); i++) {
 
-            passengerPanels.add (new PassengerPanel(controller, booking.get_passengers().get(i)));
+            //passengerPanels.add (new PassengerPanel(controller, booking.get_passengers().get(i)));
             removePassengerButtons.add (new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, i, passengerPage, nextPageButton));
 
             constraints.setConstraints (0, i % 3, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);

@@ -1,14 +1,10 @@
 package gui;
 
 import controller.Controller;
-import model.User;
 
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.*;
-
-import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;

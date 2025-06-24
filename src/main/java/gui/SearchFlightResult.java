@@ -2,7 +2,6 @@ package gui;
 
 import controller.Controller;
 import model.Arriving;
-import model.Customer;
 import model.Departing;
 import model.Flight;
 
@@ -11,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SearchFlightResult {
 

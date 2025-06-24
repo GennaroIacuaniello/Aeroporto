@@ -1,7 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Customer;
 import model.Flight;
 
 import javax.swing.*;

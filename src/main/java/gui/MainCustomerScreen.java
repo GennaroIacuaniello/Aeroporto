@@ -1,10 +1,8 @@
 package gui;
 
 import model.Arriving;
-import model.Customer;
 import controller.Controller;
 import model.Departing;
-import model.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;

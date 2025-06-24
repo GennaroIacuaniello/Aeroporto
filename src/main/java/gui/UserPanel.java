@@ -2,7 +2,6 @@ package gui;
 
 import controller.Controller;
 import controller.UserController;
-import model.User;
 
 import javax.swing.*;
 import java.awt.*;

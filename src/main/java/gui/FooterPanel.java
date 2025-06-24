@@ -1,10 +1,7 @@
 package gui;
 
-import model.User;
-
 import javax.swing.*;
 import java.awt.*;
-import java.io.Console;
 
 public class FooterPanel extends JPanel {
     private JLabel label;

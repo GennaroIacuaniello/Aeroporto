@@ -1,11 +1,5 @@
 package gui;
 
-import controller.Controller;
-import model.User;
-import model.Customer;
-import model.Admin;
-import org.example.Main;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
