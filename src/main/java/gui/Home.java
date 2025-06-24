@@ -1,9 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Customer;
-import model.Flight;
-import model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +20,9 @@ public class Home {
         frameHome.pack();
         frameHome.setVisible(true);
 
-        Customer customer = new Customer("Tramontana", "1234");
-        Flight flight = new Flight("01", "Compagnia", (java.sql.Date) new Date(),
+        controller.getCustomerController().setCustomer("Tramontana", "1234");
+        controller.getUserController().setUser("Tramontana", "1234");
+        controller.getFlightController().setFlight("01", "Compagnia", new Date(),
                 "00:00", "00:00", 66);
 
         ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();

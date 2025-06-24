@@ -10,6 +10,11 @@ import java.util.ArrayList;
 public class FlightController {
     private Flight flight;
 
+    public void setFlight(String id, String companyName, Date date, String departureTime,
+                          String arrivalTime, int maxSeats) {
+        flight = new Flight(id, companyName, date, departureTime, arrivalTime, maxSeats);
+    }
+
     public String getId () {
         return flight.get_id();
     }
