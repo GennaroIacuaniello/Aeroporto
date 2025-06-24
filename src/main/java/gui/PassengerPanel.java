@@ -43,7 +43,7 @@ public class PassengerPanel extends JPanel
         passengerCFField.setForeground(displayedTextColor);
         JButton seatButton = new JButton("Scegli Posto");
         seatLabel = new JLabel (print_seat());
-        luggagesView = new LuggagesView ();
+        luggagesView = new LuggagesView (controller);
 
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
