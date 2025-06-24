@@ -36,7 +36,7 @@ public class User {
         return 0;
     }
 
-    private void login(){};
-    private void search_flight(){};
+    //private void login(){};
+    //private void search_flight(){};
 
 }

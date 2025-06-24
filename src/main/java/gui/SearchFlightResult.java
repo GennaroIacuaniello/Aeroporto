@@ -2,7 +2,6 @@ package gui;
 
 import controller.Controller;
 import model.Arriving;
-import model.Customer;
 import model.Departing;
 import model.Flight;
 
@@ -11,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SearchFlightResult {
 
@@ -31,7 +29,7 @@ public class SearchFlightResult {
     Constraints constraints;
 
 
-    public SearchFlightResult(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_flights, Customer customer) {
+    public SearchFlightResult(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_flights) {
 
         this.search_result = new ArrayList<Flight>(searched_flights);
 
@@ -63,9 +61,9 @@ public class SearchFlightResult {
 
         booking_buttons = new ArrayList<JButton>(flights_per_pages);
 
-        this.add_flights_on_page_i(0, search_result, total_pages, flights_per_pages, callingFrames, controller, customer);
+        this.add_flights_on_page_i(0, search_result, total_pages, flights_per_pages, callingFrames, controller);
 
-        this.set_prev_next_button(callingFrames, controller, search_result, customer);
+        this.set_prev_next_button(callingFrames, controller, search_result);
 
         main_frame.setVisible(true);
 
@@ -111,7 +109,7 @@ public class SearchFlightResult {
 
     }
 
-    private void add_flights_on_page_i(int x, ArrayList<Flight> searched_results, int par_total_pages, int par_flights_per_pages, ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    private void add_flights_on_page_i(int x, ArrayList<Flight> searched_results, int par_total_pages, int par_flights_per_pages, ArrayList<JFrame> callingFrames, Controller controller){
 
 
         if(par_total_pages > 0){
@@ -153,7 +151,7 @@ public class SearchFlightResult {
                      result_panel.add(current_flights_shown.get(j), constraints.getConstraints());
                      current_flights_shown.get(j).setVisible (true);
                  }
-                 this.add_booking_button(9, x + 1 + i, callingFrames, controller, searched_results.get(x*par_flights_per_pages + i), customer);
+                 this.add_booking_button(9, x + 1 + i, callingFrames, controller/*, searched_results.get(x*par_flights_per_pages + i)*/);
 
 
 
@@ -169,7 +167,7 @@ public class SearchFlightResult {
 
     }
 
-    private void set_prev_next_button(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_results, Customer customer){
+    private void set_prev_next_button(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_results){
 
         prev_button = new JButton("Precedente");
         //search_arriving_button.setLayout(new GridBagLayout());
@@ -184,7 +182,7 @@ public class SearchFlightResult {
 
                if(current_page > 0){
 
-                   add_flights_on_page_i(current_page-1, searched_results, total_pages,flights_per_pages, callingFrames, controller, customer);
+                   add_flights_on_page_i(current_page-1, searched_results, total_pages,flights_per_pages, callingFrames, controller);
                    if(current_page - 1 == 0){
                        prev_button.setEnabled(false);
                    }
@@ -216,7 +214,7 @@ public class SearchFlightResult {
 
                 if(current_page + 1 < total_pages){
 
-                    add_flights_on_page_i(current_page+1, searched_results, total_pages,flights_per_pages, callingFrames, controller, customer);
+                    add_flights_on_page_i(current_page+1, searched_results, total_pages,flights_per_pages, callingFrames, controller);
                     if(current_page + 2 == total_pages ){
                         next_button.setEnabled(false);
                     }
@@ -233,7 +231,7 @@ public class SearchFlightResult {
 
     }
 
-    private void add_booking_button(int x, int y, ArrayList<JFrame> callingFrames, Controller controller, Flight flight, Customer customer){
+    private void add_booking_button(int x, int y, ArrayList<JFrame> callingFrames, Controller controller){
 
         booking_buttons.add(y-1, new JButton( "Prenota"));
 
@@ -255,7 +253,7 @@ public class SearchFlightResult {
                 callingFrames.getLast().dispose();
                 callingFrames.removeLast();
                 //callingFrames.removeLast();
-                new Book(callingFrames, controller, customer, flight);
+                new Book(callingFrames, controller);
 
             }
         });

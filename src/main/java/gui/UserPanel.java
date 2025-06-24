@@ -1,7 +1,7 @@
 package gui;
 
 import controller.Controller;
-import model.User;
+import controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class UserPanel extends JPanel {
     private Constraints constraints;
     private JPanel invisiblePanel;
 
-    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller, User user) {
+    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -24,7 +24,7 @@ public class UserPanel extends JPanel {
         this.setLayout(new GridBagLayout());
 
         this.setLogoutButton(callingFrames, controller);
-        this.setUserButton(user);
+        this.setUserButton(controller.getUserController());
     }
 
     private void setLogoutButton(ArrayList<JFrame> callingFrames, Controller controller) {
@@ -49,9 +49,9 @@ public class UserPanel extends JPanel {
         this.add(logoutButton, constraints.getConstraints());
     }
 
-    private void setUserButton(User user) {
+    private void setUserButton(UserController userController) {
 
-        userButton = new JButton("<html>Ciao,<br>" + user.get_username() + "</html>");
+        userButton = new JButton("<html>Ciao,<br>" + userController.getUsername() + "</html>");
         userButton.setLayout(new GridBagLayout());
         userButton.setFocusable(false);
 

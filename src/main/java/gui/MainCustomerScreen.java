@@ -1,10 +1,8 @@
 package gui;
 
 import model.Arriving;
-import model.Customer;
 import controller.Controller;
 import model.Departing;
-import model.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -23,7 +21,7 @@ public class MainCustomerScreen {
     private JPanel departingPanel;
     Constraints constraints;
 
-    public MainCustomerScreen(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
+    public MainCustomerScreen(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -41,8 +39,8 @@ public class MainCustomerScreen {
         //Setting surrounding panels
         this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
         this.addNavigatorBarPanel(callingFrames);
-        this.addHamburgerPanel(callingFrames, controller, customer);
-        this.addUserPanel(callingFrames, controller, customer);
+        this.addHamburgerPanel(callingFrames, controller);
+        this.addUserPanel(callingFrames, controller);
         this.addFooterPanel();
 
         this.addArrivingPanel(controller);
@@ -78,18 +76,18 @@ public class MainCustomerScreen {
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
+    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
 
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller, customer);
+        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
         hamburgerPanel.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, User customer) {
+    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
 
-        userPanel = new UserPanel(callingFrames, controller, customer);
+        userPanel = new UserPanel(callingFrames, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
         mainFrame.add(userPanel, constraints.getConstraints());

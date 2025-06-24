@@ -1,8 +1,6 @@
 package gui;
 
-import model.Customer;
 import controller.Controller;
-import model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +19,7 @@ public class SearchFlightCustomerMainFrame {
     Constraints constraints;
 
 
-    public SearchFlightCustomerMainFrame(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    public SearchFlightCustomerMainFrame(ArrayList<JFrame> callingFrames, Controller controller){
 
         super();
 
@@ -41,10 +39,10 @@ public class SearchFlightCustomerMainFrame {
         this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
         this.addNavigatorBarPanel(callingFrames);
         //this.addHamburgerPanel(callingFrames, controller);
-        this.add_menu_panel(callingFrames, controller, customer);
-        this.addUserPanel(callingFrames, controller, customer);
+        this.add_menu_panel(callingFrames, controller);
+        this.addUserPanel(callingFrames, controller);
         this.addFooterPanel();
-        this.add_search_panel(callingFrames, controller, customer);
+        this.add_search_panel(callingFrames, controller);
 
         mainFrame.setVisible(true);
     }
@@ -86,18 +84,18 @@ public class SearchFlightCustomerMainFrame {
         //hamburgerPanel.setVisible(true);
     //}
 
-    private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    private void add_menu_panel(ArrayList<JFrame> callingFrames, Controller controller){
 
-        menu = new MenuPanelCustomer(callingFrames, controller, customer);
+        menu = new MenuPanelCustomer(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(menu, constraints.getConstraints());
         menu.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, User customer){
+    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller){
 
-        userPanel = new UserPanel(callingFrames, controller, customer);
+        userPanel = new UserPanel(callingFrames, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
         mainFrame.add(userPanel, constraints.getConstraints());
@@ -113,9 +111,9 @@ public class SearchFlightCustomerMainFrame {
         footerPanel.setVisible(true);
     }
 
-    private void add_search_panel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    private void add_search_panel(ArrayList<JFrame> callingFrames, Controller controller){
 
-        search_panel = new SearchPanel(callingFrames, controller, customer);
+        search_panel = new SearchPanel(callingFrames, controller);
         constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.HORIZONTAL,
                 0, 75, GridBagConstraints.CENTER);
 

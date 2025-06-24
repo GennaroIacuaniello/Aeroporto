@@ -98,7 +98,7 @@ public class FlightInfo {
     }
 
     private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller, customer);
+        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         topPanel.add(hamburgerPanel, constraints.getConstraints());
@@ -106,7 +106,7 @@ public class FlightInfo {
     }
 
     private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller, Customer customer) {
-        userPanel = new UserPanel(callingFrames, controller, customer);
+        userPanel = new UserPanel(callingFrames, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END);
         topPanel.add(userPanel, constraints.getConstraints());
@@ -140,7 +140,7 @@ public class FlightInfo {
 
         for (int i = 0; i < booking.get_passengers().size(); i++) {
 
-            passengerPanels.add (new PassengerPanel(controller, booking.get_passengers().get(i)));
+            //passengerPanels.add (new PassengerPanel(controller, booking.get_passengers().get(i)));
             removePassengerButtons.add (new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, i, passengerPage, nextPageButton));
 
             constraints.setConstraints (0, i % 3, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
@@ -269,7 +269,7 @@ public class FlightInfo {
             public void actionPerformed(ActionEvent e) {
                 if (booking.get_booked_flight().get_free_seats() + booking.get_passengers().size() - passengersPanels.size() > 0) {
 
-                    PassengerPanel newPassengerPanel = new PassengerPanel(controller, booking.get_booked_flight(), passengersPanels);
+                    PassengerPanel newPassengerPanel = new PassengerPanel(controller, passengersPanels);
                     constraints.setConstraints(0, (passengersPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
                     passengerPage.add(newPassengerPanel, constraints.getConstraints());
 

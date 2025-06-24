@@ -15,7 +15,7 @@ public class MenuPanelCustomer extends JPanel {
     private Constraints constraints;
     private JComboBox menu;
 
-    public MenuPanelCustomer(ArrayList<JFrame> callingFrames, Controller controller, Customer customer){
+    public MenuPanelCustomer(ArrayList<JFrame> callingFrames, Controller controller){
 
         super();
 
@@ -62,13 +62,13 @@ public class MenuPanelCustomer extends JPanel {
                             callingFrames.get(i).dispose();
                         }
                         callingFrames.removeLast();
-                        new MainCustomerScreen(callingFrames, controller, customer);
+                        new MainCustomerScreen(callingFrames, controller);
                         break;
                     case "Cerca voli":
                         callingFrames.get(callingFrames.size() - 1).setVisible(false);
                         //callingFrames.getLast().dispose();
                         //callingFrames.removeLast();
-                        new SearchFlightCustomerMainFrame(callingFrames, controller, customer);
+                        new SearchFlightCustomerMainFrame(callingFrames, controller);
                         break;
                     case "I miei voli":
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");

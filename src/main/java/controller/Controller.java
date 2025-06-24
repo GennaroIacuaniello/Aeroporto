@@ -1,6 +1,7 @@
 package controller;
 
 import model.Arriving;
+import model.Customer;
 import model.Departing;
 import model.Flight;
 
@@ -9,10 +10,28 @@ import java.util.Date;
 
 public class Controller {
 
-    public BookingController bookingController;
+    private AdminController adminController;
+    private ArrivingController arrivingController;
+    private BookingController bookingController;
+    private CustomerController customerController;
+    private DepartingController departingController;
+    private FlightController flightController;
+    private GateController gateController;
+    private LuggageController luggageController;
+    private PassengerController passengerController;
+    private UserController userController;
 
     public Controller() {
+        adminController = new AdminController();
+        arrivingController = new ArrivingController();
         bookingController = new BookingController();
+        customerController = new CustomerController();
+        departingController = new DepartingController();
+        flightController = new FlightController();
+        gateController = new GateController();
+        luggageController = new LuggageController();
+        passengerController = new PassengerController();
+        userController = new UserController();
     }
 
     public boolean developerMode = false;
@@ -66,4 +85,53 @@ public class Controller {
         return res;
     }
 
+    public AdminController getAdminController() {
+        return adminController;
+    }
+
+    public ArrivingController getArrivingController() {
+        return arrivingController;
+    }
+
+    public BookingController getBookingController() {
+        return bookingController;
+    }
+
+    public CustomerController getCustomerController() {
+        return customerController;
+    }
+
+    public DepartingController getDepartingController() {
+        return departingController;
+    }
+
+    public FlightController getFlightController() {
+        return flightController;
+    }
+
+    public GateController getGateController() {
+        return gateController;
+    }
+
+    public LuggageController getLuggageController() {
+        return luggageController;
+    }
+
+    public PassengerController getPassengerController() {
+        return passengerController;
+    }
+
+    public UserController getUserController() {
+        return userController;
+    }
+
+    public void setAdminNUser (String username, String password) {
+        adminController.setAdmin (username, password);
+        userController.setUser (username, password);
+    }
+
+    public void setCustomerNUser (String username, String password) {
+        customerController.setCustomer (username, password);
+        userController.setUser (username, password);
+    }
 }

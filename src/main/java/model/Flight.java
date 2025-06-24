@@ -165,7 +165,7 @@ public class Flight {
         return monthNames[this.get_date().getMonth()];
     }
 
-    public ArrayList<Passenger> getPassengers(){
+    public ArrayList<Passenger> get_passengers(){
 
         return this.passengers;
     }
