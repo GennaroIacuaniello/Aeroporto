@@ -20,8 +20,7 @@ public class Home {
         frameHome.pack();
         frameHome.setVisible(true);
 
-        controller.getCustomerController().setCustomer("Tramontana", "1234");
-        controller.getUserController().setUser("Tramontana", "1234");
+        controller.setCustomerNUser("Tramontana", "1234");
         controller.getFlightController().setFlight("01", "Compagnia", new Date(),
                 "00:00", "00:00", 66);
 

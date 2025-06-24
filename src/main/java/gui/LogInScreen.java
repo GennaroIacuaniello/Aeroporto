@@ -69,8 +69,7 @@ public class LogInScreen {
                     return;
                 }
 
-                controller.getCustomerController().setCustomer(nickTextField.getText(), Arrays.toString(passwordField.getPassword()));
-                controller.getUserController().setUser(nickTextField.getText(), Arrays.toString(passwordField.getPassword()));
+                controller.setCustomerNUser(nickTextField.getText(), Arrays.toString(passwordField.getPassword()));
                 //Customer customer = getCustomer(nickTextField, passwordField);
                 nickTextField.setText("");
                 passwordField.setText("");

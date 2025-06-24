@@ -124,4 +124,14 @@ public class Controller {
     public UserController getUserController() {
         return userController;
     }
+
+    public void setAdminNUser (String username, String password) {
+        adminController.setAdmin (username, password);
+        userController.setUser (username, password);
+    }
+
+    public void setCustomerNUser (String username, String password) {
+        customerController.setCustomer (username, password);
+        userController.setUser (username, password);
+    }
 }
