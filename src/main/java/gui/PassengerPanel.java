@@ -19,6 +19,7 @@ public class PassengerPanel extends JPanel
     private Color userTextColor = new Color(32, 32, 32);
     private SeatChooser seatChooser;
     private int seat = -1;
+    private LuggagesView luggagesView;
 
     private JTextField passengerNameField;
     private JTextField passengerSurnameField;
@@ -42,8 +43,9 @@ public class PassengerPanel extends JPanel
         passengerCFField.setForeground(displayedTextColor);
         JButton seatButton = new JButton("Scegli Posto");
         seatLabel = new JLabel (print_seat());
+        luggagesView = new LuggagesView ();
 
-        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.NONE,
+        constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
         this.add (label, constraints.getConstraints());
         label.setVisible (true);
@@ -72,6 +74,11 @@ public class PassengerPanel extends JPanel
                 0, 0, GridBagConstraints.LINE_START);
         this.add (seatLabel, constraints.getConstraints());
         seatLabel.setVisible (true);
+
+        constraints.setConstraints (3, 0, 1, 3, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END);
+        this.add (luggagesView, constraints.getConstraints());
+        luggagesView.setVisible (true);
 
         /* Removing the displayed text and changing the font color if user focuses
          * Putting it back if user unfocuses without writing anything
