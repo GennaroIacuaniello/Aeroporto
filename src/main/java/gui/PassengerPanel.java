@@ -20,6 +20,7 @@ public class PassengerPanel extends JPanel
     private SeatChooser seatChooser;
     private int seat = -1;
     private LuggagesView luggagesView;
+    private JButton luggagesViewButton;
 
     private JTextField passengerNameField;
     private JTextField passengerSurnameField;
@@ -44,6 +45,13 @@ public class PassengerPanel extends JPanel
         JButton seatButton = new JButton("Scegli Posto");
         seatLabel = new JLabel (print_seat());
         luggagesView = new LuggagesView (controller);
+        luggagesViewButton = new JButton("Luggages");
+        luggagesViewButton.addActionListener (new ActionListener () {
+           @Override
+           public void actionPerformed (ActionEvent e) {
+               luggagesView.setVisible(true);
+           }
+        });
 
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
@@ -55,7 +63,7 @@ public class PassengerPanel extends JPanel
         this.add (passengerNameField, constraints.getConstraints());
         passengerNameField.setVisible (true);
 
-        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.NONE,
+        constraints.setConstraints (1, 1, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
         this.add (passengerSurnameField, constraints.getConstraints());
         passengerSurnameField.setVisible (true);
@@ -75,10 +83,10 @@ public class PassengerPanel extends JPanel
         this.add (seatLabel, constraints.getConstraints());
         seatLabel.setVisible (true);
 
-        constraints.setConstraints (3, 0, 1, 3, GridBagConstraints.NONE,
+        constraints.setConstraints (3, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END);
-        this.add (luggagesView, constraints.getConstraints());
-        luggagesView.setVisible (true);
+        this.add (luggagesViewButton, constraints.getConstraints());
+        luggagesViewButton.setVisible (true);
 
         /* Removing the displayed text and changing the font color if user focuses
          * Putting it back if user unfocuses without writing anything
