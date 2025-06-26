@@ -320,6 +320,18 @@ public class PassengerPanel extends JPanel
         return passengerCFField.getText ();
     }
 
+    public void setPassengerName(String passengerName){
+        passengerNameField.setText (passengerName);
+    }
+
+    public void setPassengerSurname(String passengerSurname){
+        passengerSurnameField.setText (passengerSurname);
+    }
+
+    public void setPassengerCF(String passengerCF){
+        passengerCFField.setText (passengerCF);
+    }
+
     public boolean checkPassengerName (){
         return passengerNameField.getText().equals(displayedNameText);
     }
@@ -338,5 +350,9 @@ public class PassengerPanel extends JPanel
 
     public ArrayList<LuggagePanel> getLuggagesPanels() {
         return luggagesView.getLuggagesPanels();
+    }
+
+    public void setLuggagesTypes (ArrayList<Integer> luggageTypes, Controller controller){
+        luggagesView.setLuggagesTypes (luggageTypes, controller);
     }
 }

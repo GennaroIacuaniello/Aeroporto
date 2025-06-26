@@ -114,4 +114,32 @@ public class LuggagesView extends JFrame {
     public ArrayList<LuggagePanel> getLuggagesPanels() {
         return luggagesPanels;
     }
+
+    public void setLuggagesTypes (ArrayList<Integer> luggagesTypes, Controller controller) {
+        for (Integer luggageType : luggagesTypes) {
+            if (!luggagesPanels.isEmpty()) {
+                luggagesPanels.add(new LuggagePanel(controller, luggagesPanels.getLast().getIndex() + 1));
+            } else {
+                luggagesPanels.add(new LuggagePanel(controller, 0));
+            }
+
+
+            constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+            luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
+            luggagesPanels.getLast().setVisible(true);
+
+            removeLuggageButtons.add(new RemoveLuggageButton(controller, luggagesPanels, removeLuggageButtons, luggagesPanel,
+                    scrollPane, removeLuggageButtons.size()));
+
+            constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+            luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
+            luggagesPanels.getLast().setVisible(true);
+
+            luggagesPanels.getLast().setType(luggageType);
+
+            scrollPane.setViewportView(luggagesPanel);
+        }
+    }
 }

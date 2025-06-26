@@ -1,7 +1,6 @@
 package controller;
 
 import model.Arriving;
-import model.Customer;
 import model.Departing;
 import model.Flight;
 

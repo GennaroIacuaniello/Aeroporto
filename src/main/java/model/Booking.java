@@ -59,6 +59,10 @@ public class Booking {
         return 0;
     }
 
+    public void set_Passengers(ArrayList<Passenger> par_passengers){
+        this.passengers = par_passengers;
+    }
+
     public int add_passenger(Passenger par_passenger){
 
         this.passengers.add(par_passenger);

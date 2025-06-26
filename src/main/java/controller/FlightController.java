@@ -15,6 +15,10 @@ public class FlightController {
         flight = new Flight(id, companyName, date, departureTime, arrivalTime, maxSeats);
     }
 
+    public Flight getFlight() {
+        return flight;
+    }
+
     public String getId () {
         return flight.get_id();
     }

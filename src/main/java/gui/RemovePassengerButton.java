@@ -95,12 +95,13 @@ public class RemovePassengerButton extends JButton {
                 if (removePassengerButtons.size() == 1) {
                     removePassengerButtons.getFirst().setEnabled(false);
                 }
-
+/*
                 System.out.println("Current state:");
                 System.out.println ("Current Page: " + (book.getCurrPage ()));
                 System.out.println ("#PassengerPanels: " + passengerPanels.size());
                 System.out.println ("#Pages: " + (((passengerPanels.size() - 1) / 3) + 1));
                 System.out.println ();
+ */
             }
         });
 

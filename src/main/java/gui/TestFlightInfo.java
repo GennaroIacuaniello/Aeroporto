@@ -36,19 +36,19 @@ public class TestFlightInfo {
         passengers.add (new Passenger("chiara", "russo", "jkl", 32));
         passengers.add (new Passenger("rosa", "manzo", "zxc", 15));
 
-        //creo volo
-        flight = new Flight("03", "che ne so", (java.sql.Date) new Date(2025, 2, 14), "12:25",
+        //sistemo il controller
+        controller.getFlightController().setFlight("03", "che ne so", new Date(2025, 2, 14), "12:25",
                 "14:10", 10);
 
-        //creo prenotazione
-        bookingTest = new Booking(new Customer("pippo", "pluto"), flight, passengers);
+        controller.getBookingController().setBooking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
 
-        //aggiungo prenotazione al volo
-        flight.add_booking(bookingTest);
+        controller.getFlightController().getFlight().add_booking(controller.getBookingController().getBooking());
+
+        controller.setCustomerNUser("pippo", "pluto");
 
         //chiamo FlightInfo
         ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
         callingFrames.add(frame);
-        new FlightInfo (callingFrames, controller, bookingTest);
+        new Book (callingFrames, controller);
     }
 }
