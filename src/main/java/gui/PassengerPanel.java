@@ -335,4 +335,8 @@ public class PassengerPanel extends JPanel
     public boolean checkPassengerSeat (){
         return seat == -1;
     }
+
+    public ArrayList<LuggagePanel> getLuggagesPanels() {
+        return luggagesView.getLuggagesPanels();
+    }
 }

@@ -25,6 +25,7 @@ public class LuggagesView extends JFrame {
         super ("Luggages");
 
         this.setVisible (false);
+        this.setAlwaysOnTop (true);
 
         thisFrame = this;
         this.setLayout(new GridBagLayout());
@@ -102,10 +103,15 @@ public class LuggagesView extends JFrame {
     private void setScrollPane(Controller controller) {
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(luggagesPanel);
+        scrollPane.setWheelScrollingEnabled(true);
 
         constraints.setConstraints(0, 1, 2, 1,
                 GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER, 0.5f, 0.5f);
         this.add(scrollPane, constraints.getConstraints());
         scrollPane.setVisible(true);
+    }
+
+    public ArrayList<LuggagePanel> getLuggagesPanels() {
+        return luggagesPanels;
     }
 }

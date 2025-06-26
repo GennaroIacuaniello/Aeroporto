@@ -53,4 +53,8 @@ public class LuggagePanel extends JPanel {
     public int getIndex() {
         return index;
     }
+
+    public boolean checkLuggage () {
+        return comboBox.getSelectedIndex() == 0;
+    }
 }
