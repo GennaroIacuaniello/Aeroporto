@@ -55,6 +55,18 @@ public class FlightController {
         return flight.get_passengers().size();
     }
 
+    public int getBookingsSize () {
+        return flight.get_bookings().size();
+    }
+
+    public int getBookingSize (int index) {
+        return flight.get_bookings().get(index).get_passengers().size();
+    }
+
+    public int getPassengerSeatFromBooking (int bookingIndex, int passengerIndex) {
+        return flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Seat();
+    }
+
     public int getPassengerSeat (int index) {
         return flight.get_passengers().get(index).get_Seat();
     }

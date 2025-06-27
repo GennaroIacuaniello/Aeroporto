@@ -133,4 +133,8 @@ public class Controller {
         customerController.setCustomer (username, password);
         userController.setUser (username, password);
     }
+
+    public boolean checkBooking (int index) {
+        return getBookingController().getBooking() == getFlightController().getFlight().get_bookings().get(index);
+    }
 }

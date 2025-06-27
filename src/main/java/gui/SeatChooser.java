@@ -26,7 +26,7 @@ public class SeatChooser extends JFrame {
         setSize(450, 800);
 
         seat = -1;
-        seatButtons = new ArrayList<>();
+        seatButtons = new ArrayList<JButton>();
         confirmButton = new JButton("CONFERMA");
         confirmButton.addActionListener(new ActionListener() {
             @Override
@@ -36,11 +36,12 @@ public class SeatChooser extends JFrame {
             }
         });
 
-        constraints.setConstraints(3, controller.getFlightController().getMaxSeats() / 6 + 1, 1, controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.PAGE_END);
+        constraints.setConstraints(3, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
+                controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
+                GridBagConstraints.PAGE_END);
         this.add(confirmButton, constraints.getConstraints());
 
         for (int i = 0; i < controller.getFlightController().getMaxSeats(); i++) {
-
             int finalI = i;
             seatButtons.add(new JButton(printSeat(finalI)));
             seatButtons.get(finalI).addActionListener(new ActionListener() {
@@ -71,15 +72,17 @@ public class SeatChooser extends JFrame {
         }
         */
 
-        for (int i = 0; i < controller.getFlightController().getPassengersSize(); i++) {
-            seatButtons.get(controller.getFlightController().getPassengerSeat(i)).setEnabled(false);
+        for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
+
+            if (!controller.checkBooking(i))
+                for (int j = 0; j < controller.getFlightController().getBookingSize(i); j++) {
+                    seatButtons.get(controller.getFlightController().getPassengerSeatFromBooking(i, j)).setEnabled(false);
+                }
         }
 
         for (PassengerPanel passengerPanel : passengerPanels) {
             if (passengerPanel.getSeat() != -1) seatButtons.get(passengerPanel.getSeat()).setEnabled(false);
         }
-
-        //aggiungi action listener su conferma
 
         this.setVisible(true);
     }

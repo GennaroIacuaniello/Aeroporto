@@ -15,7 +15,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class Book {
 
     private JFrame mainFrame;
-
     private JPanel topPanel;
     private TitlePanel titlePanel;
     private NavigatorBarPanel navigatorBarPanel;
@@ -33,9 +32,7 @@ public class Book {
     private ArrayList<PassengerPanel> passengerPanels;
     private ArrayList<RemovePassengerButton> removePassengerButtons;
     private JPanel passengerPage;
-
     private FooterPanel footerPanel;
-
     private Constraints constraints;
 
     public Book(ArrayList<JFrame> callingFrames, Controller controller) {
