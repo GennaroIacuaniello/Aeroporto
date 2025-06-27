@@ -258,7 +258,7 @@ public class Book {
             confirmButtons.getLast().addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed (ActionEvent e) {
-                    showMessageDialog(new JPanel(), "La tua richiesta di prenotazione è stata presa in carico", "Booking", JOptionPane.INFORMATION_MESSAGE);
+                    new GoodMessage("La tua richiesta di prenotazione è stata presa in carico", confirmButtons.get(finalI));
                 }
             });
 
@@ -305,7 +305,7 @@ public class Book {
                     insertPassengerPanel(controller, book, new PassengerPanel(controller, passengerPanels));
                 } else {
                     //showMessageDialog(new JPanel(), "Non ci sono altri posti disponibili per questo volo", "Error", JOptionPane.ERROR_MESSAGE);
-                    errorMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton);
+                    new ErrorMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton);
                 }
             }
         });
@@ -418,69 +418,6 @@ public class Book {
         return currPage;
     }
 
-    private void errorMessage (String msg, JButton callingButton){
-        final JWindow errorWindow = new JWindow();
-        errorWindow.setAlwaysOnTop(true);
-
-        errorWindow.setBackground(new Color(0, 0, 0, 0));
-        JPanel contentPanel = (JPanel) errorWindow.getContentPane();
-        contentPanel.setOpaque(false);
-
-        RoundedPanel errorPanel = new RoundedPanel(new BorderLayout());
-        errorPanel.setBackground(new Color(200, 60, 60));
-        errorPanel.setRoundBorderColor (new Color(120, 0, 10));
-
-        JLabel errorLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
-        errorLabel.setForeground(Color.BLACK);
-
-        errorPanel.add(errorLabel, BorderLayout.CENTER);
-
-        errorWindow.setSize(mainFrame.getWidth() / 7 + 30, mainFrame.getHeight() / 10);
-
-        Point point = new Point(callingButton.getLocationOnScreen());
-        errorWindow.setLocation((int)point.getX() + (callingButton.getWidth() - errorWindow.getWidth()) / 2, (int)point.getY() - errorWindow.getHeight() - 10);
-
-        errorWindow.add(errorPanel);
-        errorWindow.setVisible(true);
-
-        errorWindow.setOpacity(0.75f);
-
-        Timer disposeTimer;
-        Timer decreaseOpacityTimer;
-        Timer startDecreaseOpacityTimer;
-
-
-        decreaseOpacityTimer = new Timer(10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                errorWindow.setOpacity(errorWindow.getOpacity()-0.01f);
-            }
-        });
-        decreaseOpacityTimer.setRepeats(true);
-
-        startDecreaseOpacityTimer = new Timer(1500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                ((Timer) e.getSource()).stop();
-                decreaseOpacityTimer.start();
-            }
-        });
-        startDecreaseOpacityTimer.setRepeats(false);
-
-        disposeTimer = new Timer(2500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                errorWindow.dispose();
-                ((Timer) e.getSource()).stop();
-                decreaseOpacityTimer.setRepeats(false);
-                decreaseOpacityTimer.stop();
-            }
-        });
-
-        disposeTimer.start();
-        startDecreaseOpacityTimer.start();
-    }
-
     private void checkConfirmButton(int index) {
         boolean flag = true;
 
@@ -509,7 +446,7 @@ public class Book {
 
             confirmButtons.get(random).setVisible (true);
 
-            errorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
+            new ErrorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
         }
     }
 
