@@ -28,7 +28,7 @@ public class Book {
     private JButton nextPageButton;
     private JLabel currentPageLabel;
     private JPanel confirmPanel;
-    private ArrayList<JButton> confirmButtons;
+    private ArrayList<RoundedButton> confirmButtons;
     private ArrayList<PassengerPanel> passengerPanels;
     private ArrayList<RemovePassengerButton> removePassengerButtons;
     private JPanel passengerPage;
@@ -244,14 +244,14 @@ public class Book {
         String buttonTitle = "Conferma Prenotazione";
         if (alreadyBooked(controller)) buttonTitle = "Conferma Modifiche";
 
-        confirmButtons = new ArrayList<JButton>();
+        confirmButtons = new ArrayList<RoundedButton>();
         confirmPanel = new JPanel();
         confirmPanel.setLayout(new GridLayout());
         if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
 
         for (int i = 0; i < 3; i++) {
 
-            confirmButtons.add(new JButton(buttonTitle));
+            confirmButtons.add(new RoundedButton(buttonTitle));
 
             int finalI = i;
 
