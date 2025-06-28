@@ -10,8 +10,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static javax.swing.JOptionPane.showMessageDialog;
-
 public class Book {
 
     private JFrame mainFrame;
@@ -24,8 +22,8 @@ public class Book {
     private JPanel mainPanel;
     private JPanel modifyPanel;
     private int currPage = 0;
-    private JButton prevPageButton;
-    private JButton nextPageButton;
+    private RoundedButton prevPageButton;
+    private RoundedButton nextPageButton;
     private JLabel currentPageLabel;
     private JPanel confirmPanel;
     private ArrayList<RoundedButton> confirmButtons;
@@ -127,8 +125,9 @@ public class Book {
         passengerPage = new JPanel();
         passengerPage.setLayout(new GridBagLayout());
 
-        prevPageButton = new JButton("←");
-        nextPageButton = new JButton("→");
+        prevPageButton = new RoundedButton("←");
+        nextPageButton = new RoundedButton("→");
+
         currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
         PassengerPanel newPassenger = new PassengerPanel(controller, passengerPanels);
@@ -157,6 +156,7 @@ public class Book {
         mainFrame.add (mainPanel, constraints.getConstraints());
         constraints.resetWeight ();
         mainFrame.setVisible (true);
+        System.out.println(prevPageButton.getSize().getHeight());
     }
 
     private void addFlightInfoPanel(Controller controller)
@@ -292,7 +292,7 @@ public class Book {
 
     private void addAddPassengerButton (Book book, Controller controller) {
 
-        JButton addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
+        RoundedButton addPassengerButton = new RoundedButton("AGGIUNGI PASSEGGERO");
         addPassengerButton.setFocusable(false);
 
         addPassengerButton.addActionListener(new ActionListener() {

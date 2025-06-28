@@ -3,6 +3,7 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,6 +113,8 @@ public class LogInScreen {
                 new RegisterScreen(callingFrames, controller);
             }
         });
+
+        loginMenu.setMaximumSize(new Dimension(10, 10));
     }
 
     public static void main(String[] args) {
@@ -130,6 +133,7 @@ public class LogInScreen {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
+
     }
 /*
     private Customer getCustomer(JTextField nick, JPasswordField password) {

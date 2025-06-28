@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class SeatChooser extends JFrame {
 
     private Constraints constraints;
-    private ArrayList<JButton> seatButtons;
-    private JButton confirmButton;
+    private ArrayList<RoundedButton> seatButtons;
+    private RoundedButton confirmButton;
     private int offset;
     private int seat;
 
@@ -26,8 +26,8 @@ public class SeatChooser extends JFrame {
         setSize(450, 800);
 
         seat = -1;
-        seatButtons = new ArrayList<JButton>();
-        confirmButton = new JButton("CONFERMA");
+        seatButtons = new ArrayList<RoundedButton>();
+        confirmButton = new RoundedButton("CONFERMA");
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,7 +43,7 @@ public class SeatChooser extends JFrame {
 
         for (int i = 0; i < controller.getFlightController().getMaxSeats(); i++) {
             int finalI = i;
-            seatButtons.add(new JButton(printSeat(finalI)));
+            seatButtons.add(new RoundedButton(printSeat(finalI)));
             seatButtons.get(finalI).addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -74,7 +74,7 @@ public class SeatChooser extends JFrame {
 
         for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
 
-            if (!controller.checkBooking(i))
+            if (controller.checkBooking(i))
                 for (int j = 0; j < controller.getFlightController().getBookingSize(i); j++) {
                     seatButtons.get(controller.getFlightController().getPassengerSeatFromBooking(i, j)).setEnabled(false);
                 }

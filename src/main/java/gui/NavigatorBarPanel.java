@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class NavigatorBarPanel extends JPanel {
-    JButton homeButton;
-    JButton backButton;
+    RoundedButton homeButton;
+    RoundedButton backButton;
     JLabel pathLabel;
     Constraints constraints;
 
@@ -25,7 +25,7 @@ public class NavigatorBarPanel extends JPanel {
     }
 
     private void setHomeButton(ArrayList<JFrame> callingFrames) {
-        homeButton = new JButton("Home");
+        homeButton = new RoundedButton("Home");
         //homeButton.setLayout (new FlowLayout ());
         homeButton.setFocusable(false);
 
@@ -56,7 +56,7 @@ public class NavigatorBarPanel extends JPanel {
     }
 
     private void setBackButton(ArrayList<JFrame> callingFrames) {
-        backButton = new JButton("Back");
+        backButton = new RoundedButton("Back");
         //backButton.setLayout (new GridBagLayout ());
         backButton.setFocusable(false);
 

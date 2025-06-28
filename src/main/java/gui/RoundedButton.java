@@ -17,6 +17,7 @@ public class RoundedButton extends JButton {
         this.backgroundColor = backgroundColor;
         this.roundBorderColor = roundBorderColor;
         setPreferredSize(new Dimension((int)getPreferredSize().getWidth(), (int)(getPreferredSize().getHeight() * 1.75)));
+        if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
     }
 
     public RoundedButton(Color backgroundColor, Color roundBorderColor) {
@@ -24,7 +25,8 @@ public class RoundedButton extends JButton {
         setOpaque(false);
         this.backgroundColor = backgroundColor;
         this.roundBorderColor = roundBorderColor;
-        setPreferredSize(new Dimension((int)getPreferredSize().getWidth(), (int)(getPreferredSize().getHeight() * 1.75)));
+        setPreferredSize(new Dimension ((int) (getPreferredSize().getWidth() * 1.2), (int) (getPreferredSize().getHeight() * 1.75)));
+        if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
     }
 
     public RoundedButton(String title) {
@@ -32,7 +34,8 @@ public class RoundedButton extends JButton {
         setOpaque(false);
         this.backgroundColor = new Color(219, 245, 255);
         this.roundBorderColor = new Color(170, 200, 250);
-        setPreferredSize(new Dimension((int)getPreferredSize().getWidth(), (int)(getPreferredSize().getHeight() * 1.75)));
+        setPreferredSize(new Dimension ((int) (getPreferredSize().getWidth() * 1.2), (int) (getPreferredSize().getHeight() * 1.75)));
+        if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
     }
 
     public RoundedButton() {
@@ -41,6 +44,7 @@ public class RoundedButton extends JButton {
         this.backgroundColor = new Color(219, 245, 255);
         this.roundBorderColor = new Color(170, 200, 250);
         setPreferredSize(new Dimension((int)getPreferredSize().getWidth(), (int)(getPreferredSize().getHeight() * 1.75)));
+        if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
     }
 
     @Override

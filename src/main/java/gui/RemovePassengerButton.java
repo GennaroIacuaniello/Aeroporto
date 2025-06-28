@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 import controller.Controller;
 
-public class RemovePassengerButton extends JButton {
+public class RemovePassengerButton extends RoundedButton {
 
     int index;
     Constraints constraints;
 
     public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
-                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, JButton nextPageButton) {
+                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, RoundedButton nextPageButton) {
 
         super();
 
@@ -107,9 +107,9 @@ public class RemovePassengerButton extends JButton {
 
         this.setEnabled(true);
     }
-
+/*
     public RemovePassengerButton(FlightInfo flightInfo, Controller controller, ArrayList<PassengerPanel> passengerPanels,
-                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, JButton nextPageButton) {
+                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, RoundedButton nextPageButton) {
 
         super();
 
@@ -200,5 +200,5 @@ public class RemovePassengerButton extends JButton {
         });
 
         this.setEnabled(true);
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package model;
 import org.postgresql.ssl.SingleCertValidatingFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
@@ -17,12 +18,26 @@ public class Booking {
     private BookingStatus status;
     private Customer owner;
     private Flight booked_flight;
+    private Date date;
     protected ArrayList<Passenger> passengers;
 
     public Booking(Customer par_owner, Flight par_booked_flight, ArrayList<Passenger> par_passengers) throws InvalidPassengerNumber{
 
         if(par_passengers.size() > 0){
             this.status = BookingStatus.pending;
+            this.owner = par_owner;
+            this.booked_flight = par_booked_flight;
+            this.passengers = par_passengers;
+        }else{
+            throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
+        }
+
+    }
+
+    public Booking(Customer par_owner, Flight par_booked_flight, ArrayList<Passenger> par_passengers, BookingStatus par_status) throws InvalidPassengerNumber{
+
+        if(par_passengers.size() > 0){
+            this.status = par_status;
             this.owner = par_owner;
             this.booked_flight = par_booked_flight;
             this.passengers = par_passengers;
@@ -56,6 +71,15 @@ public class Booking {
 
     public int set_booked_flight(Flight par_booked_flight){
         this.booked_flight = par_booked_flight;
+        return 0;
+    }
+
+    public Date get_date(){
+        return this.date;
+    }
+
+    public int set_date(Date par_date){
+        this.date = par_date;
         return 0;
     }
 

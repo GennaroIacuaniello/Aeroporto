@@ -15,8 +15,8 @@ public class LuggagesView extends JFrame {
     private JPanel luggagesPanel;
     private ArrayList<LuggagePanel> luggagesPanels;
     private ArrayList<RemoveLuggageButton> removeLuggageButtons;
-    private JButton addLuggageButton;
-    private JButton confirmButton;
+    private RoundedButton addLuggageButton;
+    private RoundedButton confirmButton;
 
     private Constraints constraints;
 
@@ -46,8 +46,8 @@ public class LuggagesView extends JFrame {
     }
 
     private void setButtons(Controller controller) {
-        addLuggageButton = new JButton("+");
-        confirmButton = new JButton("Confirm");
+        addLuggageButton = new RoundedButton("+");
+        confirmButton = new RoundedButton("Confirm");
 
         addLuggageButton.addActionListener(new ActionListener() {
 

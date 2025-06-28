@@ -38,7 +38,7 @@ public class TestFlightInfo {
 
         //sistemo il controller
         controller.getFlightController().setFlight("03", "che ne so", new Date(2025, 2, 14), "12:25",
-                "14:10", 18);
+                "14:10", 19);
 
         controller.getBookingController().setBooking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
 
@@ -51,7 +51,7 @@ public class TestFlightInfo {
         passengers2.add (new Passenger("a", "a", "a", 15));
         passengers2.add (new Passenger("a", "a", "a", 16));
 
-        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", "x"), controller.getFlightController().getFlight(), passengers2));
+        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", "x"), controller.getFlightController().getFlight(), passengers2, BookingStatus.cancelled));
 
         //chiamo FlightInfo
         ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
