@@ -82,7 +82,11 @@
               <horizontalAlignment value="10"/>
             </properties>
           </component>
+<<<<<<< Updated upstream
           <component id="fc050" class="javax.swing.JTextField" binding="mailTextField" default-binding="true">
+=======
+          <component id="fc050" class="javax.swing.JTextField" binding="usernameTextField">
+>>>>>>> Stashed changes
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -95,7 +99,11 @@
               <maximumSize width="2147483647" height="2147483647"/>
             </properties>
           </component>
+<<<<<<< Updated upstream
           <component id="3384a" class="javax.swing.JLabel" binding="mailLabel">
+=======
+          <component id="3384a" class="javax.swing.JLabel" binding="usernameLabel">
+>>>>>>> Stashed changes
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
               <gridbag top="32" left="16" bottom="0" right="0" weightx="0.0" weighty="0.0"/>

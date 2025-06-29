@@ -123,5 +123,9 @@
   </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="false" />
+<<<<<<< Updated upstream
+=======
+    <option name="DEFAULT_LAYOUT_MANAGER" value="GridBagLayout" />
+>>>>>>> Stashed changes
   </component>
 </project>

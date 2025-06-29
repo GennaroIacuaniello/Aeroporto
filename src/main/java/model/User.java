@@ -9,12 +9,17 @@ package model;
 
 abstract public class User {
 
+<<<<<<< Updated upstream
     protected String username;
     protected String password;
+=======
+    private String username;
+    private char[] password;
+>>>>>>> Stashed changes
 
-    public User(String par_username, String par_password){
+    public User(String par_username, char[] par_password){
         this.username = par_username;
-        this.password = par_password;
+        this.password = par_password.clone();
         //Più avanti: cercare l'username nel database e verificare che la password sia corretta
     }
 
@@ -27,7 +32,7 @@ abstract public class User {
         return 0;
     }
 
-    public String get_password(){
+    public char[] get_password(){
         return this.password;
     }
 
