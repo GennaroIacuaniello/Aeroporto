@@ -10,11 +10,11 @@ package model;
 public class User {
 
     private String username;
-    private String password;
+    private char[] password;
 
-    public User(String par_username, String par_password){
+    public User(String par_username, char[] par_password){
         this.username = par_username;
-        this.password = par_password;
+        this.password = par_password.clone();
         //Più avanti: cercare l'username nel database e verificare che la password sia corretta
     }
 
@@ -27,12 +27,12 @@ public class User {
         return 0;
     }
 
-    public String get_password(){
+    public char[] get_password(){
         return this.password;
     }
 
-    public int set_password(String par_password){
-        this.username = par_password;
+    public int set_password(char[] par_password){
+        this.password = par_password.clone();
         return 0;
     }
 

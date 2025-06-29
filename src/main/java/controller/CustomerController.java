@@ -7,7 +7,7 @@ public class CustomerController {
 
     public CustomerController() {}
 
-    public void setCustomer(String username, String password) {
+    public void setCustomer(String username, char[] password) {
         customer = new Customer(username, password);
     }
 }

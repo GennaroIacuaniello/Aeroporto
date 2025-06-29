@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 import java.util.ArrayList;
 
-public class SearchPanel extends JPanel{
+public class SearchPanel extends JPanel {
 
     private JButton search_arriving_button;
     private JButton search_departing_button;
@@ -34,7 +34,7 @@ public class SearchPanel extends JPanel{
     private JTextField time_to_field;
 
 
-    public SearchPanel(ArrayList<JFrame> callingFrames, Controller controller){
+    public SearchPanel(ArrayList<JFrame> callingFrames, Controller controller) {
 
         super();
 
@@ -65,55 +65,53 @@ public class SearchPanel extends JPanel{
     }
 
 
-    private void set_search_from_text_label()
-    {
+    private void set_search_from_text_label() {
 
         search_from_text = new JLabel("Da:");
 
         //search_from_text.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10,5,5,2));
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
         this.add(search_from_text, constraints.getConstraints());
-        search_from_text.setVisible (true);
+        search_from_text.setVisible(true);
     }
 
-    private void set_search_to_text_label()
-    {
+    private void set_search_to_text_label() {
 
         search_to_text = new JLabel("A");
 
         //search_to_text.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (4, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10,5,5,2));
+        constraints.setConstraints(4, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
 
         this.add(search_to_text, constraints.getConstraints());
-        search_to_text.setVisible (true);
+        search_to_text.setVisible(true);
     }
 
-    private void set_search_from_text_field(){
+    private void set_search_from_text_field() {
 
         search_from = new JTextField(10);
 
         //search_from.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10,2,5,15));
+        constraints.setConstraints(1, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10, 2, 5, 15));
         //search_from.setSize(30,30);
         this.add(search_from, constraints.getConstraints());
         search_from.setVisible(true);
     }
 
-    private void set_search_to_text_field(){
+    private void set_search_to_text_field() {
         search_to = new JTextField(10);
 
         //search_to.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (5, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10,2,5,15));
+        constraints.setConstraints(5, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10, 2, 5, 15));
         //search_to.setSize(30,1);
         this.add(search_to, constraints.getConstraints());
         search_to.setVisible(true);
     }
 
-    private void set_search_arriving_button(){
+    private void set_search_arriving_button() {
 
         search_arriving_button = new JButton("Cerca voli in arrivo");
         //search_arriving_button.setLayout(new GridBagLayout());
@@ -134,13 +132,13 @@ public class SearchPanel extends JPanel{
             }
         });
 
-        constraints.setConstraints (0, 0, 4, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5,5,5,5));
+        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
 
 
         this.add(search_arriving_button, constraints.getConstraints());
     }
 
-    private void set_search_departing_button(){
+    private void set_search_departing_button() {
 
         search_departing_button = new JButton("Cerca voli in partenza");
         //search_arriving_button.setLayout(new GridBagLayout());
@@ -164,86 +162,86 @@ public class SearchPanel extends JPanel{
             }
         });
 
-        constraints.setConstraints (4, 0, 3, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5,5,5,5));
+        constraints.setConstraints(4, 0, 3, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
 
 
         this.add(search_departing_button, constraints.getConstraints());
     }
 
 
-    private void set_date_label(){
+    private void set_date_label() {
 
         date_label = new JLabel("Data:");
 
         //search_from_text.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10,5,5,2));
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
         this.add(date_label, constraints.getConstraints());
-        date_label.setVisible (true);
+        date_label.setVisible(true);
     }
 
-    private void set_date_text_field(){
+    private void set_date_text_field() {
 
         date_field = new JTextField(8);
 
         //search_from.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 0.5f, 0.0f, new Insets(10,2,5,15));
+        constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 0.5f, 0.0f, new Insets(10, 2, 5, 15));
         //search_from.setSize(30,30);
         this.add(date_field, constraints.getConstraints());
         date_field.setVisible(true);
     }
 
-    private void set_time_label(){
+    private void set_time_label() {
 
         time_label = new JLabel("Fascia oraria:");
 
         //search_from_text.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (3, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10,5,5,2));
+        constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
         this.add(time_label, constraints.getConstraints());
-        time_label.setVisible (true);
+        time_label.setVisible(true);
     }
 
-    private void set_time_from_text_field(){
+    private void set_time_from_text_field() {
 
         time_from_field = new JTextField(5);
 
         //search_from.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (4, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_END, 1.0f, 0.0f, new Insets(10,2,5,5));
+        constraints.setConstraints(4, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 1.0f, 0.0f, new Insets(10, 2, 5, 5));
         //search_from.setSize(30,30);
         this.add(time_from_field, constraints.getConstraints());
         time_from_field.setVisible(true);
     }
 
-    private void set_time_separator_label(){
+    private void set_time_separator_label() {
 
         time_separator_label = new JLabel("-  ");
 
         //search_from_text.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (5, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(10,5,5,0));
+        constraints.setConstraints(5, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(10, 5, 5, 0));
         this.add(time_separator_label, constraints.getConstraints());
-        time_separator_label.setVisible (true);
+        time_separator_label.setVisible(true);
     }
 
-    private void set_time_to_text_field(){
+    private void set_time_to_text_field() {
 
         time_to_field = new JTextField(5);
 
         //search_from.setLayout(new GridBagLayout ());
 
-        constraints.setConstraints (6, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10,5,5,2));
+        constraints.setConstraints(6, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10, 5, 5, 2));
         //search_from.setSize(30,30);
         this.add(time_to_field, constraints.getConstraints());
         time_to_field.setVisible(true);
     }
 
-    private void set_search_button(ArrayList<JFrame> callingFrames, Controller controller){
+    private void set_search_button(ArrayList<JFrame> callingFrames, Controller controller) {
 
         search_button = new JButton("Cerca");
         //search_arriving_button.setLayout(new GridBagLayout());
@@ -256,16 +254,35 @@ public class SearchPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                ArrayList<Flight> searched_flights = controller.search_flight_customer(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText() );
+                ArrayList<Flight> searched_flights = controller.search_flight_customer(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText());
 
                 new SearchFlightResult(callingFrames, controller, searched_flights);
             }
         });
 
-        constraints.setConstraints (0, 3, 7, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5,5,5,5));
+        constraints.setConstraints(0, 3, 7, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
 
 
         this.add(search_button, constraints.getConstraints());
 
+    }
+
+    {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+        $$$setupUI$$$();
+    }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridBagLayout());
     }
 }

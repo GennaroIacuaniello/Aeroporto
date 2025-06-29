@@ -7,7 +7,7 @@ public class AdminController {
 
     public AdminController() {}
 
-    public void setAdmin(String username, String password) {
+    public void setAdmin(String username, char[] password) {
         admin = new Admin(username, password);
     }
 }

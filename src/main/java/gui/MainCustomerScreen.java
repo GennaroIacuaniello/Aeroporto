@@ -30,8 +30,8 @@ public class MainCustomerScreen {
         //makes this the operating frame
         this.setMainFrame(callingFrames);
         //callingFrame.dispose();
-        if(controller.developerMode){
-            for(JFrame frame : callingFrames){
+        if (controller.developerMode) {
+            for (JFrame frame : callingFrames) {
                 System.out.println(frame.getName());
             }
             System.out.println();
@@ -108,7 +108,7 @@ public class MainCustomerScreen {
         arrivingPanel = new JPanel();
         arrivingPanel.setLayout(new GridBagLayout());
         arrivingPanel.setBackground(Color.LIGHT_GRAY);
-        if(controller.developerMode) arrivingPanel.setBackground(Color.ORANGE);
+        if (controller.developerMode) arrivingPanel.setBackground(Color.ORANGE);
 
         setArrivingTitleLabels(arrivingPanel);
         setArrivingFlightLabels(controller, arrivingPanel);
@@ -138,11 +138,11 @@ public class MainCustomerScreen {
         }
     }
 
-    private void setArrivingFlightLabels(Controller controller, JPanel tablePanel){
+    private void setArrivingFlightLabels(Controller controller, JPanel tablePanel) {
 
         ArrayList<Arriving> imminentArrivingFlights = controller.getImminentArrivingFlights();
 
-        for(int i = 0; i < imminentArrivingFlights.size(); i++){
+        for (int i = 0; i < imminentArrivingFlights.size(); i++) {
 
             JLabel companyLabel = new JLabel(imminentArrivingFlights.get(i).get_company_name());
             JLabel originLabel = new JLabel(imminentArrivingFlights.get(i).get_origin());
@@ -150,19 +150,19 @@ public class MainCustomerScreen {
                     " " + imminentArrivingFlights.get(i).getMonthName());
             JLabel timeLabel = new JLabel(imminentArrivingFlights.get(i).get_arrival_time());
 
-            constraints.setConstraints(0, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(0, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(companyLabel, constraints.getConstraints());
 
-            constraints.setConstraints(1, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(1, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(originLabel, constraints.getConstraints());
 
-            constraints.setConstraints(2, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(2, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(dateLabel, constraints.getConstraints());
 
-            constraints.setConstraints(3, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(3, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(timeLabel, constraints.getConstraints());
 
@@ -175,7 +175,7 @@ public class MainCustomerScreen {
         departingPanel = new JPanel();
         departingPanel.setLayout(new GridBagLayout());
         departingPanel.setBackground(Color.LIGHT_GRAY);
-        if(controller.developerMode) departingPanel.setBackground(Color.ORANGE);
+        if (controller.developerMode) departingPanel.setBackground(Color.ORANGE);
 
         setDepartingTitleLabels(departingPanel);
         setDepartingFlightLabels(controller, departingPanel);
@@ -206,11 +206,11 @@ public class MainCustomerScreen {
         }
     }
 
-    private void setDepartingFlightLabels(Controller controller, JPanel tablePanel){
+    private void setDepartingFlightLabels(Controller controller, JPanel tablePanel) {
 
         ArrayList<Departing> imminentDepartingFlights = controller.getImminentDepartingFlights();
 
-        for(int i = 0; i < imminentDepartingFlights.size(); i++){
+        for (int i = 0; i < imminentDepartingFlights.size(); i++) {
 
             JLabel companyLabel = new JLabel(imminentDepartingFlights.get(i).get_company_name());
             JLabel originLabel = new JLabel(imminentDepartingFlights.get(i).get_destination());
@@ -219,27 +219,46 @@ public class MainCustomerScreen {
             JLabel timeLabel = new JLabel(imminentDepartingFlights.get(i).get_arrival_time());
             JLabel gateLabel = new JLabel(Integer.valueOf(imminentDepartingFlights.get(i).get_gate().get_Id()).toString());
 
-            constraints.setConstraints(0, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(0, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(companyLabel, constraints.getConstraints());
 
-            constraints.setConstraints(1, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(1, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(originLabel, constraints.getConstraints());
 
-            constraints.setConstraints(2, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(2, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(dateLabel, constraints.getConstraints());
 
-            constraints.setConstraints(3, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(3, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(timeLabel, constraints.getConstraints());
 
-            constraints.setConstraints(4, i+1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(4, i + 1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(gateLabel, constraints.getConstraints());
 
         }
 
+    }
+
+    {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+        $$$setupUI$$$();
+    }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
     }
 }

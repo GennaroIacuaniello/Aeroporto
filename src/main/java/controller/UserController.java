@@ -9,7 +9,7 @@ public class UserController {
         return user.get_username();
     }
 
-    public void setUser (String username, String password) {
+    public void setUser (String username, char[] password) {
         user = new User(username, password);
     }
 }

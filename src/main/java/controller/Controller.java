@@ -125,12 +125,12 @@ public class Controller {
         return userController;
     }
 
-    public void setAdminNUser (String username, String password) {
+    public void setAdminNUser (String username, char[] password) {
         adminController.setAdmin (username, password);
         userController.setUser (username, password);
     }
 
-    public void setCustomerNUser (String username, String password) {
+    public void setCustomerNUser (String username, char[] password) {
         customerController.setCustomer (username, password);
         userController.setUser (username, password);
     }
