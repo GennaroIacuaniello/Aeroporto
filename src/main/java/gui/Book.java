@@ -34,7 +34,7 @@ public class Book {
     private Constraints constraints;
 
     public Book(ArrayList<JFrame> callingFrames, Controller controller) {
-
+System.out.println("Book constructor");
         super();
 
         constraints = new Constraints();
