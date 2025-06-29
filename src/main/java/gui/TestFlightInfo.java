@@ -16,7 +16,7 @@ public class TestFlightInfo {
     private static ArrayList<Passenger> passengers;
 
     public static void main(String[] args) throws InvalidPassengerNumber {
-
+System.out.println(":(");
         controller = new Controller();
 
         //set frame
