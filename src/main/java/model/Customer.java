@@ -13,7 +13,7 @@ public class Customer extends User{
 
     private ArrayList<Booking> bookings;
 
-    public Customer(String par_username, String par_password){
+    public Customer(String par_username, char[] par_password){
         super(par_username, par_password);
         this.bookings = new ArrayList<Booking>(0);
     }
