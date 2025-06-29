@@ -83,6 +83,10 @@ public class Passenger {
         return 0;
     }
 
+    public ArrayList<Luggage> get_Luggages() {
+        return this.luggages;
+    }
+
     public int add_luggage(Luggage par_luggage){
         this.luggages.add(par_luggage);
         return 0;

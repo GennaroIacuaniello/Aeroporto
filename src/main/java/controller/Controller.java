@@ -1,7 +1,7 @@
 package controller;
 
 import model.Arriving;
-import model.Customer;
+import model.BookingStatus;
 import model.Departing;
 import model.Flight;
 
@@ -133,5 +133,14 @@ public class Controller {
     public void setCustomerNUser (String username, String password) {
         customerController.setCustomer (username, password);
         userController.setUser (username, password);
+    }
+
+    public boolean checkBooking (int index) {
+        if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().get_bookings().get(index)) return false;
+        if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.cancelled) return false;
+        //if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.pending
+        //  && -- controlla il tempo passato dalla prenotazione --) return false;
+
+        return true;
     }
 }

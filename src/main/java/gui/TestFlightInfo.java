@@ -30,25 +30,32 @@ public class TestFlightInfo {
 
         passengers.add (new Passenger("anna", "marino", "qwe", 3));
         passengers.add (new Passenger("maria", "giglio", "rty", 5));
-        passengers.add (new Passenger("carmela", "tedesco", "uio", 14));
-        passengers.add (new Passenger("sara", "zumbolo", "asd", 57));
-        passengers.add (new Passenger("carla", "chirico", "fgh", 26));
-        passengers.add (new Passenger("chiara", "russo", "jkl", 32));
-        passengers.add (new Passenger("rosa", "manzo", "zxc", 15));
+        passengers.add (new Passenger("carmela", "tedesco", "uio", 9));
+        passengers.add (new Passenger("sara", "zumbolo", "asd", 2));
+        passengers.add (new Passenger("carla", "chirico", "fgh", 0));
+        passengers.add (new Passenger("chiara", "russo", "jkl", 6));
+        passengers.add (new Passenger("rosa", "manzo", "zxc", 4));
 
-        //creo volo
-        flight = new Flight("03", "che ne so", (java.sql.Date) new Date(2025, 2, 14), "12:25",
-                "14:10", 10);
+        //sistemo il controller
+        controller.getFlightController().setFlight("03", "che ne so", new Date(2025, 2, 14), "12:25",
+                "14:10", 19);
 
-        //creo prenotazione
-        bookingTest = new Booking(new Customer("pippo", "pluto"), flight, passengers);
+        controller.getBookingController().setBooking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
 
-        //aggiungo prenotazione al volo
-        flight.add_booking(bookingTest);
+        controller.getFlightController().getFlight().add_booking(controller.getBookingController().getBooking());
+
+        controller.setCustomerNUser("pippo", "pluto");
+
+        ArrayList<Passenger> passengers2 = new ArrayList<Passenger>();
+        passengers2.add (new Passenger("a", "a", "a", 14));
+        passengers2.add (new Passenger("a", "a", "a", 15));
+        passengers2.add (new Passenger("a", "a", "a", 16));
+
+        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", "x"), controller.getFlightController().getFlight(), passengers2, BookingStatus.cancelled));
 
         //chiamo FlightInfo
         ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
         callingFrames.add(frame);
-        new FlightInfo (callingFrames, controller, bookingTest);
+        new Book (callingFrames, controller);
     }
 }

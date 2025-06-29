@@ -113,7 +113,7 @@ public class Flight {
     public int add_booking(Booking par_booking){
         this.bookings.add(par_booking);
         int control = 0, count = 0;
-        for(Passenger x : par_booking.passengers){
+        for(Passenger x : par_booking.get_passengers()){
 
             control = this.add_passenger(x);
             if(control != 0){
@@ -168,5 +168,9 @@ public class Flight {
     public ArrayList<Passenger> get_passengers(){
 
         return this.passengers;
+    }
+
+    public ArrayList<Booking> get_bookings () {
+        return this.bookings;
     }
 }
