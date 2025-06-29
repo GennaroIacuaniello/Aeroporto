@@ -1,13 +1,15 @@
 package controller;
 
-import javax.swing.*;
+import model.Arriving;
+import model.Customer;
+import model.Departing;
+import model.Flight;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Controller {
 
-<<<<<<< Updated upstream
-  /*  public boolean validateUser(JTextField mail, JPasswordField password){
-        return !mail
-=======
     private AdminController adminController;
     private ArrivingController arrivingController;
     private BookingController bookingController;
@@ -131,7 +133,5 @@ public class Controller {
     public void setCustomerNUser (String username, char[] password) {
         customerController.setCustomer (username, password);
         userController.setUser (username, password);
->>>>>>> Stashed changes
     }
-*/
 }
