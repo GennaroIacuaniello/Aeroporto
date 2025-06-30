@@ -421,7 +421,7 @@ public class Book {
         boolean flag = true;
 
         for (PassengerPanel passengerPanel : passengerPanels) {
-            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerSeat()){
+            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF()){
                 flag = false;
             }
 

@@ -138,8 +138,6 @@ public class Controller {
     public boolean checkBooking (int index) {
         if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().get_bookings().get(index)) return false;
         if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.cancelled) return false;
-        //if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.pending
-        //  && -- controlla il tempo passato dalla prenotazione --) return false;
 
         return true;
     }
