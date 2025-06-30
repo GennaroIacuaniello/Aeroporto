@@ -218,15 +218,15 @@ public class PassengerPanel extends JPanel
     }
 
     public boolean checkPassengerName (){
-        return passengerNameField.getText().equals(displayedNameText);
+        return passengerNameField.getText().equals(displayedNameText) || passengerNameField.getText().equals("");
     }
 
     public boolean checkPassengerSurname (){
-        return passengerSurnameField.getText().equals(displayedSurnameText);
+        return passengerSurnameField.getText().equals(displayedSurnameText) || passengerSurnameField.getText().equals("");
     }
 
     public boolean checkPassengerCF (){
-        return passengerCFField.getText().equals(displayedCFText);
+        return passengerCFField.getText().equals(displayedCFText) || passengerCFField.getText().equals("");
     }
 
     public boolean checkPassengerSeat (){

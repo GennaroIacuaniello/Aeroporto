@@ -69,4 +69,8 @@ public class BookingController {
 
         return types;
     }
+
+    public boolean checkPendingButton () {
+        return this.booking == null || (this.booking != null && this.booking.get_status() == BookingStatus.pending);
+    }
 }

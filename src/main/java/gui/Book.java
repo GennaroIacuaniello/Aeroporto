@@ -32,6 +32,7 @@ public class Book {
     private JPanel passengerPage;
     private FooterPanel footerPanel;
     private Constraints constraints;
+    private RoundedButton savePendingButton;
 
     public Book(ArrayList<JFrame> callingFrames, Controller controller) {
 
@@ -226,11 +227,20 @@ public class Book {
     private void addModifyPanel (Controller controller)
     {
         modifyPanel = new JPanel();
-        modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        modifyPanel.setLayout(new GridBagLayout());
         if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
 
-        addAddPassengerButton(this, controller);
-        addPageChangeButtons ();
+        JPanel flowPanel = new JPanel();
+        flowPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_END);
+        modifyPanel.add (flowPanel, constraints.getConstraints());
+
+        addAddPassengerButton(this, controller, flowPanel);
+        addPageChangeButtons (flowPanel);
+        if (controller.getBookingController().checkPendingButton()) addSavePendingButton (controller);
+
+        flowPanel.setVisible (true);
 
         constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_END);
@@ -289,7 +299,7 @@ public class Book {
         confirmPanel.setVisible (true);
     }
 
-    private void addAddPassengerButton (Book book, Controller controller) {
+    private void addAddPassengerButton (Book book, Controller controller, JPanel flowPanel) {
 
         RoundedButton addPassengerButton = new RoundedButton("AGGIUNGI PASSEGGERO");
         addPassengerButton.setFocusable(false);
@@ -309,10 +319,10 @@ public class Book {
             }
         });
 
-        modifyPanel.add(addPassengerButton);
+        flowPanel.add(addPassengerButton);
     }
 
-    private void addPageChangeButtons () {
+    private void addPageChangeButtons (JPanel flowPanel) {
 
         prevPageButton.setFocusable(false);
         nextPageButton.setFocusable(false);
@@ -355,9 +365,9 @@ public class Book {
 
         prevPageButton.setEnabled (false);
 
-        modifyPanel.add (prevPageButton);
+        flowPanel.add (prevPageButton);
 
-        modifyPanel.add (currentPageLabel);
+        flowPanel.add (currentPageLabel);
 
         nextPageButton.addActionListener(new ActionListener() {
 
@@ -395,7 +405,25 @@ public class Book {
         });
 
         nextPageButton.setEnabled (false);
-        modifyPanel.add (nextPageButton);
+        flowPanel.add (nextPageButton);
+    }
+
+    private void addSavePendingButton (Controller controller) {
+        savePendingButton = new RoundedButton("Salva in attesa");
+
+        savePendingButton.addActionListener (new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                    if (checkSavePendingButton(controller)) {
+                        new GoodMessage("La tua prenotazione è in attesa di conferma", savePendingButton);
+                    } else {
+                        new ErrorMessage("Impossibile aggiungere una prenotazione vuota", savePendingButton);
+                    }
+            }
+        });
+
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+        modifyPanel.add(savePendingButton, constraints.getConstraints());
     }
 
     private void addFooterPanel()
@@ -528,5 +556,20 @@ public class Book {
 
     private boolean alreadyBooked (Controller controller) {
         return controller.getBookingController().getBooking() != null;
+    }
+
+    private boolean checkSavePendingButton (Controller controller) {
+        for (PassengerPanel passengerPanel : passengerPanels) {
+            if (!passengerPanel.checkPassengerName()) return true;
+            if (!passengerPanel.checkPassengerSurname()) return true;
+            if (!passengerPanel.checkPassengerCF()) return true;
+            if (!passengerPanel.checkPassengerSeat()) return true;
+
+            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+                if (!luggagePanel.checkLuggage()) return true;
+            }
+        }
+        
+        return false;
     }
 }
