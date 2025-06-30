@@ -67,12 +67,15 @@ public class MenuPanelCustomer extends JPanel {
                         controller.goHome(callingObjects);
                         break;
                     case "Cerca voli":
+                        System.out.println("1");
                         menu.setSelectedIndex(0);
+                        System.out.println("1");
                         if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
-                            callingObjects.getLast().getFrame().setVisible(false);
+                            System.out.println("1");
                             //callingFrames.getLast().dispose();
                             //callingFrames.removeLast();
-                            new SearchFlightCustomerMainFrame(callingObjects, controller);
+                            new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(), callingObjects.getLast().getFrame().getLocation());
+                            callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                         }
                         break;
                     case "I miei voli":

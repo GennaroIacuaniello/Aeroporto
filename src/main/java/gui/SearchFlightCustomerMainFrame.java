@@ -19,14 +19,14 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     Constraints constraints;
 
 
-    public SearchFlightCustomerMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public SearchFlightCustomerMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainFrame(callingObjects);
+        this.setMainFrame(callingObjects, dimension, point);
         /*
         if (controller.developerMode) {
             for (JFrame frame : callingFrames) {
@@ -48,13 +48,15 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension dimension, Point point) {
 
         mainFrame = new JFrame("Cerca voli");
+        mainFrame.setSize(dimension);
+        mainFrame.setLocation(point);
         callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
-        mainFrame.setSize(1080, 720);
+        //mainFrame.setSize(1080, 720);
         mainFrame.setBackground(Color.BLACK);
     }
 
@@ -124,7 +126,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     @Override
     public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        search_panel.getSearch_result().getMain_frame().dispose();
+        if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().dispose();
     }
 
     @Override

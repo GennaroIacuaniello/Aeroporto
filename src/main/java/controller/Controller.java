@@ -146,6 +146,10 @@ public class Controller {
     }
 
     public void goHome (ArrayList<DisposableObject> callingObjects) {
+
+        Dimension dimension = callingObjects.getLast().getFrame().getSize();
+        Point point = callingObjects.getLast().getFrame().getLocation();
+
         for (int i = callingObjects.size() - 1; i > 1; i--) {
 
             callingObjects.get(i).doOnDispose(callingObjects, this);
@@ -153,14 +157,23 @@ public class Controller {
             callingObjects.removeLast();
         }
 
+        callingObjects.getLast().getFrame().setSize(dimension);
+        callingObjects.getLast().getFrame().setLocation(point);
+
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
     public void goBack (ArrayList<DisposableObject> callingObjects) {
 
+        Dimension dimension = callingObjects.getLast().getFrame().getSize();
+        Point point = callingObjects.getLast().getFrame().getLocation();
+
         callingObjects.getLast().doOnDispose(callingObjects, this);
         callingObjects.getLast().getFrame().dispose();
         callingObjects.removeLast();
+
+        callingObjects.getLast().getFrame().setSize(dimension);
+        callingObjects.getLast().getFrame().setLocation(point);
 
         callingObjects.getLast().getFrame().setVisible(true);
     }

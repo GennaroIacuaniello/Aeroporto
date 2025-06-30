@@ -55,6 +55,6 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new Book (callingObjects, controller);
+        new Book (callingObjects, controller, callingObjects.getLast().getFrame().getSize(), callingObjects.getLast().getFrame().getLocation());
     }
 }

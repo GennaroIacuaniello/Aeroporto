@@ -25,7 +25,7 @@ public class Home extends DisposableObject{
 
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
 
-        new Book(callingObjects, controller);
+        new Book(callingObjects, controller, frameHome.getSize(), frameHome.getLocation());
     }
 
     public Home() {

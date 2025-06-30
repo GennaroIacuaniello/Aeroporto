@@ -74,9 +74,8 @@ public class LogInScreen extends DisposableObject {
                 nickTextField.setText("");
                 passwordField.setText("");
                 logInButton.setEnabled(false);
-                mainFrame.setVisible(false);
                 new MainCustomerScreen(callingObjects, controller);
-                
+                mainFrame.setVisible(false);
             }
         });
 

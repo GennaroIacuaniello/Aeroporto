@@ -257,10 +257,10 @@ public class SearchFlightResult {
                 new Book(callingFrames, controller);
                 */
                 callingObjects.getLast().getFrame().setVisible(false);
-                main_frame.setVisible(false);
 
                 controller.getFlightController().setFlight(search_result.get(y-1));
-                new Book (callingObjects, controller);
+                new Book (callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                        callingObjects.getLast().getFrame().getLocation());
 
                 main_frame.dispose();
             }
