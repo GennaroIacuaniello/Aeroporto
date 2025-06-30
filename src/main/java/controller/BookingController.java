@@ -17,6 +17,10 @@ public class BookingController {
         }
     }
 
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
     public Booking getBooking() {
         return booking;
     }

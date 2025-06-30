@@ -9,7 +9,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MainCustomerScreen {
+public class MainCustomerScreen extends DisposableObject {
 
     private JFrame mainFrame;
     private TitlePanel titlePanel;
@@ -21,26 +21,26 @@ public class MainCustomerScreen {
     private JPanel departingPanel;
     Constraints constraints;
 
-    public MainCustomerScreen(ArrayList<JFrame> callingFrames, Controller controller) {
+    public MainCustomerScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainFrame(callingFrames);
+        this.setMainFrame(callingObjects);
         //callingFrame.dispose();
-        if(controller.developerMode){
+        /*if(controller.developerMode){
             for(JFrame frame : callingFrames){
                 System.out.println(frame.getName());
             }
             System.out.println();
-        }
+        }*/
         //Setting surrounding panels
         this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
-        this.addNavigatorBarPanel(callingFrames);
-        this.addHamburgerPanel(callingFrames, controller);
-        this.addUserPanel(callingFrames, controller);
+        this.addNavigatorBarPanel(callingObjects, controller);
+        this.addHamburgerPanel(callingObjects, controller);
+        this.addUserPanel(callingObjects, controller);
         this.addFooterPanel();
 
         this.addArrivingPanel(controller);
@@ -48,10 +48,10 @@ public class MainCustomerScreen {
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects) {
 
         mainFrame = new JFrame("Home");
-        callingFrames.addLast(mainFrame);
+        callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
@@ -67,27 +67,27 @@ public class MainCustomerScreen {
         titlePanel.setVisible(true);
     }
 
-    private void addNavigatorBarPanel(ArrayList<JFrame> callingFrames) {
+    private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        navigatorBarPanel = new NavigatorBarPanel(callingFrames);
+        navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START);
         mainFrame.add(navigatorBarPanel, constraints.getConstraints());
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
+        hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
         hamburgerPanel.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        userPanel = new UserPanel(callingFrames, controller);
+        userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
         mainFrame.add(userPanel, constraints.getConstraints());
@@ -241,5 +241,15 @@ public class MainCustomerScreen {
 
         }
 
+    }
+
+    @Override
+    public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        controller.getCustomerController().setCustomer(null);
+        controller.getUserController().setUser(null);
+    }
+
+    public JFrame getFrame() {
+        return this.mainFrame;
     }
 }

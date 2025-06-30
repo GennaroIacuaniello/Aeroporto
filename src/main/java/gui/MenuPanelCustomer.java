@@ -15,7 +15,7 @@ public class MenuPanelCustomer extends JPanel {
     private Constraints constraints;
     private JComboBox menu;
 
-    public MenuPanelCustomer(ArrayList<JFrame> callingFrames, Controller controller){
+    public MenuPanelCustomer(ArrayList<DisposableObject> callingObjects, Controller controller){
 
         super();
 
@@ -56,21 +56,27 @@ public class MenuPanelCustomer extends JPanel {
                         //Selezionato menù, chiudo solamente la JComboBox
                         break;
                     case "Home":
-                        callingFrames.get(callingFrames.size() - 1).setVisible(false);
+                        /*callingFrames.get(callingFrames.size() - 1).setVisible(false);
                         //callingFrames.getLast().dispose();
                         for (int i = 1; i < callingFrames.size(); i++) {
                             callingFrames.get(i).dispose();
                         }
                         callingFrames.removeLast();
-                        new MainCustomerScreen(callingFrames, controller);
+                        new MainCustomerScreen(callingFrames, controller);*/
+                        menu.setSelectedIndex(0);
+                        controller.goHome(callingObjects);
                         break;
                     case "Cerca voli":
-                        callingFrames.get(callingFrames.size() - 1).setVisible(false);
-                        //callingFrames.getLast().dispose();
-                        //callingFrames.removeLast();
-                        new SearchFlightCustomerMainFrame(callingFrames, controller);
+                        menu.setSelectedIndex(0);
+                        if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
+                            callingObjects.getLast().getFrame().setVisible(false);
+                            //callingFrames.getLast().dispose();
+                            //callingFrames.removeLast();
+                            new SearchFlightCustomerMainFrame(callingObjects, controller);
+                        }
                         break;
                     case "I miei voli":
+                        menu.setSelectedIndex(0);
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");
                         break;
                     case "DeveloperMode":

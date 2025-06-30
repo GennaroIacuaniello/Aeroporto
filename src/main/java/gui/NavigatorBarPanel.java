@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,19 +14,19 @@ public class NavigatorBarPanel extends JPanel {
     JLabel pathLabel;
     Constraints constraints;
 
-    public NavigatorBarPanel(ArrayList<JFrame> callingFrames) {
+    public NavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
         super();
 
         constraints = new Constraints();
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setBackground(Color.white);
 
-        this.setHomeButton(callingFrames);
-        this.setBackButton(callingFrames);
-        this.setPath(callingFrames);
+        this.setHomeButton(callingObjects, controller);
+        this.setBackButton(callingObjects, controller);
+        this.setPath(callingObjects);
     }
 
-    private void setHomeButton(ArrayList<JFrame> callingFrames) {
+    private void setHomeButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
         homeButton = new RoundedButton("Home");
         //homeButton.setLayout (new FlowLayout ());
         homeButton.setFocusable(false);
@@ -33,29 +35,17 @@ public class NavigatorBarPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                for (int i = callingFrames.size() - 2; i > 1; i--) {
-                    callingFrames.get(i).dispose();
-                    callingFrames.remove(i);
-                }
-
-                callingFrames.get(1).setVisible(true);
-                if (callingFrames.size() > 2) {
-                    JFrame tmp = callingFrames.getLast();
-                    callingFrames.removeLast();
-                    tmp.dispose();
-                }
+                controller.goHome(callingObjects);
             }
         });
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_START);
         this.add(homeButton, constraints.getConstraints());
-        //constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_START);
-        this.add(homeButton);
         homeButton.setVisible(true);
     }
 
-    private void setBackButton(ArrayList<JFrame> callingFrames) {
+    private void setBackButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
         backButton = new RoundedButton("Back");
         //backButton.setLayout (new GridBagLayout ());
         backButton.setFocusable(false);
@@ -64,10 +54,7 @@ public class NavigatorBarPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                callingFrames.get(callingFrames.size() - 2).setVisible(true);
-                JFrame tmp = callingFrames.getLast();
-                callingFrames.removeLast();
-                tmp.dispose();
+                controller.goBack(callingObjects);
             }
         });
 
@@ -79,10 +66,10 @@ public class NavigatorBarPanel extends JPanel {
         backButton.setVisible(true);
     }
 
-    private void setPath(ArrayList<JFrame> callingFrames) {
+    private void setPath(ArrayList<DisposableObject> callingObjects) {
         String path = "Posizione:\"";
-        for (int i = 1; i < callingFrames.size(); i++) {
-            path += callingFrames.get(i).getTitle() + "/";
+        for (int i = 1; i < callingObjects.size(); i++) {
+            path += callingObjects.get(i).getFrame().getTitle() + "/";
         }
         path += "\"";
         pathLabel = new JLabel(path);

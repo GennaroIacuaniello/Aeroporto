@@ -29,13 +29,13 @@ public class SearchFlightResult {
     Constraints constraints;
 
 
-    public SearchFlightResult(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_flights) {
+    public SearchFlightResult(ArrayList<DisposableObject> callingObjects, Controller controller, ArrayList<Flight> searched_flights) {
 
         this.search_result = new ArrayList<Flight>(searched_flights);
 
         constraints = new Constraints();
 
-        this.setMainFrame(callingFrames);
+        this.setMainFrame(callingObjects);
 
         result_panel = new JPanel();
 
@@ -61,9 +61,9 @@ public class SearchFlightResult {
 
         booking_buttons = new ArrayList<JButton>(flights_per_pages);
 
-        this.add_flights_on_page_i(0, search_result, total_pages, flights_per_pages, callingFrames, controller);
+        this.add_flights_on_page_i(0, search_result, total_pages, flights_per_pages, callingObjects, controller);
 
-        this.set_prev_next_button(callingFrames, controller, search_result);
+        this.set_prev_next_button(callingObjects, controller, search_result);
 
         main_frame.setVisible(true);
 
@@ -71,11 +71,11 @@ public class SearchFlightResult {
 
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames){
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects){
 
         main_frame = new JFrame("Risultati ricerca");
-        callingFrames.addLast(main_frame);
-        main_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //callingObjects.addLast(main_frame);
+        //main_frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         main_frame.setLayout(new GridBagLayout());
         main_frame.setSize(640, 480);
         main_frame.setBackground(Color.BLACK);
@@ -109,7 +109,7 @@ public class SearchFlightResult {
 
     }
 
-    private void add_flights_on_page_i(int x, ArrayList<Flight> searched_results, int par_total_pages, int par_flights_per_pages, ArrayList<JFrame> callingFrames, Controller controller){
+    private void add_flights_on_page_i(int x, ArrayList<Flight> searched_results, int par_total_pages, int par_flights_per_pages, ArrayList<DisposableObject> callingObjects, Controller controller){
 
 
         if(par_total_pages > 0){
@@ -151,7 +151,7 @@ public class SearchFlightResult {
                      result_panel.add(current_flights_shown.get(j), constraints.getConstraints());
                      current_flights_shown.get(j).setVisible (true);
                  }
-                 this.add_booking_button(9, x + 1 + i, callingFrames, controller/*, searched_results.get(x*par_flights_per_pages + i)*/);
+                 this.add_booking_button(9, x + 1 + i, callingObjects, controller/*, searched_results.get(x*par_flights_per_pages + i)*/);
 
 
 
@@ -167,7 +167,7 @@ public class SearchFlightResult {
 
     }
 
-    private void set_prev_next_button(ArrayList<JFrame> callingFrames, Controller controller, ArrayList<Flight> searched_results){
+    private void set_prev_next_button(ArrayList<DisposableObject> callingObjects, Controller controller, ArrayList<Flight> searched_results){
 
         prev_button = new JButton("Precedente");
         //search_arriving_button.setLayout(new GridBagLayout());
@@ -182,7 +182,7 @@ public class SearchFlightResult {
 
                if(current_page > 0){
 
-                   add_flights_on_page_i(current_page-1, searched_results, total_pages,flights_per_pages, callingFrames, controller);
+                   add_flights_on_page_i(current_page-1, searched_results, total_pages,flights_per_pages, callingObjects, controller);
                    if(current_page - 1 == 0){
                        prev_button.setEnabled(false);
                    }
@@ -214,7 +214,7 @@ public class SearchFlightResult {
 
                 if(current_page + 1 < total_pages){
 
-                    add_flights_on_page_i(current_page+1, searched_results, total_pages,flights_per_pages, callingFrames, controller);
+                    add_flights_on_page_i(current_page+1, searched_results, total_pages,flights_per_pages, callingObjects, controller);
                     if(current_page + 2 == total_pages ){
                         next_button.setEnabled(false);
                     }
@@ -231,7 +231,7 @@ public class SearchFlightResult {
 
     }
 
-    private void add_booking_button(int x, int y, ArrayList<JFrame> callingFrames, Controller controller){
+    private void add_booking_button(int x, int y, ArrayList<DisposableObject> callingObjects, Controller controller){
 
         booking_buttons.add(y-1, new JButton( "Prenota"));
 
@@ -247,6 +247,7 @@ public class SearchFlightResult {
         booking_buttons.get(y-1).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                /*
                 callingFrames.get(callingFrames.size() - 2).setVisible(false);
                 //callingFrames.get(callingFrames.size() - 2).dispose();
                 callingFrames.get(callingFrames.size() - 1).setVisible(false);
@@ -254,7 +255,14 @@ public class SearchFlightResult {
                 callingFrames.removeLast();
                 //callingFrames.removeLast();
                 new Book(callingFrames, controller);
+                */
+                callingObjects.getLast().getFrame().setVisible(false);
+                main_frame.setVisible(false);
 
+                controller.getFlightController().setFlight(search_result.get(y-1));
+                new Book (callingObjects, controller);
+
+                main_frame.dispose();
             }
         });
 
@@ -263,6 +271,10 @@ public class SearchFlightResult {
 
         result_panel.add(booking_buttons.get(y-1), constraints.getConstraints());
 
+    }
+
+    public JFrame getMain_frame(){
+        return main_frame;
     }
 
 }

@@ -21,6 +21,7 @@ public class PassengerPanel extends JPanel
     private int seat = -1;
     private LuggagesView luggagesView;
     private RoundedButton luggagesViewButton;
+    private RoundedButton seatButton;
 
     private JTextField passengerNameField;
     private JTextField passengerSurnameField;
@@ -42,7 +43,7 @@ public class PassengerPanel extends JPanel
         passengerSurnameField.setForeground(displayedTextColor);
         passengerCFField = new JTextField (displayedCFText, 20);
         passengerCFField.setForeground(displayedTextColor);
-        RoundedButton seatButton = new RoundedButton("Scegli Posto");
+        seatButton = new RoundedButton("Scegli Posto");
         seatLabel = new JLabel (print_seat());
         luggagesView = new LuggagesView (controller);
         luggagesViewButton = new RoundedButton("Luggages");
@@ -154,6 +155,9 @@ public class PassengerPanel extends JPanel
         seatButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    passengerPanel.getSeatButton().setEnabled(false);
+                }
                 seatChooser = new SeatChooser (controller, thisPanel(), passengerPanels);
             }
         });
@@ -239,5 +243,17 @@ public class PassengerPanel extends JPanel
 
     public void setLuggagesTypes (ArrayList<Integer> luggageTypes, Controller controller){
         luggagesView.setLuggagesTypes (luggageTypes, controller);
+    }
+
+    public SeatChooser getSeatChooser() {
+        return seatChooser;
+    }
+
+    public LuggagesView getLuggagesView() {
+        return luggagesView;
+    }
+
+    public RoundedButton getSeatButton() {
+        return seatButton;
     }
 }

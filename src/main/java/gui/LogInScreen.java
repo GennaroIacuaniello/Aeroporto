@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LogInScreen {
+public class LogInScreen extends DisposableObject {
 
     //Padding
     private JPanel topPadding;
@@ -37,21 +37,21 @@ public class LogInScreen {
 
     private static Controller controller;
 
-    public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller) {
+    public LogInScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        if (!callingFrames.isEmpty()) {
-            int size = callingFrames.size();
+        if (!callingObjects.isEmpty()) {
+            int size = callingObjects.size();
 
-            for (int i = 0; i < size; i++) {
-                System.out.println(callingFrames.get(i).getName());
-                callingFrames.get(i).dispose();
+            for (int i = size - 1; i >= 0; i--) {
+                System.out.println(callingObjects.get(i).getFrame().getName());
+                callingObjects.get(i).doOnDispose(callingObjects, controller);
             }
             System.out.println("FINE");
-            callingFrames.clear();
+            callingObjects.clear();
 
-            this.setMainFrame(callingFrames, controller);
+            this.setMainFrame(callingObjects, controller);
         }
-        callingFrames.addLast(mainFrame);
+        callingObjects.addLast(this);
 
         logInButton.addActionListener(new ActionListener() {
             @Override
@@ -75,7 +75,7 @@ public class LogInScreen {
                 passwordField.setText("");
                 logInButton.setEnabled(false);
                 mainFrame.setVisible(false);
-                new MainCustomerScreen(callingFrames, controller);
+                new MainCustomerScreen(callingObjects, controller);
                 
             }
         });
@@ -110,7 +110,9 @@ public class LogInScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
-                new RegisterScreen(callingFrames, controller);
+                new RegisterScreen(callingObjects, controller);
+                doOnDispose(callingObjects, controller);
+                mainFrame.dispose();
             }
         });
 
@@ -120,16 +122,16 @@ public class LogInScreen {
     public static void main(String[] args) {
         Controller controller = new Controller();
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
+        mainFrame.setContentPane(new LogInScreen(new ArrayList<DisposableObject>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller) {
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(callingFrames, controller).loginScreen);
+        mainFrame.setContentPane(new LogInScreen(callingObjects, controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -150,4 +152,11 @@ public class LogInScreen {
         return true;
     }
 
+    @Override
+    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {}
+
+    @Override
+    public JFrame getFrame () {
+        return mainFrame;
+    }
 }

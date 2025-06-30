@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Home {
+public class Home extends DisposableObject{
     private JPanel mainPanel;
     private static JFrame frameHome;
     private static Controller controller;
@@ -23,13 +23,21 @@ public class Home {
         controller.getFlightController().setFlight("01", "Compagnia", new Date(),
                 "00:00", "00:00", 66);
 
-        ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
-        callingFrames.add(frameHome);
-        new Book(callingFrames, controller);
+        ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
+
+        new Book(callingObjects, controller);
     }
 
     public Home() {
         // Add action listeners or other initialization code here
 
+    }
+
+    @Override
+    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {}
+
+    @Override
+    public JFrame getFrame() {
+        return frameHome;
     }
 }

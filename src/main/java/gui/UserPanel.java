@@ -16,18 +16,18 @@ public class UserPanel extends JPanel {
     private Constraints constraints;
     private JPanel invisiblePanel;
 
-    public UserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+    public UserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
         constraints = new Constraints();
         this.setLayout(new GridBagLayout());
 
-        this.setLogoutButton(callingFrames, controller);
+        this.setLogoutButton(callingObjects, controller);
         this.setUserButton(controller.getUserController());
     }
 
-    private void setLogoutButton(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void setLogoutButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         logoutButton = new RoundedButton("Logout");
         logoutButton.setLayout(new GridBagLayout());
@@ -39,7 +39,7 @@ public class UserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                new LogInScreen(callingFrames, controller);
+                //new LogInScreen(callingObjects, controller);
             }
         });
 

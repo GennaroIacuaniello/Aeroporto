@@ -10,7 +10,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Book {
+public class Book extends DisposableObject {
 
     private JFrame mainFrame;
     private JPanel topPanel;
@@ -34,17 +34,17 @@ public class Book {
     private Constraints constraints;
     private RoundedButton savePendingButton;
 
-    public Book(ArrayList<JFrame> callingFrames, Controller controller) {
+    public Book(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainframe(callingFrames, controller);
+        this.setMainframe(callingObjects, controller);
 
         //setting top panels
-        this.addTopPanel (callingFrames, controller);
+        this.addTopPanel (callingObjects, controller);
 
         //setting mainPanel
         this.addMainPanel (controller);
@@ -55,9 +55,9 @@ public class Book {
         mainFrame.setVisible(true);
     }
 
-    private void setMainframe(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void setMainframe(ArrayList<DisposableObject> callingObjects, Controller controller) {
         mainFrame = new JFrame("Book");
-        callingFrames.addLast(mainFrame);
+        callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
@@ -65,15 +65,15 @@ public class Book {
         if(controller.developerMode) mainFrame.setBackground(Color.YELLOW);
     }
 
-    private void addTopPanel (ArrayList<JFrame> callingFrames, Controller controller)
+    private void addTopPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
 
         addTitlePanel("AEROPORTO DI NAPOLI", controller);
-        addNavigatorBarPanel (callingFrames);
-        addHamburgerPanel(callingFrames, controller);
-        addUserPanel(callingFrames, controller);
+        addNavigatorBarPanel (callingObjects, controller);
+        addHamburgerPanel(callingObjects, controller);
+        addUserPanel(callingObjects, controller);
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
@@ -88,25 +88,25 @@ public class Book {
         topPanel.add(titlePanel, constraints.getConstraints());
     }
 
-    private void addNavigatorBarPanel (ArrayList<JFrame> callingFrames)
+    private void addNavigatorBarPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
-        navigatorBarPanel = new NavigatorBarPanel (callingFrames);
+        navigatorBarPanel = new NavigatorBarPanel (callingObjects, controller);
         constraints.setConstraints (0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER);
         topPanel.add (navigatorBarPanel, constraints.getConstraints ());
         navigatorBarPanel.setVisible (true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
+    private void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         topPanel.add(hamburgerPanel, constraints.getConstraints());
         hamburgerPanel.setVisible (true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
-        userPanel = new UserPanel(callingFrames, controller);
+    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END);
         topPanel.add(userPanel, constraints.getConstraints());
@@ -574,5 +574,22 @@ public class Book {
         }
         
         return false;
+    }
+
+    @Override
+    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+        controller.getFlightController().setFlight(null);
+        controller.getBookingController().setBooking(null);
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+            if (passengerPanel.getSeatChooser() != null) passengerPanel.getSeatChooser().dispose();
+
+            if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
+        }
+    }
+
+    @Override
+    public JFrame getFrame () {
+        return this.mainFrame;
     }
 }

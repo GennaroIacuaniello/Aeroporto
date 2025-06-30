@@ -54,8 +54,7 @@ public class TestFlightInfo {
         controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", "x"), controller.getFlightController().getFlight(), passengers2, BookingStatus.cancelled));
 
         //chiamo FlightInfo
-        ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
-        callingFrames.add(frame);
-        new Book (callingFrames, controller);
+        ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
+        new Book (callingObjects, controller);
     }
 }

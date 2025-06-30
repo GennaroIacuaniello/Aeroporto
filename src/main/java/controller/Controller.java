@@ -1,5 +1,6 @@
 package controller;
 
+import gui.DisposableObject;
 import model.Arriving;
 import model.BookingStatus;
 import model.Departing;
@@ -140,5 +141,28 @@ public class Controller {
         if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.cancelled) return false;
 
         return true;
+    }
+
+    public void goHome (ArrayList<DisposableObject> callingObjects) {
+        for (int i = callingObjects.size() - 1; i > 1; i--) {
+            callingObjects.get(i).doOnDispose(callingObjects, this);
+
+            DisposableObject tmp = callingObjects.getLast();
+            tmp.getFrame().dispose();
+            callingObjects.removeLast();
+        }
+
+        callingObjects.getLast().getFrame().setVisible(true);
+    }
+
+    public void goBack (ArrayList<DisposableObject> callingObjects) {
+        callingObjects.getLast().getFrame().setVisible(false);
+
+        callingObjects.getLast().doOnDispose(callingObjects, this);
+        callingObjects.getLast().getFrame().dispose();
+
+        callingObjects.removeLast();
+
+        callingObjects.getLast().getFrame().setVisible(true);
     }
 }

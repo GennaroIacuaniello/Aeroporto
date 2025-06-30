@@ -4,8 +4,7 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class SeatChooser extends JFrame {
@@ -24,6 +23,7 @@ public class SeatChooser extends JFrame {
         constraints = new Constraints();
         setLayout(new GridBagLayout());
         setSize(450, 800);
+        this.setAlwaysOnTop(true);
 
         seat = -1;
         seatButtons = new ArrayList<RoundedButton>();
@@ -32,6 +32,9 @@ public class SeatChooser extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 callingPanel.setSeat(seat);
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    passengerPanel.getSeatButton().setEnabled(true);
+                }
                 dispose();
             }
         });
@@ -83,6 +86,45 @@ public class SeatChooser extends JFrame {
         for (PassengerPanel passengerPanel : passengerPanels) {
             if (passengerPanel.getSeat() != -1) seatButtons.get(passengerPanel.getSeat()).setEnabled(false);
         }
+
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    passengerPanel.getSeatButton().setEnabled(true);
+                }
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
 
         this.setVisible(true);
     }
