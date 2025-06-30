@@ -156,7 +156,6 @@ public class Book {
         mainFrame.add (mainPanel, constraints.getConstraints());
         constraints.resetWeight ();
         mainFrame.setVisible (true);
-        System.out.println(prevPageButton.getSize().getHeight());
     }
 
     private void addFlightInfoPanel(Controller controller)
