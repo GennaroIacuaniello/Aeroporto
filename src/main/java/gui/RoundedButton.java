@@ -18,6 +18,7 @@ public class RoundedButton extends JButton {
         this.roundBorderColor = roundBorderColor;
         setPreferredSize(new Dimension((int)getPreferredSize().getWidth(), (int)(getPreferredSize().getHeight() * 1.75)));
         if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
+        if (getMinimumSize().getWidth() < 28) setMinimumSize(new Dimension(28, (int)getMinimumSize().getHeight()));
     }
 
     public RoundedButton(Color backgroundColor, Color roundBorderColor) {
@@ -27,6 +28,7 @@ public class RoundedButton extends JButton {
         this.roundBorderColor = roundBorderColor;
         setPreferredSize(new Dimension ((int) (getPreferredSize().getWidth() * 1.2), (int) (getPreferredSize().getHeight() * 1.75)));
         if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
+        if (getMinimumSize().getWidth() < 28) setMinimumSize(new Dimension(28, (int)getMinimumSize().getHeight()));
     }
 
     public RoundedButton(String title) {
@@ -36,6 +38,7 @@ public class RoundedButton extends JButton {
         this.roundBorderColor = new Color(170, 200, 250);
         setPreferredSize(new Dimension ((int) (getPreferredSize().getWidth() * 1.2), (int) (getPreferredSize().getHeight() * 1.75)));
         if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
+        if (getMinimumSize().getWidth() < 28) setMinimumSize(new Dimension(28, (int)getMinimumSize().getHeight()));
     }
 
     public RoundedButton() {
@@ -45,6 +48,7 @@ public class RoundedButton extends JButton {
         this.roundBorderColor = new Color(170, 200, 250);
         setPreferredSize(new Dimension((int)getPreferredSize().getWidth(), (int)(getPreferredSize().getHeight() * 1.75)));
         if (getPreferredSize().getWidth() < 28) setPreferredSize(new Dimension(28, (int)getPreferredSize().getHeight()));
+        if (getMinimumSize().getWidth() < 28) setMinimumSize(new Dimension(28, (int)getMinimumSize().getHeight()));
     }
 
     @Override

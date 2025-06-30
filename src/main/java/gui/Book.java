@@ -233,7 +233,7 @@ public class Book {
         JPanel flowPanel = new JPanel();
         flowPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_END);
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
         modifyPanel.add (flowPanel, constraints.getConstraints());
 
         addAddPassengerButton(this, controller, flowPanel);
@@ -410,6 +410,7 @@ public class Book {
 
     private void addSavePendingButton (Controller controller) {
         savePendingButton = new RoundedButton("Salva in attesa");
+        savePendingButton.setFocusable(false);
 
         savePendingButton.addActionListener (new ActionListener() {
             @Override
@@ -422,7 +423,7 @@ public class Book {
             }
         });
 
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.5f, 0.5f);
         modifyPanel.add(savePendingButton, constraints.getConstraints());
 
         savePendingButton.setVisible(true);
