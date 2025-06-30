@@ -424,6 +424,8 @@ public class Book {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
         modifyPanel.add(savePendingButton, constraints.getConstraints());
+
+        savePendingButton.setVisible(true);
     }
 
     private void addFooterPanel()
