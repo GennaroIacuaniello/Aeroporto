@@ -1,6 +1,7 @@
 package controller;
 
 import gui.DisposableObject;
+import gui.PassengerPanel;
 import model.Arriving;
 import model.BookingStatus;
 import model.Departing;
@@ -164,5 +165,9 @@ public class Controller {
         callingObjects.removeLast();
 
         callingObjects.getLast().getFrame().setVisible(true);
+    }
+
+    public void addBooking(ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
+
     }
 }

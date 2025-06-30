@@ -1,6 +1,7 @@
 package gui;
 
 import controller.BookingController;
+import controller.BookingStatusController;
 import controller.Controller;
 import controller.FlightController;
 
@@ -47,7 +48,7 @@ public class Book extends DisposableObject {
         this.addTopPanel (callingObjects, controller);
 
         //setting mainPanel
-        this.addMainPanel (controller);
+        this.addMainPanel (callingObjects, controller);
 
         //this.addFooterPanel();
         addFooterPanel();
@@ -113,7 +114,7 @@ public class Book extends DisposableObject {
         userPanel.setVisible (true);
     }
 
-    private void addMainPanel (Controller controller)
+    private void addMainPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
@@ -147,8 +148,8 @@ public class Book extends DisposableObject {
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
         mainPanel.add (passengerPage, constraints.getConstraints ());
 
-        addModifyPanel (controller);
-        addConfirmPanel (controller);
+        addModifyPanel (callingObjects , controller);
+        addConfirmPanel (callingObjects, controller);
 
         if (alreadyBooked(controller)) insertPassengers(controller);
 
@@ -224,7 +225,7 @@ public class Book extends DisposableObject {
         }
     }
 
-    private void addModifyPanel (Controller controller)
+    private void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         modifyPanel = new JPanel();
         modifyPanel.setLayout(new GridBagLayout());
@@ -238,7 +239,7 @@ public class Book extends DisposableObject {
 
         addAddPassengerButton(this, controller, flowPanel);
         addPageChangeButtons (flowPanel);
-        if (controller.getBookingController().checkPendingButton()) addSavePendingButton (controller);
+        if (controller.getBookingController().checkPendingButton()) addSavePendingButton (callingObjects, controller);
 
         flowPanel.setVisible (true);
 
@@ -248,7 +249,7 @@ public class Book extends DisposableObject {
         modifyPanel.setVisible (true);
     }
 
-    private void addConfirmPanel (Controller controller)
+    private void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         String buttonTitle = "Conferma Prenotazione";
         if (alreadyBooked(controller)) buttonTitle = "Conferma Modifiche";
@@ -267,7 +268,12 @@ public class Book extends DisposableObject {
             confirmButtons.getLast().addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed (ActionEvent e) {
-                    new GoodMessage("La tua richiesta di prenotazione è stata presa in carico", confirmButtons.get(finalI));
+
+                    controller.addBooking(passengerPanels, BookingStatusController.confirmed);
+
+                    controller.goBack(callingObjects);
+
+                    //new GoodMessage("La tua richiesta di prenotazione è stata presa in carico", confirmButtons.get(finalI));
                 }
             });
 
@@ -408,7 +414,7 @@ public class Book extends DisposableObject {
         flowPanel.add (nextPageButton);
     }
 
-    private void addSavePendingButton (Controller controller) {
+    private void addSavePendingButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
         savePendingButton = new RoundedButton("Salva in attesa");
         savePendingButton.setFocusable(false);
 
@@ -416,7 +422,12 @@ public class Book extends DisposableObject {
             @Override
             public void actionPerformed (ActionEvent e) {
                     if (checkSavePendingButton(controller)) {
-                        new GoodMessage("La tua prenotazione è in attesa di conferma", savePendingButton);
+
+                        controller.addBooking(passengerPanels, BookingStatusController.pending);
+
+                        controller.goBack(callingObjects);
+
+                        //new GoodMessage("La tua prenotazione è in attesa di conferma", savePendingButton);
                     } else {
                         new ErrorMessage("Impossibile aggiungere una prenotazione vuota", savePendingButton);
                     }
