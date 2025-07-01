@@ -60,9 +60,6 @@ public class RegisterScreen extends DisposableObject{
     }
 
     @Override
-    public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {}
-
-    @Override
     public JFrame getFrame() {
         return mainFrame;
     }

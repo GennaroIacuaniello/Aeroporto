@@ -1,6 +1,7 @@
 package controller;
 
 import gui.DisposableObject;
+import gui.LogInScreen;
 import gui.PassengerPanel;
 import model.Arriving;
 import model.BookingStatus;
@@ -160,6 +161,8 @@ public class Controller {
         callingObjects.getLast().getFrame().setSize(dimension);
         callingObjects.getLast().getFrame().setLocation(point);
 
+        callingObjects.getLast().doOnRestore(callingObjects, this);
+
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
@@ -175,6 +178,20 @@ public class Controller {
         callingObjects.getLast().getFrame().setSize(dimension);
         callingObjects.getLast().getFrame().setLocation(point);
 
+        callingObjects.getLast().doOnRestore(callingObjects, this);
+
+        callingObjects.getLast().getFrame().setVisible(true);
+    }
+
+    public void logOut (ArrayList<DisposableObject> callingObjects) {
+
+        for (int i = callingObjects.size() - 1; i > 0; i--) {
+            callingObjects.getLast().doOnDispose(callingObjects, this);
+            callingObjects.getLast().getFrame().dispose();
+            callingObjects.removeLast();
+        }
+
+        callingObjects.getLast().doOnRestore(callingObjects, this);
         callingObjects.getLast().getFrame().setVisible(true);
     }
 

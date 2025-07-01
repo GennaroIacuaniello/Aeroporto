@@ -130,6 +130,11 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     }
 
     @Override
+    public void doOnRestore (ArrayList<DisposableObject> callingObjects, Controller controller) {
+        if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
+    }
+
+    @Override
     public JFrame getFrame() {
         return this.mainFrame;
     }

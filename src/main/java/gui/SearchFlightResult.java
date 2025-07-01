@@ -79,6 +79,7 @@ public class SearchFlightResult {
         main_frame.setLayout(new GridBagLayout());
         main_frame.setSize(640, 480);
         main_frame.setBackground(Color.BLACK);
+        main_frame.setAlwaysOnTop(true);
     }
 
 

@@ -39,7 +39,7 @@ public class UserPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //new LogInScreen(callingObjects, controller);
+                controller.logOut(callingObjects);
             }
         });
 

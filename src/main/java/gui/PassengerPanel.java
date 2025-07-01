@@ -45,11 +45,12 @@ public class PassengerPanel extends JPanel
         passengerCFField.setForeground(displayedTextColor);
         seatButton = new RoundedButton("Scegli Posto");
         seatLabel = new JLabel (print_seat());
-        luggagesView = new LuggagesView (controller);
         luggagesViewButton = new RoundedButton("Luggages");
+        luggagesView = new LuggagesView (controller);
         luggagesViewButton.addActionListener (new ActionListener () {
            @Override
            public void actionPerformed (ActionEvent e) {
+               luggagesView.setLocation(luggagesViewButton);
                luggagesView.setVisible(true);
            }
         });
@@ -167,7 +168,7 @@ public class PassengerPanel extends JPanel
 
     public String print_seat(){
 
-        if (seat == -1) return "/";
+        if (seat == -1) return "POSTO";
 
         String literal;
 

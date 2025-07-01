@@ -12,6 +12,7 @@ public class SeatChooser extends JFrame {
     private Constraints constraints;
     private ArrayList<RoundedButton> seatButtons;
     private RoundedButton confirmButton;
+    private RoundedButton deleteButton;
     private int offset;
     private int seat;
 
@@ -23,11 +24,14 @@ public class SeatChooser extends JFrame {
         constraints = new Constraints();
         setLayout(new GridBagLayout());
         setSize(450, 800);
-        this.setAlwaysOnTop(true);
+        setLocation(callingPanel.getSeatButton());
+        setAlwaysOnTop(true);
 
         seat = -1;
         seatButtons = new ArrayList<RoundedButton>();
         confirmButton = new RoundedButton("CONFERMA");
+        deleteButton = new RoundedButton("ELIMINA");
+
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,10 +43,29 @@ public class SeatChooser extends JFrame {
             }
         });
 
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                callingPanel.setSeat(-1);
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    passengerPanel.getSeatButton().setEnabled(true);
+                }
+                dispose();
+            }
+        });
+
+        confirmButton.setFocusable(false);
+        deleteButton.setFocusable(false);
+
         constraints.setConstraints(3, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
                 controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
-                GridBagConstraints.PAGE_END);
+                GridBagConstraints.LAST_LINE_END);
         this.add(confirmButton, constraints.getConstraints());
+
+        constraints.setConstraints(4, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
+                controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
+                GridBagConstraints.LAST_LINE_START);
+        this.add(deleteButton, constraints.getConstraints());
 
         for (int i = 0; i < controller.getFlightController().getMaxSeats(); i++) {
             int finalI = i;
@@ -63,9 +86,10 @@ public class SeatChooser extends JFrame {
                 }
             });
             seatButtons.get(i).setEnabled(true);
+            seatButtons.get(i).setFocusable(false);
 
-            if (i%6 > 2) offset = 1; else offset = 0;
-            constraints.setConstraints(i%6 + offset, i/6, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.CENTER);
+            if (i%6 > 2) offset = 2; else offset = 0;
+            constraints.setConstraints(i%6 + offset, i/6, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             this.add(seatButtons.get(i), constraints.getConstraints());
         }
         /*
@@ -129,9 +153,25 @@ public class SeatChooser extends JFrame {
         this.setVisible(true);
     }
 
+    public void setLocation(RoundedButton callingButton) {
+        //coordinate punto in alto a sx del bottone
+        double x = callingButton.getLocationOnScreen().getX();
+        double y = callingButton.getLocationOnScreen().getY();
+
+        //coordinate centro
+        x += callingButton.getSize().getWidth() / 2;
+        y += callingButton.getSize().getHeight() / 2;
+
+        //coordinate punto in alto a sx frame
+        x -= (double) this.getWidth() / 2;
+        y -= (double) this.getHeight() / 2;
+
+        this.setLocation((int) x, (int) y);
+    }
+
     public String printSeat(int seat) {
 
-        if (seat == -1) return "/";
+        if (seat == -1) return "***";
 
         String literal;
 

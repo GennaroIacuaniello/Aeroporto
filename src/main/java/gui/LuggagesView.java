@@ -142,4 +142,20 @@ public class LuggagesView extends JFrame {
             scrollPane.setViewportView(luggagesPanel);
         }
     }
+
+    public void setLocation(RoundedButton callingButtonutton) {
+        //coordinate punto in alto a sx del bottone
+        double x = callingButtonutton.getLocationOnScreen().getX();
+        double y = callingButtonutton.getLocationOnScreen().getY();
+
+        //coordinate centro
+        x += callingButtonutton.getSize().getWidth() / 2;
+        y += callingButtonutton.getSize().getHeight() / 2;
+
+        //coordinate punto in alto a sx frame
+        x -= (double) this.getWidth() / 2;
+        y -= (double) this.getHeight() / 2;
+
+        this.setLocation((int) x, (int) y);
+    }
 }
