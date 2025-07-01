@@ -52,8 +52,9 @@
       <scrollpane id="5bacf" binding="loginMenuScrollContainer">
         <constraints border-constraint="Center"/>
         <properties>
-          <autoscrolls value="true"/>
+          <autoscrolls value="false"/>
           <doubleBuffered value="true"/>
+          <focusCycleRoot value="false"/>
           <horizontalScrollBarPolicy value="31"/>
           <verticalScrollBarPolicy value="21"/>
           <visible value="true"/>

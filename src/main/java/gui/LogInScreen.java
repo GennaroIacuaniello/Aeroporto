@@ -62,11 +62,9 @@ public class LogInScreen {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
                     login(callingFrames, controller);
                 }
-
             }
         });
 
@@ -98,7 +96,6 @@ public class LogInScreen {
                 if (usernameTextField.getText().isEmpty() || passwordField.getPassword().length == 0) {
                     logInButton.setEnabled(false);
                 }
-
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
                         login(callingFrames, controller);
@@ -185,6 +182,8 @@ public class LogInScreen {
             return false;
         }
         return true;
+    }
+
     }
 
     private void login(ArrayList<JFrame> callingFrames, Controller controller) {
