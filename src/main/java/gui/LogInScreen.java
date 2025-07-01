@@ -3,10 +3,14 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -40,10 +44,9 @@ public class LogInScreen {
     private JLabel registerPrompt;
     private JButton newPasswordButton;
     private JLabel newPasswordPrompt;
-
+    private JScrollPane loginMenuScrollContainer;
 
     public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller) {
-
         if (!callingFrames.isEmpty()) {
             int size = callingFrames.size();
 
@@ -112,6 +115,7 @@ public class LogInScreen {
             }
         });
 
+
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -124,6 +128,14 @@ public class LogInScreen {
             @Override
             public void componentMoved(ComponentEvent e) {
                 super.componentMoved(e);
+                resizePadding();
+            }
+        });
+
+        mainFrame.addWindowStateListener(new WindowAdapter() {
+            @Override
+            public void windowStateChanged(WindowEvent e) {
+                super.windowStateChanged(e);
                 resizePadding();
             }
         });
@@ -191,10 +203,11 @@ public class LogInScreen {
          /the actual dimension of the loginMenufluctuate a little (max 2 in either direction)
          /(not only because of parity, but i have no idea what is it other than that)
          */
-        topPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(max(mainFrame.getHeight() / 2 - 259, 36), 0, 0, 0), -1, -1));
-        bottomPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, max(mainFrame.getHeight() / 2 - 259, 36), 0), -1, -1));
+        topPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(max(mainFrame.getHeight() / 2 - 239, 36), 0, 0, 0), -1, -1));
+        bottomPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, max(mainFrame.getHeight() / 2 - 239, 36), 0), -1, -1));
         leftPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, max(mainFrame.getWidth() / 2 - 168, 27), 0, 0), -1, -1));
         rightPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, max(mainFrame.getWidth() / 2 - 168, 27)), -1, -1));
+
     }
 
     {
@@ -235,13 +248,21 @@ public class LogInScreen {
         rightPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 27, 0, 0), -1, -1));
         rightPadding.setBackground(new Color(-3618596));
         loginScreen.add(rightPadding, BorderLayout.EAST);
+        loginMenuScrollContainer = new JScrollPane();
+        loginMenuScrollContainer.setAutoscrolls(true);
+        loginMenuScrollContainer.setDoubleBuffered(true);
+        loginMenuScrollContainer.setHorizontalScrollBarPolicy(31);
+        loginMenuScrollContainer.setVerticalScrollBarPolicy(21);
+        loginMenuScrollContainer.setVisible(true);
+        loginScreen.add(loginMenuScrollContainer, BorderLayout.CENTER);
+        loginMenuScrollContainer.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         loginMenu = new JPanel();
         loginMenu.setLayout(new GridBagLayout());
         loginMenu.setBackground(new Color(-2302736));
         loginMenu.setEnabled(false);
         Font loginMenuFont = this.$$$getFont$$$(null, -1, -1, loginMenu.getFont());
         if (loginMenuFont != null) loginMenu.setFont(loginMenuFont);
-        loginScreen.add(loginMenu, BorderLayout.CENTER);
+        loginMenuScrollContainer.setViewportView(loginMenu);
         passwordLabel = new JLabel();
         passwordLabel.setForeground(new Color(-15461356));
         passwordLabel.setText("Password");
@@ -293,7 +314,7 @@ public class LogInScreen {
         registerButton.setText("Registrati");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 11;
+        gbc.gridy = 13;
         gbc.anchor = GridBagConstraints.SOUTHWEST;
         gbc.insets = new Insets(0, 16, 16, 16);
         loginMenu.add(registerButton, gbc);
@@ -305,17 +326,17 @@ public class LogInScreen {
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 4;
-        gbc.gridheight = 5;
+        gbc.gridheight = 7;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(0, 16, 0, 16);
+        gbc.insets = new Insets(16, 16, 16, 16);
         loginMenu.add(logInButton, gbc);
         registerPrompt = new JLabel();
         registerPrompt.setForeground(new Color(-15461356));
         registerPrompt.setText("<html>Non sei ancora<br>registrato?</html>");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 10;
+        gbc.gridy = 12;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.SOUTHWEST;
         gbc.insets = new Insets(0, 16, 8, 0);
@@ -327,7 +348,7 @@ public class LogInScreen {
         newPasswordButton.setText("Recupera Password");
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
-        gbc.gridy = 11;
+        gbc.gridy = 13;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 16, 16, 16);
         loginMenu.add(newPasswordButton, gbc);
@@ -339,7 +360,7 @@ public class LogInScreen {
         newPasswordPrompt.setText("<html>Hai dimenticato<br>la password?</html>");
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
-        gbc.gridy = 10;
+        gbc.gridy = 12;
         gbc.anchor = GridBagConstraints.SOUTHEAST;
         gbc.insets = new Insets(0, 0, 8, 77);
         loginMenu.add(newPasswordPrompt, gbc);
