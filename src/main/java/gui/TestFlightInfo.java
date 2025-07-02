@@ -4,6 +4,7 @@ import controller.Controller;
 import model.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -40,11 +41,14 @@ public class TestFlightInfo {
         controller.getFlightController().setFlight("03", "che ne so", new Date(2025, 2, 14), "12:25",
                 "14:10", 19);
 
-        controller.getBookingController().setBooking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
+        //controller.getBookingController().setBooking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
 
-        controller.getFlightController().getFlight().add_booking(controller.getBookingController().getBooking());
+        Booking booking = new Booking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
 
-        controller.setCustomerNUser("pippo", "pluto");
+
+        controller.getFlightController().getFlight().add_booking(booking);
+
+        controller.setAdminNUser("pippo", "pluto");
 
         ArrayList<Passenger> passengers2 = new ArrayList<Passenger>();
         passengers2.add (new Passenger("a", "a", "a", 14));
@@ -55,6 +59,6 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new Book (callingObjects, controller, callingObjects.getLast().getFrame().getSize(), callingObjects.getLast().getFrame().getLocation());
+        new CheckinPassengers (callingObjects, controller, new Dimension(800, 800), new Point(10, 10));
     }
 }

@@ -1,8 +1,6 @@
 package controller;
 
-import model.Flight;
-import model.FlightStatus;
-import model.Passenger;
+import model.*;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -73,6 +71,41 @@ public class FlightController {
 
     public int getPassengerSeat (int index) {
         return flight.get_passengers().get(index).get_Seat();
+    }
+
+    public String getPassengerName (int index) {
+        return flight.get_passengers().get(index).get_First_name();
+    }
+
+    public String getPassengerSurname (int index) {
+        return flight.get_passengers().get(index).get_Last_name();
+    }
+
+    public String getPassengerCF (int index) {
+        return flight.get_passengers().get(index).get_SSN();
+    }
+
+    public String getPassengerTicketNumber (int index) {
+        return flight.get_passengers().get(index).get_Ticket_number();
+    }
+
+    public ArrayList<Integer> getPassengerLuggagesTypes(int index) {
+
+        ArrayList<Integer> types = new ArrayList<Integer>();
+
+        for (Luggage luggage : getPassengerLuggages(index)) {
+            switch (luggage.get_type()) {
+                case LuggageType.carry_on -> types.add(0);
+                case LuggageType.checked -> types.add(1);
+            }
+        }
+
+        return types;
+    }
+
+    public ArrayList<Luggage> getPassengerLuggages (int index) {
+
+        return flight.get_passengers().get(index).get_Luggages();
     }
 
     public String getDateString () {

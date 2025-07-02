@@ -13,26 +13,26 @@ import java.util.Random;
 
 public class Book extends DisposableObject {
 
-    private JFrame mainFrame;
-    private JPanel topPanel;
-    private TitlePanel titlePanel;
-    private NavigatorBarPanel navigatorBarPanel;
+    protected JFrame mainFrame;
+    protected JPanel topPanel;
+    protected TitlePanel titlePanel;
+    protected NavigatorBarPanel navigatorBarPanel;
     private MenuPanelCustomer hamburgerPanel;
-    private UserPanel userPanel;
-    private JPanel flightInfoPanel;
-    private JPanel mainPanel;
-    private JPanel modifyPanel;
-    private int currPage = 0;
-    private RoundedButton prevPageButton;
-    private RoundedButton nextPageButton;
-    private JLabel currentPageLabel;
-    private JPanel confirmPanel;
+    protected UserPanel userPanel;
+    protected JPanel flightInfoPanel;
+    protected JPanel mainPanel;
+    protected JPanel modifyPanel;
+    protected int currPage = 0;
+    protected RoundedButton prevPageButton;
+    protected RoundedButton nextPageButton;
+    protected JLabel currentPageLabel;
+    protected JPanel confirmPanel;
     private ArrayList<RoundedButton> confirmButtons;
-    private ArrayList<PassengerPanel> passengerPanels;
+    protected ArrayList<PassengerPanel> passengerPanels;
     private ArrayList<RemovePassengerButton> removePassengerButtons;
-    private JPanel passengerPage;
+    protected JPanel passengerPage;
     private FooterPanel footerPanel;
-    private Constraints constraints;
+    protected Constraints constraints;
     private RoundedButton savePendingButton;
 
     public Book(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
@@ -42,7 +42,7 @@ public class Book extends DisposableObject {
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainFrame(callingObjects, controller, dimension, point);
+        this.setMainFrame(callingObjects, controller, dimension, point, "Book");
 
         //setting top panels
         this.addTopPanel (callingObjects, controller);
@@ -56,8 +56,13 @@ public class Book extends DisposableObject {
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
-        mainFrame = new JFrame("Book");
+    protected Book() {
+
+        super();
+    }
+
+    protected void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, String title) {
+        mainFrame = new JFrame("title");
         mainFrame.setSize(dimension);
         mainFrame.setLocation(point);
         callingObjects.addLast(this);
@@ -68,7 +73,7 @@ public class Book extends DisposableObject {
         if(controller.developerMode) mainFrame.setBackground(Color.YELLOW);
     }
 
-    private void addTopPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    protected void addTopPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
@@ -84,14 +89,14 @@ public class Book extends DisposableObject {
         topPanel.setVisible (true);
     }
 
-    private void addTitlePanel(String title, Controller controller) {
+    protected void addTitlePanel(String title, Controller controller) {
         titlePanel = new TitlePanel(title, controller);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
         topPanel.add(titlePanel, constraints.getConstraints());
     }
 
-    private void addNavigatorBarPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    protected void addNavigatorBarPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         navigatorBarPanel = new NavigatorBarPanel (callingObjects, controller);
         constraints.setConstraints (0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
@@ -100,7 +105,7 @@ public class Book extends DisposableObject {
         navigatorBarPanel.setVisible (true);
     }
 
-    private void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
         hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
@@ -108,7 +113,7 @@ public class Book extends DisposableObject {
         hamburgerPanel.setVisible (true);
     }
 
-    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
         userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END);
@@ -162,7 +167,7 @@ public class Book extends DisposableObject {
         mainFrame.setVisible (true);
     }
 
-    private void addFlightInfoPanel(Controller controller)
+    protected void addFlightInfoPanel(Controller controller)
     {
         flightInfoPanel = new JPanel();
         flightInfoPanel.setLayout(new GridBagLayout());
@@ -177,14 +182,14 @@ public class Book extends DisposableObject {
         flightInfoPanel.setVisible(true);
     }
 
-    private void setLabels(FlightController flightController)
+    protected void setLabels(FlightController flightController)
     {
         setTitleLabels();
         setInfoLabels(flightController);
     }
 
 
-    private void setTitleLabels() {
+    protected void setTitleLabels() {
 
         ArrayList<JLabel> titleLabels = new ArrayList<JLabel>();
 
@@ -206,7 +211,7 @@ public class Book extends DisposableObject {
         }
     }
 
-    private void setInfoLabels(FlightController flightController) {
+    protected void setInfoLabels(FlightController flightController) {
         ArrayList<JLabel> infoLabels = new ArrayList<JLabel>();
 
         infoLabels.add(new JLabel("   "));
@@ -251,7 +256,7 @@ public class Book extends DisposableObject {
         modifyPanel.setVisible (true);
     }
 
-    private void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         String buttonTitle = "Conferma Prenotazione";
         if (alreadyBooked(controller)) buttonTitle = "Conferma Modifiche";
@@ -330,7 +335,7 @@ public class Book extends DisposableObject {
         flowPanel.add(addPassengerButton);
     }
 
-    private void addPageChangeButtons (JPanel flowPanel) {
+    protected void addPageChangeButtons (JPanel flowPanel) {
 
         prevPageButton.setFocusable(false);
         nextPageButton.setFocusable(false);
@@ -442,7 +447,7 @@ public class Book extends DisposableObject {
         savePendingButton.setVisible(true);
     }
 
-    private void addFooterPanel()
+    protected void addFooterPanel()
     {
        footerPanel = new FooterPanel();
         constraints.setConstraints(0, 4, 1, 1, GridBagConstraints.BOTH,
@@ -450,14 +455,14 @@ public class Book extends DisposableObject {
         mainFrame.add (footerPanel, constraints.getConstraints());
     }
 
-    public void decreaseCurrPage () {
+    protected void decreaseCurrPage () {
         currPage--;
         currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
 
         if (currPage == 0) prevPageButton.setEnabled (false);
     }
 
-    public int getCurrPage () {
+    protected int getCurrPage () {
         return currPage;
     }
 
@@ -493,7 +498,7 @@ public class Book extends DisposableObject {
         }
     }
 
-    private void insertPassengers (Controller controller) {
+    protected void insertPassengers (Controller controller) {
 
         passengerPanels.getFirst().setPassengerName(controller.getBookingController().getPassengerName(0));
         passengerPanels.getFirst().setPassengerSurname(controller.getBookingController().getPassengerLastName(0));
@@ -517,7 +522,7 @@ public class Book extends DisposableObject {
         }
     }
 
-    public void insertPassengerPanel (Controller controller, Book book, PassengerPanel newPassengerPanel) {
+    protected void insertPassengerPanel (Controller controller, Book book, PassengerPanel newPassengerPanel) {
 
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
         passengerPage.add(newPassengerPanel, constraints.getConstraints());

@@ -166,6 +166,8 @@ public class PassengerPanel extends JPanel
         this.setVisible (true);
     }
 
+    protected PassengerPanel () {}
+
     public String print_seat(){
 
         if (seat == -1) return "POSTO";
