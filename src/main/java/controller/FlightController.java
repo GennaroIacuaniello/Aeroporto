@@ -65,8 +65,38 @@ public class FlightController {
         return flight.get_bookings().get(index).get_passengers().size();
     }
 
+    public String getPassengerNameFromBooking (int bookingIndex, int passengerIndex) {
+        return flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_First_name();
+    }
+
+    public String getPassengerSurnameFromBooking (int bookingIndex, int passengerIndex) {
+        return flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Last_name();
+    }
+
+    public String getPassengerCFFromBooking (int bookingIndex, int passengerIndex) {
+        return flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_SSN();
+    }
+
+    public String getPassengerTicketNumberFromBooking (int bookingIndex, int passengerIndex) {
+        return flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Ticket_number();
+    }
+
     public int getPassengerSeatFromBooking (int bookingIndex, int passengerIndex) {
         return flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Seat();
+    }
+
+    public ArrayList<Integer> getPassengerLuggagesTypesFromBooking(int bookingIndex, int passengerIndex) {
+
+        ArrayList<Integer> types = new ArrayList<Integer>();
+
+        for (Luggage luggage : flight.get_bookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Luggages()) {
+            switch (luggage.get_type()) {
+                case LuggageType.carry_on -> types.add(0);
+                case LuggageType.checked -> types.add(1);
+            }
+        }
+
+        return types;
     }
 
     public int getPassengerSeat (int index) {
@@ -114,5 +144,10 @@ public class FlightController {
 
     public String getStatusString () {
         return flight.get_status().toString();
+    }
+
+    public boolean checkBookingConfirm (int index) {
+
+        return flight.get_bookings().get(index).get_status().equals(BookingStatus.confirmed);
     }
 }
