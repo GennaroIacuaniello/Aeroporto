@@ -9,7 +9,7 @@
       <foreground color="-10033877"/>
       <name value=""/>
       <opaque value="true"/>
-      <preferredSize width="360" height="480"/>
+      <preferredSize width="360" height="520"/>
     </properties>
     <border type="none"/>
     <children>
@@ -107,7 +107,7 @@
           </component>
           <component id="e7137" class="javax.swing.JButton" binding="loginButton">
             <constraints>
-              <grid row="13" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="12" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="16" right="0" weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
@@ -125,18 +125,6 @@
               <enabled value="false"/>
               <focusable value="false"/>
               <text value="Register"/>
-            </properties>
-          </component>
-          <component id="d4903" class="javax.swing.JLabel" binding="loginPrompt">
-            <constraints>
-              <grid row="12" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="8" right="0" weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <foreground color="-15461356"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <text value="&lt;html&gt;Sei già&lt;br&gt;registrato?&lt;/html&gt;"/>
             </properties>
           </component>
           <component id="73fcc" class="javax.swing.JLabel" binding="pageTitle">

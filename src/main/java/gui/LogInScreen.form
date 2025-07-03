@@ -121,8 +121,8 @@
               </component>
               <component id="e7137" class="javax.swing.JButton" binding="registerButton">
                 <constraints>
-                  <grid row="19" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="16" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
+                  <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="16" bottom="16" right="0" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <focusable value="false"/>
@@ -140,39 +140,16 @@
                   <text value="Log In"/>
                 </properties>
               </component>
-              <component id="d4903" class="javax.swing.JLabel" binding="registerPrompt">
-                <constraints>
-                  <grid row="18" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="16" bottom="8" right="0" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <foreground color="-15461356"/>
-                  <text value="&lt;html&gt;Non sei ancora&lt;br&gt;registrato?&lt;/html&gt;"/>
-                </properties>
-              </component>
               <component id="c2766" class="javax.swing.JButton" binding="newPasswordButton">
                 <constraints>
-                  <grid row="19" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="16" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
+                  <grid row="18" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="0" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <focusable value="false"/>
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="11"/>
                   <text value="Recupera Password"/>
-                </properties>
-              </component>
-              <component id="b7b89" class="javax.swing.JLabel" binding="newPasswordPrompt">
-                <constraints>
-                  <grid row="18" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="0" bottom="8" right="77" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <autoscrolls value="false"/>
-                  <foreground color="-15461356"/>
-                  <horizontalAlignment value="11"/>
-                  <minimumSize width="73" height="34"/>
-                  <text value="&lt;html&gt;Hai dimenticato&lt;br&gt;la password?&lt;/html&gt;"/>
                 </properties>
               </component>
               <component id="73fcc" class="javax.swing.JLabel" binding="pageTitle">
@@ -187,19 +164,6 @@
                   <horizontalTextPosition value="0"/>
                   <text value="Log In"/>
                   <verticalTextPosition value="3"/>
-                </properties>
-              </component>
-              <component id="2b647" class="javax.swing.JRadioButton" binding="passwordVisibilityToggle">
-                <constraints>
-                  <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="0" bottom="0" right="16" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <background color="-2302756"/>
-                  <focusable value="false"/>
-                  <foreground color="-15461356"/>
-                  <hideActionText value="false"/>
-                  <text value="Mostra password"/>
                 </properties>
               </component>
             </children>

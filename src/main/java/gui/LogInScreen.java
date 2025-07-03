@@ -1,5 +1,7 @@
 package gui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
 
 import javax.swing.*;
@@ -31,14 +33,11 @@ public class LogInScreen {
     private JLabel usernameLabel;
     private JPasswordField passwordField;
     private JLabel passwordLabel;
-    private JRadioButton passwordVisibilityToggle;
     private JButton logInButton;
 
     //Bottom options
     private JButton registerButton;
-    private JLabel registerPrompt;
     private JButton newPasswordButton;
-    private JLabel newPasswordPrompt;
 
     public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller) {
         if (!callingFrames.isEmpty()) {
@@ -52,6 +51,10 @@ public class LogInScreen {
             this.setMainFrame(callingFrames, controller);
         }
         callingFrames.addLast(mainFrame);
+
+        passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
+        registerButton.setPreferredSize(newPasswordButton.getPreferredSize());
+
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,7 +108,6 @@ public class LogInScreen {
             }
         });
 
-
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -129,22 +131,18 @@ public class LogInScreen {
                 resizePadding();
             }
         });
-
-        passwordVisibilityToggle.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(passwordVisibilityToggle.isSelected()){
-                    passwordField.setEchoChar((char)0);
-                }
-                else{
-                    passwordField.setEchoChar('•');
-                }
-            }
-        });
     }
 
     public static void main(String[] args) {
         Controller controller = new Controller();
+        try{
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        }
+        catch (UnsupportedLookAndFeelException e){
+            JOptionPane.showMessageDialog(mainFrame, "Il tuo device non supporta FlatLaf, " +
+                    "utilizzerai un'altra versione dell'app: tranquillo, tutte le funzioni rimarranno invariate.");
+        }
+
         mainFrame = new JFrame("LogIn");
         mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
