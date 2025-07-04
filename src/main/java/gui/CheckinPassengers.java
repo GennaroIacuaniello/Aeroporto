@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 public class CheckinPassengers extends Book{
 
-    private RoundedButton startCheckinButton;
-    private RoundedButton confirmButton;
-    private RoundedButton cancelButton;
+    private JButton startCheckinButton;
+    private JButton confirmButton;
+    private JButton cancelButton;
 
     public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
@@ -63,8 +63,8 @@ public class CheckinPassengers extends Book{
         passengerPage = new JPanel();
         passengerPage.setLayout(new GridBagLayout());
 
-        prevPageButton = new RoundedButton("←");
-        nextPageButton = new RoundedButton("→");
+        prevPageButton = new JButton("←");
+        nextPageButton = new JButton("→");
 
         currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
@@ -178,9 +178,9 @@ public class CheckinPassengers extends Book{
     @Override
     protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        cancelButton = new RoundedButton("ANNULLA");
-        startCheckinButton = new RoundedButton("INIZIA CHECK-IN");
-        confirmButton = new RoundedButton("CONFERMA");
+        cancelButton = new JButton("ANNULLA");
+        startCheckinButton = new JButton("INIZIA CHECK-IN");
+        confirmButton = new JButton("CONFERMA");
 
         cancelButton.setFocusable(false);
         startCheckinButton.setFocusable(false);

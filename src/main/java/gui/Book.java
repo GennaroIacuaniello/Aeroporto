@@ -23,17 +23,17 @@ public class Book extends DisposableObject {
     protected JPanel mainPanel;
     protected JPanel modifyPanel;
     protected int currPage = 0;
-    protected RoundedButton prevPageButton;
-    protected RoundedButton nextPageButton;
+    protected JButton prevPageButton;
+    protected JButton nextPageButton;
     protected JLabel currentPageLabel;
     protected JPanel confirmPanel;
-    private ArrayList<RoundedButton> confirmButtons;
+    private ArrayList<JButton> confirmButtons;
     protected ArrayList<PassengerPanel> passengerPanels;
     private ArrayList<RemovePassengerButton> removePassengerButtons;
     protected JPanel passengerPage;
     private FooterPanel footerPanel;
     protected Constraints constraints;
-    private RoundedButton savePendingButton;
+    private JButton savePendingButton;
 
     public Book(ArrayList<DisposableObject> callingObjects, Controller controller,
                 Dimension dimension, Point point, int fullScreen) {
@@ -136,8 +136,8 @@ public class Book extends DisposableObject {
         passengerPage = new JPanel();
         passengerPage.setLayout(new GridBagLayout());
 
-        prevPageButton = new RoundedButton("←");
-        nextPageButton = new RoundedButton("→");
+        prevPageButton = new JButton("←");
+        nextPageButton = new JButton("→");
 
         currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
@@ -263,14 +263,14 @@ public class Book extends DisposableObject {
         String buttonTitle = "Conferma Prenotazione";
         if (alreadyBooked(controller)) buttonTitle = "Conferma Modifiche";
 
-        confirmButtons = new ArrayList<RoundedButton>();
+        confirmButtons = new ArrayList<JButton>();
         confirmPanel = new JPanel();
         confirmPanel.setLayout(new GridLayout());
         if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
 
         for (int i = 0; i < 3; i++) {
 
-            confirmButtons.add(new RoundedButton(buttonTitle));
+            confirmButtons.add(new JButton(buttonTitle));
 
             int finalI = i;
 
@@ -316,7 +316,7 @@ public class Book extends DisposableObject {
 
     private void addAddPassengerButton (Book book, Controller controller, JPanel flowPanel) {
 
-        RoundedButton addPassengerButton = new RoundedButton("AGGIUNGI PASSEGGERO");
+        JButton addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
         addPassengerButton.setFocusable(false);
 
         addPassengerButton.addActionListener(new ActionListener() {
@@ -424,7 +424,7 @@ public class Book extends DisposableObject {
     }
 
     private void addSavePendingButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        savePendingButton = new RoundedButton("Salva in attesa");
+        savePendingButton = new JButton("Salva in attesa");
         savePendingButton.setFocusable(false);
 
         savePendingButton.addActionListener (new ActionListener() {

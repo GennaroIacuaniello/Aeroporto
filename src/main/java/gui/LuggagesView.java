@@ -15,8 +15,8 @@ public class LuggagesView extends JFrame {
     private JPanel luggagesPanel;
     private ArrayList<LuggagePanel> luggagesPanels;
     private ArrayList<RemoveLuggageButton> removeLuggageButtons;
-    private RoundedButton addLuggageButton;
-    private RoundedButton confirmButton;
+    private JButton addLuggageButton;
+    private JButton confirmButton;
 
     private Constraints constraints;
 
@@ -46,8 +46,8 @@ public class LuggagesView extends JFrame {
     }
 
     private void setButtons(Controller controller) {
-        addLuggageButton = new RoundedButton("+");
-        confirmButton = new RoundedButton("Confirm");
+        addLuggageButton = new JButton("+");
+        confirmButton = new JButton("Confirm");
 
         addLuggageButton.addActionListener(new ActionListener() {
 
@@ -143,7 +143,7 @@ public class LuggagesView extends JFrame {
         }
     }
 
-    public void setLocation(RoundedButton callingButtonutton) {
+    public void setLocation(JButton callingButtonutton) {
         //coordinate punto in alto a sx del bottone
         double x = callingButtonutton.getLocationOnScreen().getX();
         double y = callingButtonutton.getLocationOnScreen().getY();

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class SeatChooser extends JFrame {
 
     private Constraints constraints;
-    private ArrayList<RoundedButton> seatButtons;
-    private RoundedButton confirmButton;
-    private RoundedButton deleteButton;
+    private ArrayList<JButton> seatButtons;
+    private JButton confirmButton;
+    private JButton deleteButton;
     private int offset;
     private int seat;
 
@@ -28,9 +28,9 @@ public class SeatChooser extends JFrame {
         setAlwaysOnTop(true);
 
         seat = -1;
-        seatButtons = new ArrayList<RoundedButton>();
-        confirmButton = new RoundedButton("CONFERMA");
-        deleteButton = new RoundedButton("ELIMINA");
+        seatButtons = new ArrayList<JButton>();
+        confirmButton = new JButton("CONFERMA");
+        deleteButton = new JButton("ELIMINA");
 
         confirmButton.addActionListener(new ActionListener() {
             @Override
@@ -69,7 +69,7 @@ public class SeatChooser extends JFrame {
 
         for (int i = 0; i < controller.getFlightController().getMaxSeats(); i++) {
             int finalI = i;
-            seatButtons.add(new RoundedButton(printSeat(finalI)));
+            seatButtons.add(new JButton(printSeat(finalI)));
             seatButtons.get(finalI).addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -153,7 +153,7 @@ public class SeatChooser extends JFrame {
         this.setVisible(true);
     }
 
-    public void setLocation(RoundedButton callingButton) {
+    public void setLocation(JButton callingButton) {
         //coordinate punto in alto a sx del bottone
         double x = callingButton.getLocationOnScreen().getX();
         double y = callingButton.getLocationOnScreen().getY();

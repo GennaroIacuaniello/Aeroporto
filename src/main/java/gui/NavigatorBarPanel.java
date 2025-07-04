@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class NavigatorBarPanel extends JPanel {
-    RoundedButton homeButton;
-    RoundedButton backButton;
+    JButton homeButton;
+    JButton backButton;
     JLabel pathLabel;
     Constraints constraints;
 
@@ -27,7 +27,7 @@ public class NavigatorBarPanel extends JPanel {
     }
 
     private void setHomeButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        homeButton = new RoundedButton("Home");
+        homeButton = new JButton("Home");
         //homeButton.setLayout (new FlowLayout ());
         homeButton.setFocusable(false);
 
@@ -46,7 +46,7 @@ public class NavigatorBarPanel extends JPanel {
     }
 
     private void setBackButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        backButton = new RoundedButton("Back");
+        backButton = new JButton("Back");
         //backButton.setLayout (new GridBagLayout ());
         backButton.setFocusable(false);
 

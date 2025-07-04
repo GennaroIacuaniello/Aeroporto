@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class UserPanel extends JPanel {
 
-    private RoundedButton userButton;
-    private RoundedButton logoutButton;
+    private JButton userButton;
+    private JButton logoutButton;
     private Constraints constraints;
     private JPanel invisiblePanel;
 
@@ -29,7 +29,7 @@ public class UserPanel extends JPanel {
 
     private void setLogoutButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        logoutButton = new RoundedButton("Logout");
+        logoutButton = new JButton("Logout");
         logoutButton.setLayout(new GridBagLayout());
         logoutButton.setEnabled(false);
         logoutButton.setVisible(false);
@@ -51,7 +51,7 @@ public class UserPanel extends JPanel {
 
     private void setUserButton(UserController userController) {
 
-        userButton = new RoundedButton("<html>Ciao,<br>" + userController.getUsername() + "</html>");
+        userButton = new JButton("<html>Ciao,<br>" + userController.getUsername() + "</html>");
         userButton.setLayout(new GridBagLayout());
         userButton.setFocusable(false);
 
