@@ -73,7 +73,7 @@ public class SeatChooser extends JFrame {
 
         //aggiungo scrollPane
         constraints.setConstraints(0, 1, 2, 1,
-                GridBagConstraints.BOTH, 5, 5, GridBagConstraints.CENTER, 0.05f, 0.05f);
+                GridBagConstraints.BOTH, 5, 5, GridBagConstraints.CENTER, 0.5f, 0.5f);
         this.add(scrollPane, constraints.getConstraints());
 
         //aggiungo posti
@@ -107,7 +107,7 @@ public class SeatChooser extends JFrame {
             seatButtons.get(i).setPreferredSize(new Dimension(54, 54));
 
             constraints.setConstraints(i%6, i/6, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER, new Insets(0, leftInset, 16, rightInset));
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER, new Insets(8, leftInset, 8, rightInset));
             seatPanel.add(seatButtons.get(i), constraints.getConstraints());
         }
         
