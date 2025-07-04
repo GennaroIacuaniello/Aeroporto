@@ -16,11 +16,10 @@ public class RemovePassengerButton extends RoundedButton {
     public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
                                  ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, RoundedButton nextPageButton) {
 
-        super();
+        super("Remove Passenger");
 
         index = idx;
 
-        this.setText("Remove Passenger");
         this.setFocusable(false);
 
         constraints = new Constraints();

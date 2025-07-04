@@ -15,7 +15,7 @@ public class MenuPanelCustomer extends JPanel {
     private Constraints constraints;
     private JComboBox menu;
 
-    public MenuPanelCustomer(ArrayList<JFrame> callingFrames, Controller controller) {
+    public MenuPanelCustomer(ArrayList<DisposableObject> callingObjects, Controller controller){
 
         super();
 
@@ -37,10 +37,10 @@ public class MenuPanelCustomer extends JPanel {
 
         invisiblePanel = new JPanel();
         //invisiblePanel.setBackground(Color.GREEN);
-        invisiblePanel.setLayout(new GridBagLayout());
+        invisiblePanel.setLayout (new GridBagLayout());
         invisiblePanel.setVisible(true);
 
-        constraints.setConstraints(0, 1, 3, 2, GridBagConstraints.BOTH,
+        constraints.setConstraints (0, 1, 3, 2, GridBagConstraints.BOTH,
                 0, 50, GridBagConstraints.FIRST_LINE_START);
 
         this.add(invisiblePanel, constraints.getConstraints());
@@ -56,21 +56,28 @@ public class MenuPanelCustomer extends JPanel {
                         //Selezionato menù, chiudo solamente la JComboBox
                         break;
                     case "Home":
-                        callingFrames.get(callingFrames.size() - 1).setVisible(false);
+                        /*callingFrames.get(callingFrames.size() - 1).setVisible(false);
                         //callingFrames.getLast().dispose();
                         for (int i = 1; i < callingFrames.size(); i++) {
                             callingFrames.get(i).dispose();
                         }
                         callingFrames.removeLast();
-                        new MainCustomerScreen(callingFrames, controller);
+                        new MainCustomerScreen(callingFrames, controller);*/
+                        menu.setSelectedIndex(0);
+                        controller.goHome(callingObjects);
                         break;
                     case "Cerca voli":
-                        callingFrames.get(callingFrames.size() - 1).setVisible(false);
-                        //callingFrames.getLast().dispose();
-                        //callingFrames.removeLast();
-                        new SearchFlightCustomerMainFrame(callingFrames, controller);
+                        menu.setSelectedIndex(0);
+                        if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
+                            System.out.println("1");
+                            //callingFrames.getLast().dispose();
+                            //callingFrames.removeLast();
+                            new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(), callingObjects.getLast().getFrame().getLocation());
+                            callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                        }
                         break;
                     case "I miei voli":
+                        menu.setSelectedIndex(0);
                         JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");
                         break;
                     case "DeveloperMode":

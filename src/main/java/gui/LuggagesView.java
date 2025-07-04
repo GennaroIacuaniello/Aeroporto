@@ -22,10 +22,10 @@ public class LuggagesView extends JFrame {
 
     public LuggagesView(Controller controller) {
 
-        super("Luggages");
+        super ("Luggages");
 
-        this.setVisible(false);
-        this.setAlwaysOnTop(true);
+        this.setVisible (false);
+        this.setAlwaysOnTop (true);
 
         thisFrame = this;
         this.setLayout(new GridBagLayout());
@@ -115,7 +115,7 @@ public class LuggagesView extends JFrame {
         return luggagesPanels;
     }
 
-    public void setLuggagesTypes(ArrayList<Integer> luggagesTypes, Controller controller) {
+    public void setLuggagesTypes (ArrayList<Integer> luggagesTypes, Controller controller) {
         for (Integer luggageType : luggagesTypes) {
             if (!luggagesPanels.isEmpty()) {
                 luggagesPanels.add(new LuggagePanel(controller, luggagesPanels.getLast().getIndex() + 1));
@@ -143,4 +143,19 @@ public class LuggagesView extends JFrame {
         }
     }
 
+    public void setLocation(RoundedButton callingButtonutton) {
+        //coordinate punto in alto a sx del bottone
+        double x = callingButtonutton.getLocationOnScreen().getX();
+        double y = callingButtonutton.getLocationOnScreen().getY();
+
+        //coordinate centro
+        x += callingButtonutton.getSize().getWidth() / 2;
+        y += callingButtonutton.getSize().getHeight() / 2;
+
+        //coordinate punto in alto a sx frame
+        x -= (double) this.getWidth() / 2;
+        y -= (double) this.getHeight() / 2;
+
+        this.setLocation((int) x, (int) y);
+    }
 }

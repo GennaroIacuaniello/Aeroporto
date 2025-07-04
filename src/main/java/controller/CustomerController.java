@@ -10,4 +10,8 @@ public class CustomerController {
     public void setCustomer(String username, char[] password) {
         customer = new Customer(username, password);
     }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

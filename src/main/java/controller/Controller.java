@@ -1,10 +1,14 @@
 package controller;
 
+import gui.DisposableObject;
+import gui.LogInScreen;
+import gui.PassengerPanel;
 import model.Arriving;
 import model.BookingStatus;
 import model.Departing;
 import model.Flight;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -138,9 +142,60 @@ public class Controller {
     public boolean checkBooking (int index) {
         if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().get_bookings().get(index)) return false;
         if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.cancelled) return false;
-        //if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.pending
-        //  && -- controlla il tempo passato dalla prenotazione --) return false;
 
         return true;
+    }
+
+    public void goHome (ArrayList<DisposableObject> callingObjects) {
+
+        Dimension dimension = callingObjects.getLast().getFrame().getSize();
+        Point point = callingObjects.getLast().getFrame().getLocation();
+
+        for (int i = callingObjects.size() - 1; i > 1; i--) {
+
+            callingObjects.get(i).doOnDispose(callingObjects, this);
+            callingObjects.getLast().getFrame().dispose();
+            callingObjects.removeLast();
+        }
+
+        callingObjects.getLast().getFrame().setSize(dimension);
+        callingObjects.getLast().getFrame().setLocation(point);
+
+        callingObjects.getLast().doOnRestore(callingObjects, this);
+
+        callingObjects.getLast().getFrame().setVisible(true);
+    }
+
+    public void goBack (ArrayList<DisposableObject> callingObjects) {
+
+        Dimension dimension = callingObjects.getLast().getFrame().getSize();
+        Point point = callingObjects.getLast().getFrame().getLocation();
+
+        callingObjects.getLast().doOnDispose(callingObjects, this);
+        callingObjects.getLast().getFrame().dispose();
+        callingObjects.removeLast();
+
+        callingObjects.getLast().getFrame().setSize(dimension);
+        callingObjects.getLast().getFrame().setLocation(point);
+
+        callingObjects.getLast().doOnRestore(callingObjects, this);
+
+        callingObjects.getLast().getFrame().setVisible(true);
+    }
+
+    public void logOut (ArrayList<DisposableObject> callingObjects) {
+
+        for (int i = callingObjects.size() - 1; i > 0; i--) {
+            callingObjects.getLast().doOnDispose(callingObjects, this);
+            callingObjects.getLast().getFrame().dispose();
+            callingObjects.removeLast();
+        }
+
+        callingObjects.getLast().doOnRestore(callingObjects, this);
+        callingObjects.getLast().getFrame().setVisible(true);
+    }
+
+    public void addBooking(ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
+
     }
 }

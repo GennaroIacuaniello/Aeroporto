@@ -3,11 +3,10 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Home {
+public class Home extends DisposableObject{
     private JPanel mainPanel;
     private static JFrame frameHome;
     private static Controller controller;
@@ -20,7 +19,7 @@ public class Home {
         frameHome.pack();
         frameHome.setVisible(true);
 
-        controller.setCustomerNUser("Tramontana", new char[]{'1', '2', '3', '4'});
+        controller.setCustomerNUser("Tramontana", "1234");
         controller.getFlightController().setFlight("01", "Compagnia", new Date(),
                 "00:00", "00:00", 66);
 
@@ -33,5 +32,4 @@ public class Home {
         // Add action listeners or other initialization code here
 
     }
-
 }

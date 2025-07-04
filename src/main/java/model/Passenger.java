@@ -101,9 +101,17 @@ public class Passenger {
         }
     }
 
-    public int set_check_in(){
-        this.checked_in = true;
+    public int set_check_in(boolean par_check_in) {
+        this.checked_in = par_check_in;
         return 0;
+    }
+
+    public boolean get_check_in(){
+        return this.checked_in;
+    }
+
+    public void check_in() {
+        this.checked_in = true;
     }
 
     public String print_seat(){

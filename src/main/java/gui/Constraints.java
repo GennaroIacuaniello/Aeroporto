@@ -1,6 +1,5 @@
 package gui;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Constraints {
@@ -29,7 +28,7 @@ public class Constraints {
     }
 
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
-                               int ipadx, int ipady, int anchor, float weightx, float weighty) {
+                               int ipadx, int ipady, int anchor, float weightx, float weighty){
 
         constraints.gridx = gridx;
         constraints.gridy = gridy;
@@ -45,7 +44,23 @@ public class Constraints {
     }
 
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
-                               int ipadx, int ipady, int anchor) {
+                               int ipadx, int ipady, int anchor, Insets insets) {
+
+        constraints.gridx = gridx;
+        constraints.gridy = gridy;
+        constraints.gridwidth = gridwidth;
+        constraints.gridheight = gridheight;
+        constraints.fill = fill;
+        constraints.ipadx = ipadx;
+        constraints.ipady = ipady;
+        constraints.anchor = anchor;
+        constraints.weightx = 0.01;
+        constraints.weighty = 0.01;
+        constraints.insets = insets;
+    }
+
+    public void setConstraints (int gridx, int gridy, int gridwidth, int gridheight, int fill,
+                                int ipadx, int ipady, int anchor){
 
         constraints.gridx = gridx;
         constraints.gridy = gridy;
@@ -60,13 +75,12 @@ public class Constraints {
         constraints.insets = new Insets(0, 0, 0, 0);
     }
 
-    public void resetWeight() {
+    public void resetWeight ()
+    {
         constraints.weightx = 0.01;
         constraints.weighty = 0.01;
     }
 
-    public GridBagConstraints getConstraints() {
-        return constraints;
-    }
+    public GridBagConstraints getConstraints(){return constraints;}
 
 }

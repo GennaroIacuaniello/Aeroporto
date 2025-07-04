@@ -17,6 +17,10 @@ public class BookingController {
         }
     }
 
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
     public Booking getBooking() {
         return booking;
     }
@@ -68,5 +72,9 @@ public class BookingController {
         }
 
         return types;
+    }
+
+    public boolean checkPendingButton () {
+        return this.booking == null || (this.booking != null && this.booking.get_status() == BookingStatus.pending);
     }
 }

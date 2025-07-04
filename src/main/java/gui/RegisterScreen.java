@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import static java.lang.Math.max;
 
-public class RegisterScreen {
+public class RegisterScreen extends DisposableObject{
 
     //Padding
     private JPanel topPadding;
@@ -40,9 +40,9 @@ public class RegisterScreen {
     //Bottom options
     private JButton loginButton;
 
-    public RegisterScreen(ArrayList<JFrame> callingFrames, Controller controller) {
+    public RegisterScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        this.setMainFrame(callingFrames, controller);
+        this.setMainFrame(callingObjects, controller);
         mainFrame.setVisible(true);
 
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
@@ -75,15 +75,21 @@ public class RegisterScreen {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LogInScreen(callingFrames, controller);
+                mainFrame.setVisible(false);
+                new LogInScreen(callingObjects, controller);
+                doOnDispose(callingObjects, controller);
+                mainFrame.dispose();
             }
         });
 
+        this.setMainFrame(callingObjects, controller);
+        mainFrame.setVisible(true);
+
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller){
         mainFrame = new JFrame("RegisterScreen");
-        callingFrames.addLast(mainFrame);
+        callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.add(registerScreen);
         mainFrame.pack();
@@ -103,4 +109,8 @@ public class RegisterScreen {
 
     }
 
+    @Override
+    public JFrame getFrame() {
+        return mainFrame;
+    }
 }

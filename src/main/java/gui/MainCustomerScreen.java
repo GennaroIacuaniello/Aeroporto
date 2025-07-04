@@ -9,7 +9,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class MainCustomerScreen {
+public class MainCustomerScreen extends DisposableObject {
 
     private JFrame mainFrame;
     private TitlePanel titlePanel;
@@ -21,26 +21,21 @@ public class MainCustomerScreen {
     private JPanel departingPanel;
     Constraints constraints;
 
-    public MainCustomerScreen(ArrayList<JFrame> callingFrames, Controller controller) {
+    public MainCustomerScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainFrame(callingFrames);
+        this.setMainFrame(callingObjects);
         //callingFrame.dispose();
-        if (controller.developerMode) {
-            for (JFrame frame : callingFrames) {
-                System.out.println(frame.getName());
-            }
-            System.out.println();
-        }
+
         //Setting surrounding panels
         this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
-        this.addNavigatorBarPanel(callingFrames);
-        this.addHamburgerPanel(callingFrames, controller);
-        this.addUserPanel(callingFrames, controller);
+        this.addNavigatorBarPanel(callingObjects, controller);
+        this.addHamburgerPanel(callingObjects, controller);
+        this.addUserPanel(callingObjects, controller);
         this.addFooterPanel();
 
         this.addArrivingPanel(controller);
@@ -48,10 +43,10 @@ public class MainCustomerScreen {
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects) {
 
         mainFrame = new JFrame("Home");
-        callingFrames.addLast(mainFrame);
+        callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
@@ -67,27 +62,27 @@ public class MainCustomerScreen {
         titlePanel.setVisible(true);
     }
 
-    private void addNavigatorBarPanel(ArrayList<JFrame> callingFrames) {
+    private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        navigatorBarPanel = new NavigatorBarPanel(callingFrames);
+        navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START);
         mainFrame.add(navigatorBarPanel, constraints.getConstraints());
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
+        hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
         hamburgerPanel.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        userPanel = new UserPanel(callingFrames, controller);
+        userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
         mainFrame.add(userPanel, constraints.getConstraints());
@@ -108,7 +103,7 @@ public class MainCustomerScreen {
         arrivingPanel = new JPanel();
         arrivingPanel.setLayout(new GridBagLayout());
         arrivingPanel.setBackground(Color.LIGHT_GRAY);
-        if (controller.developerMode) arrivingPanel.setBackground(Color.ORANGE);
+        if(controller.developerMode) arrivingPanel.setBackground(Color.ORANGE);
 
         setArrivingTitleLabels(arrivingPanel);
         setArrivingFlightLabels(controller, arrivingPanel);
@@ -138,11 +133,11 @@ public class MainCustomerScreen {
         }
     }
 
-    private void setArrivingFlightLabels(Controller controller, JPanel tablePanel) {
+    private void setArrivingFlightLabels(Controller controller, JPanel tablePanel){
 
         ArrayList<Arriving> imminentArrivingFlights = controller.getImminentArrivingFlights();
 
-        for (int i = 0; i < imminentArrivingFlights.size(); i++) {
+        for(int i = 0; i < imminentArrivingFlights.size(); i++){
 
             JLabel companyLabel = new JLabel(imminentArrivingFlights.get(i).get_company_name());
             JLabel originLabel = new JLabel(imminentArrivingFlights.get(i).get_origin());
@@ -150,19 +145,19 @@ public class MainCustomerScreen {
                     " " + imminentArrivingFlights.get(i).getMonthName());
             JLabel timeLabel = new JLabel(imminentArrivingFlights.get(i).get_arrival_time());
 
-            constraints.setConstraints(0, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(0, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(companyLabel, constraints.getConstraints());
 
-            constraints.setConstraints(1, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(1, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(originLabel, constraints.getConstraints());
 
-            constraints.setConstraints(2, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(2, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(dateLabel, constraints.getConstraints());
 
-            constraints.setConstraints(3, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(3, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(timeLabel, constraints.getConstraints());
 
@@ -175,7 +170,7 @@ public class MainCustomerScreen {
         departingPanel = new JPanel();
         departingPanel.setLayout(new GridBagLayout());
         departingPanel.setBackground(Color.LIGHT_GRAY);
-        if (controller.developerMode) departingPanel.setBackground(Color.ORANGE);
+        if(controller.developerMode) departingPanel.setBackground(Color.ORANGE);
 
         setDepartingTitleLabels(departingPanel);
         setDepartingFlightLabels(controller, departingPanel);
@@ -206,11 +201,11 @@ public class MainCustomerScreen {
         }
     }
 
-    private void setDepartingFlightLabels(Controller controller, JPanel tablePanel) {
+    private void setDepartingFlightLabels(Controller controller, JPanel tablePanel){
 
         ArrayList<Departing> imminentDepartingFlights = controller.getImminentDepartingFlights();
 
-        for (int i = 0; i < imminentDepartingFlights.size(); i++) {
+        for(int i = 0; i < imminentDepartingFlights.size(); i++){
 
             JLabel companyLabel = new JLabel(imminentDepartingFlights.get(i).get_company_name());
             JLabel originLabel = new JLabel(imminentDepartingFlights.get(i).get_destination());
@@ -219,28 +214,38 @@ public class MainCustomerScreen {
             JLabel timeLabel = new JLabel(imminentDepartingFlights.get(i).get_arrival_time());
             JLabel gateLabel = new JLabel(Integer.valueOf(imminentDepartingFlights.get(i).get_gate().get_Id()).toString());
 
-            constraints.setConstraints(0, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(0, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(companyLabel, constraints.getConstraints());
 
-            constraints.setConstraints(1, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(1, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(originLabel, constraints.getConstraints());
 
-            constraints.setConstraints(2, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(2, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(dateLabel, constraints.getConstraints());
 
-            constraints.setConstraints(3, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(3, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(timeLabel, constraints.getConstraints());
 
-            constraints.setConstraints(4, i + 1, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints(4, i+1, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER);
             tablePanel.add(gateLabel, constraints.getConstraints());
 
         }
 
+    }
+
+    @Override
+    public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        controller.getCustomerController().setCustomer(null);
+        controller.getUserController().setUser(null);
+    }
+
+    public JFrame getFrame() {
+        return this.mainFrame;
     }
 
 }

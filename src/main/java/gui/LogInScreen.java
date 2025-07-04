@@ -6,11 +6,12 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-
 import java.awt.event.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
+public class LogInScreen extends DisposableObject {
 import static java.lang.Math.max;
 
 public class LogInScreen {
@@ -39,18 +40,19 @@ public class LogInScreen {
     private JButton registerButton;
     private JButton newPasswordButton;
 
-    public LogInScreen(ArrayList<JFrame> callingFrames, Controller controller) {
-        if (!callingFrames.isEmpty()) {
-            int size = callingFrames.size();
+    public LogInScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-            for (JFrame callingFrame : callingFrames) {
-                callingFrame.dispose();
+        if (!callingObjects.isEmpty()) {
+            int size = callingObjects.size();
+
+            for (int i = size - 1; i >= 0; i--) {
+                callingObjects.get(i).doOnDispose(callingObjects, controller);
             }
-            callingFrames.clear();
+            callingObjects.clear();
 
-            this.setMainFrame(callingFrames, controller);
+            this.setMainFrame(callingObjects, controller);
         }
-        callingFrames.addLast(mainFrame);
+        callingObjects.addLast(this);
 
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         registerButton.setPreferredSize(newPasswordButton.getPreferredSize());
@@ -59,7 +61,7 @@ public class LogInScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
-                    login(callingFrames, controller);
+                    login(callingObjects, controller);
                 }
             }
         });
@@ -76,7 +78,7 @@ public class LogInScreen {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
-                        login(callingFrames, controller);
+                        login(callingObjects, controller);
                     }
                 }
             }
@@ -94,7 +96,7 @@ public class LogInScreen {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
-                        login(callingFrames, controller);
+                        login(callingObjects, controller);
                     }
                 }
             }
@@ -104,7 +106,9 @@ public class LogInScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
-                new RegisterScreen(callingFrames, controller);
+                new RegisterScreen(callingObjects, controller);
+                doOnDispose(callingObjects, controller);
+                mainFrame.dispose();
             }
         });
 
@@ -144,16 +148,16 @@ public class LogInScreen {
         }
 
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(new ArrayList<JFrame>(), controller).loginScreen);
+        mainFrame.setContentPane(new LogInScreen(new ArrayList<DisposableObject>(), controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
     }
 
-    private void setMainFrame(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller) {
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(callingFrames, controller).loginScreen);
+        mainFrame.setContentPane(new LogInScreen(callingObjects, controller).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -190,13 +194,13 @@ public class LogInScreen {
         return true;
     }
 
-    private void login(ArrayList<JFrame> callingFrames, Controller controller) {
+    private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
         controller.setCustomerNUser(usernameTextField.getText(), passwordField.getPassword());
         usernameTextField.setText("");
         passwordField.setText("");
         logInButton.setEnabled(false);
         mainFrame.setVisible(false);
-        new MainCustomerScreen(callingFrames, controller);
+        new MainCustomerScreen(callingObjects, controller);
     }
 
     private void resizePadding() {
@@ -213,4 +217,8 @@ public class LogInScreen {
 
     }
 
+    @Override
+    public JFrame getFrame () {
+        return mainFrame;
+    }
 }

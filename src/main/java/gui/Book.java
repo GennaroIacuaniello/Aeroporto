@@ -1,6 +1,7 @@
 package gui;
 
 import controller.BookingController;
+import controller.BookingStatusController;
 import controller.Controller;
 import controller.FlightController;
 
@@ -10,43 +11,44 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Book {
+public class Book extends DisposableObject {
 
-    private JFrame mainFrame;
-    private JPanel topPanel;
-    private TitlePanel titlePanel;
-    private NavigatorBarPanel navigatorBarPanel;
+    protected JFrame mainFrame;
+    protected JPanel topPanel;
+    protected TitlePanel titlePanel;
+    protected NavigatorBarPanel navigatorBarPanel;
     private MenuPanelCustomer hamburgerPanel;
-    private UserPanel userPanel;
-    private JPanel flightInfoPanel;
-    private JPanel mainPanel;
-    private JPanel modifyPanel;
-    private int currPage = 0;
-    private RoundedButton prevPageButton;
-    private RoundedButton nextPageButton;
-    private JLabel currentPageLabel;
-    private JPanel confirmPanel;
+    protected UserPanel userPanel;
+    protected JPanel flightInfoPanel;
+    protected JPanel mainPanel;
+    protected JPanel modifyPanel;
+    protected int currPage = 0;
+    protected RoundedButton prevPageButton;
+    protected RoundedButton nextPageButton;
+    protected JLabel currentPageLabel;
+    protected JPanel confirmPanel;
     private ArrayList<RoundedButton> confirmButtons;
-    private ArrayList<PassengerPanel> passengerPanels;
+    protected ArrayList<PassengerPanel> passengerPanels;
     private ArrayList<RemovePassengerButton> removePassengerButtons;
-    private JPanel passengerPage;
+    protected JPanel passengerPage;
     private FooterPanel footerPanel;
-    private Constraints constraints;
+    protected Constraints constraints;
+    private RoundedButton savePendingButton;
 
-    public Book(ArrayList<JFrame> callingFrames, Controller controller) {
+    public Book(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainframe(callingFrames, controller);
+        this.setMainFrame(callingObjects, controller, dimension, point, "Book");
 
         //setting top panels
-        this.addTopPanel(callingFrames, controller);
+        this.addTopPanel (callingObjects, controller);
 
         //setting mainPanel
-        this.addMainPanel(controller);
+        this.addMainPanel (callingObjects, controller);
 
         //this.addFooterPanel();
         addFooterPanel();
@@ -54,71 +56,81 @@ public class Book {
         mainFrame.setVisible(true);
     }
 
-    private void setMainframe(ArrayList<JFrame> callingFrames, Controller controller) {
-        mainFrame = new JFrame("Book");
-        callingFrames.addLast(mainFrame);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLayout(new GridBagLayout());
-        mainFrame.setSize(1080, 720);
+    protected Book() {
 
-        if (controller.developerMode) mainFrame.setBackground(Color.YELLOW);
+        super();
     }
 
-    private void addTopPanel(ArrayList<JFrame> callingFrames, Controller controller) {
+    protected void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, String title) {
+        mainFrame = new JFrame("title");
+        mainFrame.setSize(dimension);
+        mainFrame.setLocation(point);
+        callingObjects.addLast(this);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setLayout(new GridBagLayout());
+        //mainFrame.setSize(1080, 720);
+
+        if(controller.developerMode) mainFrame.setBackground(Color.YELLOW);
+    }
+
+    protected void addTopPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    {
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
 
         addTitlePanel("AEROPORTO DI NAPOLI", controller);
-        addNavigatorBarPanel(callingFrames);
-        addHamburgerPanel(callingFrames, controller);
-        addUserPanel(callingFrames, controller);
+        addNavigatorBarPanel (callingObjects, controller);
+        addHamburgerPanel(callingObjects, controller);
+        addUserPanel(callingObjects, controller);
 
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
         mainFrame.add(topPanel, constraints.getConstraints());
-        topPanel.setVisible(true);
+        topPanel.setVisible (true);
     }
 
-    private void addTitlePanel(String title, Controller controller) {
+    protected void addTitlePanel(String title, Controller controller) {
         titlePanel = new TitlePanel(title, controller);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
         topPanel.add(titlePanel, constraints.getConstraints());
     }
 
-    private void addNavigatorBarPanel(ArrayList<JFrame> callingFrames) {
-        navigatorBarPanel = new NavigatorBarPanel(callingFrames);
-        constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
+    protected void addNavigatorBarPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    {
+        navigatorBarPanel = new NavigatorBarPanel (callingObjects, controller);
+        constraints.setConstraints (0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER);
-        topPanel.add(navigatorBarPanel, constraints.getConstraints());
-        navigatorBarPanel.setVisible(true);
+        topPanel.add (navigatorBarPanel, constraints.getConstraints ());
+        navigatorBarPanel.setVisible (true);
     }
 
-    private void addHamburgerPanel(ArrayList<JFrame> callingFrames, Controller controller) {
-        hamburgerPanel = new MenuPanelCustomer(callingFrames, controller);
+    protected void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         topPanel.add(hamburgerPanel, constraints.getConstraints());
-        hamburgerPanel.setVisible(true);
+        hamburgerPanel.setVisible (true);
     }
 
-    private void addUserPanel(ArrayList<JFrame> callingFrames, Controller controller) {
-        userPanel = new UserPanel(callingFrames, controller);
+    protected void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END);
         topPanel.add(userPanel, constraints.getConstraints());
-        userPanel.setVisible(true);
+        userPanel.setVisible (true);
     }
 
-    private void addMainPanel(Controller controller) {
+    private void addMainPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
         //if(controller.developerMode) mainPanel.setBackground(Color.GREEN);
 
-        addFlightInfoPanel(controller);
+        addFlightInfoPanel (controller);
 
-        passengerPanels = new ArrayList<PassengerPanel>();
-        removePassengerButtons = new ArrayList<RemovePassengerButton>();
+        passengerPanels = new ArrayList<PassengerPanel> ();
+        removePassengerButtons = new ArrayList<RemovePassengerButton> ();
         passengerPage = new JPanel();
         passengerPage.setLayout(new GridBagLayout());
 
@@ -132,52 +144,52 @@ public class Book {
         newremovePassengerButton.setFocusable(false);
         newremovePassengerButton.setEnabled(false);
 
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-        passengerPage.add(newPassenger, constraints.getConstraints());
-        passengerPanels.add(newPassenger);
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+        passengerPage.add (newPassenger, constraints.getConstraints());
+        passengerPanels.add (newPassenger);
 
-        constraints.setConstraints(1, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-        passengerPage.add(newremovePassengerButton, constraints.getConstraints());
-        removePassengerButtons.add(newremovePassengerButton);
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+        passengerPage.add (newremovePassengerButton, constraints.getConstraints());
+        removePassengerButtons.add (newremovePassengerButton);
 
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
-        mainPanel.add(passengerPage, constraints.getConstraints());
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER);
+        mainPanel.add (passengerPage, constraints.getConstraints ());
 
-        addModifyPanel(controller);
-        addConfirmPanel(controller);
+        addModifyPanel (callingObjects , controller);
+        addConfirmPanel (callingObjects, controller);
 
         if (alreadyBooked(controller)) insertPassengers(controller);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
-        mainFrame.add(mainPanel, constraints.getConstraints());
-        constraints.resetWeight();
-        mainFrame.setVisible(true);
-        System.out.println(prevPageButton.getSize().getHeight());
+        mainFrame.add (mainPanel, constraints.getConstraints());
+        constraints.resetWeight ();
+        mainFrame.setVisible (true);
     }
 
-    private void addFlightInfoPanel(Controller controller) {
+    protected void addFlightInfoPanel(Controller controller)
+    {
         flightInfoPanel = new JPanel();
         flightInfoPanel.setLayout(new GridBagLayout());
-        /*if(controller.developerMode)*/
-        flightInfoPanel.setBackground(Color.GRAY);
+        /*if(controller.developerMode)*/ flightInfoPanel.setBackground(Color.GRAY);
 
         setLabels(controller.getFlightController());
 
-        constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.HORIZONTAL,
+        constraints.setConstraints (0, 0, 3, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);
 
-        mainPanel.add(flightInfoPanel, constraints.getConstraints());
+        mainPanel.add (flightInfoPanel, constraints.getConstraints());
         flightInfoPanel.setVisible(true);
     }
 
-    private void setLabels(FlightController flightController) {
+    protected void setLabels(FlightController flightController)
+    {
         setTitleLabels();
         setInfoLabels(flightController);
     }
 
 
-    private void setTitleLabels() {
+    protected void setTitleLabels() {
 
         ArrayList<JLabel> titleLabels = new ArrayList<JLabel>();
 
@@ -199,7 +211,7 @@ public class Book {
         }
     }
 
-    private void setInfoLabels(FlightController flightController) {
+    protected void setInfoLabels(FlightController flightController) {
         ArrayList<JLabel> infoLabels = new ArrayList<JLabel>();
 
         infoLabels.add(new JLabel("   "));
@@ -220,28 +232,39 @@ public class Book {
         }
     }
 
-    private void addModifyPanel(Controller controller) {
+    private void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    {
         modifyPanel = new JPanel();
-        modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        if (controller.developerMode) modifyPanel.setBackground(Color.BLUE);
+        modifyPanel.setLayout(new GridBagLayout());
+        if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
 
-        addAddPassengerButton(this, controller);
-        addPageChangeButtons();
+        JPanel flowPanel = new JPanel();
+        flowPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        constraints.setConstraints(0, 2, 2, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+        modifyPanel.add (flowPanel, constraints.getConstraints());
+
+        addAddPassengerButton(this, controller, flowPanel);
+        addPageChangeButtons (flowPanel);
+        if (controller.getBookingController().checkPendingButton()) addSavePendingButton (callingObjects, controller);
+
+        flowPanel.setVisible (true);
+
+        constraints.setConstraints (0, 2, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_END);
-        mainFrame.add(modifyPanel, constraints.getConstraints());
-        modifyPanel.setVisible(true);
+        mainFrame.add (modifyPanel, constraints.getConstraints());
+        modifyPanel.setVisible (true);
     }
 
-    private void addConfirmPanel(Controller controller) {
+    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    {
         String buttonTitle = "Conferma Prenotazione";
         if (alreadyBooked(controller)) buttonTitle = "Conferma Modifiche";
 
         confirmButtons = new ArrayList<RoundedButton>();
         confirmPanel = new JPanel();
         confirmPanel.setLayout(new GridLayout());
-        if (controller.developerMode) modifyPanel.setBackground(Color.BLUE);
+        if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
 
         for (int i = 0; i < 3; i++) {
 
@@ -251,21 +274,26 @@ public class Book {
 
             confirmButtons.getLast().addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    new GoodMessage("La tua richiesta di prenotazione è stata presa in carico", confirmButtons.get(finalI));
+                public void actionPerformed (ActionEvent e) {
+
+                    controller.addBooking(passengerPanels, BookingStatusController.confirmed);
+
+                    controller.goBack(callingObjects);
+
+                    //new GoodMessage("La tua richiesta di prenotazione è stata presa in carico", confirmButtons.get(finalI));
                 }
             });
 
             confirmButtons.getLast().addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(MouseEvent e) {
+                public void mouseEntered (MouseEvent e) {
                     checkConfirmButton(finalI);
                 }
             });
 
-            constraints.setConstraints(i * 2, 0, 1, 1, GridBagConstraints.NONE,
+            constraints.setConstraints (i*2, 0, 1, 1, GridBagConstraints.NONE,
                     0, 0, GridBagConstraints.CENTER, 0.015f, 0.015f);
-            confirmPanel.add(confirmButtons.getLast(), constraints.getConstraints());
+            confirmPanel.add (confirmButtons.getLast(), constraints.getConstraints());
 
             if (i != 2) {
                 constraints.setConstraints(i * 2 + 1, 0, 1, 1, GridBagConstraints.HORIZONTAL,
@@ -274,17 +302,17 @@ public class Book {
             }
 
             confirmButtons.getLast().setFocusable(false);
-            confirmButtons.getLast().setVisible(false);
+            confirmButtons.getLast().setVisible (false);
         }
-        confirmButtons.get(1).setVisible(true);
+        confirmButtons.get(1).setVisible (true);
 
-        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints (0, 3, 3, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
-        mainFrame.add(confirmPanel, constraints.getConstraints());
-        confirmPanel.setVisible(true);
+        mainFrame.add (confirmPanel, constraints.getConstraints());
+        confirmPanel.setVisible (true);
     }
 
-    private void addAddPassengerButton(Book book, Controller controller) {
+    private void addAddPassengerButton (Book book, Controller controller, JPanel flowPanel) {
 
         RoundedButton addPassengerButton = new RoundedButton("AGGIUNGI PASSEGGERO");
         addPassengerButton.setFocusable(false);
@@ -304,103 +332,137 @@ public class Book {
             }
         });
 
-        modifyPanel.add(addPassengerButton);
+        flowPanel.add(addPassengerButton);
     }
 
-    private void addPageChangeButtons() {
+    protected void addPageChangeButtons (JPanel flowPanel) {
 
         prevPageButton.setFocusable(false);
         nextPageButton.setFocusable(false);
 
-        prevPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (currPage != (passengerPanels.size() - 1) / 3) //non sto all'ultima pagina quindi sono 3
+        prevPageButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed (ActionEvent e)
                 {
-                    for (int i = 0; i < 3; i++) {
-                        passengerPanels.get((currPage * 3) + i).setVisible(false);
-                        removePassengerButtons.get((currPage * 3) + i).setVisible(false);
+                    if (currPage != (passengerPanels.size() - 1) / 3) //non sto all'ultima pagina quindi sono 3
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            passengerPanels.get ((currPage * 3) + i).setVisible (false);
+                            removePassengerButtons.get ((currPage * 3) + i).setVisible (false);
+                        }
+                    } else //sto all'ultima pagina quindi non so quanti sono
+                    {
+                        for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
+                        {
+                            passengerPanels.get ((passengerPanels.size() - i - 1)).setVisible (false);
+                            removePassengerButtons.get ((passengerPanels.size() - i - 1)).setVisible (false);
+                        }
                     }
-                } else //sto all'ultima pagina quindi non so quanti sono
-                {
-                    for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++) {
-                        passengerPanels.get((passengerPanels.size() - i - 1)).setVisible(false);
-                        removePassengerButtons.get((passengerPanels.size() - i - 1)).setVisible(false);
+
+                    currPage--;
+                    currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
+
+                    for (int i = 0; i < 3; i++) //vado indietro quindi sono 3
+                    {
+                        passengerPanels.get ((currPage * 3) + i).setVisible (true);
+                        removePassengerButtons.get ((currPage * 3) + i).setVisible (true);
                     }
+
+                    nextPageButton.setEnabled (true);
+
+                    if (currPage == 0) prevPageButton.setEnabled (false);
                 }
+            });
 
-                currPage--;
-                currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
+        prevPageButton.setEnabled (false);
 
-                for (int i = 0; i < 3; i++) //vado indietro quindi sono 3
-                {
-                    passengerPanels.get((currPage * 3) + i).setVisible(true);
-                    removePassengerButtons.get((currPage * 3) + i).setVisible(true);
-                }
+        flowPanel.add (prevPageButton);
 
-                nextPageButton.setEnabled(true);
-
-                if (currPage == 0) prevPageButton.setEnabled(false);
-            }
-        });
-
-        prevPageButton.setEnabled(false);
-
-        modifyPanel.add(prevPageButton);
-
-        modifyPanel.add(currentPageLabel);
+        flowPanel.add (currentPageLabel);
 
         nextPageButton.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed (ActionEvent e)
+            {
                 for (int i = 0; i < 3; i++) //metto a false la pagina corrente
                 {
-                    passengerPanels.get((currPage * 3) + i).setVisible(false);
-                    removePassengerButtons.get((currPage * 3) + i).setVisible(false);
+                    passengerPanels.get ((currPage * 3) + i).setVisible (false);
+                    removePassengerButtons.get ((currPage * 3) + i).setVisible (false);
                 }
 
                 if (currPage + 1 == (passengerPanels.size() - 1) / 3) //sto andando all'ultima pagina quindi non so quanti sono
                 {
-                    for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++) {
+                    for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
+                    {
                         passengerPanels.get(passengerPanels.size() - i - 1).setVisible(true);
-                        removePassengerButtons.get(passengerPanels.size() - i - 1).setVisible(true);
+                        removePassengerButtons.get (passengerPanels.size() - i - 1).setVisible(true);
                     }
 
-                    nextPageButton.setEnabled(false);
+                    nextPageButton.setEnabled (false);
                 } else //la prossima pagina ne ha 3
                 {
-                    for (int i = 0; i < 3; i++) {
-                        passengerPanels.get(((currPage + 1) * 3) + i).setVisible(true);
-                        removePassengerButtons.get(((currPage + 1) * 3) + i).setVisible(true);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        passengerPanels.get (((currPage + 1) * 3) + i).setVisible (true);
+                        removePassengerButtons.get (((currPage + 1) * 3) + i).setVisible (true);
                     }
                 }
 
                 currPage++;
-                currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
-                prevPageButton.setEnabled(true);
+                currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
+                prevPageButton.setEnabled (true);
             }
         });
 
-        nextPageButton.setEnabled(false);
-        modifyPanel.add(nextPageButton);
+        nextPageButton.setEnabled (false);
+        flowPanel.add (nextPageButton);
     }
 
-    private void addFooterPanel() {
-        footerPanel = new FooterPanel();
+    private void addSavePendingButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
+        savePendingButton = new RoundedButton("Salva in attesa");
+        savePendingButton.setFocusable(false);
+
+        savePendingButton.addActionListener (new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                    if (checkSavePendingButton(controller)) {
+
+                        controller.addBooking(passengerPanels, BookingStatusController.pending);
+
+                        controller.goBack(callingObjects);
+
+                        //new GoodMessage("La tua prenotazione è in attesa di conferma", savePendingButton);
+                    } else {
+                        new ErrorMessage("Impossibile aggiungere una prenotazione vuota", savePendingButton);
+                    }
+            }
+        });
+
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.5f, 0.5f);
+        modifyPanel.add(savePendingButton, constraints.getConstraints());
+
+        savePendingButton.setVisible(true);
+    }
+
+    protected void addFooterPanel()
+    {
+       footerPanel = new FooterPanel();
         constraints.setConstraints(0, 4, 1, 1, GridBagConstraints.BOTH,
                 0, 10, GridBagConstraints.PAGE_END);
-        mainFrame.add(footerPanel, constraints.getConstraints());
+        mainFrame.add (footerPanel, constraints.getConstraints());
     }
 
-    public void decreaseCurrPage() {
+    protected void decreaseCurrPage () {
         currPage--;
-        currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
+        currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
 
-        if (currPage == 0) prevPageButton.setEnabled(false);
+        if (currPage == 0) prevPageButton.setEnabled (false);
     }
 
-    public int getCurrPage() {
+    protected int getCurrPage () {
         return currPage;
     }
 
@@ -408,7 +470,7 @@ public class Book {
         boolean flag = true;
 
         for (PassengerPanel passengerPanel : passengerPanels) {
-            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerSeat()) {
+            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF()){
                 flag = false;
             }
 
@@ -420,7 +482,7 @@ public class Book {
         }
 
         if (!flag) {
-            confirmButtons.get(index).setVisible(false);
+            confirmButtons.get(index).setVisible (false);
 
             int random = new Random().nextInt(2);
 
@@ -430,13 +492,13 @@ public class Book {
                 random *= 2;
             }
 
-            confirmButtons.get(random).setVisible(true);
+            confirmButtons.get(random).setVisible (true);
 
-            new ErrorMessage("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
+            new ErrorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
         }
     }
 
-    private void insertPassengers(Controller controller) {
+    protected void insertPassengers (Controller controller) {
 
         passengerPanels.getFirst().setPassengerName(controller.getBookingController().getPassengerName(0));
         passengerPanels.getFirst().setPassengerSurname(controller.getBookingController().getPassengerLastName(0));
@@ -460,7 +522,7 @@ public class Book {
         }
     }
 
-    public void insertPassengerPanel(Controller controller, Book book, PassengerPanel newPassengerPanel) {
+    protected void insertPassengerPanel (Controller controller, Book book, PassengerPanel newPassengerPanel) {
 
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
         passengerPage.add(newPassengerPanel, constraints.getConstraints());
@@ -513,8 +575,39 @@ public class Book {
         removePassengerButtons.getFirst().setEnabled(true);
     }
 
-    private boolean alreadyBooked(Controller controller) {
+    private boolean alreadyBooked (Controller controller) {
         return controller.getBookingController().getBooking() != null;
     }
 
+    private boolean checkSavePendingButton (Controller controller) {
+        for (PassengerPanel passengerPanel : passengerPanels) {
+            if (!passengerPanel.checkPassengerName()) return true;
+            if (!passengerPanel.checkPassengerSurname()) return true;
+            if (!passengerPanel.checkPassengerCF()) return true;
+            if (!passengerPanel.checkPassengerSeat()) return true;
+
+            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+                if (!luggagePanel.checkLuggage()) return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+        controller.getFlightController().setFlight(null);
+        controller.getBookingController().setBooking(null);
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+            if (passengerPanel.getSeatChooser() != null) passengerPanel.getSeatChooser().dispose();
+
+            if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
+        }
+    }
+
+    @Override
+    public JFrame getFrame () {
+        return this.mainFrame;
+    }
 }
