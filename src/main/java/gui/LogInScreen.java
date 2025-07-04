@@ -53,6 +53,7 @@ public class LogInScreen extends DisposableObject {
         }
         callingObjects.addLast(this);
 
+        loginMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         registerButton.setPreferredSize(newPasswordButton.getPreferredSize());
 
@@ -142,8 +143,14 @@ public class LogInScreen extends DisposableObject {
             UIManager.setLookAndFeel(new FlatLightLaf());
         }
         catch (UnsupportedLookAndFeelException e){
-            JOptionPane.showMessageDialog(mainFrame, "Il tuo device non supporta FlatLaf, " +
-                    "utilizzerai un'altra versione dell'app: tranquillo, tutte le funzioni rimarranno invariate.");
+            String[] options = {"Continua", "Chiudi"};
+            int action = JOptionPane.showOptionDialog(null,  "<html><center>Il tuo device non supporta FlatLaf,<br>" +
+                            "utilizzerai un'altra versione dell'app,<br>" +
+                            "tutte le funzioni rimarranno invariate.</center></html>",
+                        "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,null, options, null);
+            if(action == 1 || action == JOptionPane.CLOSED_OPTION) {
+                return;
+            }
         }
 
         mainFrame = new JFrame("LogIn");
