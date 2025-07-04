@@ -7,6 +7,7 @@ import model.BookingStatus;
 import model.Departing;
 import model.Flight;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,9 +148,9 @@ public class Controller {
 
     public void goHome (ArrayList<DisposableObject> callingObjects) {
 
-        Dimension dimension = callingObjects.getLast().getFrame().getSize();
-        Point point = callingObjects.getLast().getFrame().getLocation();
-        int fullScreen = callingObjects.getLast().getFrame().getExtendedState();
+        Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
+        Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
+        int sourceExtendedState = callingObjects.getLast().getFrame().getExtendedState();
 
         for (int i = callingObjects.size() - 1; i > 1; i--) {
 
@@ -158,9 +159,11 @@ public class Controller {
             callingObjects.removeLast();
         }
 
-        callingObjects.getLast().getFrame().setSize(dimension);
-        callingObjects.getLast().getFrame().setLocation(point);
-        callingObjects.getLast().getFrame().setExtendedState(fullScreen);
+        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+            callingObjects.getLast().getFrame().setSize(sourceDimension);
+            callingObjects.getLast().getFrame().setLocation(sourceLocation);
+        }
+        callingObjects.getLast().getFrame().setExtendedState(sourceExtendedState);
 
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
@@ -169,17 +172,19 @@ public class Controller {
 
     public void goBack (ArrayList<DisposableObject> callingObjects) {
 
-        Dimension dimension = callingObjects.getLast().getFrame().getSize();
-        Point point = callingObjects.getLast().getFrame().getLocation();
-        int fullScreen = callingObjects.getLast().getFrame().getExtendedState();
+        Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
+        Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
+        int sourceExtendedState = callingObjects.getLast().getFrame().getExtendedState();
 
         callingObjects.getLast().doOnDispose(callingObjects, this);
         callingObjects.getLast().getFrame().dispose();
         callingObjects.removeLast();
 
-        callingObjects.getLast().getFrame().setSize(dimension);
-        callingObjects.getLast().getFrame().setLocation(point);
-        callingObjects.getLast().getFrame().setExtendedState(fullScreen);
+        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+            callingObjects.getLast().getFrame().setSize(sourceDimension);
+            callingObjects.getLast().getFrame().setLocation(sourceLocation);
+        }
+        callingObjects.getLast().getFrame().setExtendedState(sourceExtendedState);
 
         callingObjects.getLast().doOnRestore(callingObjects, this);
 

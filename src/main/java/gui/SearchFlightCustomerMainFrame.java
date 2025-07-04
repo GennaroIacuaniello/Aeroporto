@@ -126,12 +126,12 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     }
 
     @Override
-    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
         if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().dispose();
     }
 
     @Override
-    public void doOnRestore (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnRestore(ArrayList<DisposableObject> callingObjects, Controller controller) {
         if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
     }
 
