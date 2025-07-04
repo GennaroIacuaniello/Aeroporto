@@ -118,8 +118,8 @@
           </component>
           <component id="33e93" class="javax.swing.JButton" binding="registerButton">
             <constraints>
-              <grid row="7" column="0" row-span="5" col-span="4" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag top="64" left="16" bottom="0" right="16" weightx="0.0" weighty="1.0"/>
+              <grid row="7" column="0" row-span="5" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="32" left="16" bottom="32" right="16" weightx="0.0" weighty="1.0"/>
             </constraints>
             <properties>
               <enabled value="false"/>
