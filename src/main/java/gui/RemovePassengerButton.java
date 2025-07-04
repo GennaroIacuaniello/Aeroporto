@@ -43,6 +43,10 @@ public class RemovePassengerButton extends JButton {
                 passengersPage.remove(tmppassengerPanel);
                 passengersPage.remove(tmpremovePassengerButton);
 
+                //rimuovi eventuali panel aggiuntivi
+                if (tmppassengerPanel.getLuggagesView() != null) tmppassengerPanel.getLuggagesView().dispose();
+                if (tmppassengerPanel.getSeatChooser() != null) tmppassengerPanel.getSeatChooser().dispose();
+
                 for (int i = index; i < passengerPanels.size(); i++) {
 
                     //shift passengerPanel

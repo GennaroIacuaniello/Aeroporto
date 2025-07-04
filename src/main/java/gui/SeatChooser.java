@@ -9,11 +9,12 @@ import java.util.ArrayList;
 
 public class SeatChooser extends JFrame {
 
+    private JScrollPane scrollPane;
+    private JPanel seatPanel;
     private Constraints constraints;
     private ArrayList<JButton> seatButtons;
     private JButton confirmButton;
     private JButton deleteButton;
-    private int offset;
     private int seat;
 
     public SeatChooser(Controller controller, PassengerPanel callingPanel, ArrayList<PassengerPanel> passengerPanels) {
@@ -22,10 +23,14 @@ public class SeatChooser extends JFrame {
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         constraints = new Constraints();
-        setLayout(new GridBagLayout());
-        setSize(450, 800);
+        this.setLayout(new GridBagLayout());
+        setSize(450, 600);
         setLocation(callingPanel.getSeatButton());
         setAlwaysOnTop(true);
+
+        seatPanel = new JPanel();
+        seatPanel.setLayout(new GridBagLayout());
+        scrollPane = new JScrollPane();
 
         seat = -1;
         seatButtons = new ArrayList<JButton>();
@@ -57,16 +62,21 @@ public class SeatChooser extends JFrame {
         confirmButton.setFocusable(false);
         deleteButton.setFocusable(false);
 
-        constraints.setConstraints(3, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
-                controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
-                GridBagConstraints.LAST_LINE_END);
+        //aggiungo bottoni
+        constraints.setConstraints(0, 0, 1, 1,
+                GridBagConstraints.NONE, 5, 5, GridBagConstraints.CENTER, 0.01f, 0.01f);
         this.add(confirmButton, constraints.getConstraints());
 
-        constraints.setConstraints(4, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
-                controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
-                GridBagConstraints.LAST_LINE_START);
+        constraints.setConstraints(1, 0, 1, 1,
+                GridBagConstraints.NONE, 5, 5, GridBagConstraints.CENTER, 0.01f, 0.01f);
         this.add(deleteButton, constraints.getConstraints());
 
+        //aggiungo scrollPane
+        constraints.setConstraints(0, 1, 2, 1,
+                GridBagConstraints.BOTH, 5, 5, GridBagConstraints.CENTER, 0.05f, 0.05f);
+        this.add(scrollPane, constraints.getConstraints());
+
+        //aggiungo posti
         for (int i = 0; i < controller.getFlightController().getMaxSeats(); i++) {
             int finalI = i;
             seatButtons.add(new JButton(printSeat(finalI)));
@@ -88,17 +98,19 @@ public class SeatChooser extends JFrame {
             seatButtons.get(i).setEnabled(true);
             seatButtons.get(i).setFocusable(false);
 
-            if (i%6 > 2) offset = 2; else offset = 0;
-            constraints.setConstraints(i%6 + offset, i/6, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-            this.add(seatButtons.get(i), constraints.getConstraints());
-        }
-        /*
-        for (Passenger passenger : controller.getFlightController().getPassengers()) {
+            int leftInset = 0;
+            int rightInset = 0;
 
-            seatButtons.get(passenger.get_Seat()).setEnabled(false);
-        }
-        */
+            if (i%6 == 3) leftInset = 30;
+            if (i%6 == 2) rightInset = 30;
 
+            seatButtons.get(i).setPreferredSize(new Dimension(54, 54));
+
+            constraints.setConstraints(i%6, i/6, 1, 1,
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER, new Insets(0, leftInset, 16, rightInset));
+            seatPanel.add(seatButtons.get(i), constraints.getConstraints());
+        }
+        
         for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
 
             if (controller.checkBooking(i))
@@ -149,6 +161,10 @@ public class SeatChooser extends JFrame {
 
             }
         });
+
+        seatPanel.setVisible(true);
+        scrollPane.setViewportView(seatPanel);
+        scrollPane.setVisible(true);
 
         this.setVisible(true);
     }

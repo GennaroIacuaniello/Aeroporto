@@ -26,7 +26,6 @@ public class PassengerPanel extends JPanel
     private JTextField passengerNameField;
     private JTextField passengerSurnameField;
     private JTextField passengerCFField;
-    private JLabel seatLabel;
 
     public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels)
     {
@@ -44,7 +43,6 @@ public class PassengerPanel extends JPanel
         passengerCFField = new JTextField (displayedCFText, 20);
         passengerCFField.setForeground(displayedTextColor);
         seatButton = new JButton("Scegli Posto");
-        seatLabel = new JLabel (print_seat());
         luggagesViewButton = new JButton("Luggages");
         luggagesView = new LuggagesView (controller);
         luggagesViewButton.addActionListener (new ActionListener () {
@@ -56,46 +54,40 @@ public class PassengerPanel extends JPanel
         });
 
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (label, constraints.getConstraints());
         label.setVisible (true);
 
         constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (passengerNameField, constraints.getConstraints());
         passengerNameField.setVisible (true);
 
-        constraints.setConstraints (1, 1, 3, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
+        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (passengerSurnameField, constraints.getConstraints());
         passengerSurnameField.setVisible (true);
 
         constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (passengerCFField, constraints.getConstraints());
         passengerCFField.setVisible (true);
 
         constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_END);
+                0, 0, GridBagConstraints.LINE_END, new Insets (5, 5, 5, 5));
         this.add (seatButton, constraints.getConstraints());
         seatButton.setVisible (true);
 
         constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_START);
-        this.add (seatLabel, constraints.getConstraints());
-        seatLabel.setVisible (true);
+                0, 0, GridBagConstraints.LINE_START, new Insets (5, 5, 5, 5));
+        //this.add (seatLabel, constraints.getConstraints());
+        //seatLabel.setVisible (true);
 
-        constraints.setConstraints (3, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_END);
+        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, new Insets (5, 5, 5, 5));
         this.add (luggagesViewButton, constraints.getConstraints());
         luggagesViewButton.setVisible (true);
 
-        /* Removing the displayed text and changing the font color if user focuses
-         * Putting it back if user unfocuses without writing anything
-         * Using focus to avoid problem with:
-         * - mouse clicking followed by quick typing
-         * - changing pages and being (focusing) already on a field without clicking
-         */
         passengerNameField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -166,14 +158,17 @@ public class PassengerPanel extends JPanel
             }
         });
 
+        if (!passengerPanels.isEmpty())
+            this.seatButton.setEnabled(passengerPanels.getFirst().getSeatButton().isEnabled());
+
         this.setVisible (true);
     }
 
     protected PassengerPanel () {}
 
-    public String print_seat(){
+    public String printSeat(){
 
-        if (seat == -1) return "POSTO";
+        if (seat == -1) return "SCEGLI POSTO";
 
         String literal;
 
@@ -187,7 +182,7 @@ public class PassengerPanel extends JPanel
             default: literal = "";
         }
 
-        return Integer.toString((seat/6)+1) + literal;
+        return (seat / 6) + 1 + literal;
     }
 
     public int getSeat(){
@@ -196,7 +191,7 @@ public class PassengerPanel extends JPanel
 
     public void setSeat(int par_seat){
         seat = par_seat;
-        seatLabel.setText(print_seat());
+        seatButton.setText(printSeat());
     }
 
     private PassengerPanel thisPanel (){

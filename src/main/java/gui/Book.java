@@ -331,6 +331,11 @@ public class Book extends DisposableObject {
                     //showMessageDialog(new JPanel(), "Non ci sono altri posti disponibili per questo volo", "Error", JOptionPane.ERROR_MESSAGE);
                     new ErrorMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton);
                 }
+
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    if (passengerPanel.getSeatChooser() == null) System.out.println("null");
+                    else System.out.println("not null");
+                }
             }
         });
 
