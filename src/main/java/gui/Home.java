@@ -26,7 +26,7 @@ public class Home extends DisposableObject{
 
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
         //callingObjects.add(this);
-        new Book(callingObjects, controller, new Dimension(800, 800), new Point (0, 0));
+        new Book(callingObjects, controller, new Dimension(800, 800), new Point (0, 0), JFrame.MAXIMIZED_BOTH);
     }
 
     public Home() {

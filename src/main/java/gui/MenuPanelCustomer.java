@@ -72,7 +72,8 @@ public class MenuPanelCustomer extends JPanel {
                             System.out.println("1");
                             //callingFrames.getLast().dispose();
                             //callingFrames.removeLast();
-                            new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(), callingObjects.getLast().getFrame().getLocation());
+                            new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
                             callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                         }
                         break;

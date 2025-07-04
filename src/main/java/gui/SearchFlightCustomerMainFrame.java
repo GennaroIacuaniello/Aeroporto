@@ -19,14 +19,14 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     Constraints constraints;
 
 
-    public SearchFlightCustomerMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
+    public SearchFlightCustomerMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainFrame(callingObjects, dimension, point);
+        this.setMainFrame(callingObjects, dimension, point, fullScreen);
         /*
         if (controller.developerMode) {
             for (JFrame frame : callingFrames) {
@@ -48,11 +48,12 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension dimension, Point point) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension dimension, Point point, int fullScreen) {
 
         mainFrame = new JFrame("Cerca voli");
         mainFrame.setSize(dimension);
         mainFrame.setLocation(point);
+        mainFrame.setExtendedState(fullScreen);
         callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());

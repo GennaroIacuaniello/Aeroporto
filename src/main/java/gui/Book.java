@@ -35,14 +35,15 @@ public class Book extends DisposableObject {
     protected Constraints constraints;
     private RoundedButton savePendingButton;
 
-    public Book(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
+    public Book(ArrayList<DisposableObject> callingObjects, Controller controller,
+                Dimension dimension, Point point, int fullScreen) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        this.setMainFrame(callingObjects, controller, dimension, point, "Book");
+        this.setMainFrame(callingObjects, controller, dimension, point, fullScreen, "Book");
 
         //setting top panels
         this.addTopPanel (callingObjects, controller);
@@ -61,10 +62,11 @@ public class Book extends DisposableObject {
         super();
     }
 
-    protected void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, String title) {
-        mainFrame = new JFrame("title");
+    protected void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, String title) {
+        mainFrame = new JFrame(title);
         mainFrame.setSize(dimension);
         mainFrame.setLocation(point);
+        mainFrame.setExtendedState(fullScreen);
         callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());

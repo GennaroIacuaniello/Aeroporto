@@ -50,6 +50,7 @@ public class MainCustomerScreen extends DisposableObject {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.setBackground(Color.BLACK);
     }
 

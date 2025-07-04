@@ -18,14 +18,14 @@ public class CheckinPassengers extends Book{
     private RoundedButton confirmButton;
     private RoundedButton cancelButton;
 
-    public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point) {
+    public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super();
 
         constraints = new Constraints();
 
         //makes this the operating frame
-        super.setMainFrame(callingObjects, controller, dimension, point, "CheckinPassengers");
+        super.setMainFrame(callingObjects, controller, dimension, point, fullScreen, "CheckinPassengers");
 
         //setting top panels
         this.addTopPanel (callingObjects, controller);

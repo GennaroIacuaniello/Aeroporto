@@ -261,7 +261,7 @@ public class SearchFlightResult {
 
                 controller.getFlightController().setFlight(search_result.get(y-1));
                 new Book (callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                        callingObjects.getLast().getFrame().getLocation());
+                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
                 main_frame.dispose();
             }

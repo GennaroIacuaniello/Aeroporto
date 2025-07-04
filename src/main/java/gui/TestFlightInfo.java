@@ -60,7 +60,7 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new CheckinPassengers (callingObjects, controller, new Dimension(800, 800), new Point(10, 10));
+        new CheckinPassengers (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), callingObjects.getLast().getFrame().getExtendedState());
     }
 
 }

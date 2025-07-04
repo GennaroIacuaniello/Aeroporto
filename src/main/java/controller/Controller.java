@@ -1,7 +1,6 @@
 package controller;
 
 import gui.DisposableObject;
-import gui.LogInScreen;
 import gui.PassengerPanel;
 import model.Arriving;
 import model.BookingStatus;
@@ -150,6 +149,7 @@ public class Controller {
 
         Dimension dimension = callingObjects.getLast().getFrame().getSize();
         Point point = callingObjects.getLast().getFrame().getLocation();
+        int fullScreen = callingObjects.getLast().getFrame().getExtendedState();
 
         for (int i = callingObjects.size() - 1; i > 1; i--) {
 
@@ -160,6 +160,7 @@ public class Controller {
 
         callingObjects.getLast().getFrame().setSize(dimension);
         callingObjects.getLast().getFrame().setLocation(point);
+        callingObjects.getLast().getFrame().setExtendedState(fullScreen);
 
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
@@ -170,6 +171,7 @@ public class Controller {
 
         Dimension dimension = callingObjects.getLast().getFrame().getSize();
         Point point = callingObjects.getLast().getFrame().getLocation();
+        int fullScreen = callingObjects.getLast().getFrame().getExtendedState();
 
         callingObjects.getLast().doOnDispose(callingObjects, this);
         callingObjects.getLast().getFrame().dispose();
@@ -177,6 +179,7 @@ public class Controller {
 
         callingObjects.getLast().getFrame().setSize(dimension);
         callingObjects.getLast().getFrame().setLocation(point);
+        callingObjects.getLast().getFrame().setExtendedState(fullScreen);
 
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
