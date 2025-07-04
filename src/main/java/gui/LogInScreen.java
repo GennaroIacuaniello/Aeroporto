@@ -11,10 +11,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LogInScreen extends DisposableObject {
 import static java.lang.Math.max;
 
-public class LogInScreen {
+public class LogInScreen extends DisposableObject {
 
     //Padding
     private JPanel topPadding;

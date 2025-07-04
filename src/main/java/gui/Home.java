@@ -3,6 +3,7 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,17 +20,22 @@ public class Home extends DisposableObject{
         frameHome.pack();
         frameHome.setVisible(true);
 
-        controller.setCustomerNUser("Tramontana", "1234");
+        controller.setCustomerNUser("Tramontana", new char[]{'1', '2'});
         controller.getFlightController().setFlight("01", "Compagnia", new Date(),
                 "00:00", "00:00", 66);
 
-        ArrayList<JFrame> callingFrames = new ArrayList<JFrame>();
-        callingFrames.add(frameHome);
-        new Book(callingFrames, controller);
+        ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
+        //callingObjects.add(this);
+        new Book(callingObjects, controller, new Dimension(800, 800), new Point (0, 0));
     }
 
     public Home() {
         // Add action listeners or other initialization code here
 
+    }
+
+    @Override
+    public JFrame getFrame() {
+        return frameHome;
     }
 }
