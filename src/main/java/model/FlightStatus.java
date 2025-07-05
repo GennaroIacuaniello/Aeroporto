@@ -6,6 +6,6 @@ public enum FlightStatus {
     cancelled,
     departed,
     delayed,
-    landed
-
+    landed,
+    aboutToDepart
 }

@@ -37,15 +37,19 @@ public class TestFlightInfo {
         passengers.add (new Passenger("chiara", "russo", "jkl", 6));
         passengers.add (new Passenger("rosa", "manzo", "zxc", 4));
 
+        passengers.getFirst().add_luggage(new Luggage(LuggageType.carry_on, passengers.getFirst(), 1));
+        passengers.getFirst().set_check_in(true);
+        passengers.getFirst().set_Ticket_number("34879");
+
         //sistemo il controller
         controller.getFlightController().setFlight("03", "che ne so", new Date(2025, 2, 14), "12:25",
                 "14:10", 19);
+        controller.getFlightController().setFlightStatus(FlightStatus.aboutToDepart);
 
         controller.getBookingController().setBooking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
-        //controller.getBookingController().setBooking(new Customer("pippo", "pluto"), controller.getFlightController().getFlight(), passengers);
 
         Booking booking = new Booking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
-
+        booking.set_status(BookingStatus.confirmed);
 
         controller.getFlightController().getFlight().add_booking(booking);
 
@@ -60,7 +64,7 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new CheckinPassengers (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), callingObjects.getLast().getFrame().getExtendedState());
+        new CheckinPassengers (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
     }
 
 }

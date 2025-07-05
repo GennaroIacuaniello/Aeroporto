@@ -77,6 +77,10 @@ public class CheckinPassengers extends Book{
 
         insertPassengers(controller);
 
+        if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().aboutToDepart)
+            for (int i = 0; i < passengerPanels.size(); i++)
+                ((PassengerPanelAdmin)passengerPanels.get(i)).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(i));
+
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
         mainFrame.add (mainPanel, constraints.getConstraints());
@@ -198,9 +202,18 @@ public class CheckinPassengers extends Book{
 
             @Override
             public void actionPerformed (ActionEvent e) {
-                //il controller farà qualcosa
+
+                controller.getFlightController().setFlightStatus(controller.getFlightStatusController().aboutToDepart);
+
+                for (PassengerPanel passengerPanel : passengerPanels) ((PassengerPanelAdmin)passengerPanel).addCheckinCheckBox(false);
+                passengerPage.setVisible(false);
+                passengerPage.setVisible(true);
+
+                startCheckinButton.setEnabled(false);
             }
         });
+
+        startCheckinButton.setEnabled (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed);
 
         confirmButton.addActionListener (new ActionListener() {
 
@@ -257,6 +270,8 @@ public class CheckinPassengers extends Book{
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         passengerPage.add(newPassengerPanelAdmin, constraints.getConstraints());
+
+        newPassengerPanelAdmin.setPanelEnabled(false);
 
         passengerPanels.addLast(newPassengerPanelAdmin);
 

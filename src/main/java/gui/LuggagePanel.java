@@ -45,7 +45,7 @@ public class LuggagePanel extends JPanel {
         comboBox.addItem("Checked");
 
         constraints.setConstraints(0, 1, 1, 1,
-                GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         this.add(comboBox, constraints.getConstraints());
         comboBox.setVisible(true);
     }
@@ -62,4 +62,7 @@ public class LuggagePanel extends JPanel {
         comboBox.setSelectedIndex(type + 1);
     }
 
+    public JComboBox getComboBox() {
+        return comboBox;
+    }
 }

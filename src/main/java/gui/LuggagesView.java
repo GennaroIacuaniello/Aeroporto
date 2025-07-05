@@ -62,7 +62,7 @@ public class LuggagesView extends JFrame {
 
 
                 constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
-                        GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+                        GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
                 luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
                 luggagesPanels.getLast().setVisible(true);
 
@@ -125,7 +125,7 @@ public class LuggagesView extends JFrame {
 
 
             constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
             luggagesPanels.getLast().setVisible(true);
 
@@ -133,7 +133,7 @@ public class LuggagesView extends JFrame {
                     scrollPane, removeLuggageButtons.size()));
 
             constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
             luggagesPanels.getLast().setVisible(true);
 
@@ -157,5 +157,17 @@ public class LuggagesView extends JFrame {
         y -= (double) this.getHeight() / 2;
 
         this.setLocation((int) x, (int) y);
+    }
+
+    public JButton getAddLuggageButton () {
+        return addLuggageButton;
+    }
+
+    public JButton getConfirmButton () {
+        return confirmButton;
+    }
+
+    public ArrayList<RemoveLuggageButton> getRemoveLuggageButtons () {
+        return removeLuggageButtons;
     }
 }

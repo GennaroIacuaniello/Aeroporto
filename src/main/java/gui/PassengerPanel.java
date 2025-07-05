@@ -17,25 +17,27 @@ public class PassengerPanel extends JPanel
     private String displayedCFText = "~Codice Fiscale~";
     private Color displayedTextColor = new Color(128, 128, 128);
     private Color userTextColor = new Color(32, 32, 32);
-    private SeatChooser seatChooser;
-    private int seat = -1;
-    private LuggagesView luggagesView;
-    private JButton luggagesViewButton;
-    private JButton seatButton;
+    protected SeatChooser seatChooser;
+    protected int seat = -1;
+    protected LuggagesView luggagesView;
+    protected JButton luggagesViewButton;
+    protected JButton seatButton;
+    protected Constraints constraints;
+    protected JLabel passengerLabel;
 
-    private JTextField passengerNameField;
-    private JTextField passengerSurnameField;
-    private JTextField passengerCFField;
+    protected JTextField passengerNameField;
+    protected JTextField passengerSurnameField;
+    protected JTextField passengerCFField;
 
     public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels)
     {
         super ();
 
         this.setLayout (new GridBagLayout());
-        Constraints constraints = new Constraints ();
+        constraints = new Constraints ();
         if(controller.developerMode) this.setBackground (Color.BLUE);
 
-        JLabel label = new JLabel ("Passenger");
+        passengerLabel = new JLabel ("Passenger");
         passengerNameField = new JTextField(displayedNameText, 20);
         passengerNameField.setForeground(displayedTextColor);
         passengerSurnameField = new JTextField (displayedSurnameText, 20);
@@ -55,8 +57,8 @@ public class PassengerPanel extends JPanel
 
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (label, constraints.getConstraints());
-        label.setVisible (true);
+        this.add (passengerLabel, constraints.getConstraints());
+        passengerLabel.setVisible (true);
 
         constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
@@ -163,8 +165,6 @@ public class PassengerPanel extends JPanel
 
         this.setVisible (true);
     }
-
-    protected PassengerPanel () {}
 
     public String printSeat(){
 

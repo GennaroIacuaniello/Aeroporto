@@ -8,4 +8,5 @@ public class FlightStatusController {
     public FlightStatus departed = FlightStatus.departed;
     public FlightStatus delayed = FlightStatus.delayed;
     public FlightStatus landed = FlightStatus.landed;
+    public FlightStatus aboutToDepart = FlightStatus.aboutToDepart;
 }

@@ -150,4 +150,12 @@ public class FlightController {
 
         return flight.get_bookings().get(index).get_status().equals(BookingStatus.confirmed);
     }
+
+    public void setFlightStatus (FlightStatus flightStatus) {
+        this.flight.set_status(flightStatus);
+    }
+
+    public boolean getPassengerCheckedin (int index) {
+        return flight.get_passengers().get(index).get_check_in();
+    }
 }
