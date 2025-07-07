@@ -1,0 +1,72 @@
+1) Analisi ridondanze
+
+In "Flight":
+L'attributo free_seats è un attributo derivabile, perché potrebbe essere calcolato partendo da max_seats e contando i passeggeri delle varie prenotazioni. Tuttavia decidiamo di accettare la ridondanza, perché è un attributo che utilizziamo spesso per mostrare info sul volo (es ricerca voli, prenotazione voli), tenerlo aggiornato costa relativamente poco, mentre ricalcolarlo ogni volta richiederebbe accessi sia alla tabella Flight in scrittura che n letture nella tabella Passenger.
+
+Tra Booking, Flight, Passenger:
+C'è una ridondanza perché, partendo per esempio da Flight, è possibile vedere i passeggeri di un dato volo sia passando per Booking e vedendo i passeggeri che la compongono, sia andando direttamente in Passenger. Decidiamo di accettarla perché: l'unica soluzione alternativa sarebbe togliere la relazione tra Flight e Passenger (dato che una prenotazione è per forza una composizione di passeggeri); ma, fare ciò, comporterebbe che per ogni ricerca di un passeggero in un dato volo, dovrei potenzialmente fare n accessi in prenotazioni, e poi altri m in passenger. Lasciando invece la ridondanza, basteranno solo n accessi in passenger.
+
+
+2) Eliminazione delle generalizzazioni
+
+Specializzazione di User in Admin e Customer: dato che la generalizzazione è totale-disgiunta e User non ha relazioni con altre entità, è molto conveniente portare semplicemente il padre nelle figlie. Non vengono create nuove relazioni e non ci sono nemmeno possibili attributi a null. Si potrebbe anche portare le figlie nel padre (al più dovrei solo aggiungere un attributo tipo, ma in realtà potrei già distringuerli dal dominio della mail). Tuttavia, è logicamente conveniente tenerle distinte per le operazioni che poi andremo a fare sul DB.
+Inoltre, a livello implementativo, consideriamo la mail obbligatoria solo per gli Admin, permettendo agli utenti di registrarsi anche solo con username e password.
+
+Specializzazione di Flight in Arriving e Departing: la generalizzazione è totale-disgiunta. Flight ha moltissime relazioni, quindi non conviene per niente portare il padre nelle figlie, portando le figlie nel padre, potremmo avere 2 attributi a null per ogni istanza (e quindi si potrebbe pensare di sostituire la generalizzazione con 2 associazioni). Tuttavia, possiamo utilizzare comunque la strategia figlie nel padre, facendo in modo che destination e origin diventino un unico attributo destination_or_origin, e lo stesso per departure_delay e arrival_delay,che diventano delay, e aggiungendo poi un attributo type. In questo modo non avremo mai attributi a null, e l'attributo tipo ci dirà il significato di quegli attributi. Ora quindi Flight sarà in relazione con Gate, ma solo se type indica che è un volo Departing.
+
+
+3)Non ci sono attributi multivalore
+
+
+4)Non ci sono attributi strutturati
+
+
+5)Partizionamento/accorpamento di entità e associazioni
+
+Accorpiamo la relazione tra Flight e Gate, mettendo semplicemente id_gate in Flight, tanto ci sarebbe finito comunque con la relazione 1 a  molti.
+
+
+6)Scelta degli identificatori primari
+
+Per Admin e Customer scegliamo username come PK (Univoco tra le due tabelle, quindi vincolo)
+
+Per Booking aggiungiamo un campo id_booking come PK SERIAL
+
+Per Passenger ticket_number è PK (il ticket number è univoco anche tra voli diversi)
+
+Per Luggage, id_luggage_after_check_in sarebbe anche un chiave candidata, ma è NULL finchè il passeggero non fa il check-in, quindi aggiungiamo un campo id_luggage come PK SERIAL
+
+
+EXTRA
+
+Per passenger, accorpiamo gli attributi name e last_name in un unica stringa full_name
+
+A livello implementativo, alcuni dei nomi che abbiamo usato per i vari attributi sono parole non strettamente riservate in sql, ma il cui utilizzo è comunque sconsigliato. Per questo motivo, eseguiamo le seguenti rinominazioni:
+
+Admin e Customer
+password -> hashed_password
+
+Flight
+date -> flight_date
+delay -> flight_delay
+type -> flight_type
+
+Luggage
+type -> luggage_type
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

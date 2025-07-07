@@ -1,0 +1,127 @@
+CREATE TABLE Admin (
+
+	username VARCHAR(20) PRIMARY KEY,
+	mail VARCHAR(50) UNIQUE NOT NULL,
+	hashed_password VARCHAR(64) NOT NULL
+
+);
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Customer (
+
+	username VARCHAR(20) PRIMARY KEY,
+	mail VARCHAR(50) UNIQUE,
+	hashed_password VARCHAR(64) NOT NULL
+
+);
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TYPE FlightStatus AS ENUM ('programmed', 'cancelled', 'aboutToDepart', 'departed', 'delayed', 'landed', 'aboutToArrive');
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE DOMAIN Minutes AS int;
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE DOMAIN FlightType AS boolean;	--true = departing, false = arriving
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Flight (
+
+	id_flight VARCHAR(15) PRIMARY KEY,
+	company_name VARCHAR(32) NOT NULL,
+	departure_date DATE NOT NULL,
+	departure_time	TIME NOT NULL,
+	arrival_time TIME NOT NULL,
+	flight_status FlightStatus NOT NULL,
+	max_seats SMALLINT NOT NULL,
+	free_seats SMALLINT NOT NULL,
+	destination_or_origin VARCHAR(64) NOT NULL,
+	flight_delay Minutes,
+	flight_type FlightType NOT NULL,
+	id_gate SMALLINT,
+	
+	
+	CONSTRAINT max_free_seats CHECK(free_seats <= max_seats),
+	CONSTRAINT arrival_after_departure CHECK( arrival_time > departure_time),
+	CONSTRAINT destination_or_origin_never_Napoli CHECK(destination_or_origin NOT LIKE 'Napoli'),
+	--perché a priori, che sia departing o arriving, memorizziamo sempre l' "altra città", non Napoli
+	CONSTRAINT delay_not_negative CHECK(flight_delay IS NULL OR flight_delay > 0),
+	CONSTRAINT correctness_of_id_gate_ CHECK(id_gate IS NULL OR id_gate BETWEEN 0 AND 18)
+
+);	
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TYPE BookingStatus AS ENUM ('confirmed', 'pending', 'cancelled');
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Booking (
+
+	id_booking SERIAL PRIMARY KEY,
+	booking_status BookingStatus NOT NULL,
+	booking_date DATE NOT NULL,
+	buyer VARCHAR(20) NOT NULL,
+	id_flight  VARCHAR(15) NOT NULL,
+
+	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(username),
+	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight)
+
+);
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Passenger (
+
+	ticket_number CHAR(13) PRIMARY KEY,
+	full_name VARCHAR(50),
+	SSN VARCHAR(16),
+	seat INTEGER,
+	checked_in BOOLEAN NOT NULL,
+	id_booking INTEGER NOT NULL,
+	id_flight  VARCHAR(15) NOT NULL,
+
+
+	CONSTRAINT booking_FK FOREIGN KEY(id_booking) REFERENCES Booking(id_booking),
+	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight),
+	CONSTRAINT numeric_ticket_number CHECK( ticket_number ~ '^[0-9]+$' )
+
+);
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TYPE LuggageStatus AS ENUM ('booked', 'loaded', 'withdrawable', 'lost');
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TYPE LuggageType AS ENUM ('carry_on', 'checked');
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Luggage (
+
+	id_luggage SERIAL PRIMARY KEY,
+	id_luggage_after_check_in VARCHAR(20) UNIQUE,
+	luggage_type LuggageType,
+	luggage_status LuggageStatus NOT NULL,
+	id_passenger CHAR(13) NOT NULL,
+
+
+	CONSTRAINT passenger_FK FOREIGN KEY(id_passenger) REFERENCES Passenger(ticket_number),
+	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_lenght CHECK( id_luggage_after_check_in IS NULL OR LENGHT(id_luggage_after_check_in) > 13)
+	--questa check serve per come è costruito id_luggage_after_check_in, 
+	--ossia come concatenazione di ticket_number del passeggero associato + 'numero del bagaglio'
+
+);
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+WHERE WAS I 899
+
+
