@@ -360,6 +360,8 @@ DECLARE
 				     WHERE id_flight = NEW.id_flight);
 
 	prev_seat PASSENGER.seat%TYPE := -1; -- (-1) perché i posti iniziano da 0
+	
+	selected_seat PASSENGER.seat%TYPE;
 
 BEGIN
 
@@ -865,6 +867,8 @@ DECLARE
 
 	i INTEGER := 0;
 
+	selected_luggage LUGGAGE%ROWTYPE;
+
 BEGIN
 	
 	IF OLD.checked_in = false AND NEW.checked_in = true THEN
@@ -873,7 +877,7 @@ BEGIN
 								 WHERE L.id_passenger = NEW.ticket_number) LOOP
 
 			UPDATE LUGGAGE
-			SET id_luggage_after_check_in = selected_passenger.ticket_number || i;
+			SET id_luggage_after_check_in = NEW.ticket_number || i
 			WHERE id_luggage = selected_luggage.id_luggage;
 
 			i := i + 1;
@@ -1216,6 +1220,12 @@ EXECUTE FUNCTION fun_luggage_status_can_become_lost_only_if_withdrowable();
 CREATE OR REPLACE FUNCTION fun_luggages_loaded_when_depart()
 RETURNS TRIGGER
 AS $$
+DECLARE
+
+	selected_booking BOOKING%ROWTYPE;
+	selected_passenger PASSENGER%ROWTYPE;
+	selected_luggage LUGGAGE%ROWTYPE;
+
 BEGIN
 	
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
@@ -1275,6 +1285,12 @@ EXECUTE FUNCTION fun_luggages_loaded_when_depart();
 CREATE OR REPLACE FUNCTION fun_luggages_withdrowable_when_landed()
 RETURNS TRIGGER
 AS $$
+DECLARE
+
+	selected_booking BOOKING%ROWTYPE;
+	selected_passenger PASSENGER%ROWTYPE;
+	selected_luggage LUGGAGE%ROWTYPE;
+
 BEGIN
 	
 	IF OLD.flight_status <> 'landed' AND NEW.flight_status = 'landed' THEN 
@@ -1612,6 +1628,10 @@ EXECUTE FUNCTION fun_block_updating_date_if_already_departed();
 CREATE OR REPLACE FUNCTION fun_change_booking_status_when_departing_abutToDepart()
 RETURNS TRIGGER
 AS $$
+DECLARE
+
+	selected_booking BOOKING%ROWTYPE;
+
 BEGIN
 	
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
@@ -1667,6 +1687,10 @@ DECLARE
 	i INTEGER := 0;
 	j INTEGER := 0;
 
+	selected_booking BOOKING%ROWTYPE;
+	selected_passenger PASSENGER%ROWTYPE;
+	selected_luggage LUGGAGE%ROWTYPE;
+
 BEGIN
 	
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
@@ -1709,7 +1733,7 @@ BEGIN
 													 WHERE L.id_passenger = selected_passenger.ticket_number) LOOP
 
 								UPDATE LUGGAGE
-								SET luggage_status = 'loaded', id_luggage_after_check_in = selected_passenger.ticket_number || j;
+								SET luggage_status = 'loaded', id_luggage_after_check_in = selected_passenger.ticket_number || j
 								WHERE id_luggage = selected_luggage.id_luggage;
 
 								j := j + 1;
@@ -1829,6 +1853,8 @@ DECLARE
 	--con quello che controlla la correttezza dei free_seats
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
 				     WHERE id_flight = NEW.id_flight);
+
+	selected_passenger PASSENGER%ROWTYPE;
 
 BEGIN
 		
