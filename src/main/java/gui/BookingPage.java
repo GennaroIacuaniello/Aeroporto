@@ -23,7 +23,6 @@ public class BookingPage extends DisposableObject {
 
             protected JPanel flightInfoPanel;
 
-                protected JScrollPane flightInfoScrollPane;
                 protected JTable flightInfoTable;
 
             protected JPanel searchPanel;
@@ -188,11 +187,8 @@ public class BookingPage extends DisposableObject {
         flightInfoTable = new JTable(data, columnNames);
         flightInfoTable.setEnabled(false);
 
-        flightInfoScrollPane = new JScrollPane(flightInfoTable);
-        flightInfoScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        flightInfoTable.setFillsViewportHeight(true);
-
-        flightInfoPanel.add(flightInfoScrollPane, BorderLayout.CENTER);
+        flightInfoPanel.add(flightInfoTable.getTableHeader(), BorderLayout.NORTH);
+        flightInfoPanel.add(flightInfoTable, BorderLayout.CENTER);
 
         constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.CENTER);
