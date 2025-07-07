@@ -39,7 +39,10 @@ public class TestFlightInfo {
 
         passengers.getFirst().add_luggage(new Luggage(LuggageType.carry_on, passengers.getFirst(), 1));
         passengers.getFirst().set_check_in(true);
-        passengers.getFirst().set_Ticket_number("34879");
+
+        for (Passenger passenger : passengers) {
+            passenger.set_Ticket_number(Integer.valueOf(passenger.get_First_name().hashCode()).toString());
+        }
 
         //sistemo il controller
         controller.getFlightController().setFlight("03", "che ne so", "Barcellona", new Date(2025, 2, 14), "12:25",

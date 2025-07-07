@@ -195,7 +195,67 @@ public class BookingPage extends DisposableObject {
         mainPanel.add(flightInfoPanel, constraints.getConstraints());
     }
 
-    protected void addSearchPanel (Controller controller) {}
+    protected void addSearchPanel (Controller controller) {
+
+        searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        searchField = new JTextField(16);
+
+        searchButton = new JButton("Search");
+        searchButton.addActionListener (new ActionListener() {
+
+            @Override
+            public void actionPerformed (ActionEvent e) {
+
+                searchPassenger();
+            }
+        });
+        searchButton.setFocusable(false);
+
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
+
+        constraints.setConstraints(0, 1, 1, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+        mainPanel.add(searchPanel, constraints.getConstraints());
+
+        searchPanel.setVisible (true);
+    }
+
+    protected void searchPassenger () {
+
+        boolean flag = true;
+
+        for (int i = 0; i < passengerPanels.size() && flag; i++) {
+
+            if (passengerPanels.get(i).getTicketNumber().equals(searchField.getText())) {
+
+                System.out.println("trovato");
+                goToPage(i / 3);
+                flag = false;
+            }
+        }
+
+        if (flag) new ErrorMessage("Nessun passeggero trovato con ticket number: " + searchField.getText(), searchButton);
+    }
+
+    protected void goToPage (int page) {
+
+        //sistemo visibilità
+        for (int i = 0; i < 3; i++) {
+
+            passengerPanels.get(i + currPage * 3).setVisible(false);
+            passengerPanels.get(i + page * 3).setVisible(true);
+        }
+
+        //sistemo currPage
+        currPage = page;
+        currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
+
+        //sistemo attivabilità bottoni
+        prevPageButton.setEnabled(currPage > 0);
+        nextPageButton.setEnabled(currPage < (passengerPanels.size() / 3));
+    }
 
     protected void addPassengerPage (Controller controller) {
 
@@ -277,7 +337,7 @@ public class BookingPage extends DisposableObject {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                goNextPage();
+                goPreviousPage();
             }
         });
 
@@ -286,7 +346,7 @@ public class BookingPage extends DisposableObject {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                goPreviousPage();
+                goNextPage();
             }
         });
 
@@ -299,7 +359,7 @@ public class BookingPage extends DisposableObject {
         modifyPanel.add (nextPageButton);
     }
 
-    protected void goNextPage () {
+    protected void goPreviousPage () {
 
         if (currPage != (passengerPanels.size() - 1) / 3) //non sto all'ultima pagina quindi sono 3
         {
@@ -328,7 +388,7 @@ public class BookingPage extends DisposableObject {
         if (currPage == 0) prevPageButton.setEnabled (false);
     }
 
-    protected void goPreviousPage () {
+    protected void goNextPage () {
 
         for (int i = 0; i < 3; i++) //metto a false la pagina corrente
             passengerPanels.get ((currPage * 3) + i).setVisible (false);
