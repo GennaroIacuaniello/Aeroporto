@@ -4,7 +4,7 @@ CREATE TABLE Admin (
 	mail VARCHAR(50) UNIQUE NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 
-	CONSTRAINT correctness_of_username_minimal_lenght CHECK( LENGHT(username) >= 4 )
+	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 )
 
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE Customer (
 	mail VARCHAR(50) UNIQUE,
 	hashed_password CHAR(64) NOT NULL,
 
-	CONSTRAINT correctness_of_username_minimal_lenght CHECK( LENGHT(username) >= 4 )
+	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 )
 
 );
 
@@ -775,7 +775,7 @@ CREATE TABLE Luggage (
 
 
 	CONSTRAINT passenger_FK FOREIGN KEY(id_passenger) REFERENCES Passenger(ticket_number),
-	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_lenght CHECK( id_luggage_after_check_in IS NULL OR LENGHT(id_luggage_after_check_in) > 13)
+	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR LENGTH(id_luggage_after_check_in) > 13)
 	--questa check serve per come è costruito id_luggage_after_check_in, 
 	--ossia come concatenazione di ticket_number del passeggero associato + 'numero del bagaglio'
 );
