@@ -24,6 +24,7 @@ public class PassengerPanel extends JPanel
     protected JButton seatButton;
     protected Constraints constraints;
     protected JLabel passengerLabel;
+    protected String ticketNumber;
 
     protected JTextField passengerNameField;
     protected JTextField passengerSurnameField;
@@ -256,5 +257,31 @@ public class PassengerPanel extends JPanel
 
     public JButton getSeatButton() {
         return seatButton;
+    }
+
+    public void setTicketNumber (String ticketNumber) {
+
+        this.ticketNumber = ticketNumber;
+        this.passengerLabel.setText("Passenger: " + ticketNumber);
+    }
+
+    public String getTicketNumber() {
+        return ticketNumber;
+    }
+
+    public void setPanelEnabled (boolean flag) {
+
+        passengerNameField.setEnabled(flag);
+        passengerSurnameField.setEnabled(flag);
+        passengerCFField.setEnabled(flag);
+        seatButton.setEnabled(flag);
+
+        luggagesView.getAddLuggageButton().setVisible(flag);
+        luggagesView.getConfirmButton().setVisible(flag);
+        for (int i = 0; i < luggagesView.getLuggagesPanels().size(); i++) {
+
+            luggagesView.getLuggagesPanels().get(i).getComboBox().setEnabled(flag);
+            luggagesView.getRemoveLuggageButtons().get(i).setVisible(flag);
+        }
     }
 }

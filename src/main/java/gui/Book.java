@@ -123,7 +123,7 @@ public class Book extends DisposableObject {
         userPanel.setVisible (true);
     }
 
-    private void addMainPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
+    protected void addMainPanel (ArrayList<DisposableObject> callingObjects, Controller controller)
     {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());

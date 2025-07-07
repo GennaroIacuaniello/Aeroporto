@@ -42,7 +42,7 @@ public class TestFlightInfo {
         passengers.getFirst().set_Ticket_number("34879");
 
         //sistemo il controller
-        controller.getFlightController().setFlight("03", "che ne so", new Date(2025, 2, 14), "12:25",
+        controller.getFlightController().setFlight("03", "che ne so", "Barcellona", new Date(2025, 2, 14), "12:25",
                 "14:10", 19);
         controller.getFlightController().setFlightStatus(FlightStatus.aboutToDepart);
 
@@ -64,7 +64,7 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new CheckinPassengers (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
+        new BookingPage (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
     }
 
 }

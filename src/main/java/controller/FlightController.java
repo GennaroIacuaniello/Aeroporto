@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class FlightController {
     private Flight flight;
 
-    public void setFlight(String id, String companyName, Date date, String departureTime,
+    public void setFlight(String id, String companyName, String city, Date date, String departureTime,
                           String arrivalTime, int maxSeats) {
-        flight = new Flight(id, companyName, date, departureTime, arrivalTime, maxSeats);
+        flight = new Flight(id, companyName, city, date, departureTime, arrivalTime, maxSeats);
     }
 
     public void setFlight(Flight flight) {
@@ -157,5 +157,10 @@ public class FlightController {
 
     public boolean getPassengerCheckedin (int index) {
         return flight.get_passengers().get(index).get_check_in();
+    }
+
+    public String getCity () {
+
+        return flight.get_city();
     }
 }
