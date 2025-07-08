@@ -53,7 +53,7 @@
         <constraints border-constraint="Center"/>
         <properties>
           <autoscrolls value="false"/>
-          <doubleBuffered value="true"/>
+          <doubleBuffered value="false"/>
           <focusCycleRoot value="false"/>
           <horizontalScrollBarPolicy value="31"/>
           <verticalScrollBarPolicy value="21"/>
