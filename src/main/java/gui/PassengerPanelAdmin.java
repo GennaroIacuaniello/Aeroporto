@@ -8,19 +8,24 @@ import java.util.ArrayList;
 
 public class PassengerPanelAdmin extends PassengerPanel {
 
-    private String ticketNumber;
+    private JCheckBox checkinCheckBox;
 
     public PassengerPanelAdmin(Controller controller, ArrayList<PassengerPanel> passengerPanelsAdmin) {
 
         super(controller, passengerPanelsAdmin);
     }
 
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
+    public void addCheckinCheckBox (boolean flag) {
+        checkinCheckBox = new JCheckBox("Checkin", flag);
+
+        constraints.setConstraints(0, 3, 3, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        this.add(checkinCheckBox, constraints.getConstraints());
+        checkinCheckBox.setVisible(true);
     }
 
-    public String getTicketNumber() {
-        return ticketNumber;
+    public JCheckBox getCheckinCheckBox () {
+        return checkinCheckBox;
     }
 
     {

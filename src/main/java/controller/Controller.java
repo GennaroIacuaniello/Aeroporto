@@ -24,6 +24,8 @@ public class Controller {
     private LuggageController luggageController;
     private PassengerController passengerController;
     private UserController userController;
+    private FlightStatusController flightStatusController;
+    private BookingStatusController bookingStatusController;
 
     public Controller() {
         adminController = new AdminController();
@@ -36,6 +38,8 @@ public class Controller {
         luggageController = new LuggageController();
         passengerController = new PassengerController();
         userController = new UserController();
+        flightStatusController = new FlightStatusController();
+        bookingStatusController = new BookingStatusController();
     }
 
     public boolean developerMode = false;
@@ -127,6 +131,14 @@ public class Controller {
 
     public UserController getUserController() {
         return userController;
+    }
+
+    public FlightStatusController getFlightStatusController() {
+        return flightStatusController;
+    }
+
+    public BookingStatusController getBookingStatusController() {
+        return bookingStatusController;
     }
 
     public void setAdminNUser (String username, char[] password) {

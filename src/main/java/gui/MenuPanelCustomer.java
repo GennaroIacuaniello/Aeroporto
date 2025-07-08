@@ -1,112 +1,55 @@
 package gui;
 
 import controller.Controller;
-import model.Customer;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class MenuPanelCustomer extends JPanel {
-
-    private JPanel invisiblePanel;
-    private Constraints constraints;
-    private JComboBox menu;
 
     public MenuPanelCustomer(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
-        this.setLayout(new GridBagLayout());
-        this.constraints = new Constraints();
+        JButton menuButton = new JButton("Menù");
 
-        menu = new JComboBox<String>();
+        ArrayList<String> options = new ArrayList<>();
+        options.add("Home");
+        options.add("Cerca voli");
+        options.add("I miei voli");
 
-        this.menu.addItem("Menù");
-        this.menu.addItem("Home");
-        this.menu.addItem("Cerca voli");
-        this.menu.addItem("I miei voli");
-        //this.menu.addItem("DeveloperMode");
+        menuButton.addActionListener(e -> {
 
+            JPopupMenu popupMenu = new JPopupMenu();
 
-        this.setVisible(true);
-        this.menu.setVisible(true);
-        this.add(menu, constraints.getConstraints());
+            for (String option : options) {
 
-        invisiblePanel = new JPanel();
-        //invisiblePanel.setBackground(Color.GREEN);
-        invisiblePanel.setLayout(new GridBagLayout());
-        invisiblePanel.setVisible(true);
+                JMenuItem menuItem = new JMenuItem(option);
 
-        constraints.setConstraints(0, 1, 3, 2, GridBagConstraints.BOTH,
-                0, 50, GridBagConstraints.FIRST_LINE_START);
-
-        this.add(invisiblePanel, constraints.getConstraints());
-
-        this.menu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String selected_option = (String) menu.getSelectedItem();
-
-                switch (selected_option) {
-                    case "Menu":
-                        //Selezionato menù, chiudo solamente la JComboBox
-                        break;
-                    case "Home":
-                        /*callingFrames.get(callingFrames.size() - 1).setVisible(false);
-                        //callingFrames.getLast().dispose();
-                        for (int i = 1; i < callingFrames.size(); i++) {
-                            callingFrames.get(i).dispose();
-                        }
-                        callingFrames.removeLast();
-                        new MainCustomerScreen(callingFrames, controller);*/
-                        menu.setSelectedIndex(0);
-                        controller.goHome(callingObjects);
-                        break;
-                    case "Cerca voli":
-                        menu.setSelectedIndex(0);
-                        if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
-                            System.out.println("1");
-                            //callingFrames.getLast().dispose();
-                            //callingFrames.removeLast();
-                            new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
-                            callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
-                        }
-                        break;
-                    case "I miei voli":
-                        menu.setSelectedIndex(0);
-                        JOptionPane.showMessageDialog(invisiblePanel, "Apertura pagina I miei voli");
-                        break;
-                    case "DeveloperMode":
-                        controller.developerMode = !controller.developerMode;
-                    default:
-                        break;
-                }
+                menuItem.addActionListener(actionEvent -> {
+                    switch (option) {
+                        case "Home":
+                            controller.goHome(callingObjects);
+                            break;
+                        case "Cerca voli":
+                            if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
+                                new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                                callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                            }
+                            break;
+                        case "I miei voli":
+                            JOptionPane.showMessageDialog(MenuPanelCustomer.this, "Apertura pagina I miei voli");
+                            break;
+                    }
+                });
+                popupMenu.add(menuItem);
             }
 
+            popupMenu.show(menuButton, 0, menuButton.getHeight());
         });
-    }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+        this.add(menuButton);
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
     }
 }

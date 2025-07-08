@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 import controller.Controller;
 
-public class RemovePassengerButton extends RoundedButton {
+public class RemovePassengerButton extends JButton {
 
     int index;
     Constraints constraints;
 
     public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
-                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, RoundedButton nextPageButton) {
+                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, JButton nextPageButton) {
 
         super("Remove Passenger");
 
@@ -42,6 +42,10 @@ public class RemovePassengerButton extends RoundedButton {
                 //rimuovi dalla pagina
                 passengersPage.remove(tmppassengerPanel);
                 passengersPage.remove(tmpremovePassengerButton);
+
+                //rimuovi eventuali panel aggiuntivi
+                if (tmppassengerPanel.getLuggagesView() != null) tmppassengerPanel.getLuggagesView().dispose();
+                if (tmppassengerPanel.getSeatChooser() != null) tmppassengerPanel.getSeatChooser().dispose();
 
                 for (int i = index; i < passengerPanels.size(); i++) {
 
@@ -128,7 +132,7 @@ public class RemovePassengerButton extends RoundedButton {
 
     /*
     public RemovePassengerButton(FlightInfo flightInfo, Controller controller, ArrayList<PassengerPanel> passengerPanels,
-                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, RoundedButton nextPageButton) {
+                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, JButton nextPageButton) {
 
         super();
 

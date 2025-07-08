@@ -21,7 +21,7 @@ public class Home extends DisposableObject {
         frameHome.setVisible(true);
 
         controller.setCustomerNUser("Tramontana", new char[]{'1', '2'});
-        controller.getFlightController().setFlight("01", "Compagnia", new Date(),
+        controller.getFlightController().setFlight("01", "Compagnia", "Napoli", new Date(),
                 "00:00", "00:00", 66);
 
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();

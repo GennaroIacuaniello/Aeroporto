@@ -17,7 +17,7 @@ public class Departing extends Flight{
     public Departing(String par_id, String par_company_name, Date par_date, String par_departure_time,
                      String par_arrival_time, int par_max_seats, String destination) {
 
-        super(par_id, par_company_name, par_date, par_departure_time, par_arrival_time, par_max_seats);
+        super(par_id, par_company_name, destination, par_date, par_departure_time, par_arrival_time, par_max_seats);
         this.destination = destination;
         this.departure_delay = 0;
         this.gate = new Gate((byte)-1);

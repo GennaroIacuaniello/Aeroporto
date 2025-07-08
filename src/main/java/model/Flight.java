@@ -12,6 +12,7 @@ public class Flight {
 
     private String id;
     private String company_name;
+    private String city;
     private Date date;
     private String departure_time;
     private String arrival_time;
@@ -21,11 +22,12 @@ public class Flight {
     private ArrayList<Booking> bookings;
     private ArrayList<Passenger> passengers;
 
-    public Flight(String par_id, String par_company_name, Date par_date, String par_departure_time,
+    public Flight(String par_id, String par_company_name, String par_city, Date par_date, String par_departure_time,
                   String par_arrival_time, int par_max_seats){
 
         this.id = par_id;
         this.company_name = par_company_name;
+        this.city = par_city;
         this.date = par_date;
         this.departure_time = par_departure_time;
         this.arrival_time = par_arrival_time;
@@ -51,6 +53,15 @@ public class Flight {
 
     public int set_company_name(String par_company_name){
         this.company_name = par_company_name;
+        return 0;
+    }
+
+    public String get_city(){
+        return this.city;
+    }
+
+    public int set_city(String par_city){
+        this.city = par_city;
         return 0;
     }
 
