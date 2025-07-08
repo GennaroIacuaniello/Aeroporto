@@ -3,6 +3,7 @@ package controller;
 import model.FlightStatus;
 
 public class FlightStatusController {
+
     public FlightStatus programmed = FlightStatus.programmed;
     public FlightStatus cancelled = FlightStatus.cancelled;
     public FlightStatus departed = FlightStatus.departed;

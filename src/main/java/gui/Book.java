@@ -278,7 +278,7 @@ public class Book extends DisposableObject {
                 @Override
                 public void actionPerformed (ActionEvent e) {
 
-                    controller.addBooking(passengerPanels, BookingStatusController.confirmed);
+                    controller.addBooking(passengerPanels, controller.getBookingStatusController().confirmed);
 
                     controller.goBack(callingObjects);
 
@@ -437,7 +437,7 @@ public class Book extends DisposableObject {
             public void actionPerformed (ActionEvent e) {
                     if (checkSavePendingButton(controller)) {
 
-                        controller.addBooking(passengerPanels, BookingStatusController.pending);
+                        controller.addBooking(passengerPanels, controller.getBookingStatusController().pending);
 
                         controller.goBack(callingObjects);
 

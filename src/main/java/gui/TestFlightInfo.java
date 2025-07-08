@@ -1,5 +1,6 @@
 package gui;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
 import model.*;
 
@@ -17,6 +18,20 @@ public class TestFlightInfo {
     private static ArrayList<Passenger> passengers;
 
     public static void main(String[] args) throws InvalidPassengerNumber {
+
+        try{
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        }
+        catch (UnsupportedLookAndFeelException e){
+            String[] options = {"Continua", "Chiudi"};
+            int action = JOptionPane.showOptionDialog(null,  "<html><center>Il tuo device non supporta FlatLaf,<br>" +
+                            "utilizzerai un'altra versione dell'app,<br>" +
+                            "tutte le funzioni rimarranno invariate.</center></html>",
+                    "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,null, options, null);
+            if(action == 1 || action == JOptionPane.CLOSED_OPTION) {
+                return;
+            }
+        }
 
         controller = new Controller();
 
@@ -47,7 +62,7 @@ public class TestFlightInfo {
         //sistemo il controller
         controller.getFlightController().setFlight("03", "che ne so", "Barcellona", new Date(2025, 2, 14), "12:25",
                 "14:10", 19);
-        controller.getFlightController().setFlightStatus(FlightStatus.aboutToDepart);
+        controller.getFlightController().setFlightStatus(FlightStatus.cancelled);
 
         controller.getBookingController().setBooking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
 
@@ -67,7 +82,7 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new BookingPage (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
+        new BookingPageAdmin (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
     }
 
 }

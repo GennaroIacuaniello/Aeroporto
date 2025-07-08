@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class BookingPage extends DisposableObject {
+public abstract class BookingPage extends DisposableObject {
 
     protected JFrame mainFrame;
 
@@ -46,6 +46,7 @@ public class BookingPage extends DisposableObject {
         protected FooterPanel footerPanel;
 
     protected Constraints constraints;
+    protected boolean controllerDisposeFlag = true;
 
     public BookingPage (ArrayList<DisposableObject> callingObjects, Controller controller,
                         Dimension dimension, Point point, int fullScreen) {
@@ -67,6 +68,14 @@ public class BookingPage extends DisposableObject {
         addFooterPanel();
 
         mainFrame.setVisible(true);
+    }
+
+    public BookingPage (ArrayList<DisposableObject> callingObjects, Controller controller,
+                        Dimension dimension, Point point, int fullScreen, boolean flag) {
+
+        this(callingObjects, controller, dimension, point, fullScreen);
+
+        setControllerDisposeFlag(flag);
     }
 
     public BookingPage () {}
@@ -94,7 +103,7 @@ public class BookingPage extends DisposableObject {
 
         addTitlePanel("AEROPORTO DI NAPOLI", controller);
         addNavigatorBarPanel (callingObjects, controller);
-        addMenuPanel(callingObjects, controller);
+        //addMenuPanel(callingObjects, controller);
         addUserPanel(callingObjects, controller);
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
@@ -272,35 +281,13 @@ public class BookingPage extends DisposableObject {
         mainPanel.add (passengerPage, constraints.getConstraints());
     }
 
-    protected void insertPassengers (Controller controller) {
-
-        for (int j = 0; j < controller.getFlightController().getBookingsSize(); j++) {
-
-            if (controller.getFlightController().checkBookingConfirm(j)) {
-
-                for (int i = 0; i < controller.getFlightController().getBookingSize(j); i++) {
-                    PassengerPanel passengerPanel = new PassengerPanelAdmin(controller, passengerPanels);
-
-                    passengerPanel.setPassengerName(controller.getFlightController().getPassengerNameFromBooking(j, i));
-                    passengerPanel.setPassengerSurname(controller.getFlightController().getPassengerSurnameFromBooking(j, i));
-                    passengerPanel.setPassengerCF(controller.getFlightController().getPassengerCFFromBooking(j, i));
-                    passengerPanel.setSeat(controller.getFlightController().getPassengerSeatFromBooking(j, i));
-                    passengerPanel.setTicketNumber(controller.getFlightController().getPassengerTicketNumberFromBooking(j, i));
-                    passengerPanel.setLuggagesTypes(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i), controller);
-
-                    insertPassengerPanel(controller, passengerPanel);
-                }
-            }
-        }
-    }
+    abstract protected void insertPassengers (Controller controller);
 
     protected void insertPassengerPanel (Controller controller, PassengerPanel passengerPanel) {
 
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         passengerPage.add(passengerPanel, constraints.getConstraints());
-
-        passengerPanel.setPanelEnabled(false);
 
         passengerPanels.addLast(passengerPanel);
 
@@ -410,20 +397,25 @@ public class BookingPage extends DisposableObject {
         prevPageButton.setEnabled (true);
     }
 
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        confirmPanel = new JPanel();
-
-        //pulsanti per modifica
-    }
+    abstract protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller);
 
     protected void addFooterPanel () {
 
     }
 
+    public void setControllerDisposeFlag (boolean flag) {
+
+        controllerDisposeFlag = flag;
+    }
+
     @Override
     public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        controller.getFlightController().setFlight(null);
-        controller.getBookingController().setBooking(null);
+
+        if (controllerDisposeFlag) {
+
+            controller.getFlightController().setFlight(null);
+            controller.getBookingController().setBooking(null);
+        }
 
         for (PassengerPanel passengerPanel : passengerPanels) {
             if (passengerPanel.getSeatChooser() != null) passengerPanel.getSeatChooser().dispose();
