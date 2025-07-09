@@ -62,16 +62,16 @@ public class TestFlightInfo {
         //sistemo il controller
         controller.getFlightController().setFlight("03", "che ne so", "Barcellona", new Date(2025, 2, 14), "12:25",
                 "14:10", 19);
-        controller.getFlightController().setFlightStatus(FlightStatus.aboutToDepart);
+        controller.getFlightController().setFlightStatus(FlightStatus.programmed);
 
-        //controller.getBookingController().setBooking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
+        controller.getBookingController().setBooking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
 
         Booking booking = new Booking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
         booking.set_status(BookingStatus.confirmed);
 
         controller.getFlightController().getFlight().add_booking(booking);
 
-        controller.setAdminNUser("pippo", new char[]{'p', 'l', 'u', 't', 'o'});
+        controller.setCustomerNUser("pippo", new char[]{'p', 'l', 'u', 't', 'o'});
 
         ArrayList<Passenger> passengers2 = new ArrayList<Passenger>();
         passengers2.add(new Passenger("a", "a", "a", 14));
@@ -82,7 +82,7 @@ public class TestFlightInfo {
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
-        new BookingPageAdmin (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
+        new BookingPageCustomer (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
     }
 
 }

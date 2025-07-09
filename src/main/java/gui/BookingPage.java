@@ -233,7 +233,7 @@ public abstract class BookingPage extends DisposableObject {
 
         boolean flag = true;
 
-        for (int i = 0; i < passengerPanels.size() && flag; i++) {
+        for (int i = 0; (i < passengerPanels.size()) && flag; i++) {
 
             if (passengerPanels.get(i).getTicketNumber().equals(searchField.getText())) {
 
@@ -290,6 +290,8 @@ public abstract class BookingPage extends DisposableObject {
         passengerPanels.addLast(passengerPanel);
 
         passengerPanel.setVisible(passengerPanels.size() < 4);
+
+        passengerPanel.setPanelEnabled(false);
     }
 
     private void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
@@ -346,27 +348,22 @@ public abstract class BookingPage extends DisposableObject {
 
     protected void goPreviousPage () {
 
-        if (currPage != (passengerPanels.size() - 1) / 3) //non sto all'ultima pagina quindi sono 3
-        {
+        if (currPage != (passengerPanels.size() - 1) / 3) { //non sto all'ultima pagina quindi sono 3
+
             for (int i = 0; i < 3; i++)
-            {
                 passengerPanels.get ((currPage * 3) + i).setVisible (false);
-            }
-        } else //sto all'ultima pagina quindi non so quanti sono
-        {
+
+        } else { //sto all'ultima pagina quindi non so quanti sono
+
             for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
-            {
                 passengerPanels.get ((passengerPanels.size() - i - 1)).setVisible (false);
-            }
         }
 
         currPage--;
         currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
 
         for (int i = 0; i < 3; i++) //vado indietro quindi sono 3
-        {
             passengerPanels.get ((currPage * 3) + i).setVisible (true);
-        }
 
         nextPageButton.setEnabled (true);
 
@@ -378,14 +375,14 @@ public abstract class BookingPage extends DisposableObject {
         for (int i = 0; i < 3; i++) //metto a false la pagina corrente
             passengerPanels.get ((currPage * 3) + i).setVisible (false);
 
-        if (currPage + 1 == (passengerPanels.size() - 1) / 3) //sto andando all'ultima pagina quindi non so quanti sono
-        {
+        if (currPage + 1 == (passengerPanels.size() - 1) / 3) { //sto andando all'ultima pagina quindi non so quanti sono
+
             for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
                 passengerPanels.get(passengerPanels.size() - i - 1).setVisible(true);
 
             nextPageButton.setEnabled (false);
-        } else //la prossima pagina ne ha 3
-        {
+        } else { //la prossima pagina ne ha 3
+
             for (int i = 0; i < 3; i++)
                 passengerPanels.get (((currPage + 1) * 3) + i).setVisible (true);
         }
@@ -404,6 +401,33 @@ public abstract class BookingPage extends DisposableObject {
     public void setControllerDisposeFlag (boolean flag) {
 
         controllerDisposeFlag = flag;
+    }
+
+    protected void decreaseCurrPage () {
+        currPage--;
+        currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
+
+        if (currPage == 0) prevPageButton.setEnabled (false);
+    }
+
+    protected int getCurrPage () {
+
+        return currPage;
+    }
+
+    protected JButton getPrevButton () {
+
+        return prevPageButton;
+    }
+
+    protected JButton getNextButton () {
+
+        return nextPageButton;
+    }
+
+    protected JPanel getPassengerPage () {
+
+        return passengerPage;
     }
 
     @Override

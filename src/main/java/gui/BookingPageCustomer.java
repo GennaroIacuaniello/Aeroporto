@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class BookingPageCustomer extends BookingPage {
 
-    private JPanel confirmPanel;
+    protected JPanel confirmPanel;
 
-        private JButton modifyButton;
-        private JButton cancelButton;
+        protected JButton modifyButton;
+        protected JButton cancelButton;
 
     public BookingPageCustomer(ArrayList<DisposableObject> callingObjects, Controller controller,
                                Dimension dimension, Point point, int fullScreen) {
@@ -48,8 +48,6 @@ public class BookingPageCustomer extends BookingPage {
             passengerPanel.setLuggagesTypes(controller.getBookingController().getPassengerLuggagesTypes(i), controller);
 
             insertPassengerPanel(controller, passengerPanel);
-
-            passengerPanel.setPanelEnabled(false);
         }
     }
 
@@ -70,7 +68,7 @@ public class BookingPageCustomer extends BookingPage {
 
                 if (checkFlightNBookingStatus(controller)) {
 
-                    new Book(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState());
+                    new BookingModifyPage(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
 
                     mainFrame.setVisible(false);
 
