@@ -78,7 +78,7 @@ public class TestFlightInfo {
         passengers2.add(new Passenger("a", "a", "a", 15));
         passengers2.add(new Passenger("a", "a", "a", 16));
 
-        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", new char[]{'x'}), controller.getFlightController().getFlight(), passengers2, BookingStatus.cancelled));
+        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", new char[]{'x'}), controller.getFlightController().getFlight(), passengers2, BookingStatus.pending));
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();

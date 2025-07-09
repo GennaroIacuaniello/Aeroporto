@@ -225,13 +225,14 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         confirmPanel.setLayout(new GridBagLayout());
 
-        addConfirmButton();
-        if (controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().pending) addSavePendingButton();
+        addConfirmButton(controller, callingObjects);
+        if (controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().pending)
+            addSavePendingButton(controller, callingObjects);
 
         confirmPanel.setVisible (true);
     }
 
-    protected void addConfirmButton () {
+    protected void addConfirmButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
 
         confirmButton = new JButton("CONFERMA PRENOTAZIONE");
 
@@ -239,7 +240,13 @@ public class BookingModifyPage extends BookingPageCustomer {
             @Override
             public void actionPerformed (ActionEvent e) {
 
+                if (checkConfirmButton()) {
+                    controller.modifyBooking(passengerPanels, controller.getBookingStatusController().confirmed);
+                    controller.goBack(callingObjects);
+                }
 
+                else
+                    new ErrorMessage("I dati dei passeggeri sono incompleti", confirmButton);
             }
         });
 
@@ -255,7 +262,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         mainFrame.add (confirmPanel, constraints.getConstraints());
     }
 
-    protected void addSavePendingButton () {
+    protected void addSavePendingButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
 
         savePendingButton = new JButton("SALVA IN ATTESA");
 
@@ -263,7 +270,8 @@ public class BookingModifyPage extends BookingPageCustomer {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-
+                controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
+                controller.goBack(callingObjects);
             }
         });
 
@@ -275,7 +283,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         savePendingButton.setVisible (true);
     }
 
-    protected boolean checkConfirmButton(int index) {
+    protected boolean checkConfirmButton() {
 
         for (PassengerPanel passengerPanel : passengerPanels) {
 

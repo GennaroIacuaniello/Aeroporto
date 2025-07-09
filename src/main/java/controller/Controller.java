@@ -213,4 +213,6 @@ public class Controller {
     public void addBooking(ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
 
     }
+
+    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
 }
