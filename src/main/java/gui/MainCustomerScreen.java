@@ -1,12 +1,11 @@
 package gui;
 
-import model.Arriving;
 import controller.Controller;
-import model.Departing;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class MainCustomerScreen extends DisposableObject {
@@ -17,6 +16,8 @@ public class MainCustomerScreen extends DisposableObject {
     private MenuPanelCustomer hamburgerPanel;
     private UserPanel userPanel;
     private FooterPanel footerPanel;
+    private FlightTable arrivingTable;
+    private FlightTable departingTable;
     private JPanel arrivingPanel;
     private JPanel departingPanel;
     Constraints constraints;
@@ -104,66 +105,51 @@ public class MainCustomerScreen extends DisposableObject {
         arrivingPanel = new JPanel();
         arrivingPanel.setLayout(new GridBagLayout());
         arrivingPanel.setBackground(Color.LIGHT_GRAY);
-        if (controller.developerMode) arrivingPanel.setBackground(Color.ORANGE);
 
-        setArrivingTitleLabels(arrivingPanel);
-        setArrivingFlightLabels(controller, arrivingPanel);
+        setArrivingTable(arrivingPanel, controller);
+
         constraints.setConstraints(0, 4, 1, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_START);
+                0, 0, GridBagConstraints.PAGE_START, 1, 1);
 
-        Border padding = BorderFactory.createEmptyBorder(0, 128, 0, 64);
-        arrivingPanel.setBorder(padding);
+        arrivingPanel.setBorder(BorderFactory.createEmptyBorder(0, 64, 0, 32));
         mainFrame.add(arrivingPanel, constraints.getConstraints());
+
+        JLabel arrivingLabel = new JLabel("Aerei in arrivo");
+        arrivingLabel.setFont(new Font(null, Font.BOLD, 18));
+        arrivingLabel.setLabelFor(arrivingTable);
+
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.NORTHWEST, 1, 0);
+        arrivingPanel.add(arrivingLabel, constraints.getConstraints());
+
         arrivingPanel.setVisible(true);
 
     }
 
-    private void setArrivingTitleLabels(JPanel tablePanel) {
+    private void setArrivingTable(JPanel tablePanel, Controller controller) {
 
-        ArrayList<JLabel> titleLabels = new ArrayList<JLabel>();
+        String[] columnTitle = {"Company", "From", "Day", "Arrival Time"};
+        Object[][] data = controller.getImminentArrivingFlights();
+        arrivingTable = new FlightTable(data, columnTitle);
 
-        titleLabels.add(new JLabel("Company"));
-        titleLabels.add(new JLabel("From"));
-        titleLabels.add(new JLabel("Day"));
-        titleLabels.add(new JLabel("Arrival Time"));
+        arrivingTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table = (JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1 && row != -1) {//double click on a row
+                    // the row number is the visual row number
+                    // when filtering or sorting it is not the model's row number
+                    // this line takes care of that
+                    int modelRow = table.convertRowIndexToModel(row);
+                    JOptionPane.showMessageDialog(mainFrame, "Show info of the flight");
+                }
+            }
+        });
 
-        for (int i = 0; i < titleLabels.size(); i++) {
-            constraints.setConstraints(i, 0, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(titleLabels.get(i), constraints.getConstraints());
-        }
-    }
-
-    private void setArrivingFlightLabels(Controller controller, JPanel tablePanel) {
-
-        ArrayList<Arriving> imminentArrivingFlights = controller.getImminentArrivingFlights();
-
-        for (int i = 0; i < imminentArrivingFlights.size(); i++) {
-
-            JLabel companyLabel = new JLabel(imminentArrivingFlights.get(i).get_company_name());
-            JLabel originLabel = new JLabel(imminentArrivingFlights.get(i).get_origin());
-            JLabel dateLabel = new JLabel(Integer.valueOf(imminentArrivingFlights.get(i).get_date().getDate()).toString() +
-                    " " + imminentArrivingFlights.get(i).getMonthName());
-            JLabel timeLabel = new JLabel(imminentArrivingFlights.get(i).get_arrival_time());
-
-            constraints.setConstraints(0, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(companyLabel, constraints.getConstraints());
-
-            constraints.setConstraints(1, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(originLabel, constraints.getConstraints());
-
-            constraints.setConstraints(2, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(dateLabel, constraints.getConstraints());
-
-            constraints.setConstraints(3, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(timeLabel, constraints.getConstraints());
-
-        }
-
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.CENTER);
+        tablePanel.add(arrivingTable.getScrollContainer(), constraints.getConstraints());
     }
 
     private void addDepartingPanel(Controller controller) {
@@ -171,72 +157,51 @@ public class MainCustomerScreen extends DisposableObject {
         departingPanel = new JPanel();
         departingPanel.setLayout(new GridBagLayout());
         departingPanel.setBackground(Color.LIGHT_GRAY);
-        if (controller.developerMode) departingPanel.setBackground(Color.ORANGE);
 
-        setDepartingTitleLabels(departingPanel);
-        setDepartingFlightLabels(controller, departingPanel);
+        setDepartingTable(departingPanel, controller);
+
         constraints.setConstraints(1, 4, 1, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_START);
+                0, 0, GridBagConstraints.PAGE_START, 1, 1);
 
-        Border padding = BorderFactory.createEmptyBorder(0, 64, 0, 128);
-        departingPanel.setBorder(padding);
+        departingPanel.setBorder(BorderFactory.createEmptyBorder(0, 32, 0, 64));
         mainFrame.add(departingPanel, constraints.getConstraints());
+
+        JLabel departingLabel = new JLabel("Aerei in Partenza");
+        departingLabel.setFont(new Font(null, Font.BOLD, 18));
+        departingLabel.setLabelFor(departingTable);
+
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.NORTHWEST, 1, 0);
+        departingPanel.add(departingLabel, constraints.getConstraints());
+
         departingPanel.setVisible(true);
 
     }
 
-    private void setDepartingTitleLabels(JPanel tablePanel) {
+    private void setDepartingTable(JPanel tablePanel, Controller controller) {
 
-        ArrayList<JLabel> titleLabels = new ArrayList<JLabel>();
+        String[] columnTitles = {"Company", "Going to", "Day", "Departing Time", "Gate"};
+        Object[][] data = controller.getImminentDepartingFlights();
+        departingTable = new FlightTable(data, columnTitles);
 
-        titleLabels.add(new JLabel("Company"));
-        titleLabels.add(new JLabel("Going to"));
-        titleLabels.add(new JLabel("Day"));
-        titleLabels.add(new JLabel("Departing Time"));
-        titleLabels.add(new JLabel("Gate"));
+        departingTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table = (JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1 && row != -1) {//double click on a row
+                    // the row number is the visual row number
+                    // when filtering or sorting it is not the model's row number
+                    // this line takes care of that
+                    int modelRow = table.convertRowIndexToModel(row);
+                    JOptionPane.showMessageDialog(mainFrame, "Show info of the flight");
+                }
+            }
+        });
 
-        for (int i = 0; i < titleLabels.size(); i++) {
-            constraints.setConstraints(i, 0, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(titleLabels.get(i), constraints.getConstraints());
-        }
-    }
-
-    private void setDepartingFlightLabels(Controller controller, JPanel tablePanel) {
-
-        ArrayList<Departing> imminentDepartingFlights = controller.getImminentDepartingFlights();
-
-        for (int i = 0; i < imminentDepartingFlights.size(); i++) {
-
-            JLabel companyLabel = new JLabel(imminentDepartingFlights.get(i).get_company_name());
-            JLabel originLabel = new JLabel(imminentDepartingFlights.get(i).get_destination());
-            JLabel dateLabel = new JLabel(Integer.valueOf(imminentDepartingFlights.get(i).get_date().getDate()).toString() +
-                    " " + imminentDepartingFlights.get(i).getMonthName());
-            JLabel timeLabel = new JLabel(imminentDepartingFlights.get(i).get_arrival_time());
-            JLabel gateLabel = new JLabel(Integer.valueOf(imminentDepartingFlights.get(i).get_gate().get_Id()).toString());
-
-            constraints.setConstraints(0, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(companyLabel, constraints.getConstraints());
-
-            constraints.setConstraints(1, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(originLabel, constraints.getConstraints());
-
-            constraints.setConstraints(2, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(dateLabel, constraints.getConstraints());
-
-            constraints.setConstraints(3, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(timeLabel, constraints.getConstraints());
-
-            constraints.setConstraints(4, i + 1, 1, 1, GridBagConstraints.NONE,
-                    0, 0, GridBagConstraints.CENTER);
-            tablePanel.add(gateLabel, constraints.getConstraints());
-
-        }
-
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.CENTER);
+        tablePanel.add(departingTable.getScrollContainer(), constraints.getConstraints());
     }
 
     @Override
@@ -249,22 +214,4 @@ public class MainCustomerScreen extends DisposableObject {
         return this.mainFrame;
     }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
-
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-    }
 }

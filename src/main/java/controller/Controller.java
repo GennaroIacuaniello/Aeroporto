@@ -44,9 +44,10 @@ public class Controller {
 
     public boolean developerMode = false;
 
-    public ArrayList<Arriving> getImminentArrivingFlights(){
+    public Object[][] getImminentArrivingFlights(){
 
         ArrayList<Arriving> arrivingFlights = new ArrayList<Arriving>();
+        Object[][] result = new Object[10][4];
 
         arrivingFlights.add(new Arriving("01", "Compagnia", new Date(),
                 "00:00", "00:00", 100, "Dubai"));
@@ -55,12 +56,21 @@ public class Controller {
         arrivingFlights.add(new Arriving("03", "Compagnia", new Date(),
                 "00:00", "00:02", 100, "Dubai"));
 
-        return arrivingFlights;
+        for (int i = 0; i < arrivingFlights.size(); i++) {
+            result[i][0] = arrivingFlights.get(i).get_company_name();
+            result[i][1] = arrivingFlights.get(i).get_origin();
+            result[i][2] = Integer.valueOf(arrivingFlights.get(i).get_date().getDate()).toString() +
+                            " " + arrivingFlights.get(i).getMonthName();
+            result[i][3] = arrivingFlights.get(i).get_arrival_time();
+        }
+
+        return result;
     }
 
-    public ArrayList<Departing> getImminentDepartingFlights(){
+    public Object[][] getImminentDepartingFlights(){
 
         ArrayList<Departing> departingFlights = new ArrayList<Departing>();
+        Object[][] result = new Object[10][5];
 
         departingFlights.add(new Departing("01", "Compagnia", new Date(),
                 "00:00", "00:00", 100, "Dubai"));
@@ -69,7 +79,16 @@ public class Controller {
         departingFlights.add(new Departing("03", "Compagnia", new Date(),
                 "00:00", "00:02", 100, "Dubai"));
 
-        return departingFlights;
+        for (int i = 0; i < departingFlights.size(); i++) {
+            result[i][0] = departingFlights.get(i).get_company_name();
+            result[i][1] = departingFlights.get(i).get_destination();
+            result[i][2] = Integer.valueOf(departingFlights.get(i).get_date().getDate()).toString() +
+                    " " + departingFlights.get(i).getMonthName();
+            result[i][3] = departingFlights.get(i).get_departure_time();
+            result[i][4] = Integer.valueOf(departingFlights.get(i).get_gate().get_Id()).toString();
+        }
+
+        return result;
     }
 
     public ArrayList<Flight> search_flight_customer(String departing_city, String arriving_city, String date, String initial_time, String final_time){
