@@ -59,7 +59,7 @@ public class BookingModifyPage extends BookingPageCustomer {
             }
         });
 
-        modifyPanel.add(addPassengerButton);
+        flowPanel.add(addPassengerButton);
     }
 
     @Override
@@ -275,9 +275,9 @@ public class BookingModifyPage extends BookingPageCustomer {
             }
         });
 
-        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add (savePendingButton, constraints.getConstraints());
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_START);
+        modifyPanel.add (savePendingButton, constraints.getConstraints());
 
         savePendingButton.setFocusable(false);
         savePendingButton.setVisible (true);

@@ -36,10 +36,12 @@ public abstract class BookingPage extends DisposableObject {
 
             protected JPanel modifyPanel;
 
-                protected int currPage = 0;
-                protected JButton prevPageButton;
-                protected JButton nextPageButton;
-                protected JLabel currentPageLabel;
+                protected JPanel flowPanel;
+
+                    protected int currPage = 0;
+                    protected JButton prevPageButton;
+                    protected JButton nextPageButton;
+                    protected JLabel currentPageLabel;
 
         protected FooterPanel footerPanel;
 
@@ -298,7 +300,15 @@ public abstract class BookingPage extends DisposableObject {
 
         modifyPanel = new JPanel();
 
-        modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        modifyPanel.setLayout(new GridBagLayout());
+
+        flowPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        constraints.setConstraints (1, 0, 1, 1,
+                GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_END);
+        modifyPanel.add(flowPanel, constraints.getConstraints());
+
+        flowPanel.setVisible(true);
 
         addPageChangeButtons();
 
@@ -341,9 +351,9 @@ public abstract class BookingPage extends DisposableObject {
         nextPageButton.setEnabled(passengerPanels.size() > 3);
 
         //aggiungo bottoni
-        modifyPanel.add (prevPageButton);
-        modifyPanel.add (currentPageLabel);
-        modifyPanel.add (nextPageButton);
+        flowPanel.add (prevPageButton);
+        flowPanel.add (currentPageLabel);
+        flowPanel.add (nextPageButton);
     }
 
     protected void goPreviousPage () {
