@@ -12,269 +12,77 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class CheckinPassengers extends Book {
+public class CheckinPassengers extends BookingPageAdmin{
 
-    private RoundedButton startCheckinButton;
-    private RoundedButton confirmButton;
-    private RoundedButton cancelButton;
+    protected JButton confirmButton;
 
-    public CheckinPassengers(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
+    public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
-        super();
+        super(callingObjects, controller, dimension, point, fullScreen);
 
-        constraints = new Constraints();
-
-        //makes this the operating frame
-        super.setMainFrame(callingObjects, controller, dimension, point, fullScreen, "CheckinPassengers");
-
-        //setting top panels
-        this.addTopPanel(callingObjects, controller);
-
-        //setting mainPanel
-        this.addMainPanel(callingObjects, controller);
+        setCheckinCheckBoxes(controller);
 
         mainFrame.setVisible(true);
     }
 
-    @Override
-    protected void addTopPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, boolean flag) {
 
-        topPanel = new JPanel();
-        topPanel.setLayout(new GridBagLayout());
+        this(callingObjects, controller, dimension, point, fullScreen);
 
-        super.addTitlePanel("AEROPORTO DI NAPOLI", controller);
-        super.addNavigatorBarPanel(callingObjects, controller);
-        super.addUserPanel(callingObjects, controller);
-
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
-                0, 0, GridBagConstraints.PAGE_START);
-        mainFrame.add(topPanel, constraints.getConstraints());
-        topPanel.setVisible(true);
-    }
-
-    private void addMainPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridBagLayout());
-
-        super.addFlightInfoPanel(controller);
-
-        passengerPanels = new ArrayList<PassengerPanel>();
-        passengerPage = new JPanel();
-        passengerPage.setLayout(new GridBagLayout());
-
-        prevPageButton = new RoundedButton("←");
-        nextPageButton = new RoundedButton("→");
-
-        currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
-
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.CENTER);
-        mainPanel.add(passengerPage, constraints.getConstraints());
-
-        this.addModifyPanel(callingObjects, controller);
-        this.addConfirmPanel(callingObjects, controller);
-
-        insertPassengers(controller);
-
-        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_START, 1, 1);
-        mainFrame.add(mainPanel, constraints.getConstraints());
-        constraints.resetWeight();
-        mainFrame.setVisible(true);
-    }
-
-    private void addModifyPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
-
-        modifyPanel = new JPanel();
-        modifyPanel.setLayout(new GridBagLayout());
-
-        JPanel flowPanel = new JPanel();
-        flowPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-        constraints.setConstraints(1, 0, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-        modifyPanel.add(flowPanel, constraints.getConstraints());
-
-        this.addPageChangeButtons(flowPanel);
-
-        flowPanel.setVisible(true);
-
-        constraints.setConstraints(0, 2, 2, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_END);
-        mainFrame.add(modifyPanel, constraints.getConstraints());
-        modifyPanel.setVisible(true);
+        setControllerDisposeFlag(flag);
     }
 
     @Override
-    protected void addPageChangeButtons(JPanel flowPanel) {
+    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        prevPageButton.setFocusable(false);
-        nextPageButton.setFocusable(false);
+        confirmPanel = new JPanel();
 
-        prevPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (currPage != (passengerPanels.size() - 1) / 3) //non sto all'ultima pagina quindi sono 3
-                {
-                    for (int i = 0; i < 3; i++)
-                        passengerPanels.get((currPage * 3) + i).setVisible(false);
+        confirmPanel.setLayout(new GridBagLayout());
 
-                } else //sto all'ultima pagina quindi non so quanti sono
-                {
-                    for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
-                        passengerPanels.get((passengerPanels.size() - i - 1)).setVisible(false);
-                }
+        setConfirmButton(callingObjects, controller);
 
-                currPage--;
-                currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
+        constraints.setConstraints(0, 3, 1, 1,
+                GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
+        mainFrame.add(confirmPanel, constraints.getConstraints());
 
-                for (int i = 0; i < 3; i++) //vado indietro quindi sono 3
-                    passengerPanels.get((currPage * 3) + i).setVisible(true);
-
-                nextPageButton.setEnabled(true);
-
-                if (currPage == 0) prevPageButton.setEnabled(false);
-            }
-        });
-
-        prevPageButton.setEnabled(false);
-
-        flowPanel.add(prevPageButton);
-
-        flowPanel.add(currentPageLabel);
-
-        nextPageButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < 3; i++) //metto a false la pagina corrente
-                    passengerPanels.get((currPage * 3) + i).setVisible(false);
-
-                if (currPage + 1 == (passengerPanels.size() - 1) / 3) //sto andando all'ultima pagina quindi non so quanti sono
-                {
-                    for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
-                        passengerPanels.get(passengerPanels.size() - i - 1).setVisible(true);
-
-                    nextPageButton.setEnabled(false);
-                } else //la prossima pagina ne ha 3
-                {
-                    for (int i = 0; i < 3; i++)
-                        passengerPanels.get(((currPage + 1) * 3) + i).setVisible(true);
-                }
-
-                currPage++;
-                currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
-                prevPageButton.setEnabled(true);
-            }
-        });
-
-        nextPageButton.setEnabled(false);
-        flowPanel.add(nextPageButton);
+        confirmPanel.setVisible(true);
     }
 
-    @Override
-    protected void addConfirmPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void setConfirmButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        cancelButton = new RoundedButton("ANNULLA");
-        startCheckinButton = new RoundedButton("INIZIA CHECK-IN");
-        confirmButton = new RoundedButton("CONFERMA");
-
-        cancelButton.setFocusable(false);
-        startCheckinButton.setFocusable(false);
-        confirmButton.setFocusable(false);
-
-        cancelButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.goBack(callingObjects);
-            }
-        });
-
-        startCheckinButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //il controller farà qualcosa
-            }
-        });
+        confirmButton = new JButton("CONFERMA");
 
         confirmButton.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                //il controller farà qualcosa
+            public void actionPerformed (ActionEvent e) {
+
+                controller.getFlightController().setCheckins(passengerPanels, confirmButton);
             }
         });
 
-        super.confirmPanel = new JPanel();
-        super.confirmPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        confirmButton.setFocusable(false);
+        confirmButton.setVisible(true);
 
-        //aggiungi pulsanti a confirmPanel
-        super.confirmPanel.add(cancelButton);
-        super.confirmPanel.add(startCheckinButton);
-        super.confirmPanel.add(confirmButton);
-
-        constraints.setConstraints(0, 3, 3, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.CENTER);
-        mainFrame.add(confirmPanel, constraints.getConstraints());
-        confirmPanel.setVisible(true);
-    }
-
-    @Override
-    protected void insertPassengers(Controller controller) {
-
-        for (int j = 0; j < controller.getFlightController().getBookingsSize(); j++) {
-
-            if (controller.getFlightController().checkBookingConfirm(j)) {
-
-                for (int i = 0; i < controller.getFlightController().getBookingSize(j); i++) {
-                    PassengerPanelAdmin passengerPanelAdmin = new PassengerPanelAdmin(controller, passengerPanels);
-
-                    passengerPanelAdmin.setPassengerName(controller.getFlightController().getPassengerNameFromBooking(j, i));
-                    passengerPanelAdmin.setPassengerSurname(controller.getFlightController().getPassengerSurnameFromBooking(j, i));
-                    passengerPanelAdmin.setPassengerCF(controller.getFlightController().getPassengerCFFromBooking(j, i));
-                    passengerPanelAdmin.setSeat(controller.getFlightController().getPassengerSeatFromBooking(j, i));
-                    passengerPanelAdmin.setTicketNumber(controller.getFlightController().getPassengerTicketNumberFromBooking(j, i));
-                    passengerPanelAdmin.setLuggagesTypes(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i), controller);
-
-                    insertPassengerPanel(controller, this, passengerPanelAdmin);
-                }
-            }
-        }
-
-        if (passengerPanels.size() > 3) super.nextPageButton.setEnabled(true);
-
-        super.passengerPage.setVisible(false);
-        super.passengerPage.setVisible(true);
-    }
-
-    protected void insertPassengerPanel(Controller controller, CheckinPassengers checkinPassengers, PassengerPanelAdmin newPassengerPanelAdmin) {
-
-        constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1,
+        constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        passengerPage.add(newPassengerPanelAdmin, constraints.getConstraints());
-
-        passengerPanels.addLast(newPassengerPanelAdmin);
-
-        newPassengerPanelAdmin.setVisible(passengerPanels.size() < 4);
+        confirmPanel.add(confirmButton, constraints.getConstraints());
     }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+    protected void setCheckinCheckBoxes (Controller controller) {
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
+        /*int index = 0;
+
+        for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
+
+            for (int j = 0; j < controller.getFlightController().getBookingSize(i); j++, index++) {
+
+                passengerPanels.get(index).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(index));
+                passengerPanels.get(index).getCheckinCheckBox().setEnabled(controller.getFlightController().checkBookingConfirm(i));
+            }
+        }*/
+
+        for (int i = 0; i < passengerPanels.size(); i++)
+            passengerPanels.get(i).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(i));
     }
 }

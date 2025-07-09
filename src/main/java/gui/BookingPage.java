@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class BookingPage extends DisposableObject {
+public abstract class BookingPage extends DisposableObject {
 
     protected JFrame mainFrame;
 
@@ -36,16 +36,17 @@ public class BookingPage extends DisposableObject {
 
             protected JPanel modifyPanel;
 
-                protected int currPage = 0;
-                protected JButton prevPageButton;
-                protected JButton nextPageButton;
-                protected JLabel currentPageLabel;
+                protected JPanel flowPanel;
 
-            protected JPanel confirmPanel;
+                    protected int currPage = 0;
+                    protected JButton prevPageButton;
+                    protected JButton nextPageButton;
+                    protected JLabel currentPageLabel;
 
         protected FooterPanel footerPanel;
 
     protected Constraints constraints;
+    protected boolean controllerDisposeFlag = true;
 
     public BookingPage (ArrayList<DisposableObject> callingObjects, Controller controller,
                         Dimension dimension, Point point, int fullScreen) {
@@ -67,6 +68,14 @@ public class BookingPage extends DisposableObject {
         addFooterPanel();
 
         mainFrame.setVisible(true);
+    }
+
+    public BookingPage (ArrayList<DisposableObject> callingObjects, Controller controller,
+                        Dimension dimension, Point point, int fullScreen, boolean flag) {
+
+        this(callingObjects, controller, dimension, point, fullScreen);
+
+        setControllerDisposeFlag(flag);
     }
 
     public BookingPage () {}
@@ -94,7 +103,7 @@ public class BookingPage extends DisposableObject {
 
         addTitlePanel("AEROPORTO DI NAPOLI", controller);
         addNavigatorBarPanel (callingObjects, controller);
-        addMenuPanel(callingObjects, controller);
+        //addMenuPanel(callingObjects, controller);
         addUserPanel(callingObjects, controller);
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
@@ -226,7 +235,7 @@ public class BookingPage extends DisposableObject {
 
         boolean flag = true;
 
-        for (int i = 0; i < passengerPanels.size() && flag; i++) {
+        for (int i = 0; (i < passengerPanels.size()) && flag; i++) {
 
             if (passengerPanels.get(i).getTicketNumber().equals(searchField.getText())) {
 
@@ -272,27 +281,7 @@ public class BookingPage extends DisposableObject {
         mainPanel.add (passengerPage, constraints.getConstraints());
     }
 
-    protected void insertPassengers (Controller controller) {
-
-        for (int j = 0; j < controller.getFlightController().getBookingsSize(); j++) {
-
-            if (controller.getFlightController().checkBookingConfirm(j)) {
-
-                for (int i = 0; i < controller.getFlightController().getBookingSize(j); i++) {
-                    PassengerPanel passengerPanel = new PassengerPanelAdmin(controller, passengerPanels);
-
-                    passengerPanel.setPassengerName(controller.getFlightController().getPassengerNameFromBooking(j, i));
-                    passengerPanel.setPassengerSurname(controller.getFlightController().getPassengerSurnameFromBooking(j, i));
-                    passengerPanel.setPassengerCF(controller.getFlightController().getPassengerCFFromBooking(j, i));
-                    passengerPanel.setSeat(controller.getFlightController().getPassengerSeatFromBooking(j, i));
-                    passengerPanel.setTicketNumber(controller.getFlightController().getPassengerTicketNumberFromBooking(j, i));
-                    passengerPanel.setLuggagesTypes(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i), controller);
-
-                    insertPassengerPanel(controller, passengerPanel);
-                }
-            }
-        }
-    }
+    abstract protected void insertPassengers (Controller controller);
 
     protected void insertPassengerPanel (Controller controller, PassengerPanel passengerPanel) {
 
@@ -300,18 +289,26 @@ public class BookingPage extends DisposableObject {
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         passengerPage.add(passengerPanel, constraints.getConstraints());
 
-        passengerPanel.setPanelEnabled(false);
-
         passengerPanels.addLast(passengerPanel);
 
         passengerPanel.setVisible(passengerPanels.size() < 4);
+
+        passengerPanel.setPanelEnabled(false);
     }
 
     private void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         modifyPanel = new JPanel();
 
-        modifyPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        modifyPanel.setLayout(new GridBagLayout());
+
+        flowPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        constraints.setConstraints (1, 0, 1, 1,
+                GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_END);
+        modifyPanel.add(flowPanel, constraints.getConstraints());
+
+        flowPanel.setVisible(true);
 
         addPageChangeButtons();
 
@@ -354,34 +351,29 @@ public class BookingPage extends DisposableObject {
         nextPageButton.setEnabled(passengerPanels.size() > 3);
 
         //aggiungo bottoni
-        modifyPanel.add (prevPageButton);
-        modifyPanel.add (currentPageLabel);
-        modifyPanel.add (nextPageButton);
+        flowPanel.add (prevPageButton);
+        flowPanel.add (currentPageLabel);
+        flowPanel.add (nextPageButton);
     }
 
     protected void goPreviousPage () {
 
-        if (currPage != (passengerPanels.size() - 1) / 3) //non sto all'ultima pagina quindi sono 3
-        {
+        if (currPage != (passengerPanels.size() - 1) / 3) { //non sto all'ultima pagina quindi sono 3
+
             for (int i = 0; i < 3; i++)
-            {
                 passengerPanels.get ((currPage * 3) + i).setVisible (false);
-            }
-        } else //sto all'ultima pagina quindi non so quanti sono
-        {
+
+        } else { //sto all'ultima pagina quindi non so quanti sono
+
             for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
-            {
                 passengerPanels.get ((passengerPanels.size() - i - 1)).setVisible (false);
-            }
         }
 
         currPage--;
         currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
 
         for (int i = 0; i < 3; i++) //vado indietro quindi sono 3
-        {
             passengerPanels.get ((currPage * 3) + i).setVisible (true);
-        }
 
         nextPageButton.setEnabled (true);
 
@@ -393,14 +385,14 @@ public class BookingPage extends DisposableObject {
         for (int i = 0; i < 3; i++) //metto a false la pagina corrente
             passengerPanels.get ((currPage * 3) + i).setVisible (false);
 
-        if (currPage + 1 == (passengerPanels.size() - 1) / 3) //sto andando all'ultima pagina quindi non so quanti sono
-        {
+        if (currPage + 1 == (passengerPanels.size() - 1) / 3) { //sto andando all'ultima pagina quindi non so quanti sono
+
             for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++)
                 passengerPanels.get(passengerPanels.size() - i - 1).setVisible(true);
 
             nextPageButton.setEnabled (false);
-        } else //la prossima pagina ne ha 3
-        {
+        } else { //la prossima pagina ne ha 3
+
             for (int i = 0; i < 3; i++)
                 passengerPanels.get (((currPage + 1) * 3) + i).setVisible (true);
         }
@@ -410,20 +402,52 @@ public class BookingPage extends DisposableObject {
         prevPageButton.setEnabled (true);
     }
 
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        confirmPanel = new JPanel();
-
-        //pulsanti per modifica
-    }
+    abstract protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller);
 
     protected void addFooterPanel () {
 
     }
 
+    public void setControllerDisposeFlag (boolean flag) {
+
+        controllerDisposeFlag = flag;
+    }
+
+    protected void decreaseCurrPage () {
+        currPage--;
+        currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
+
+        if (currPage == 0) prevPageButton.setEnabled (false);
+    }
+
+    protected int getCurrPage () {
+
+        return currPage;
+    }
+
+    protected JButton getPrevButton () {
+
+        return prevPageButton;
+    }
+
+    protected JButton getNextButton () {
+
+        return nextPageButton;
+    }
+
+    protected JPanel getPassengerPage () {
+
+        return passengerPage;
+    }
+
     @Override
     public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        controller.getFlightController().setFlight(null);
-        controller.getBookingController().setBooking(null);
+
+        if (controllerDisposeFlag) {
+
+            controller.getFlightController().setFlight(null);
+            controller.getBookingController().setBooking(null);
+        }
 
         for (PassengerPanel passengerPanel : passengerPanels) {
             if (passengerPanel.getSeatChooser() != null) passengerPanel.getSeatChooser().dispose();

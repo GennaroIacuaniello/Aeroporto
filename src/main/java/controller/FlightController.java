@@ -1,7 +1,9 @@
 package controller;
 
+import gui.PassengerPanel;
 import model.*;
 
+import javax.swing.*;
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -163,4 +165,8 @@ public class FlightController {
 
         return flight.get_city();
     }
+
+    public void startCheckin () {}
+
+    public void setCheckins (ArrayList<PassengerPanel> passengerPanels, JButton callingButton) {}
 }
