@@ -7,14 +7,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BookingModifyPage extends BookingPageCustomer {
 
     protected ArrayList<RemovePassengerButton> removePassengerButtons;
     protected JButton addPassengerButton;
 
-    protected ArrayList<JButton> confirmButtons;
+    protected JButton confirmButton;
     protected JButton savePendingButton;
 
     public BookingModifyPage(ArrayList<DisposableObject> callingObjects, Controller controller,
@@ -218,6 +221,72 @@ public class BookingModifyPage extends BookingPageCustomer {
     @Override
     protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
+        confirmPanel = new JPanel();
 
+        confirmPanel.setLayout(new GridBagLayout());
+
+        addConfirmButton();
+        if (controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().pending) addSavePendingButton();
+
+        confirmPanel.setVisible (true);
+    }
+
+    protected void addConfirmButton () {
+
+        confirmButton = new JButton("CONFERMA PRENOTAZIONE");
+
+        confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+
+
+            }
+        });
+
+        constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER);
+        confirmPanel.add (confirmButton, constraints.getConstraints());
+
+        confirmButton.setFocusable(false);
+        confirmButton.setVisible (true);
+
+        constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.CENTER);
+        mainFrame.add (confirmPanel, constraints.getConstraints());
+    }
+
+    protected void addSavePendingButton () {
+
+        savePendingButton = new JButton("SALVA IN ATTESA");
+
+        savePendingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+
+
+            }
+        });
+
+        constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER);
+        confirmPanel.add (savePendingButton, constraints.getConstraints());
+
+        savePendingButton.setFocusable(false);
+        savePendingButton.setVisible (true);
+    }
+
+    protected boolean checkConfirmButton(int index) {
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+
+            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF())
+                return false;
+
+            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels())
+                if (luggagePanel.checkLuggage())
+                    return false;
+        }
+
+        return true;
     }
 }
