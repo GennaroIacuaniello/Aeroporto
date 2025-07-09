@@ -6,23 +6,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class BookingPageAdmin extends BookingPage {
 
-    protected ArrayList<JButton> checkinButtons;
+    protected JPanel confirmPanel;
+
+        //private ArrayList<JButton> checkinButtons;
+        protected JButton checkinButton;
 
     public BookingPageAdmin(ArrayList<DisposableObject> callingObjects, Controller controller,
                             Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
 
-        insertPassengers(controller);
-
         addConfirmPanel(callingObjects, controller);
+
+        mainFrame.setVisible(true);
+    }
+
+    public BookingPageAdmin(ArrayList<DisposableObject> callingObjects, Controller controller,
+                            Dimension dimension, Point point, int fullScreen, boolean flag) {
+
+        this(callingObjects, controller, dimension, point, fullScreen);
+
+        setControllerDisposeFlag(flag);
     }
 
     @Override
@@ -59,22 +67,22 @@ public class BookingPageAdmin extends BookingPage {
 
         setCheckinButtons(callingObjects, controller);
 
-        constraints.setConstraints(0, 4, 1, 1,
+        constraints.setConstraints(0, 3, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
-        mainPanel.add(confirmPanel, constraints.getConstraints());
+        mainFrame.add(confirmPanel, constraints.getConstraints());
 
         confirmPanel.setVisible(true);
     }
 
     private void setCheckinButtons (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        checkinButtons = new ArrayList<JButton>();
+        /*checkinButtons = new ArrayList<JButton>();
 
         for (int i = 0; i < 3; i++) {
 
             int finalI = i;
 
-            checkinButtons.addLast(new JButton("CHECKIN"));
+            checkinButtons.add(new JButton("CHECKIN " + finalI));
 
             checkinButtons.getLast().addActionListener(new ActionListener() {
 
@@ -83,9 +91,10 @@ public class BookingPageAdmin extends BookingPage {
 
                     if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().aboutToDepart) {
 
+                        //riprendi checkin
                     } else {
 
-                        //programmed
+                        //inizia checkin
                     }
                 }
             });
@@ -96,7 +105,11 @@ public class BookingPageAdmin extends BookingPage {
                     if (controller.getFlightController().getFlightStatus() != controller.getFlightStatusController().aboutToDepart
                         && controller.getFlightController().getFlightStatus() != controller.getFlightStatusController().programmed) {
 
-                        moveCheekinButton(finalI);
+                        System.out.println("f: " + finalI);
+                        System.out.println(checkinButtons.size());
+                        System.out.println(checkinButtons.getFirst().isVisible() + " " + checkinButtons.get(1).isVisible() + " " + checkinButtons.getLast().isVisible());
+
+                        moveCheckinButton(finalI);
                     }
                 }
             });
@@ -112,15 +125,59 @@ public class BookingPageAdmin extends BookingPage {
             }
 
             checkinButtons.getLast().setFocusable(false);
-            checkinButtons.getLast().setVisible(false);
+            checkinButtons.getLast().setVisible(i == 1);
         }
 
-        checkinButtons.get(1).setVisible(true);
+        //checkinButtons.get(1).setVisible(true);*/
+
+        checkinButton = new JButton("CHECKIN");
+
+        checkinButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                checkCheckinButton(callingObjects, controller);
+            }
+        });
+
+        checkinButton.setFocusable(false);
+        checkinButton.setVisible(true);
+
+        constraints.setConstraints(0, 0, 1, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        confirmPanel.add(checkinButton, constraints.getConstraints());
     }
 
-    private void moveCheekinButton (int index) {
+    protected void checkCheckinButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        System.out.println(index);
+        if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed) {
+
+            controller.getFlightController().startCheckin();
+
+            new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
+
+            for (PassengerPanel passengerPanel : passengerPanels) {
+
+                if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().setVisible(false);
+            }
+
+            mainFrame.setVisible(false);
+        } else if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().aboutToDepart) {
+
+            new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
+
+            for (PassengerPanel passengerPanel : passengerPanels) {
+
+                if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().setVisible(false);
+            }
+
+            mainFrame.setVisible(false);
+        } else new ErrorMessage("Non è possibile effettuare check-in per un volo in sato: " + controller.getFlightController().getFlightStatus(), checkinButton);
+    }
+
+    /*private void moveCheckinButton (int index) {
+
         checkinButtons.get(index).setVisible(false);
 
         int random = new Random().nextInt(2);
@@ -133,6 +190,16 @@ public class BookingPageAdmin extends BookingPage {
 
         checkinButtons.get(random).setVisible (true);
 
+        System.out.println(random);
+        System.out.println(checkinButtons.size());
+        System.out.println(checkinButtons.getFirst().isVisible() + " " + checkinButtons.get(1).isVisible() + " " + checkinButtons.getLast().isVisible());
+
+        checkinButtons.get(index).revalidate();
+        checkinButtons.get(index).repaint();
+
+        confirmPanel.revalidate();
+        confirmPanel.repaint();
+
         new ErrorMessage ("I dati dei passeggeri sono incompleti", checkinButtons.get(random));
-    }
+    }*/
 }

@@ -25,6 +25,7 @@ public class PassengerPanel extends JPanel
     protected Constraints constraints;
     protected JLabel passengerLabel;
     protected String ticketNumber;
+    private JCheckBox checkinCheckBox;
 
     protected JTextField passengerNameField;
     protected JTextField passengerSurnameField;
@@ -283,5 +284,18 @@ public class PassengerPanel extends JPanel
             luggagesView.getLuggagesPanels().get(i).getComboBox().setEnabled(flag);
             luggagesView.getRemoveLuggageButtons().get(i).setVisible(flag);
         }
+    }
+
+    public void addCheckinCheckBox (boolean flag) {
+        checkinCheckBox = new JCheckBox("Checkin", flag);
+
+        constraints.setConstraints(0, 3, 3, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        this.add(checkinCheckBox, constraints.getConstraints());
+        checkinCheckBox.setVisible(true);
+    }
+
+    public JCheckBox getCheckinCheckBox () {
+        return checkinCheckBox;
     }
 }

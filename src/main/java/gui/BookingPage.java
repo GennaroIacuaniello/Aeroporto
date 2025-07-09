@@ -41,8 +41,6 @@ public abstract class BookingPage extends DisposableObject {
                 protected JButton nextPageButton;
                 protected JLabel currentPageLabel;
 
-            protected JPanel confirmPanel;
-
         protected FooterPanel footerPanel;
 
     protected Constraints constraints;
