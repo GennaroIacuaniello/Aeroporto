@@ -35,7 +35,7 @@ public class LogInScreen extends DisposableObject {
     //Main fields
     private JTextField usernameTextField;
     private JLabel usernameLabel;
-    private JPasswordField passwordField;
+    private PasswordHandler passwordField;
     private JLabel passwordLabel;
     private JButton logInButton;
 
@@ -67,6 +67,7 @@ public class LogInScreen extends DisposableObject {
                 if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
                     login(callingObjects, controller);
                 }
+
             }
         });
 

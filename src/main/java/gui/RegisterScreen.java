@@ -34,7 +34,7 @@ public class RegisterScreen extends DisposableObject {
     private JLabel mailLabel;
     private JTextField usernameTextField;
     private JLabel usernameLabel;
-    private JPasswordField passwordField;
+    private PasswordHandler passwordField;
     private JLabel passwordLabel;
     private JButton registerButton;
 
