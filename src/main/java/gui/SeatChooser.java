@@ -154,7 +154,7 @@ public class SeatChooser extends JFrame {
         this.setVisible(true);
     }
 
-    public void setLocation(RoundedButton callingButton) {
+    public void setLocation(JButton callingButton) {
         //coordinate punto in alto a sx del bottone
         double x = callingButton.getLocationOnScreen().getX();
         double y = callingButton.getLocationOnScreen().getY();
