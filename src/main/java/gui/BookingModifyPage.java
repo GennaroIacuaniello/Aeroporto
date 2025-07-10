@@ -68,11 +68,17 @@ public class BookingModifyPage extends BookingPageCustomer {
         //sistemo visibilità
         for (int i = 0; i < 3; i++) {
 
-            passengerPanels.get(i + currPage * 3).setVisible(false);
-            removePassengerButtons.get(i + currPage * 3).setVisible(false);
+            if (i + currPage * 3 < passengerPanels.size()) {
 
-            passengerPanels.get(i + page * 3).setVisible(true);
-            removePassengerButtons.get(i + page * 3).setVisible(true);
+                passengerPanels.get(i + currPage * 3).setVisible(false);
+                removePassengerButtons.get(i + currPage * 3).setVisible(false);
+            }
+
+            if (i + page * 3 < passengerPanels.size()) {
+
+                passengerPanels.get(i + page * 3).setVisible(true);
+                removePassengerButtons.get(i + page * 3).setVisible(true);
+            }
         }
 
         //sistemo currPage
@@ -116,7 +122,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
     protected void setPassengersVisibility () {
 
-        if (currPage != (passengerPanels.size() - 1) / 3) //non siamo all'ultima pagina quindi sono 3
+        /*if (currPage != (passengerPanels.size() - 1) / 3) //non siamo all'ultima pagina quindi sono 3
         {
             for (int i = 0; i < 3; i++) {
                 passengerPanels.get((currPage * 3) + i).setVisible(false);
@@ -149,7 +155,9 @@ public class BookingModifyPage extends BookingPageCustomer {
             }
         }
 
-        if (nextPageButton != null) nextPageButton.setEnabled(false);
+        if (nextPageButton != null) nextPageButton.setEnabled(false);*/
+
+        goToPage(passengerPanels.size() / 3);
     }
 
     @Override
