@@ -123,27 +123,57 @@ public class SearchFlightResultPanel extends JPanel {
 
             Flight flight = flights.get(row);
 
+            int hours;
+            int minutes;
+
             switch (col) {
                 case 0:
-                    return flight.get_company_name();
+                    return flight.getCompanyName();
                 case 1:
                     if (flight instanceof Arriving)
                         return ((Arriving) flight).get_origin() + " → Napoli";
                     else
                         return "Napoli → " + ((Departing) flight).get_destination();
                 case 2:
-                    return flight.get_date().toString();
+                    return flight.getDate().toString();
                 case 3:
-                    return flight.get_departure_time();
+                    hours = flight.getDepartureTime().getHours();
+                    minutes = flight.getDepartureTime().getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }
+
                 case 4:
                     int delay = (flight instanceof Arriving) ? ((Arriving) flight).get_arrival_delay() : ((Departing) flight).get_departure_delay();
                     return delay > 0 ? delay + " min" : "--";
                 case 5:
-                    return flight.get_arrival_time();
+                    hours = flight.getArrivalTime().getHours();
+                    minutes = flight.getArrivalTime().getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }
                 case 6:
-                    return flight.get_status().toString().toUpperCase();
+                    return flight.getStatus().toString().toUpperCase();
                 case 7:
-                    return flight.get_free_seats() + "/" + flight.get_max_seats();
+                    return flight.getFreeSeats() + "/" + flight.getMaxSeats();
                 case 8:
                     return "Prenota";
                 default:
@@ -214,7 +244,7 @@ public class SearchFlightResultPanel extends JPanel {
 
             Flight flight = flights.get(row);
 
-            if(flight.get_free_seats() > 0 && "programmed".equals(flight.get_status().toString()))
+            if(flight.getFreeSeats() > 0 && "programmed".equals(flight.getStatus().toString()))
                 button.setEnabled(true);
             else
                 button.setEnabled(false);

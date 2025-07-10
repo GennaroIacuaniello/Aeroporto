@@ -1,7 +1,7 @@
 package model;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
-import java.util.Calendar;
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
@@ -12,124 +12,141 @@ import java.util.Calendar;
 public class Flight {
 
     private String id;
-    private String company_name;
-    private String city;
+    private String companyName;
+    //private String city;
     private Date date;
-    private String departure_time;
-    private String arrival_time;
+    private Time departureTime;
+    private Time arrivalTime;
     private FlightStatus status;
-    private int max_seats;
-    private int free_seats;
+    private int maxSeats;
+    private int freeSeats;
     private ArrayList<Booking> bookings;
     private ArrayList<Passenger> passengers;
 
-    public Flight(String par_id, String par_company_name, String par_city, Date par_date, String par_departure_time,
-                  String par_arrival_time, int par_max_seats){
+    public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                  Time parArrivalTime, int parMaxSeats){
 
-        this.id = par_id;
-        this.company_name = par_company_name;
-        this.city = par_city;
-        this.date = par_date;
-        this.departure_time = par_departure_time;
-        this.arrival_time = par_arrival_time;
+        this.id = parId;
+        this.companyName = parCompanyName;
+        //this.city = parCity;
+        this.date = parDate;
+        this.departureTime = parDepartureTime;
+        this.arrivalTime = parArrivalTime;
         this.status = FlightStatus.programmed;
-        this.max_seats = par_max_seats;
-        this.free_seats = this.max_seats;
+        this.maxSeats = parMaxSeats;
+        this.freeSeats = this.maxSeats;
         this.bookings = new ArrayList<Booking>(0);
         this.passengers = new ArrayList<Passenger>(0);
     }
 
-    public String get_id(){
+    public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                  Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats){
+
+        this.id = parId;
+        this.companyName = parCompanyName;
+        //this.city = parCity;
+        this.date = parDate;
+        this.departureTime = parDepartureTime;
+        this.arrivalTime = parArrivalTime;
+        this.status = parStatus;
+        this.maxSeats = parMaxSeats;
+        this.freeSeats = parFreeSeats;
+        this.bookings = new ArrayList<Booking>(0);
+        this.passengers = new ArrayList<Passenger>(0);
+
+    }
+
+    public String getId(){
         return this.id;
     }
 
-    public int set_id(String par_id){
-        this.id = par_id;
+    public int setId(String parId){
+        this.id = parId;
         return 0;
     }
 
-    public String get_company_name(){
-        return this.company_name;
+    public String getCompanyName(){
+        return this.companyName;
     }
 
-    public int set_company_name(String par_company_name){
-        this.company_name = par_company_name;
+    public int setCompanyName(String parCompanyName){
+        this.companyName = parCompanyName;
         return 0;
     }
 
-    public String get_city(){
+    /*public String getCity(){
         return this.city;
     }
 
-    public int set_city(String par_city){
-        this.city = par_city;
+    public int setCity(String parCity){
+        this.city = parCity;
         return 0;
-    }
+    }*/
 
-    public Date get_date(){
+    public Date getDate(){
         return this.date;
     }
 
-    public int set_date(Date par_date){
-        this.date = par_date;
+    public int setDate(Date parDate){
+        this.date = parDate;
         return 0;
     }
 
-    public String get_departure_time(){
-        return this.departure_time;
+    public Time getDepartureTime(){
+        return this.departureTime;
     }
 
-    public int set_departure_time(String par_departure_time){
-        this.departure_time = par_departure_time;
+    public int setDepartureTime(Time parDepartureTime){
+        this.departureTime = parDepartureTime;
         return 0;
     }
 
-    public String get_arrival_time(){
-        return this.arrival_time;
+    public Time getArrivalTime(){
+        return this.arrivalTime;
     }
 
-    public int set_arrival_time (String par_arrival_time) {
-        this.arrival_time = par_arrival_time;
+    public int setArrivalTime(Time parArrivalTime) {
+        this.arrivalTime = parArrivalTime;
         return 0;
     }
 
-    public int get_max_seats(){
-        return this.max_seats;
+    public int getMaxSeats(){
+        return this.maxSeats;
     }
 
-    public int set_max_seats(int par_max_seats){
-        this.max_seats = par_max_seats;
+    public int setMaxSeats(int parMaxSeats){
+        this.maxSeats = parMaxSeats;
         return 0;
     }
 
-    public int get_free_seats(){
-        return this.free_seats;
+    public int getFreeSeats(){
+        return this.freeSeats;
     }
 
-    public FlightStatus get_status(){
+    public FlightStatus getStatus(){
         return this.status;
     }
 
-    public int set_status(FlightStatus par_status){
-        this.status = par_status;
+    public int setStatus(FlightStatus parStatus){
+        this.status = parStatus;
         return 0;
     }
 
-    public void roll_back_add_booking(int count){
+    public void rollBackAddBooking(int count){
         for(int i=0; i < count; i++) {
             this.passengers.removeLast();
         }
         this.bookings.removeLast();
     }
 
-    public int add_booking(Booking par_booking){
-        this.bookings.add(par_booking);
+    public int addBooking(Booking parBooking){
+        this.bookings.add(parBooking);
         int control = 0, count = 0;
-        for(Passenger x : par_booking.get_passengers()){
+        for(Passenger x : parBooking.get_passengers()){
 
-            control = this.add_passenger(x);
+            control = this.addPassenger(x);
             if(control != 0){
-                roll_back_add_booking(count);
+                rollBackAddBooking(count);
                 return control;
             }
             count++;
@@ -137,21 +154,21 @@ public class Flight {
         return 0;
     }
 
-    public int add_passenger(Passenger par_passenger){
-        if(this.free_seats > 0){
-            this.free_seats--;
-            this.passengers.add(par_passenger);
+    public int addPassenger(Passenger parPassenger){
+        if(this.freeSeats > 0){
+            this.freeSeats--;
+            this.passengers.add(parPassenger);
             return 0;
         }
 
         return -1;
     }
 
-    public int remove_booking(Booking par_booking){
-        boolean control = this.bookings.remove(par_booking);
+    public int removeBooking(Booking parBooking){
+        boolean control = this.bookings.remove(parBooking);
         if(control){
-            for(Passenger x : par_booking.passengers){
-                this.remove_passenger(x);
+            for(Passenger x : parBooking.passengers){
+                this.removePassenger(x);
             }
             return 0;
         }
@@ -160,10 +177,10 @@ public class Flight {
 
     }
 
-    public int remove_passenger(Passenger par_passenger){
-        boolean control = this.passengers.remove(par_passenger);
+    public int removePassenger(Passenger parPassenger){
+        boolean control = this.passengers.remove(parPassenger);
         if(control) {
-            this.free_seats++;
+            this.freeSeats++;
             return 0;
         }
 
@@ -174,15 +191,15 @@ public class Flight {
 
         String[] monthNames = {"Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"};
 
-        return monthNames[this.get_date().getMonth()];
+        return monthNames[this.getDate().getMonth()];
     }
 
-    public ArrayList<Passenger> get_passengers(){
+    public ArrayList<Passenger> getPassengers(){
 
         return this.passengers;
     }
 
-    public ArrayList<Booking> get_bookings () {
+    public ArrayList<Booking> getBookings() {
         return this.bookings;
     }
 }
