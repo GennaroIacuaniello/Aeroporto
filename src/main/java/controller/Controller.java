@@ -7,12 +7,10 @@ import model.BookingStatus;
 import model.Departing;
 import model.Flight;
 
+import javax.swing.*;
 import java.awt.*;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class Controller {
 
@@ -46,92 +44,69 @@ public class Controller {
 
     public boolean developerMode = false;
 
-    public ArrayList<Arriving> getImminentArrivingFlights(){
+    public Object[][] getImminentArrivingFlights(){
 
         ArrayList<Arriving> arrivingFlights = new ArrayList<Arriving>();
+        Object[][] result = new Object[10][4];
 
-        arrivingFlights.add(new Arriving("01", "Compagnia", new Date(),
+        arrivingFlights.add(new Arriving("01", "Compagnia", new Date(0),
                 "00:00", "00:00", 100, "Dubai"));
-        arrivingFlights.add(new Arriving("02", "Compagnia", new Date(),
+        arrivingFlights.add(new Arriving("02", "Compagnia", new Date(1),
                 "00:00", "00:01", 100, "Dubai"));
-        arrivingFlights.add(new Arriving("03", "Compagnia", new Date(),
+        arrivingFlights.add(new Arriving("03", "Compagnia", new Date(2),
                 "00:00", "00:02", 100, "Dubai"));
 
-        return arrivingFlights;
+        for (int i = 0; i < arrivingFlights.size(); i++) {
+            result[i][0] = arrivingFlights.get(i).get_company_name();
+            result[i][1] = arrivingFlights.get(i).get_origin();
+            result[i][2] = Integer.valueOf(arrivingFlights.get(i).get_date().getDate()).toString() +
+                    " " + arrivingFlights.get(i).getMonthName();
+            result[i][3] = arrivingFlights.get(i).get_arrival_time();
+        }
+
+        return result;
     }
 
-    public ArrayList<Departing> getImminentDepartingFlights(){
+    public Object[][] getImminentDepartingFlights(){
 
         ArrayList<Departing> departingFlights = new ArrayList<Departing>();
+        Object[][] result = new Object[10][5];
 
-        departingFlights.add(new Departing("01", "Compagnia", new Date(),
+        departingFlights.add(new Departing("01", "Compagnia", new Date(3),
                 "00:00", "00:00", 100, "Dubai"));
-        departingFlights.add(new Departing("02", "Compagnia", new Date(),
+        departingFlights.add(new Departing("02", "Compagnia", new Date(4),
                 "00:00", "00:01", 100, "Dubai"));
-        departingFlights.add(new Departing("03", "Compagnia", new Date(),
+        departingFlights.add(new Departing("03", "Compagnia", new Date(5),
                 "00:00", "00:02", 100, "Dubai"));
 
-        return departingFlights;
+        for (int i = 0; i < departingFlights.size(); i++) {
+            result[i][0] = departingFlights.get(i).get_company_name();
+            result[i][1] = departingFlights.get(i).get_destination();
+            result[i][2] = Integer.valueOf(departingFlights.get(i).get_date().getDate()).toString() +
+                    " " + departingFlights.get(i).getMonthName();
+            result[i][3] = departingFlights.get(i).get_departure_time();
+            result[i][4] = Integer.valueOf(departingFlights.get(i).get_gate().get_Id()).toString();
+        }
+
+        return result;
     }
 
-    public ArrayList<Flight> search_flight_customer(String departing_city, String arriving_city, LocalDate dateFrom, LocalDate dateTo, LocalTime initial_time, LocalTime final_time){
+    public ArrayList<Flight> search_flight_customer(String departing_city, String arriving_city, String date, String initial_time, String final_time){
 
         ArrayList<Flight> res = new ArrayList<Flight>(0);
 
-        res.add(new Arriving("01", "Ciao", new Date(),
+        res.add(new Arriving("01", "Ciao", new Date(6),
                 "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(),
+        res.add(new Arriving("02", "IO", new Date(7),
                 "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(),
+        res.add(new Arriving("03", "TU", new Date(8),
                 "00:00", "00:02", 100, "Dubai"));
 
-        res.add(new Departing("04", "HELLO", new Date(),
+        res.add(new Departing("04", "HELLO", new Date(9),
                 "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(),
+        res.add(new Departing("05", "ME", new Date(10),
                 "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Arriving("01", "Ciao", new Date(),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Departing("04", "HELLO", new Date(),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Arriving("01", "Ciao", new Date(),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Departing("04", "HELLO", new Date(),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Arriving("01", "Ciao", new Date(),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Departing("04", "HELLO", new Date(),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(),
+        res.add(new Departing("06", "YOU", new Date(11),
                 "00:00", "00:02", 100, "Dubai"));
 
         return res;
@@ -185,14 +160,14 @@ public class Controller {
         return bookingStatusController;
     }
 
-    public void setAdminNUser (String username, char[] password) {
-        adminController.setAdmin (username, password);
-        userController.setUser (username, password);
+    public void setAdminNUser (String username, String hashedPassword) {
+        adminController.setAdmin (username, hashedPassword);
+        userController.setUser (username, hashedPassword);
     }
 
-    public void setCustomerNUser (String username, char[] password) {
-        customerController.setCustomer (username, password);
-        userController.setUser (username, password);
+    public void setCustomerNUser (String username, String hashedPassword) {
+        customerController.setCustomer (username, hashedPassword);
+        userController.setUser (username, hashedPassword);
     }
 
     public boolean checkBooking (int index) {
@@ -204,9 +179,9 @@ public class Controller {
 
     public void goHome (ArrayList<DisposableObject> callingObjects) {
 
-        Dimension dimension = callingObjects.getLast().getFrame().getSize();
-        Point point = callingObjects.getLast().getFrame().getLocation();
-        int fullScreen = callingObjects.getLast().getFrame().getExtendedState();
+        Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
+        Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
+        int sourceExtendedState = callingObjects.getLast().getFrame().getExtendedState();
 
         for (int i = callingObjects.size() - 1; i > 1; i--) {
 
@@ -215,9 +190,11 @@ public class Controller {
             callingObjects.removeLast();
         }
 
-        callingObjects.getLast().getFrame().setSize(dimension);
-        callingObjects.getLast().getFrame().setLocation(point);
-        callingObjects.getLast().getFrame().setExtendedState(fullScreen);
+        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+            callingObjects.getLast().getFrame().setSize(sourceDimension);
+            callingObjects.getLast().getFrame().setLocation(sourceLocation);
+        }
+        callingObjects.getLast().getFrame().setExtendedState(sourceExtendedState);
 
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
@@ -226,17 +203,19 @@ public class Controller {
 
     public void goBack (ArrayList<DisposableObject> callingObjects) {
 
-        Dimension dimension = callingObjects.getLast().getFrame().getSize();
-        Point point = callingObjects.getLast().getFrame().getLocation();
-        int fullScreen = callingObjects.getLast().getFrame().getExtendedState();
+        Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
+        Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
+        int sourceExtendedState = callingObjects.getLast().getFrame().getExtendedState();
 
         callingObjects.getLast().doOnDispose(callingObjects, this);
         callingObjects.getLast().getFrame().dispose();
         callingObjects.removeLast();
 
-        callingObjects.getLast().getFrame().setSize(dimension);
-        callingObjects.getLast().getFrame().setLocation(point);
-        callingObjects.getLast().getFrame().setExtendedState(fullScreen);
+        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+            callingObjects.getLast().getFrame().setSize(sourceDimension);
+            callingObjects.getLast().getFrame().setLocation(sourceLocation);
+        }
+        callingObjects.getLast().getFrame().setExtendedState(sourceExtendedState);
 
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
@@ -258,4 +237,6 @@ public class Controller {
     public void addBooking(ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
 
     }
+
+    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
 }
