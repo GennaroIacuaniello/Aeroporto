@@ -3,6 +3,7 @@ package gui;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import controller.Controller;
+import model.Arriving;
 import model.Flight;
 
 import javax.swing.*;
@@ -10,6 +11,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
@@ -235,12 +238,12 @@ public class SearchPanel extends JPanel {
                 if (controller != null) {
 
 
+                    ArrayList<Flight> searched_flights = new ArrayList<>();//controller.search_flight_customer(
+                                                                    //fromField.getText(), toField.getText(),
+                                                                    //dateFrom.getDate(), dateTo.getDate(),
+                                                                    //timeFrom.getTime(), timeTo.getTime());
 
-
-                    ArrayList<Flight> searched_flights = controller.search_flight_customer(
-                                                                    fromField.getText(), toField.getText(),
-                                                                    dateFrom.getDate(), dateTo.getDate(),
-                                                                    timeFrom.getTime(), timeTo.getTime());
+                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3),"ciao","ciao",100, "ciao"));
 
                     searchPerformed = true;
                     updateResultsPanel(callingObjects, controller, searched_flights, true);
