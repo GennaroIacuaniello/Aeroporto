@@ -55,7 +55,7 @@ public class BookingModifyPage extends BookingPageCustomer {
                 if (controller.getFlightController().getFreeSeats() - passengerPanels.size() + controller.getBookingController().getPassengersSize() > 0)
                     insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
                 else
-                    new ErrorMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton);
+                    new FloatingMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -254,7 +254,7 @@ public class BookingModifyPage extends BookingPageCustomer {
                 }
 
                 else
-                    new ErrorMessage("I dati dei passeggeri sono incompleti", confirmButton);
+                    new FloatingMessage("I dati dei passeggeri sono incompleti", confirmButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 

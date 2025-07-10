@@ -48,7 +48,7 @@ public class Book extends BookingModifyPage {
                 if (controller.getFlightController().getFreeSeats() - passengerPanels.size() > 0)
                     insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
                 else
-                    new ErrorMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton);
+                    new FloatingMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -127,7 +127,7 @@ public class Book extends BookingModifyPage {
 
                         //new GoodMessage("La tua prenotazione è in attesa di conferma", savePendingButton);
                     } else {
-                        new ErrorMessage("Impossibile aggiungere una prenotazione vuota", savePendingButton);
+                        new FloatingMessage("Impossibile aggiungere una prenotazione vuota", savePendingButton, FloatingMessage.ERROR_MESSAGE);
                     }
             }
         });
@@ -168,7 +168,7 @@ public class Book extends BookingModifyPage {
 
             confirmButtons.get(random).setVisible (true);
 
-            new ErrorMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random));
+            new FloatingMessage ("I dati dei passeggeri sono incompleti", confirmButtons.get(random), FloatingMessage.ERROR_MESSAGE);
         }
     }
 

@@ -6,7 +6,7 @@ package model;
     - rivedere tipo delay //attenzione anche nel costruttore
  */
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Departing extends Flight{
 

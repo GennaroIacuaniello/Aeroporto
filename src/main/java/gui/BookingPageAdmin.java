@@ -173,7 +173,7 @@ public class BookingPageAdmin extends BookingPage {
             }
 
             mainFrame.setVisible(false);
-        } else new ErrorMessage("Non è possibile effettuare check-in per un volo in sato: " + controller.getFlightController().getFlightStatus(), checkinButton);
+        } else new FloatingMessage("Non è possibile effettuare check-in per un volo in sato: " + controller.getFlightController().getFlightStatus(), checkinButton, FloatingMessage.ERROR_MESSAGE);
     }
 
     /*private void moveCheckinButton (int index) {

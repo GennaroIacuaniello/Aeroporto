@@ -5,7 +5,7 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class Home extends DisposableObject {
     private JPanel mainPanel;
@@ -21,7 +21,7 @@ public class Home extends DisposableObject {
         frameHome.setVisible(true);
 
         controller.setCustomerNUser("Tramontana", "whenAreYouGonnaPutHashesHere?");
-        controller.getFlightController().setFlight("01", "Compagnia", "Napoli", new Date(),
+        controller.getFlightController().setFlight("01", "Compagnia", "Napoli", new Date(1),
                 "00:00", "00:00", 66);
 
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();

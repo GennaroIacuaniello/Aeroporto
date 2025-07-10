@@ -10,7 +10,7 @@ import model.Flight;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class Controller {
 
@@ -49,11 +49,11 @@ public class Controller {
         ArrayList<Arriving> arrivingFlights = new ArrayList<Arriving>();
         Object[][] result = new Object[10][4];
 
-        arrivingFlights.add(new Arriving("01", "Compagnia", new Date(),
+        arrivingFlights.add(new Arriving("01", "Compagnia", new Date(0),
                 "00:00", "00:00", 100, "Dubai"));
-        arrivingFlights.add(new Arriving("02", "Compagnia", new Date(),
+        arrivingFlights.add(new Arriving("02", "Compagnia", new Date(1),
                 "00:00", "00:01", 100, "Dubai"));
-        arrivingFlights.add(new Arriving("03", "Compagnia", new Date(),
+        arrivingFlights.add(new Arriving("03", "Compagnia", new Date(2),
                 "00:00", "00:02", 100, "Dubai"));
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
@@ -72,11 +72,11 @@ public class Controller {
         ArrayList<Departing> departingFlights = new ArrayList<Departing>();
         Object[][] result = new Object[10][5];
 
-        departingFlights.add(new Departing("01", "Compagnia", new Date(),
+        departingFlights.add(new Departing("01", "Compagnia", new Date(3),
                 "00:00", "00:00", 100, "Dubai"));
-        departingFlights.add(new Departing("02", "Compagnia", new Date(),
+        departingFlights.add(new Departing("02", "Compagnia", new Date(4),
                 "00:00", "00:01", 100, "Dubai"));
-        departingFlights.add(new Departing("03", "Compagnia", new Date(),
+        departingFlights.add(new Departing("03", "Compagnia", new Date(5),
                 "00:00", "00:02", 100, "Dubai"));
 
         for (int i = 0; i < departingFlights.size(); i++) {
@@ -95,18 +95,18 @@ public class Controller {
 
         ArrayList<Flight> res = new ArrayList<Flight>(0);
 
-        res.add(new Arriving("01", "Ciao", new Date(),
+        res.add(new Arriving("01", "Ciao", new Date(6),
                 "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(),
+        res.add(new Arriving("02", "IO", new Date(7),
                 "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(),
+        res.add(new Arriving("03", "TU", new Date(8),
                 "00:00", "00:02", 100, "Dubai"));
 
-        res.add(new Departing("04", "HELLO", new Date(),
+        res.add(new Departing("04", "HELLO", new Date(9),
                 "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(),
+        res.add(new Departing("05", "ME", new Date(10),
                 "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(),
+        res.add(new Departing("06", "YOU", new Date(11),
                 "00:00", "00:02", 100, "Dubai"));
 
         return res;

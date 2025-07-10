@@ -4,7 +4,7 @@ import gui.PassengerPanel;
 import model.*;
 
 import javax.swing.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class FlightController {

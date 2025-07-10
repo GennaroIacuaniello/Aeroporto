@@ -1,6 +1,7 @@
 package model;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
+import java.util.Calendar;
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi

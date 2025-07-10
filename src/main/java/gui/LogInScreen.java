@@ -192,7 +192,7 @@ public class LogInScreen extends DisposableObject {
     }
 
     private boolean validateLogin(String username, PasswordHandler password) {
-        //TODO: chiama verifyUserPassword
+        //TODO: chiama verifyUserPassword()
         if (!isValidUsername(usernameTextField.getText())) {
             JOptionPane.showMessageDialog(loginScreen, "Username non valido");
             return false;

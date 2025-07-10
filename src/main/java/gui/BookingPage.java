@@ -246,7 +246,7 @@ public abstract class BookingPage extends DisposableObject {
             }
         }
 
-        if (flag) new ErrorMessage("Nessun passeggero trovato con ticket number: " + searchField.getText(), searchButton);
+        if (flag) new FloatingMessage("Nessun passeggero trovato con ticket number: " + searchField.getText(), searchButton, FloatingMessage.ERROR_MESSAGE);
     }
 
     protected void goToPage (int page) {

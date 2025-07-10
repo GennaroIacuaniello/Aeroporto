@@ -15,7 +15,12 @@ public class DisposeTimers {
         decreaseOpacityTimer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                window.setOpacity(window.getOpacity()-0.01f);
+                if(window.getOpacity() > 0.01f){
+                    window.setOpacity(window.getOpacity()-0.01f);
+                }
+                else{
+                    window.setOpacity(0.0f);
+                }
             }
         });
         decreaseOpacityTimer.setRepeats(true);

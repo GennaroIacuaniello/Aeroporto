@@ -7,7 +7,7 @@ import model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class TestFlightInfo {
 
