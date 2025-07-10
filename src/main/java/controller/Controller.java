@@ -8,6 +8,9 @@ import model.Departing;
 import model.Flight;
 
 import java.awt.*;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -71,9 +74,51 @@ public class Controller {
         return departingFlights;
     }
 
-    public ArrayList<Flight> search_flight_customer(String departing_city, String arriving_city, String date, String initial_time, String final_time){
+    public ArrayList<Flight> search_flight_customer(String departing_city, String arriving_city, LocalDate dateFrom, LocalDate dateTo, LocalTime initial_time, LocalTime final_time){
 
         ArrayList<Flight> res = new ArrayList<Flight>(0);
+
+        res.add(new Arriving("01", "Ciao", new Date(),
+                "00:00", "00:00", 100, "Dubai"));
+        res.add(new Arriving("02", "IO", new Date(),
+                "00:00", "00:01", 100, "Dubai"));
+        res.add(new Arriving("03", "TU", new Date(),
+                "00:00", "00:02", 100, "Dubai"));
+
+        res.add(new Departing("04", "HELLO", new Date(),
+                "00:00", "00:00", 100, "Dubai"));
+        res.add(new Departing("05", "ME", new Date(),
+                "00:00", "00:01", 100, "Dubai"));
+        res.add(new Departing("06", "YOU", new Date(),
+                "00:00", "00:02", 100, "Dubai"));
+
+        res.add(new Arriving("01", "Ciao", new Date(),
+                "00:00", "00:00", 100, "Dubai"));
+        res.add(new Arriving("02", "IO", new Date(),
+                "00:00", "00:01", 100, "Dubai"));
+        res.add(new Arriving("03", "TU", new Date(),
+                "00:00", "00:02", 100, "Dubai"));
+
+        res.add(new Departing("04", "HELLO", new Date(),
+                "00:00", "00:00", 100, "Dubai"));
+        res.add(new Departing("05", "ME", new Date(),
+                "00:00", "00:01", 100, "Dubai"));
+        res.add(new Departing("06", "YOU", new Date(),
+                "00:00", "00:02", 100, "Dubai"));
+
+        res.add(new Arriving("01", "Ciao", new Date(),
+                "00:00", "00:00", 100, "Dubai"));
+        res.add(new Arriving("02", "IO", new Date(),
+                "00:00", "00:01", 100, "Dubai"));
+        res.add(new Arriving("03", "TU", new Date(),
+                "00:00", "00:02", 100, "Dubai"));
+
+        res.add(new Departing("04", "HELLO", new Date(),
+                "00:00", "00:00", 100, "Dubai"));
+        res.add(new Departing("05", "ME", new Date(),
+                "00:00", "00:01", 100, "Dubai"));
+        res.add(new Departing("06", "YOU", new Date(),
+                "00:00", "00:02", 100, "Dubai"));
 
         res.add(new Arriving("01", "Ciao", new Date(),
                 "00:00", "00:00", 100, "Dubai"));
