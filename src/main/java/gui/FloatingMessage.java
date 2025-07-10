@@ -7,7 +7,7 @@ public class FloatingMessage {
 
     public static final int ERROR_MESSAGE = 1;
     public static final int WARNING_MESSAGE = 2;
-    public static final int GOOD_MESSAGE = 3;
+    public static final int SUCCESS_MESSAGE = 3;
     
     private JWindow messageWindow;
     private RoundedPanel messagePanel;
@@ -57,11 +57,15 @@ public class FloatingMessage {
             messagePanel.setBackground(new Color(200, 60, 60));
             messagePanel.setRoundBorderColor (new Color(120, 0, 10));
         } else if (messageType == WARNING_MESSAGE) {
-            messagePanel.setBackground(new Color(240, 220, 50, 255));
-            messagePanel.setRoundBorderColor (new Color(180, 160, 10));
-        } else if (messageType == GOOD_MESSAGE) {
+            messagePanel.setBackground(new Color(240, 220, 50));
+            messagePanel.setRoundBorderColor (new Color(160, 140, 10));
+        } else if (messageType == SUCCESS_MESSAGE) {
             messagePanel.setBackground(new Color(139, 255, 104));
             messagePanel.setRoundBorderColor (new Color(55, 142, 5));
+        }
+        else{
+            throw new RuntimeException("FloatingMessage: messageType must be one of" +
+                    "FloatingMessage.ERROR_MESSAGE, FloatingMessage.WARNING_MESSAGE, FloatingMessage.SUCCESS_MESSAGE");
         }
     }
 }
