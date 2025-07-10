@@ -195,6 +195,7 @@ public abstract class BookingPage extends DisposableObject {
 
         flightInfoTable = new JTable(data, columnNames);
         flightInfoTable.setEnabled(false);
+        flightInfoTable.getTableHeader().setReorderingAllowed(false);
 
         flightInfoPanel.add(flightInfoTable.getTableHeader(), BorderLayout.NORTH);
         flightInfoPanel.add(flightInfoTable, BorderLayout.CENTER);
