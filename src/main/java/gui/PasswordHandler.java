@@ -8,20 +8,17 @@ import java.security.NoSuchAlgorithmException;
 public class PasswordHandler extends JPasswordField {
 
 
-    int minimumPasswordLength = 8;
-    int maximumPasswordLength = 20;
+    public static final int  minimumPasswordLength = 8;
+    public static final int  maximumPasswordLength = 20;
 
-    String allowedSpecialCharacters;
-    String allowedCharacterSet;
+    public static final String allowedSpecialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+    public static final String  allowedCharacterSet = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 " + allowedSpecialCharacters;
 
     String hashingAlgorithm = "SHA-256";
     String hashedPassword = null;
 
     public PasswordHandler(){
         super();
-
-        allowedSpecialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-        allowedCharacterSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" + allowedSpecialCharacters;
     }
 
     public String hashPassword(){
@@ -74,7 +71,7 @@ public class PasswordHandler extends JPasswordField {
         }
 
         for(char c : inputPassword){
-            if(allowedCharacterSet.indexOf(c) == -1){
+            if(allowedCharacterSet.indexOf(c) == -1 || c == ' '){
                 return PasswordCode.characterNotAllowed;
             }
             if(Character.isUpperCase(c)){

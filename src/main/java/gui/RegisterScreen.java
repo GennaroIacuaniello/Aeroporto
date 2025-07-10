@@ -93,6 +93,56 @@ public class RegisterScreen extends DisposableObject {
             }
         });
 
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PasswordCode pc = passwordField.isValidPassword(passwordField.getPassword());
+                String warningMessage = null;
+                switch (pc){
+                    case tooShort -> warningMessage = "La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri";
+                    case tooLong -> warningMessage = "La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri";
+                    case mustContainLowercase -> warningMessage = "La password deve contenere almeno un carattere minuscolo";
+                    case mustContainUppercase -> warningMessage = "La password deve contenere almeno un carattere maiuscolo";
+                    case mustContainDigit -> warningMessage = "La password deve contenere almeno una cifra";
+                    case mustContainSpecial -> warningMessage = "La password deve contenere almeno uno dei seguenti caratteri: <br>" + PasswordHandler.allowedSpecialCharacters;
+                    case characterNotAllowed -> warningMessage = "La password inserita contiene un carattere non valido. <br>" +
+                            "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet;
+                }
+
+                if(pc == PasswordCode.validPassword){
+                    if(usernameTextField.getText().length() < 4 || usernameTextField.getText().length() > 20){
+                        warningMessage = "L'username deve avere tra i 4 e i 20 caratteri";
+                        new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
+                    } else if(!isValidMail()){
+                        warningMessage = "Mail non valida, accettiamo i domini <br>" +
+                                "@aeroportodinapoli.it (riservata)<br>" +
+                                "@adn.it (riservata)<br>" +
+                                "@gmail.com";
+                        new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
+                    } else{
+                        //TODO: inserisci l'utente nel DAO (se nome utente (e mail) vanno bene)
+                    }
+                }else {
+                    new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        usernameTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                toggleRegisterButton();
+            }
+        });
+
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                toggleRegisterButton();
+            }
+        });
     }
 
     private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller) {
@@ -118,6 +168,16 @@ public class RegisterScreen extends DisposableObject {
         leftPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, paddingWidth, 0, 0), -1, -1));
         rightPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, paddingWidth), -1, -1));
 
+    }
+
+    private void toggleRegisterButton(){
+        registerButton.setEnabled(!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0);
+    }
+
+    private boolean isValidMail(){
+        //this would be a more robust function in a real world application
+        return mailTextField.getText().isEmpty() || mailTextField.getText().endsWith("@aeroportodinapoli.it") ||
+               mailTextField.getText().endsWith("@adn.it") || mailTextField.getText().endsWith("@gmail.com");
     }
 
     @Override

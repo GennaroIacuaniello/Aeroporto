@@ -5,15 +5,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
 
 import static java.lang.Math.max;
 
@@ -75,12 +70,7 @@ public class LogInScreen extends DisposableObject {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if (!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0) {
-                    logInButton.setEnabled(true);
-                }
-                if (usernameTextField.getText().isEmpty() || passwordField.getPassword().length == 0) {
-                    logInButton.setEnabled(false);
-                }
+                toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (validateLogin(usernameTextField.getText(), passwordField)) {
                         login(callingObjects, controller);
@@ -93,12 +83,7 @@ public class LogInScreen extends DisposableObject {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                if (!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0) {
-                    logInButton.setEnabled(true);
-                }
-                if (usernameTextField.getText().isEmpty() || passwordField.getPassword().length == 0) {
-                    logInButton.setEnabled(false);
-                }
+                toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (validateLogin(usernameTextField.getText(), passwordField)) {
                         login(callingObjects, controller);
@@ -229,6 +214,10 @@ public class LogInScreen extends DisposableObject {
         leftPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, paddingWidth, 0, 0), -1, -1));
         rightPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, paddingWidth), -1, -1));
 
+    }
+
+    private void toggleLoginButton(){
+        logInButton.setEnabled(!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0);
     }
 
     @Override
