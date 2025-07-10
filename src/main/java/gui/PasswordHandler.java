@@ -1,25 +1,32 @@
 package gui;
 
 import javax.swing.*;
-import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class PasswordHandler extends JPasswordField {
 
-    String[] hashedPassword = new String[256];
+
+    int minimumPasswordLength = 8;
+    int maximumPasswordLength = 20;
+
+    String allowedSpecialCharacters;
+    String allowedCharacterSet;
+
+    String hashingAlgorithm = "SHA-256";
+    String hashedPassword = null;
 
     public PasswordHandler(){
         super();
+
+        allowedSpecialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+        allowedCharacterSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" + allowedSpecialCharacters;
     }
 
     public String hashPassword(){
-        //SHA-256 algorithm, using Integer to treat these as unsigned int
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            MessageDigest digest = MessageDigest.getInstance(hashingAlgorithm);
             byte[] encodedHash = digest.digest((this.convertInBytes()));
 
             StringBuilder hexString = new StringBuilder();
@@ -30,11 +37,19 @@ public class PasswordHandler extends JPasswordField {
                 }
                 hexString.append(hex);
             }
-            return hexString.toString();
+            hashedPassword = hexString.toString();
+            return hashedPassword;
 
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getHashedPassword(){
+        if(hashedPassword == null){
+            return hashPassword();
+        }
+        return hashedPassword;
     }
 
     private byte[] convertInBytes(){
@@ -49,4 +64,40 @@ public class PasswordHandler extends JPasswordField {
         return passwordInBytes;
     }
 
+    public PasswordCode isValidPassword(char[] inputPassword){
+        boolean upper = false, lower = false, digit = false, special = false;
+
+        if(inputPassword.length < minimumPasswordLength){
+            return PasswordCode.tooShort;
+        } else if (inputPassword.length > maximumPasswordLength) {
+            return PasswordCode.tooLong;
+        }
+
+        for(char c : inputPassword){
+            if(allowedCharacterSet.indexOf(c) == -1){
+                return PasswordCode.characterNotAllowed;
+            }
+            if(Character.isUpperCase(c)){
+                upper = true;
+            } else if (Character.isLowerCase(c)) {
+                lower = true;
+            } else if (Character.isDigit(c)) {
+                digit = true;
+            } else if (allowedSpecialCharacters.indexOf(c) != -1) {
+                special = true;
+            }
+        }
+
+        if(!upper){ return PasswordCode.mustContainUppercase; }
+        if(!lower){ return PasswordCode.mustContainLowercase; }
+        if(!digit){ return PasswordCode.mustContainDigit; }
+        if(!special){ return PasswordCode.mustContainSpecial; }
+
+        return PasswordCode.validPassword;
+    }
+
+    public boolean verifyUserPassword(String username){
+        return true;
+        //TODO: use DAO to verify that the password hash matches
+    }
 }

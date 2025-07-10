@@ -20,7 +20,7 @@ public class Home extends DisposableObject {
         frameHome.pack();
         frameHome.setVisible(true);
 
-        controller.setCustomerNUser("Tramontana", new char[]{'1', '2'});
+        controller.setCustomerNUser("Tramontana", "whenAreYouGonnaPutHashesHere?");
         controller.getFlightController().setFlight("01", "Compagnia", "Napoli", new Date(),
                 "00:00", "00:00", 66);
 

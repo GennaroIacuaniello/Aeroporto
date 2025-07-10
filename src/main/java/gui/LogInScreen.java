@@ -64,7 +64,7 @@ public class LogInScreen extends DisposableObject {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
+                if (validateLogin(usernameTextField.getText(), passwordField)) {
                     login(callingObjects, controller);
                 }
 
@@ -82,7 +82,7 @@ public class LogInScreen extends DisposableObject {
                     logInButton.setEnabled(false);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
+                    if (validateLogin(usernameTextField.getText(), passwordField)) {
                         login(callingObjects, controller);
                     }
                 }
@@ -100,7 +100,7 @@ public class LogInScreen extends DisposableObject {
                     logInButton.setEnabled(false);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (validateLogin(usernameTextField.getText(), passwordField.getPassword())) {
+                    if (validateLogin(usernameTextField.getText(), passwordField)) {
                         login(callingObjects, controller);
                     }
                 }
@@ -191,11 +191,8 @@ public class LogInScreen extends DisposableObject {
         return true;
     }
 
-    private boolean validateLogin(String username, char[] password) {
-        if (username.isEmpty() || password.length == 0) {
-            JOptionPane.showMessageDialog(loginScreen, "Inserire username e password");
-            return false;
-        }
+    private boolean validateLogin(String username, PasswordHandler password) {
+        //TODO: chiama verifyUserPassword
         if (!isValidUsername(usernameTextField.getText())) {
             JOptionPane.showMessageDialog(loginScreen, "Username non valido");
             return false;
@@ -204,15 +201,12 @@ public class LogInScreen extends DisposableObject {
             JOptionPane.showMessageDialog(loginScreen, "Questo utente non esiste");
             return false;
         }
-        if (Arrays.equals(passwordField.getPassword(), new char[]{'e', 'r', 'r', 'a', 't', 'a'})) {
-            JOptionPane.showMessageDialog(loginScreen, "Password errata");
-            return false;
-        }
+
         return true;
     }
 
     private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        controller.setCustomerNUser(usernameTextField.getText(), passwordField.getPassword());
+        controller.setCustomerNUser(usernameTextField.getText(), passwordField.getHashedPassword());
         usernameTextField.setText("");
         passwordField.setText("");
         logInButton.setEnabled(false);

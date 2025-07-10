@@ -160,14 +160,14 @@ public class Controller {
         return bookingStatusController;
     }
 
-    public void setAdminNUser (String username, char[] password) {
-        adminController.setAdmin (username, password);
-        userController.setUser (username, password);
+    public void setAdminNUser (String username, String hashedPassword) {
+        adminController.setAdmin (username, hashedPassword);
+        userController.setUser (username, hashedPassword);
     }
 
-    public void setCustomerNUser (String username, char[] password) {
-        customerController.setCustomer (username, password);
-        userController.setUser (username, password);
+    public void setCustomerNUser (String username, String hashedPassword) {
+        customerController.setCustomer (username, hashedPassword);
+        userController.setUser (username, hashedPassword);
     }
 
     public boolean checkBooking (int index) {

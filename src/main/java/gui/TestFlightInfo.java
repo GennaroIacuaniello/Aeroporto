@@ -64,21 +64,21 @@ public class TestFlightInfo {
                 "14:10", 19);
         controller.getFlightController().setFlightStatus(FlightStatus.programmed);
 
-        controller.getBookingController().setBooking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
+        controller.getBookingController().setBooking(new Customer("pippo", "notAnActualHash"), controller.getFlightController().getFlight(), passengers);
 
-        Booking booking = new Booking(new Customer("pippo", new char[]{'p', 'l', 'u', 't', 'o'}), controller.getFlightController().getFlight(), passengers);
+        Booking booking = new Booking(new Customer("pippo", "thisShouldBeAHash"), controller.getFlightController().getFlight(), passengers);
         booking.set_status(BookingStatus.confirmed);
 
         controller.getFlightController().getFlight().add_booking(booking);
 
-        controller.setCustomerNUser("pippo", new char[]{'p', 'l', 'u', 't', 'o'});
+        controller.setCustomerNUser("pippo", "aren'tWeUsingHashesNow?");
 
         ArrayList<Passenger> passengers2 = new ArrayList<Passenger>();
         passengers2.add(new Passenger("a", "a", "a", 14));
         passengers2.add(new Passenger("a", "a", "a", 15));
         passengers2.add(new Passenger("a", "a", "a", 16));
 
-        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", new char[]{'x'}), controller.getFlightController().getFlight(), passengers2, BookingStatus.pending));
+        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", "shouldPutAHashHere"), controller.getFlightController().getFlight(), passengers2, BookingStatus.pending));
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();

@@ -8,8 +8,8 @@ package model;
 
 public class Admin extends User{
 
-    public Admin(String par_username, char[] par_password){
-        super(par_username, par_password);
+    public Admin(String par_username, String parHashedPassword){
+        super(par_username, parHashedPassword);
     }
 
     private void insert_flight(){};
