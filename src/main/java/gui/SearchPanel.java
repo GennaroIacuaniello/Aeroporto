@@ -234,7 +234,7 @@ public class SearchPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (controller != null) {
 
-                    
+
 
 
                     ArrayList<Flight> searched_flights = controller.search_flight_customer(
