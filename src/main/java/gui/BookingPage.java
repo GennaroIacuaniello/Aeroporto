@@ -195,6 +195,7 @@ public abstract class BookingPage extends DisposableObject {
 
         flightInfoTable = new JTable(data, columnNames);
         flightInfoTable.setEnabled(false);
+        flightInfoTable.getTableHeader().setReorderingAllowed(false);
 
         flightInfoPanel.add(flightInfoTable.getTableHeader(), BorderLayout.NORTH);
         flightInfoPanel.add(flightInfoTable, BorderLayout.CENTER);
@@ -253,8 +254,8 @@ public abstract class BookingPage extends DisposableObject {
         //sistemo visibilità
         for (int i = 0; i < 3; i++) {
 
-            passengerPanels.get(i + currPage * 3).setVisible(false);
-            passengerPanels.get(i + page * 3).setVisible(true);
+            if (i + currPage * 3 < passengerPanels.size()) passengerPanels.get(i + currPage * 3).setVisible(false);
+            if (i + page * 3 < passengerPanels.size()) passengerPanels.get(i + page * 3).setVisible(true);
         }
 
         //sistemo currPage
@@ -334,7 +335,8 @@ public abstract class BookingPage extends DisposableObject {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                goPreviousPage();
+                //goPreviousPage();
+                goToPage(currPage - 1);
             }
         });
 
@@ -343,7 +345,8 @@ public abstract class BookingPage extends DisposableObject {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                goNextPage();
+                //goNextPage();
+                goToPage(currPage + 1);
             }
         });
 
