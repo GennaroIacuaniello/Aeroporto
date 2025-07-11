@@ -62,7 +62,7 @@ public class TestFlightInfo {
 
         //sistemo il controller
         controller.getFlightController().setDepartingFlight("03", "che ne so", new Date(2025, 2, 14), new Time(1,1,1),
-                new Time(1,1,1), FlightStatus.programmed, 19, 10, "Barcellona", 0);
+                new Time(1,1,1), FlightStatus.programmed, 19, "Barcellona");
 
         controller.getFlightController().setFlightStatus(FlightStatus.programmed);
 

@@ -26,6 +26,13 @@ public class FlightController {
 
     }
 
+    public void setDepartingFlight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                                   Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, String parDestination) {
+
+        flight = new Departing(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parMaxSeats, parDestination);
+
+    }
+
     public ArrayList<Flight> searchFlightCustomer(String departingCity, String arrivingCity, Date initialDate, Date finalDate, String initialTime, String finalTime){
 
         ArrayList<Flight> res = new ArrayList<>(0);
