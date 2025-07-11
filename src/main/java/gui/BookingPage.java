@@ -67,6 +67,8 @@ public abstract class BookingPage extends DisposableObject {
         //this.addFooterPanel();
         addFooterPanel();
 
+        goToPage(0);
+
         mainFrame.setVisible(true);
     }
 
@@ -164,6 +166,11 @@ public abstract class BookingPage extends DisposableObject {
 
         mainPanel.setLayout(new GridBagLayout());
         mainPanel.setBackground(Color.WHITE);
+
+        //inizializzo componenti
+        prevPageButton = new JButton("←");
+        nextPageButton = new JButton("→");
+        currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
         addFlightInfoPanel (controller);
         addSearchPanel (controller);
@@ -305,7 +312,7 @@ public abstract class BookingPage extends DisposableObject {
         passengerPanel.setPanelEnabled(false);
     }
 
-    private void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         modifyPanel = new JPanel();
 
@@ -332,11 +339,6 @@ public abstract class BookingPage extends DisposableObject {
     }
 
     protected void addPageChangeButtons () {
-
-        //inizializzo componenti
-        prevPageButton = new JButton("←");
-        nextPageButton = new JButton("→");
-        currentPageLabel = new JLabel(Integer.valueOf(currPage + 1).toString());
 
         prevPageButton.setFocusable(false);
         nextPageButton.setFocusable(false);

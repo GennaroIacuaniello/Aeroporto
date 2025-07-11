@@ -25,10 +25,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         super(callingObjects, controller, dimension, point, fullScreen);
 
-        addAddPassengerButton(controller);
-
-        prevPageButton.setEnabled(currPage > 0);
-        nextPageButton.setEnabled(false);
+        //addAddPassengerButton(controller);
 
         mainFrame.setVisible(true);
     }
@@ -39,6 +36,34 @@ public class BookingModifyPage extends BookingPageCustomer {
         this(callingObjects, controller, dimension, point, fullScreen);
 
         setControllerDisposeFlag(flag);
+    }
+
+    @Override
+    protected void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+
+        modifyPanel = new JPanel();
+
+        modifyPanel.setLayout(new GridBagLayout());
+
+        modifyPanel.setOpaque(false);
+
+        flowPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        flowPanel.setOpaque(false);
+
+        constraints.setConstraints (1, 0, 1, 1,
+                GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_END);
+        modifyPanel.add(flowPanel, constraints.getConstraints());
+
+        flowPanel.setVisible(true);
+
+        addAddPassengerButton(controller);
+        addPageChangeButtons();
+
+        constraints.setConstraints (0, 3, 1, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.CENTER);
+        mainPanel.add (modifyPanel, constraints.getConstraints());
+        modifyPanel.setVisible (true);
     }
 
     protected void addAddPassengerButton(Controller controller) {
