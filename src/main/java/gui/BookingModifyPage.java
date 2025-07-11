@@ -233,6 +233,8 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         confirmPanel.setLayout(new GridBagLayout());
 
+        confirmPanel.setOpaque(false);
+
         addConfirmButton(controller, callingObjects);
         if (controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().pending)
             addSavePendingButton(controller, callingObjects);

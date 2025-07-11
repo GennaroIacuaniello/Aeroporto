@@ -58,6 +58,8 @@ public class BookingPageCustomer extends BookingPage {
 
         confirmPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
+        confirmPanel.setOpaque(false);
+
         modifyButton = new JButton("MODIFICA PRENOTAZIONE");
         cancelButton = new JButton("CANCELLA PRENOTAZIONE");
 

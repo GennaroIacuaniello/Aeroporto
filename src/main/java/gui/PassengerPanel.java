@@ -37,7 +37,8 @@ public class PassengerPanel extends JPanel
 
         this.setLayout (new GridBagLayout());
         constraints = new Constraints ();
-        if(controller.developerMode) this.setBackground (Color.BLUE);
+
+        this.setOpaque(false);
 
         passengerLabel = new JLabel ("Passenger");
         passengerNameField = new JTextField(displayedNameText, 20);
