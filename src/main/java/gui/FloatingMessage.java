@@ -31,11 +31,22 @@ public class FloatingMessage {
         messageWindow.setAlwaysOnTop(true);
         messageWindow.setOpacity(0.75f);
         messageWindow.setBackground(new Color(0, 0, 0, 0));
+
         JPanel contentPanel = (JPanel) messageWindow.getContentPane();
         contentPanel.setOpaque(false);
         messageWindow.setSize(300, 100);
-        Point point = new Point(callingButton.getLocationOnScreen());
-        messageWindow.setLocation((int)point.getX() + (callingButton.getWidth() - messageWindow.getWidth()) / 2, (int)point.getY() - messageWindow.getHeight() - 10);
+
+        Point callingButtonLocation = new Point(callingButton.getLocationOnScreen());
+        Point messageLocation = new Point((int)callingButtonLocation.getX() + (callingButton.getWidth() - messageWindow.getWidth()) / 2,
+                (int)callingButtonLocation.getY() - messageWindow.getHeight() - 10);
+
+        if (messageLocation.getX() < 0)
+            messageLocation.setLocation(5, (int) messageLocation.getY());
+        else if (messageLocation.getX() + 300 > Toolkit.getDefaultToolkit().getScreenSize().getWidth())
+            messageLocation.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - 305),
+                    (int) messageWindow.getLocationOnScreen().getY());
+
+        messageWindow.setLocation(messageLocation);
     }
 
     private void setPanel (String msg, int messageType) {
