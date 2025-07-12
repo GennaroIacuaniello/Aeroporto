@@ -6,6 +6,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -60,8 +61,9 @@ public class TestFlightInfo {
         }
 
         //sistemo il controller
-        controller.getFlightController().setFlight("03", "che ne so", "Barcellona", new Date(2025, 2, 14), "12:25",
-                "14:10", 19);
+        controller.getFlightController().setDepartingFlight("03", "che ne so", new Date(2025, 2, 14), new Time(1,1,1),
+                new Time(1,1,1), FlightStatus.programmed, 19, "Barcellona");
+
         controller.getFlightController().setFlightStatus(FlightStatus.programmed);
 
         controller.getBookingController().setBooking(new Customer("pippo", "notAnActualHash"), controller.getFlightController().getFlight(), passengers);
@@ -69,7 +71,7 @@ public class TestFlightInfo {
         Booking booking = new Booking(new Customer("pippo", "thisShouldBeAHash"), controller.getFlightController().getFlight(), passengers);
         booking.set_status(BookingStatus.confirmed);
 
-        controller.getFlightController().getFlight().add_booking(booking);
+        controller.getFlightController().getFlight().addBooking(booking);
 
         controller.setCustomerNUser("pippo", "aren'tWeUsingHashesNow?");
 
@@ -78,7 +80,7 @@ public class TestFlightInfo {
         passengers2.add(new Passenger("a", "a", "a", 15));
         passengers2.add(new Passenger("a", "a", "a", 16));
 
-        controller.getFlightController().getFlight().add_booking(new Booking(new Customer("x", "shouldPutAHashHere"), controller.getFlightController().getFlight(), passengers2, BookingStatus.pending));
+        controller.getFlightController().getFlight().addBooking(new Booking(new Customer("x", "shouldPutAHashHere"), controller.getFlightController().getFlight(), passengers2, BookingStatus.pending));
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();

@@ -1,294 +1,288 @@
 package gui;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.TimePicker;
 import controller.Controller;
+import model.Arriving;
 import model.Flight;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
 
-    private JButton search_arriving_button;
-    private JButton search_departing_button;
-    private JButton search_button;
-    private JPanel invisiblePanel;
+    private JScrollPane resultsScrollPane;
+
     private Constraints constraints;
 
-    private JTextField search_from;
-    private JTextField search_to;
+    private JLabel fromLabel;
+    private JTextField fromField;
+    private JLabel toLabel;
+    private JTextField toField;
+    private JLabel dateLabel;
+    private DatePicker dateFrom;
+    private JLabel dateSep;
+    private DatePicker dateTo;
+    private JLabel timeLabel;
+    private TimePicker timeFrom;
+    private JLabel timeSep;
+    private TimePicker timeTo;
+    private JButton arrivingButton;
+    private JButton departingButton;
 
-    private JLabel search_from_text;
-    private JLabel search_to_text;
-
-    private JLabel date_label;
-    private JLabel time_label;
-    private JLabel time_separator_label;
-
-    private JTextField date_field;
-    private JTextField time_from_field;
-    private JTextField time_to_field;
-
-    private SearchFlightResult search_result;
-
+    private boolean searchPerformed = false;
 
     public SearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
         this.setLayout(new GridBagLayout());
+        this.setBackground(Color.WHITE);
+
         this.constraints = new Constraints();
 
-        this.set_search_from_text_label();
-        this.set_search_from_text_field();
+        Border lineBorder = BorderFactory.createLineBorder(new Color(200, 200, 200));
+        Border emptyBorder = BorderFactory.createEmptyBorder(40, 50, 40, 50);
 
-        this.set_search_arriving_button();
-        this.set_search_departing_button();
+        this.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
 
-        this.set_search_to_text_label();
-        this.set_search_to_text_field();
-
-        this.set_date_label();
-        this.set_date_text_field();
-
-        this.set_time_label();
-        this.set_time_from_text_field();
-
-        this.set_time_separator_label();
-        this.set_time_to_text_field();
-
-        this.set_search_button(callingObjects, controller);
-
-        this.setVisible(true);
+        setComponents(callingObjects, controller);
     }
 
+    private void setComponents(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-    private void set_search_from_text_label() {
+        JPanel parametersPanel = createSymmetricFormPanel(controller);
 
-        search_from_text = new JLabel("Da:");
+        JButton searchButton = createSearchButton(callingObjects, controller);
 
-        //search_from_text.setLayout(new GridBagLayout ());
+        resultsScrollPane = new JScrollPane();
 
-        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
-        this.add(search_from_text, constraints.getConstraints());
-        search_from_text.setVisible(true);
+
+        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.NORTH, 1.0f, 0.0f, new Insets(0, 0, 0, 0));
+        this.add(parametersPanel, constraints.getConstraints());
+
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(30, 0, 30, 0));
+        this.add(searchButton, constraints.getConstraints());
+
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.BOTH,
+                0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
+        this.add(resultsScrollPane, constraints.getConstraints());
+
+        updateResultsPanel(callingObjects, controller, new ArrayList<>(), false);
     }
 
-    private void set_search_to_text_label() {
+    private JPanel createSymmetricFormPanel(Controller controller) {
 
-        search_to_text = new JLabel("A");
+        JPanel container = new JPanel(new GridLayout(1, 2, 40, 0));
+        container.setOpaque(false);
 
-        //search_to_text.setLayout(new GridBagLayout ());
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setOpaque(false);
 
-        constraints.setConstraints(4, 1, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
+        arrivingButton = new JButton("Cerca voli in arrivo");
+        setButtonApperance(arrivingButton);
 
-        this.add(search_to_text, constraints.getConstraints());
-        search_to_text.setVisible(true);
-    }
+        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(0, 0, 35, 0));
+        leftPanel.add(arrivingButton, constraints.getConstraints());
 
-    private void set_search_from_text_field() {
+        fromLabel = new JLabel("Da:");
+        setLabelApperance(fromLabel);
 
-        search_from = new JTextField(10);
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
+        leftPanel.add(fromLabel, constraints.getConstraints());
 
-        //search_from.setLayout(new GridBagLayout ());
+        fromField = new JTextField(15);
+        fromField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
-        constraints.setConstraints(1, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10, 2, 5, 15));
-        //search_from.setSize(30,30);
-        this.add(search_from, constraints.getConstraints());
-        search_from.setVisible(true);
-    }
+        constraints.setConstraints(1, 1, 3, 1, GridBagConstraints.HORIZONTAL,
+                0, 10, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(0, 0, 30, 0));
+        leftPanel.add(fromField, constraints.getConstraints());
 
-    private void set_search_to_text_field() {
-        search_to = new JTextField(10);
+        dateLabel = new JLabel("Range date:");
+        setLabelApperance(dateLabel);
 
-        //search_to.setLayout(new GridBagLayout ());
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
+        leftPanel.add(dateLabel, constraints.getConstraints());
 
-        constraints.setConstraints(5, 1, 2, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10, 2, 5, 15));
-        //search_to.setSize(30,1);
-        this.add(search_to, constraints.getConstraints());
-        search_to.setVisible(true);
-    }
+        dateFrom = new DatePicker();
+        dateFrom.getComponentDateTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-    private void set_search_arriving_button() {
+        constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 10));
+        leftPanel.add(dateFrom, constraints.getConstraints());
 
-        search_arriving_button = new JButton("Cerca voli in arrivo");
-        //search_arriving_button.setLayout(new GridBagLayout());
-        search_arriving_button.setEnabled(true);
-        search_arriving_button.setVisible(true);
-        search_arriving_button.setFocusable(false);
-        //search_arriving_button.setFocusable(false);
+        dateSep = new JLabel("--");
+        setLabelApperance(dateSep);
 
-        search_arriving_button.addActionListener(new ActionListener() {
+        constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
+        leftPanel.add(dateSep, constraints.getConstraints());
+
+        dateTo = new DatePicker();
+        dateTo.getComponentDateTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 0));
+        leftPanel.add(dateTo, constraints.getConstraints());
+
+
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setOpaque(false);
+
+        departingButton = new JButton("Cerca voli in partenza");
+        setButtonApperance(departingButton);
+
+        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(0, 0, 35, 0));
+        rightPanel.add(departingButton, constraints.getConstraints());
+
+        toLabel = new JLabel("A:");
+        setLabelApperance(toLabel);
+
+        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
+        rightPanel.add(toLabel, constraints.getConstraints());
+
+        toField = new JTextField(15);
+        toField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+        constraints.setConstraints(1, 1, 3, 1, GridBagConstraints.HORIZONTAL,
+                0, 10, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(0, 0, 30, 0));
+        rightPanel.add(toField, constraints.getConstraints());
+
+        timeLabel = new JLabel("Fascia oraria:");
+        setLabelApperance(timeLabel);
+
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
+        rightPanel.add(timeLabel, constraints.getConstraints());
+
+        timeFrom = new TimePicker();
+        timeFrom.getComponentTimeTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 10));
+        rightPanel.add(timeFrom, constraints.getConstraints());
+
+        timeSep = new JLabel("--");
+        setLabelApperance(timeSep);
+
+        constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
+        rightPanel.add(timeSep, constraints.getConstraints());
+
+        timeTo = new TimePicker();
+        timeTo.getComponentTimeTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.HORIZONTAL,
+                0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 0));
+        rightPanel.add(timeTo, constraints.getConstraints());
+
+        container.add(leftPanel);
+        container.add(rightPanel);
+
+
+        arrivingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                search_arriving_button.setEnabled(false);
-                search_to.setText("Napoli");
-                search_to.setEnabled(false);
-                search_departing_button.setEnabled(true);
-                search_from.setText("");
-                search_from.setEnabled(true);
+                toField.setText("Napoli");
+                //toField.setEnabled(false);
+                fromField.setText("");
+                //fromField.setEnabled(true);
+                fromField.requestFocusInWindow();
             }
         });
 
-        constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
-
-
-        this.add(search_arriving_button, constraints.getConstraints());
-    }
-
-    private void set_search_departing_button() {
-
-        search_departing_button = new JButton("Cerca voli in partenza");
-        //search_arriving_button.setLayout(new GridBagLayout());
-        search_departing_button.setEnabled(true);
-        search_departing_button.setVisible(true);
-        search_departing_button.setFocusable(false);
-        //search_departing_button.setEnabled(false);
-        //search_from.setText("Napoli");
-        //search_from.setEnabled(false);
-        //search_arriving_button.setFocusable(false);
-
-        search_departing_button.addActionListener(new ActionListener() {
+        departingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                search_departing_button.setEnabled(false);
-                search_from.setText("Napoli");
-                search_from.setEnabled(false);
-                search_arriving_button.setEnabled(true);
-                search_to.setText("");
-                search_to.setEnabled(true);
+                fromField.setText("Napoli");
+                //fromField.setEnabled(false);
+                toField.setText("");
+                //toField.setEnabled(true);
+                toField.requestFocusInWindow();
             }
         });
 
-        constraints.setConstraints(4, 0, 3, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
-
-
-        this.add(search_departing_button, constraints.getConstraints());
+        return container;
     }
 
+    private JButton createSearchButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-    private void set_date_label() {
+        JButton searchButton = new JButton("Cerca");
+        searchButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
-        date_label = new JLabel("Data:");
+        searchButton.setBackground(new Color(0, 120, 215));
+        searchButton.setForeground(Color.WHITE);
+        searchButton.setFocusPainted(false);
 
-        //search_from_text.setLayout(new GridBagLayout ());
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
-        this.add(date_label, constraints.getConstraints());
-        date_label.setVisible(true);
-    }
+        searchButton.setPreferredSize(new Dimension(200, 50));
 
-    private void set_date_text_field() {
 
-        date_field = new JTextField(8);
-
-        //search_from.setLayout(new GridBagLayout ());
-
-        constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 0.5f, 0.0f, new Insets(10, 2, 5, 15));
-        //search_from.setSize(30,30);
-        this.add(date_field, constraints.getConstraints());
-        date_field.setVisible(true);
-    }
-
-    private void set_time_label() {
-
-        time_label = new JLabel("Fascia oraria:");
-
-        //search_from_text.setLayout(new GridBagLayout ());
-
-        constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(10, 5, 5, 2));
-        this.add(time_label, constraints.getConstraints());
-        time_label.setVisible(true);
-    }
-
-    private void set_time_from_text_field() {
-
-        time_from_field = new JTextField(5);
-
-        //search_from.setLayout(new GridBagLayout ());
-
-        constraints.setConstraints(4, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_END, 1.0f, 0.0f, new Insets(10, 2, 5, 5));
-        //search_from.setSize(30,30);
-        this.add(time_from_field, constraints.getConstraints());
-        time_from_field.setVisible(true);
-    }
-
-    private void set_time_separator_label() {
-
-        time_separator_label = new JLabel("-  ");
-
-        //search_from_text.setLayout(new GridBagLayout ());
-
-        constraints.setConstraints(5, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(10, 5, 5, 0));
-        this.add(time_separator_label, constraints.getConstraints());
-        time_separator_label.setVisible(true);
-    }
-
-    private void set_time_to_text_field() {
-
-        time_to_field = new JTextField(5);
-
-        //search_from.setLayout(new GridBagLayout ());
-
-        constraints.setConstraints(6, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(10, 5, 5, 2));
-        //search_from.setSize(30,30);
-        this.add(time_to_field, constraints.getConstraints());
-        time_to_field.setVisible(true);
-    }
-
-    private void set_search_button(ArrayList<DisposableObject> callingObjects, Controller controller) {
-
-        search_button = new JButton("Cerca");
-        //search_arriving_button.setLayout(new GridBagLayout());
-        search_button.setEnabled(true);
-        search_button.setVisible(true);
-        search_button.setFocusable(false);
-        //search_arriving_button.setFocusable(false);
-
-        search_button.addActionListener(new ActionListener() {
+        searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (controller != null) {
 
-                ArrayList<Flight> searched_flights = controller.search_flight_customer(search_from_text.getText(), search_to_text.getText(), date_field.getText(), time_from_field.getText(), time_to_field.getText());
 
-                search_result = new SearchFlightResult(callingObjects, controller, searched_flights);
+                    ArrayList<Flight> searched_flights = new ArrayList<>();//controller.search_flight_customer(
+                                                                    //fromField.getText(), toField.getText(),
+                                                                    //dateFrom.getDate(), dateTo.getDate(),
+                                                                    //timeFrom.getTime(), timeTo.getTime());
+
+                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 100, "ciao"));
+
+                    searchPerformed = true;
+                    updateResultsPanel(callingObjects, controller, searched_flights, true);
+                }
             }
         });
 
-        constraints.setConstraints(0, 3, 7, 1, GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
+        return searchButton;
+    }
 
+    private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, ArrayList<Flight> searchedFlights, boolean ifSearched) {
 
-        this.add(search_button, constraints.getConstraints());
+        SearchFlightResultPanel resultsPanel = new SearchFlightResultPanel(callingObjects, controller, searchedFlights, ifSearched);
+
+        resultsScrollPane.setViewportView(resultsPanel);
+
+        resultsScrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        resultsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        resultsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        resultsScrollPane.getVerticalScrollBar().setUnitIncrement(30);
+
+        resultsScrollPane.revalidate();
+        resultsScrollPane.repaint();
+    }
+
+    private void setButtonApperance(JButton button) {
+
+        button.setFocusPainted(false);
+        button.setBackground(new Color(235, 235, 235));
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setPreferredSize(new Dimension(button.getPreferredSize().width, 35));
 
     }
 
-    public SearchFlightResult getSearch_result() {
-        return search_result;
-    }
+    private void setLabelApperance(JLabel label) {
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+        label.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
     }
 }

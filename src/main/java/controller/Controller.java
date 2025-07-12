@@ -5,10 +5,10 @@ import gui.PassengerPanel;
 import model.Arriving;
 import model.BookingStatus;
 import model.Departing;
-import model.Flight;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -50,18 +50,18 @@ public class Controller {
         Object[][] result = new Object[10][4];
 
         arrivingFlights.add(new Arriving("01", "Compagnia", new Date(0),
-                "00:00", "00:00", 100, "Dubai"));
+                new Time(1), new Time(1), 100, "Dubai"));
         arrivingFlights.add(new Arriving("02", "Compagnia", new Date(1),
-                "00:00", "00:01", 100, "Dubai"));
+                new Time(1), new Time(1), 100, "Dubai"));
         arrivingFlights.add(new Arriving("03", "Compagnia", new Date(2),
-                "00:00", "00:02", 100, "Dubai"));
+                new Time(1), new Time(1), 100, "Dubai"));
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
-            result[i][0] = arrivingFlights.get(i).get_company_name();
+            result[i][0] = arrivingFlights.get(i).getCompanyName();
             result[i][1] = arrivingFlights.get(i).get_origin();
-            result[i][2] = Integer.valueOf(arrivingFlights.get(i).get_date().getDate()).toString() +
+            result[i][2] = Integer.valueOf(arrivingFlights.get(i).getDate().getDate()).toString() +
                             " " + arrivingFlights.get(i).getMonthName();
-            result[i][3] = arrivingFlights.get(i).get_arrival_time();
+            result[i][3] = arrivingFlights.get(i).getArrivalTime();
         }
 
         return result;
@@ -73,44 +73,24 @@ public class Controller {
         Object[][] result = new Object[10][5];
 
         departingFlights.add(new Departing("01", "Compagnia", new Date(3),
-                "00:00", "00:00", 100, "Dubai"));
+                new Time(1), new Time(1), 100, "Dubai"));
         departingFlights.add(new Departing("02", "Compagnia", new Date(4),
-                "00:00", "00:01", 100, "Dubai"));
+                new Time(1), new Time(1), 100, "Dubai"));
         departingFlights.add(new Departing("03", "Compagnia", new Date(5),
-                "00:00", "00:02", 100, "Dubai"));
+                new Time(1), new Time(1), 100, "Dubai"));
 
         for (int i = 0; i < departingFlights.size(); i++) {
-            result[i][0] = departingFlights.get(i).get_company_name();
+            result[i][0] = departingFlights.get(i).getCompanyName();
             result[i][1] = departingFlights.get(i).get_destination();
-            result[i][2] = Integer.valueOf(departingFlights.get(i).get_date().getDate()).toString() +
+            result[i][2] = Integer.valueOf(departingFlights.get(i).getDate().getDate()).toString() +
                     " " + departingFlights.get(i).getMonthName();
-            result[i][3] = departingFlights.get(i).get_departure_time();
+            result[i][3] = departingFlights.get(i).getDepartureTime();
             result[i][4] = Integer.valueOf(departingFlights.get(i).get_gate().get_Id()).toString();
         }
 
         return result;
     }
 
-    public ArrayList<Flight> search_flight_customer(String departing_city, String arriving_city, String date, String initial_time, String final_time){
-
-        ArrayList<Flight> res = new ArrayList<Flight>(0);
-
-        res.add(new Arriving("01", "Ciao", new Date(6),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(7),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(8),
-                "00:00", "00:02", 100, "Dubai"));
-
-        res.add(new Departing("04", "HELLO", new Date(9),
-                "00:00", "00:00", 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(10),
-                "00:00", "00:01", 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(11),
-                "00:00", "00:02", 100, "Dubai"));
-
-        return res;
-    }
 
     public AdminController getAdminController() {
         return adminController;
@@ -171,8 +151,8 @@ public class Controller {
     }
 
     public boolean checkBooking (int index) {
-        if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().get_bookings().get(index)) return false;
-        if (getFlightController().getFlight().get_bookings().get(index).get_status() == BookingStatus.cancelled) return false;
+        if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().getBookings().get(index)) return false;
+        if (getFlightController().getFlight().getBookings().get(index).get_status() == BookingStatus.cancelled) return false;
 
         return true;
     }

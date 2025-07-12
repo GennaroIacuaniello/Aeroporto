@@ -1,9 +1,11 @@
 package gui;
 
 import controller.Controller;
+import model.FlightStatus;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -21,8 +23,8 @@ public class Home extends DisposableObject {
         frameHome.setVisible(true);
 
         controller.setCustomerNUser("Tramontana", "whenAreYouGonnaPutHashesHere?");
-        controller.getFlightController().setFlight("01", "Compagnia", "Napoli", new Date(1),
-                "00:00", "00:00", 66);
+        controller.getFlightController().setDepartingFlight("01", "Compagnia", new Date(1),
+                new Time(1,1,1), new Time(1,1,1), FlightStatus.programmed, 66, 33, "Roma", 0);
 
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
         //callingObjects.add(this);

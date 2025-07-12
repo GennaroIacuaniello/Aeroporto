@@ -65,6 +65,8 @@ public class BookingPageAdmin extends BookingPage {
 
         confirmPanel.setLayout(new GridBagLayout());
 
+        confirmPanel.setOpaque(false);
+
         setCheckinButtons(callingObjects, controller);
 
         constraints.setConstraints(0, 3, 1, 1,

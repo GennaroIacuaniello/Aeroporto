@@ -1,5 +1,4 @@
 package model;
-import org.postgresql.ssl.SingleCertValidatingFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,7 +90,7 @@ public class Booking {
 
         this.passengers.add(par_passenger);
 
-        int control = this.booked_flight.add_passenger(par_passenger);
+        int control = this.booked_flight.addPassenger(par_passenger);
 
         if(control != 0) {
             return -1;
@@ -105,7 +104,7 @@ public class Booking {
     public int remove_passenger(Passenger par_passenger){
         boolean control = this.passengers.remove(par_passenger);
         if(control) {
-            this.booked_flight.remove_passenger(par_passenger);
+            this.booked_flight.removePassenger(par_passenger);
             return 0;
         }
         else{

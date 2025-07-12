@@ -61,7 +61,8 @@ public class Book extends BookingModifyPage {
         confirmButtons = new ArrayList<JButton>();
         confirmPanel = new JPanel();
         confirmPanel.setLayout(new GridLayout());
-        if(controller.developerMode) modifyPanel.setBackground(Color.BLUE);
+
+        confirmPanel.setOpaque(false);
 
         for (int i = 0; i < 3; i++) {
 

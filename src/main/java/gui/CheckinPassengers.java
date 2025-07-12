@@ -39,6 +39,8 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         confirmPanel.setLayout(new GridBagLayout());
 
+        confirmPanel.setOpaque(false);
+
         setConfirmButton(callingObjects, controller);
 
         constraints.setConstraints(0, 3, 1, 1,
