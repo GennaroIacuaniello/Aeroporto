@@ -231,6 +231,7 @@ public class SearchFlightResultPanel extends JPanel {
 
                     new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                             callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                 }
             });
         }
