@@ -1,9 +1,6 @@
 package gui;
 
-import controller.BookingController;
-import controller.BookingStatusController;
 import controller.Controller;
-import controller.FlightController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -93,10 +90,13 @@ public class Book extends BookingModifyPage {
                     0, 0, GridBagConstraints.CENTER, 0.015f, 0.015f);
             confirmPanel.add (confirmButtons.getLast(), constraints.getConstraints());
 
+            JPanel invisiblePanel = new JPanel();
+            invisiblePanel.setOpaque(false);
+
             if (i != 2) {
                 constraints.setConstraints(i * 2 + 1, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                         0, 0, GridBagConstraints.CENTER, 0.015f, 0.015f);
-                confirmPanel.add(new JPanel(), constraints.getConstraints());
+                confirmPanel.add(invisiblePanel, constraints.getConstraints());
             }
 
             confirmButtons.getLast().setFocusable(false);
@@ -104,9 +104,9 @@ public class Book extends BookingModifyPage {
         }
         confirmButtons.get(1).setVisible (true);
 
-        constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints (0, 4, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
-        mainFrame.add (confirmPanel, constraints.getConstraints());
+        mainPanel.add (confirmPanel, constraints.getConstraints());
         confirmPanel.setVisible (true);
     }
 

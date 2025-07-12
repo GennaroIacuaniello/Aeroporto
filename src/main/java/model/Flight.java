@@ -13,7 +13,6 @@ public class Flight {
 
     private String id;
     private String companyName;
-    //private String city;
     private Date date;
     private Time departureTime;
     private Time arrivalTime;
