@@ -12,14 +12,14 @@ public class Admin extends User{
         super(par_username, parHashedPassword);
     }
 
-    private void insert_flight(){};
-    private void update_flight(){};
+    //private void insert_flight(){};
+    //private void update_flight(){};
     /*
     private Passenger search_passenger(){};
     private Luggage search_luggage(){};
      */
-    private void check_in_passenger(){};
-    private void check_missing_reports(){};
-    private void update_gate(){};
+    //private void check_in_passenger(){};
+    //private void check_missing_reports(){};
+    //private void update_gate(){};
 
 }

@@ -10,6 +10,7 @@ package model;
 public class User {
 
     private String username;
+    private String email;
     private String hashedPassword;
 
     public User(String par_username, String parHashedPassword){
@@ -22,18 +23,29 @@ public class User {
         return this.username;
     }
 
-    public int set_username(String par_username){
+    public void set_username(String par_username){
         this.username = par_username;
-        return 0;
     }
 
     public String get_password(){
+
         return this.hashedPassword;
+
     }
 
-    public int set_password(String parNewHashedPassword){
+    //non penso proprio vada fatto setPassword, la si inizializza solo nel costruttore, se poi si deve fare
+    //il cambio password la si aggiorna nel DB e poi si costruisce un nuovo oggetto
+    /*public int set_password(String parNewHashedPassword){
         this.hashedPassword = parNewHashedPassword;
         return 0;
+    }*/
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     //private void login(){};
