@@ -66,8 +66,8 @@ public class BookingController {
 
         for (Luggage luggage : getPassengerLuggages(index)) {
             switch (luggage.get_type()) {
-                case LuggageType.carry_on -> types.add(0);
-                case LuggageType.checked -> types.add(1);
+                case LuggageType.CARRY_ON -> types.add(0);
+                case LuggageType.CHECKED -> types.add(1);
             }
         }
 
@@ -75,7 +75,7 @@ public class BookingController {
     }
 
     public boolean checkPendingButton () {
-        return this.booking == null || (this.booking != null && this.booking.get_status() == BookingStatus.pending);
+        return this.booking == null || (this.booking != null && this.booking.get_status() == BookingStatus.PENDING);
     }
 
     public BookingStatus getBookingStatus() {

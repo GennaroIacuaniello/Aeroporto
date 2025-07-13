@@ -15,61 +15,76 @@ package model;
 
 public class Luggage {
 
-    private int id;
-    private LuggageType type;
-    private LuggageStatus status;
-    private Passenger passenger;
+    private Integer id = null;
+    private LuggageType type = null;
+    private LuggageStatus status = LuggageStatus.BOOKED;
+    Ticket ticket;
 
-    public Luggage(LuggageType par_type, Passenger par_passenger,int par_id) {
-        this.id = par_id;
-        this.type = par_type;
-        this.status = LuggageStatus.booked;
-        this.passenger = par_passenger;
+    public Luggage( Ticket parTicket) {
+
+        if(parTicket != null){
+            this.ticket = parTicket;
+        }else{
+            throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
+        }
+
     }
 
+    public Luggage(LuggageType parType, Ticket parTicket) {
+
+        if(parTicket != null){
+            this.type = parType;
+            this.ticket = parTicket;
+        }else{
+            throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
+        }
 
 
-    public int set_Id(int par_id) {
-
-        this.id = par_id;
-        return 0;
     }
 
-    public int get_Id() {
+    public Luggage(int parId, LuggageType parType, Ticket parTicket) {
 
-        return this.id;
+        if(parTicket != null){
+            this.id = parId;
+            this.type = parType;
+            this.status = LuggageStatus.BOOKED;
+            this.ticket = parTicket;
+        }else{
+            throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
+        }
+
+
     }
 
-    public int set_type(LuggageType par_type){
-        this.type = par_type;
-        return 0;
+    public Integer getId() {
+        return id;
     }
 
-    public LuggageType get_type(){
-        return this.type;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int set_Status(LuggageStatus par_status) {
-
-        this.status = par_status;
-        return 0;
-    }
-    public LuggageStatus get_Status() {
-
-        return this.status;
+    public LuggageType getType() {
+        return type;
     }
 
-    public int set_Passenger(Passenger par_passenger) {
-
-        this.passenger = par_passenger;
-        return 0;
+    public void setType(LuggageType type) {
+        this.type = type;
     }
 
-    public Passenger get_Passenger() {
-
-        return this.passenger;
+    public LuggageStatus getStatus() {
+        return status;
     }
 
+    public void setStatus(LuggageStatus status) {
+        this.status = status;
+    }
 
+    public Ticket getTicket() {
+        return ticket;
+    }
 
+    void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
 }

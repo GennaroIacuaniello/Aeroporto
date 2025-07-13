@@ -2,10 +2,12 @@ package model;
 
 public enum FlightStatus {
 
-    programmed,
-    cancelled,
-    departed,
-    delayed,
-    landed,
-    aboutToDepart
+    PROGRAMMED,
+    CANCELLED,
+    DELAYED,
+    ABOUT_TO_DEPART,
+    DEPARTED,
+    ABOUT_TO_ARRIVE,
+    LANDED
+
 }

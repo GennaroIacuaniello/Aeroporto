@@ -13,15 +13,41 @@ public class Customer extends User{
 
     private ArrayList<Booking> bookings;
 
-    public Customer(String par_username, String parHashedPassword){
-        super(par_username, parHashedPassword);
+    public Customer(String parUsername, String parHashedPassword){
+        super(parUsername, parHashedPassword);
         this.bookings = new ArrayList<Booking>(0);
     }
 
-    private void book_flight(){};
-    //private Booking search_booking(){};   commentata per evitare errori di compilazione (dovrebbe avere una return)
+    public Customer(String parUsername, String parEmail, String parHashedPassword){
+        super(parUsername, parEmail, parHashedPassword);
+        this.bookings = new ArrayList<Booking>(0);
+    }
 
-    private void update_boooking( Booking to_modify){
+    public Customer(String parUsername, String parHashedPassword, ArrayList<Booking> parBookings){
+        super(parUsername, parHashedPassword);
+        this.bookings = parBookings;
+    }
+
+    public Customer(String parUsername, String parEmail, String parHashedPassword, ArrayList<Booking> parBookings){
+        super(parUsername, parEmail, parHashedPassword);
+        this.bookings = parBookings;
+    }
+
+    public ArrayList<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(ArrayList<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+
+
+
+    //private void book_flight(){};
+    //private Booking search_booking(){};
+
+    /*private void update_boooking( Booking to_modify){
 
         Scanner scanner=new Scanner(System.in);
 
@@ -53,9 +79,9 @@ public class Customer extends User{
                     System.out.println("Inserisci codife fiscale passegero: ");
                     String tmp_SSN = scanner.nextLine();
 
-                    to_modify.add_passenger( new Passenger(tmp_name, tmp_lastname, tmp_SSN, 1/*choose_seat()*/) );
+                    to_modify.add_passenger( new Passenger(tmp_name, tmp_lastname, tmp_SSN, 1/*choose_seat()*///) );
                     //choose_seat();        sarà implementata poi
-                    break;
+         /*           break;
                 case 4:
                     Passenger to_remove; //=search_passenger();   sarà implementata poi
                     //to_modify.remove_passenger(to_remove);
@@ -71,13 +97,13 @@ public class Customer extends User{
         }while(op != 6);
 
 
-    };
+    };*/
     //private BookingStatus check_booking_status(){};
     /*
     private Passenger search_passenger(){};
     private Luggage search_luggage(){};
      */
-    private void report_missing_luggage(){};
+    /*private void report_missing_luggage(){};
 
     public int add_booking(Booking par_booking){
         this.bookings.add(par_booking);
@@ -91,6 +117,6 @@ public class Customer extends User{
         }else{
             return -1;
         }
-    }
+    }*/
 
 }

@@ -4,10 +4,10 @@ import model.FlightStatus;
 
 public class FlightStatusController {
 
-    public FlightStatus programmed = FlightStatus.programmed;
-    public FlightStatus cancelled = FlightStatus.cancelled;
-    public FlightStatus departed = FlightStatus.departed;
-    public FlightStatus delayed = FlightStatus.delayed;
-    public FlightStatus landed = FlightStatus.landed;
-    public FlightStatus aboutToDepart = FlightStatus.aboutToDepart;
+    public FlightStatus programmed = FlightStatus.PROGRAMMED;
+    public FlightStatus cancelled = FlightStatus.CANCELLED;
+    public FlightStatus departed = FlightStatus.DEPARTED;
+    public FlightStatus delayed = FlightStatus.DELAYED;
+    public FlightStatus landed = FlightStatus.LANDED;
+    public FlightStatus aboutToDepart = FlightStatus.ABOUT_TO_DEPART;
 }

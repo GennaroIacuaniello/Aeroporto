@@ -10,16 +10,27 @@ public class Gate {
 
     private byte id;
 
-    public Gate(byte par_id) {
-        this.id = par_id;
+    public Gate(byte parId) throws InvalidGate {
+
+        if(parId < 0 || parId > 19){
+            throw new InvalidGate("Gate non valido!");
+        }else{
+            this.id = parId;
+        }
+
     }
 
-    public byte get_Id() {
-        return this.id;
+    public byte getId() {
+        return id;
     }
 
-    public int set_Id(byte par_id) {
-        this.id = par_id;
-        return 0;
+    public void setId(byte id) throws InvalidGate {
+
+        if(id < 0 || id > 19){
+            throw new InvalidGate("Gate non valido!");
+        }else{
+            this.id = id;
+        }
+
     }
 }

@@ -53,7 +53,7 @@ public class TestFlightInfo {
         passengers.add (new Passenger("chiara", "russo", "jkl", 6));
         passengers.add (new Passenger("rosa", "manzo", "zxc", 4));
 
-        passengers.getFirst().add_luggage(new Luggage(LuggageType.carry_on, passengers.getFirst(), 1));
+        passengers.getFirst().add_luggage(new Luggage(LuggageType.CARRY_ON, passengers.getFirst(), 1));
         passengers.getFirst().set_check_in(true);
 
         for (Passenger passenger : passengers) {
@@ -62,14 +62,14 @@ public class TestFlightInfo {
 
         //sistemo il controller
         controller.getFlightController().setDepartingFlight("03", "che ne so", new Date(2025, 2, 14), new Time(1,1,1),
-                new Time(1,1,1), FlightStatus.programmed, 19, "Barcellona");
+                new Time(1,1,1), FlightStatus.PROGRAMMED, 19, "Barcellona");
 
-        controller.getFlightController().setFlightStatus(FlightStatus.programmed);
+        controller.getFlightController().setFlightStatus(FlightStatus.PROGRAMMED);
 
         controller.getBookingController().setBooking(new Customer("pippo", "notAnActualHash"), controller.getFlightController().getFlight(), passengers);
 
         Booking booking = new Booking(new Customer("pippo", "thisShouldBeAHash"), controller.getFlightController().getFlight(), passengers);
-        booking.set_status(BookingStatus.confirmed);
+        booking.set_status(BookingStatus.CONFIRMED);
 
         controller.getFlightController().getFlight().addBooking(booking);
 
@@ -80,7 +80,7 @@ public class TestFlightInfo {
         passengers2.add(new Passenger("a", "a", "a", 15));
         passengers2.add(new Passenger("a", "a", "a", 16));
 
-        controller.getFlightController().getFlight().addBooking(new Booking(new Customer("x", "shouldPutAHashHere"), controller.getFlightController().getFlight(), passengers2, BookingStatus.pending));
+        controller.getFlightController().getFlight().addBooking(new Booking(new Customer("x", "shouldPutAHashHere"), controller.getFlightController().getFlight(), passengers2, BookingStatus.PENDING));
 
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();

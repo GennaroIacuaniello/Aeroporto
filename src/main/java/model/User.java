@@ -13,21 +13,26 @@ public class User {
     private String email;
     private String hashedPassword;
 
-    public User(String par_username, String parHashedPassword){
-        this.username = par_username;
+    public User(String parUsername, String parHashedPassword){
+        this.username = parUsername;
         this.hashedPassword = parHashedPassword;
-        //Più avanti: cercare l'username nel database e verificare che la password sia corretta
     }
 
-    public String get_username(){
+    public User(String parUsername, String parEmail, String parHashedPassword){
+        this.username = parUsername;
+        this.email = parEmail;
+        this.hashedPassword = parHashedPassword;
+    }
+
+    public String getUsername(){
         return this.username;
     }
 
-    public void set_username(String par_username){
-        this.username = par_username;
+    public void setUsername(String parUsername){
+        this.username = parUsername;
     }
 
-    public String get_password(){
+    public String getPassword(){
 
         return this.hashedPassword;
 

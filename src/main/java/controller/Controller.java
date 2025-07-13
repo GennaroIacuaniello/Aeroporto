@@ -140,9 +140,9 @@ public class Controller {
         return bookingStatusController;
     }
 
-    public void setAdminNUser (String username, String hashedPassword) {
-        adminController.setAdmin (username, hashedPassword);
-        userController.setUser (username, hashedPassword);
+    public void setAdminNUser (String username, String email, String hashedPassword) {
+        adminController.setAdmin (username, email, hashedPassword);
+        userController.setUser (username, email, hashedPassword);
     }
 
     public void setCustomerNUser (String username, String hashedPassword) {
@@ -152,7 +152,7 @@ public class Controller {
 
     public boolean checkBooking (int index) {
         if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().getBookings().get(index)) return false;
-        if (getFlightController().getFlight().getBookings().get(index).get_status() == BookingStatus.cancelled) return false;
+        if (getFlightController().getFlight().getBookings().get(index).get_status() == BookingStatus.CANCELLED) return false;
 
         return true;
     }

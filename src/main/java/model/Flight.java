@@ -2,6 +2,7 @@ package model;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.List;
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
     - rivedere tipi di ritorno metodi
@@ -16,26 +17,24 @@ public class Flight {
     private Date date;
     private Time departureTime;
     private Time arrivalTime;
-    private FlightStatus status;
+    private FlightStatus status = FlightStatus.PROGRAMMED;
     private int maxSeats;
     private int freeSeats;
-    private ArrayList<Booking> bookings;
-    private ArrayList<Passenger> passengers;
+    private ArrayList<Booking> bookings = new ArrayList<>(0);
+    private ArrayList<Ticket> tickets = new ArrayList<>(0);
+    private Gate gate = null;
 
     public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
                   Time parArrivalTime, int parMaxSeats){
 
         this.id = parId;
         this.companyName = parCompanyName;
-        //this.city = parCity;
         this.date = parDate;
         this.departureTime = parDepartureTime;
         this.arrivalTime = parArrivalTime;
-        this.status = FlightStatus.programmed;
         this.maxSeats = parMaxSeats;
         this.freeSeats = this.maxSeats;
-        this.bookings = new ArrayList<Booking>(0);
-        this.passengers = new ArrayList<Passenger>(0);
+
     }
 
     public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
@@ -43,147 +42,138 @@ public class Flight {
 
         this.id = parId;
         this.companyName = parCompanyName;
-        //this.city = parCity;
         this.date = parDate;
         this.departureTime = parDepartureTime;
         this.arrivalTime = parArrivalTime;
         this.status = parStatus;
         this.maxSeats = parMaxSeats;
         this.freeSeats = parFreeSeats;
-        this.bookings = new ArrayList<Booking>(0);
-        this.passengers = new ArrayList<Passenger>(0);
 
     }
 
-    public String getId(){
-        return this.id;
-    }
+    public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                  Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats,
+                  List<Booking> parBookings, List<Ticket> parTickets ){
 
-    public int setId(String parId){
         this.id = parId;
-        return 0;
-    }
-
-    public String getCompanyName(){
-        return this.companyName;
-    }
-
-    public int setCompanyName(String parCompanyName){
         this.companyName = parCompanyName;
-        return 0;
+        this.date = parDate;
+        this.departureTime = parDepartureTime;
+        this.arrivalTime = parArrivalTime;
+        this.status = parStatus;
+        this.maxSeats = parMaxSeats;
+        this.freeSeats = parFreeSeats;
+        this.bookings = (ArrayList<Booking>) parBookings;
+        this.tickets = (ArrayList<Ticket>) parTickets;
+
     }
 
-    /*public String getCity(){
-        return this.city;
+    public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                  Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats,
+                  List<Booking> parBookings, List<Ticket> parTickets, Gate parGate ){
+
+        this.id = parId;
+        this.companyName = parCompanyName;
+        this.date = parDate;
+        this.departureTime = parDepartureTime;
+        this.arrivalTime = parArrivalTime;
+        this.status = parStatus;
+        this.maxSeats = parMaxSeats;
+        this.freeSeats = parFreeSeats;
+        this.bookings = (ArrayList<Booking>) parBookings;
+        this.tickets = (ArrayList<Ticket>) parTickets;
+        this.gate = parGate;
+
     }
 
-    public int setCity(String parCity){
-        this.city = parCity;
-        return 0;
+    public String getId() {
+        return id;
+    }
+
+    //non si può modificare l'id
+    /*
+    public void setId(String id) {
+        this.id = id;
     }*/
 
-    public Date getDate(){
-        return this.date;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public int setDate(Date parDate){
-        this.date = parDate;
-        return 0;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public Time getDepartureTime(){
-        return this.departureTime;
+    public Date getDate() {
+        return date;
     }
 
-    public int setDepartureTime(Time parDepartureTime){
-        this.departureTime = parDepartureTime;
-        return 0;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public Time getArrivalTime(){
-        return this.arrivalTime;
+    public Time getDepartureTime() {
+        return departureTime;
     }
 
-    public int setArrivalTime(Time parArrivalTime) {
-        this.arrivalTime = parArrivalTime;
-        return 0;
+    public void setDepartureTime(Time departureTime) {
+        this.departureTime = departureTime;
     }
 
-    public int getMaxSeats(){
-        return this.maxSeats;
+    public Time getArrivalTime() {
+        return arrivalTime;
     }
 
-    public int setMaxSeats(int parMaxSeats){
-        this.maxSeats = parMaxSeats;
-        return 0;
+    public void setArrivalTime(Time arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 
-    public int getFreeSeats(){
-        return this.freeSeats;
+    public FlightStatus getStatus() {
+        return status;
     }
 
-    public FlightStatus getStatus(){
-        return this.status;
+    public void setStatus(FlightStatus status) {
+        this.status = status;
     }
 
-    public int setStatus(FlightStatus parStatus){
-        this.status = parStatus;
-        return 0;
+    public int getMaxSeats() {
+        return maxSeats;
     }
 
-    public void rollBackAddBooking(int count){
-        for(int i=0; i < count; i++) {
-            this.passengers.removeLast();
-        }
-        this.bookings.removeLast();
+    public void setMaxSeats(int maxSeats) {
+        this.maxSeats = maxSeats;
     }
 
-    public int addBooking(Booking parBooking){
-        this.bookings.add(parBooking);
-        int control = 0, count = 0;
-        for(Passenger x : parBooking.get_passengers()){
-
-            control = this.addPassenger(x);
-            if(control != 0){
-                rollBackAddBooking(count);
-                return control;
-            }
-            count++;
-        }
-        return 0;
+    public int getFreeSeats() {
+        return freeSeats;
     }
 
-    public int addPassenger(Passenger parPassenger){
-        if(this.freeSeats > 0){
-            this.freeSeats--;
-            this.passengers.add(parPassenger);
-            return 0;
-        }
-
-        return -1;
+    public void setFreeSeats(int freeSeats) {
+        this.freeSeats = freeSeats;
     }
 
-    public int removeBooking(Booking parBooking){
-        boolean control = this.bookings.remove(parBooking);
-        if(control){
-            for(Passenger x : parBooking.passengers){
-                this.removePassenger(x);
-            }
-            return 0;
-        }
-
-        return -1;
-
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public int removePassenger(Passenger parPassenger){
-        boolean control = this.passengers.remove(parPassenger);
-        if(control) {
-            this.freeSeats++;
-            return 0;
-        }
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = (ArrayList<Booking>) bookings;
+    }
 
-        return -1;
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = (ArrayList<Ticket>) tickets;
+    }
+
+    public Gate getGate() {
+        return gate;
+    }
+
+    public void setGate(Gate gate) {
+        this.gate = gate;
     }
 
     public String getMonthName(){
@@ -193,12 +183,4 @@ public class Flight {
         return monthNames[this.getDate().getMonth()];
     }
 
-    public ArrayList<Passenger> getPassengers(){
-
-        return this.passengers;
-    }
-
-    public ArrayList<Booking> getBookings() {
-        return this.bookings;
-    }
 }

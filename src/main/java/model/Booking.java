@@ -1,7 +1,7 @@
 package model;
 
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
 /*TO DO:
     - rivedere la visibilità di metodi e attributi
@@ -15,105 +15,172 @@ import java.util.Date;
 public class Booking {
 
     private BookingStatus status;
-    private Customer owner;
-    private Flight booked_flight;
-    private Date date;
-    protected ArrayList<Passenger> passengers;
+    private Customer buyer;
+    private Flight bookedFlight;
+    private Time bookingTime;
+    private ArrayList<Ticket> tickets;
 
-    public Booking(Customer par_owner, Flight par_booked_flight, ArrayList<Passenger> par_passengers) throws InvalidPassengerNumber{
+    public Booking(Customer parBuyer, Flight parBookedFlight, Time parBookingTime, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
-        if(par_passengers.size() > 0){
-            this.status = BookingStatus.pending;
-            this.owner = par_owner;
-            this.booked_flight = par_booked_flight;
-            this.passengers = par_passengers;
+        if(parBuyer != null){
+
+            if(parBookedFlight != null){
+
+                if(!parTickets.isEmpty()){
+
+                    this.status = BookingStatus.PENDING;
+                    this.buyer = parBuyer;
+                    this.bookedFlight = parBookedFlight;
+                    this.bookingTime = parBookingTime;
+                    this.tickets = parTickets;
+
+                }else{
+                    throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
+                }
+            }else{
+                throw new InvalidFlight("La prenotazione deve essere riferita ad un volo!");
+            }
+
+        }else{
+            throw new InvalidBuyer("La prenotazione deve avere un acquirente!");
+        }
+
+
+    }
+
+    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Time parBookingTime, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+
+        if(parBuyer != null){
+
+            if(parBookedFlight != null){
+
+                if(!parTickets.isEmpty()){
+
+                    this.status = parStatus;
+                    this.buyer = parBuyer;
+                    this.bookedFlight = parBookedFlight;
+                    this.bookingTime = parBookingTime;
+                    this.tickets = parTickets;
+
+                }else{
+                    throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
+                }
+            }else{
+                throw new InvalidFlight("La prenotazione deve essere riferita ad un volo!");
+            }
+
+        }else{
+            throw new InvalidBuyer("La prenotazione deve avere un acquirente!");
+        }
+
+    }
+
+    public Booking(Customer parBuyer, Flight parBookedFlight, Time parBookingTime, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+
+        if(parBuyer != null){
+
+            if(parBookedFlight != null){
+
+                if(parTicket != null){
+
+                    this.status = BookingStatus.PENDING;
+                    this.buyer = parBuyer;
+                    this.bookedFlight = parBookedFlight;
+                    this.bookingTime = parBookingTime;
+                    this.tickets = new ArrayList<>();
+                    this.tickets.add(parTicket);
+
+                }else{
+                    throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
+                }
+            }else{
+                throw new InvalidFlight("La prenotazione deve essere riferita ad un volo!");
+            }
+
+        }else{
+            throw new InvalidBuyer("La prenotazione deve avere un acquirente!");
+        }
+
+    }
+
+    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Time parBookingTime, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+
+        if(parBuyer != null){
+
+            if(parBookedFlight != null){
+
+                if(parTicket != null){
+
+                    this.status = parStatus;
+                    this.buyer = parBuyer;
+                    this.bookedFlight = parBookedFlight;
+                    this.bookingTime = parBookingTime;
+                    this.tickets = new ArrayList<>();
+                    this.tickets.add(parTicket);
+
+                }else{
+                    throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
+                }
+            }else{
+                throw new InvalidFlight("La prenotazione deve essere riferita ad un volo!");
+            }
+
+        }else{
+            throw new InvalidBuyer("La prenotazione deve avere un acquirente!");
+        }
+
+    }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public Customer getBuyer() {
+        return buyer;
+    }
+
+    //non si può modificare l'acquirente
+    /*
+    public void setBuyer(Customer buyer) {
+        this.buyer = buyer;
+    }*/
+
+    public Flight getBookedFlight() {
+        return bookedFlight;
+    }
+
+    //non si può modificare il volo associato
+    /*
+    public void setBookedFlight(Flight bookedFlight) {
+        this.bookedFlight = bookedFlight;
+    }*/
+
+    public Time getBookingTime() {
+        return bookingTime;
+    }
+
+    //non si può modificare il momento della prenotazione
+    /*
+    public void setBookingTime(Time bookingTime) {
+        this.bookingTime = bookingTime;
+    }*/
+
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(ArrayList<Ticket> tickets) throws InvalidPassengerNumber{
+
+        if(!tickets.isEmpty()){
+            this.tickets = tickets;
         }else{
             throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
         }
 
     }
 
-    public Booking(Customer par_owner, Flight par_booked_flight, ArrayList<Passenger> par_passengers, BookingStatus par_status) throws InvalidPassengerNumber{
-
-        if(par_passengers.size() > 0){
-            this.status = par_status;
-            this.owner = par_owner;
-            this.booked_flight = par_booked_flight;
-            this.passengers = par_passengers;
-        }else{
-            throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
-        }
-
-    }
-
-    public BookingStatus get_status(){
-        return this.status;
-    }
-
-    public int set_status(BookingStatus par_status){
-        this.status = par_status;
-        return 0;
-    }
-
-    public Customer get_owner(){
-        return this.owner;
-    }
-
-    public int set_owner(Customer par_owner){
-        this.owner = par_owner;
-        return 0;
-    }
-
-    public Flight get_booked_flight(){
-        return this.booked_flight;
-    }
-
-    public int set_booked_flight(Flight par_booked_flight){
-        this.booked_flight = par_booked_flight;
-        return 0;
-    }
-
-    public Date get_date(){
-        return this.date;
-    }
-
-    public int set_date(Date par_date){
-        this.date = par_date;
-        return 0;
-    }
-
-    public void set_Passengers(ArrayList<Passenger> par_passengers){
-        this.passengers = par_passengers;
-    }
-
-    public int add_passenger(Passenger par_passenger){
-
-        this.passengers.add(par_passenger);
-
-        int control = this.booked_flight.addPassenger(par_passenger);
-
-        if(control != 0) {
-            return -1;
-        }
-
-        return -1;
-
-
-    }
-
-    public int remove_passenger(Passenger par_passenger){
-        boolean control = this.passengers.remove(par_passenger);
-        if(control) {
-            this.booked_flight.removePassenger(par_passenger);
-            return 0;
-        }
-        else{
-            return -1;
-        }
-
-    }
-
-    public ArrayList<Passenger> get_passengers(){
-        return this.passengers;
-    }
 }

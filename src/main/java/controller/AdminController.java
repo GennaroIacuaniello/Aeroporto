@@ -7,8 +7,8 @@ public class AdminController {
 
     public AdminController() {}
 
-    public void setAdmin(String username, String hashedPassword) {
-        admin = new Admin(username, hashedPassword);
+    public void setAdmin(String username, String email, String hashedPassword) {
+        admin = new Admin(username, email, hashedPassword);
     }
 
     public void setAdmin(Admin admin) {

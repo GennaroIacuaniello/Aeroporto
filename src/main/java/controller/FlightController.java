@@ -132,8 +132,8 @@ public class FlightController {
 
         for (Luggage luggage : flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Luggages()) {
             switch (luggage.get_type()) {
-                case LuggageType.carry_on -> types.add(0);
-                case LuggageType.checked -> types.add(1);
+                case LuggageType.CARRY_ON -> types.add(0);
+                case LuggageType.CHECKED -> types.add(1);
             }
         }
 
@@ -166,8 +166,8 @@ public class FlightController {
 
         for (Luggage luggage : getPassengerLuggages(index)) {
             switch (luggage.get_type()) {
-                case LuggageType.carry_on -> types.add(0);
-                case LuggageType.checked -> types.add(1);
+                case LuggageType.CARRY_ON -> types.add(0);
+                case LuggageType.CHECKED -> types.add(1);
             }
         }
 
@@ -189,7 +189,7 @@ public class FlightController {
 
     public boolean checkBookingConfirm (int index) {
 
-        return flight.getBookings().get(index).get_status().equals(BookingStatus.confirmed);
+        return flight.getBookings().get(index).get_status().equals(BookingStatus.CONFIRMED);
     }
 
     public void setFlightStatus (FlightStatus flightStatus) {

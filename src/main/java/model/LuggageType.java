@@ -2,7 +2,7 @@ package model;
 
 public enum LuggageType {
 
-    carry_on,   //bagaglio a mano
-    checked,    //bagaglio da stiva
+    CARRY_ON,   //bagaglio a mano
+    CHECKED,    //bagaglio da stiva
 
 }

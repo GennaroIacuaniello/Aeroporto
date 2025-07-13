@@ -8,30 +8,26 @@ package model;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 public class Departing extends Flight{
 
     private String destination;
-    private int departureDelay;
-    private Gate gate;
+    private int departureDelay = 0;
 
     public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
-                     Time parArrivalTime, int parMaxSeats, String destination) {
+                    Time parArrivalTime, int parMaxSeats, String parDestination){
 
         super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parMaxSeats);
-        this.destination = destination;
-        this.departureDelay = 0;
-        this.gate = new Gate((byte)-1);
+        this.destination = parDestination;
+
     }
 
     public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
                     Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parDestination){
 
         super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats);
-
         this.destination = parDestination;
-        this.departureDelay = 0;
-        this.gate = new Gate((byte)-1);
 
     }
 
@@ -39,41 +35,59 @@ public class Departing extends Flight{
                     Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parDestination, int parDepartureDelay){
 
         super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats);
-
         this.destination = parDestination;
-        this.departureDelay =  parDepartureDelay;
-        this.gate = new Gate((byte)-1);
+        this.departureDelay = parDepartureDelay;
 
     }
 
-    public String get_destination() {
-        return this.destination;
+    public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                    Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats,
+                    List<Booking> parBookings, List<Ticket> parTickets, String parDestination){
+
+        super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parBookings, parTickets);
+        this.destination = parDestination;
+
     }
 
-    public int get_departure_delay() {
-        return this.departureDelay;
+    public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                    Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats,
+                    List<Booking> parBookings, List<Ticket> parTickets, String parDestination, int parDepartureDelay){
+
+        super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parBookings, parTickets);
+        this.destination = parDestination;
+        this.departureDelay = parDepartureDelay;
+
     }
 
-    public Gate get_gate() {
-        return this.gate;
+    public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                    Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats,
+                    List<Booking> parBookings, List<Ticket> parTickets, Gate parGate, String parDestination, int parDepartureDelay){
+
+        super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parBookings, parTickets, parGate);
+        this.destination = parDestination;
+        this.departureDelay = parDepartureDelay;
+
     }
 
-    public int set_destination(String par_destination) {
-        this.destination = par_destination;
-        return 0;
+    public String getDestination() {
+        return destination;
     }
 
-    public int set_departure_delay(int par_departure_delay) {
-        this.departureDelay = par_departure_delay;
-        return 0;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
+    public int getDepartureDelay() {
+        return departureDelay;
+    }
+
+    public void setDepartureDelay(int departureDelay) {
+        this.departureDelay = departureDelay;
+    }
+
+    /*
     public void print_departure_delay(){
         System.out.println("Volo in ritardo di: " + this.departureDelay /60 + " ore e "+ this.departureDelay %60 + " minuti.");
-    }
+    }*/
 
-    public int set_gate(Gate par_gate) {
-        this.gate = par_gate;
-        return 0;
-    }
 }

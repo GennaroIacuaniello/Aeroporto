@@ -24,7 +24,7 @@ public class Home extends DisposableObject {
 
         controller.setCustomerNUser("Tramontana", "whenAreYouGonnaPutHashesHere?");
         controller.getFlightController().setDepartingFlight("01", "Compagnia", new Date(1),
-                new Time(1,1,1), new Time(1,1,1), FlightStatus.programmed, 66, 33, "Roma", 0);
+                new Time(1,1,1), new Time(1,1,1), FlightStatus.PROGRAMMED, 66, 33, "Roma", 0);
 
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
         //callingObjects.add(this);
