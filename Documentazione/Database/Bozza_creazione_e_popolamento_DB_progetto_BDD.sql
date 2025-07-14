@@ -4,7 +4,9 @@ CREATE TABLE Admin (
 	mail VARCHAR(50) UNIQUE NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 
-	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 )
+	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 ),
+	CONSTRAINT correct_mail_format CHECK( mail LIKE '%@%.%' AND mail NOT LIKE '%@%@%')
+	--controllo ci sia una e una sola @ e almeno un punto
 
 );
 
@@ -13,30 +15,29 @@ CREATE TABLE Admin (
 CREATE TABLE Customer (
 
 	username VARCHAR(20) PRIMARY KEY,
-	mail VARCHAR(50) UNIQUE,
+	mail VARCHAR(50) UNIQUE NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 
-	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 )
+	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 ),
+	CONSTRAINT correct_mail_format CHECK( mail LIKE '%@%.%' AND mail NOT LIKE '%@%@%')
+	--controllo ci sia una e una sola @ e almeno un punto
 
 );
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION fun_unique_attribute_between_two_tables() --TG_ARGV[0] = attr VARCHAR(100), TG_ARGV[1] = other_table VARCHAR(100)
-RETURNS trigger AS $$
-DECLARE
-	
-	attr VARCHAR(100) := TG_ARGV[0];
-	other_table VARCHAR(100) := TG_ARGV[1];
-	found BOOLEAN := false;
+--TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
 
+CREATE OR REPLACE FUNCTION fun_unique_username_admin_with_customer()
+RETURNS TRIGGER
+AS $$
 BEGIN
 
-	EXECUTE format('EXISTS(SELECT * FROM %I T WHERE T.%I = (SELECT ($1).%I)', other_table, attr, attr) INTO found USING NEW;
-	-- (SELECT ($1).%I) è il modo per selezionare dinamicamente un attributo dalla tupla ($1), in questo caso l'intera tupla NEW
+	IF EXISTS(SELECT * FROM CUSTOMER C
+			  WHERE C.username = NEW.username) THEN 
 
-	IF found THEN
-		RAISE EXCEPTION '%I già presente tra la tabella %I e la tabella %I!', INITCAP(attr), TG_TABLE_NAME, other_table;
+		RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+
 	END IF;
 
 	RETURN NEW;
@@ -44,25 +45,89 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
 CREATE OR REPLACE TRIGGER unique_username_admin_with_customer
 BEFORE INSERT OR UPDATE OF username ON Admin
 FOR EACH ROW
-EXECUTE FUNCTION fun_unique_attribute_between_two_tables('username', 'customer');
+EXECUTE FUNCTION fun_unique_username_admin_with_customer();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO CUSTOMER)
+
+CREATE OR REPLACE FUNCTION fun_unique_username_customer_with_admin()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF EXISTS(SELECT * FROM ADMIN A
+			  WHERE A.username = NEW.username) THEN 
+
+		RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER unique_username_customer_with_admin
 BEFORE INSERT OR UPDATE OF username ON Customer
 FOR EACH ROW
-EXECUTE FUNCTION fun_unique_attribute_between_two_tables('username', 'admin');
+EXECUTE FUNCTION fun_unique_username_customer_with_admin();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER UNA MAIL NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
+
+CREATE OR REPLACE FUNCTION fun_unique_mail_admin_with_customer()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF EXISTS(SELECT * FROM CUSTOMER C
+			  WHERE C.mail = NEW.mail) THEN 
+
+		RAISE EXCEPTION 'Mail %L già utilizzato da un altro utente!', NEW.mail;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER unique_mail_admin_with_customer
 BEFORE INSERT OR UPDATE OF mail ON Admin
 FOR EACH ROW
-EXECUTE FUNCTION fun_unique_attribute_between_two_tables('mail', 'customer');
+EXECUTE FUNCTION fun_unique_mail_admin_with_customer();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER UNA MAIL NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO CUSTOMER)
+
+CREATE OR REPLACE FUNCTION fun_unique_mail_customer_with_admin()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF EXISTS(SELECT * FROM ADMIN A
+			  WHERE A.mail = NEW.mail) THEN 
+
+		RAISE EXCEPTION 'Mail %L già utilizzato da un altro utente!', NEW.mail;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER unique_mail_customer_with_admin
 BEFORE INSERT OR UPDATE OF mail ON Customer
 FOR EACH ROW
-EXECUTE FUNCTION fun_unique_attribute_between_two_tables('mail', 'admin');
+EXECUTE FUNCTION fun_unique_mail_customer_with_admin();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -82,23 +147,27 @@ CREATE TABLE Flight (
 
 	id_flight VARCHAR(15) PRIMARY KEY,
 	company_name VARCHAR(32) NOT NULL,
-	date DATE NOT NULL,
-	departure_time	TIME NOT NULL,
+	flight_date DATE NOT NULL,
+	departure_time TIME NOT NULL,
 	arrival_time TIME NOT NULL,
 	flight_status FlightStatus NOT NULL,
 	max_seats SMALLINT NOT NULL,
 	free_seats SMALLINT NOT NULL,
 	destination_or_origin VARCHAR(64) NOT NULL,
-	flight_delay Minutes,
+	flight_delay Minutes NOT NUL,
 	flight_type FlightType NOT NULL,
 	id_gate SMALLINT,
 	
-	
-	CONSTRAINT max_free_seats CHECK(free_seats <= max_seats),
+	CONSTRAINT id_flight_not_empty CHECK(LENGTH(id_flight) > 0),
+	CONSTRAINT comapny_name_not_empty CHECK(LENGTH(company_name) > 0),
 	CONSTRAINT arrival_after_departure CHECK( arrival_time > departure_time),
+	CONSTRAINT max_seats_positive CHECK(max_seats > 0),
+	CONSTRAINT free_seats_not_negative CHECK(free_seats >= 0),
+	CONSTRAINT max_free_seats CHECK(free_seats <= max_seats),
+	CONSTRAINT destination_or_origin_not_empty CHECK(LENGTH(destination_or_origin) > 0),
 	CONSTRAINT destination_or_origin_never_Napoli CHECK(destination_or_origin NOT LIKE 'Napoli'),
 	--perché a priori, che sia departing o arriving, memorizziamo sempre l' "altra città", non Napoli
-	CONSTRAINT delay_not_negative CHECK(flight_delay IS NULL OR flight_delay > 0),
+	CONSTRAINT flight_delay_not_negative CHECK(flight_delay >= 0),
 	CONSTRAINT correctness_of_id_gate CHECK(id_gate IS NULL OR id_gate BETWEEN 0 AND 19) --l'aeroporto di Napoli ha 20 gate
 
 );
@@ -196,12 +265,13 @@ CREATE TABLE Booking (
 
 	id_booking SERIAL PRIMARY KEY,
 	booking_status BookingStatus NOT NULL,
-	booking_date DATE NOT NULL,
+	booking_time TIME NOT NULL,
 	buyer VARCHAR(20) NOT NULL,
 	id_flight  VARCHAR(15) NOT NULL,
 
-	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(username),
-	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight)
+	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIME),
+	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(username) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 
@@ -262,8 +332,9 @@ EXECUTE FUNCTION fun_block_modifying_booking_if_flight_aboutToDepart_departed_ab
 
 CREATE TABLE Passenger (
 
-	ticket_number CHAR(13) PRIMARY KEY,
-	full_name VARCHAR(50),
+	
+	first_name VARCHAR(30),
+	last_name VARCHAR(30),
 	SSN VARCHAR(16),
 	seat INTEGER,
 	checked_in BOOLEAN NOT NULL DEFAULT false,
@@ -1338,7 +1409,7 @@ EXECUTE FUNCTION fun_luggages_withdrowable_when_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED aboutToArrive O LANDED SOLO SE FLIGHT.DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
+--TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED aboutToArrive O LANDED SOLO SE FLIGHT.FLIGHT_DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
 
 CREATE OR REPLACE FUNCTION fun_check_on_date_before_aboutToDepart_or_more()
 RETURNS TRIGGER
@@ -1347,20 +1418,20 @@ BEGIN
 		
 	IF NEW.flight_status = 'aboutToDepart' THEN
 	
-		IF NEW.date > CURRENT_DATE + 1 THEN
+		IF NEW.flight_date > CURRENT_DATE + 1 THEN
 		--posso aprire i check-in (e quindi mettere ad aboutToDepart) al più il giorno prima della partenza del volo
-		--e quindi non posso aprirli solo se NEW.date non è nè oggi nè domani
+		--e quindi non posso aprirli solo se NEW.flight_date non è nè oggi nè domani
 
-			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %L! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.date, NEW.flight_delay;
+			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %L! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.flight_date, NEW.flight_delay;
 
 		END IF;
 	
 	ELSIF  NEW.flight_status = 'departed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN 
 
-		IF NEW.date > CURRENT_DATE THEN
+		IF NEW.flight_date > CURRENT_DATE THEN
 		--un volo deve invece partire almeno nella data stabilita, al più partirà dopo per ritardi
 
-			RAISE EXCEPTION 'Il volo %L non può ancora partire! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.date, NEW.flight_delay;
+			RAISE EXCEPTION 'Il volo %L non può ancora partire! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.flight_date, NEW.flight_delay;
 
 		END IF;
 
