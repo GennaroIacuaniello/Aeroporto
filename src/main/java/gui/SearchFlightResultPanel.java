@@ -13,6 +13,8 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,29 @@ public class SearchFlightResultPanel extends JPanel {
         else
             resultsTable = new JTable(tableModel);
 
+        resultsTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                JTable table = (JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                int col = table.columnAtPoint(point);
+                if (table.getSelectedRow() != -1 && row != -1 && col == 8) {
 
+                    Flight selectedFlight = searchedFlights.get(table.rowAtPoint(point));
+
+                    controller.getFlightController().setFlight(selectedFlight);
+
+                    new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                    
+                    // the row number is the visual row number
+                    // when filtering or sorting it is not the model's row number
+                    // this line takes care of that
+                    // int modelRow = table.convertRowIndexToModel(row);
+                }
+            }
+        });
 
         setTableApperance(callingObjects, controller);
 
@@ -58,6 +82,7 @@ public class SearchFlightResultPanel extends JPanel {
 
         resultsTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         resultsTable.setRowHeight(35);
+        resultsTable.setRowSelectionAllowed(false);
         resultsTable.setFillsViewportHeight(true);
         resultsTable.setGridColor(new Color(220, 220, 220));
 
@@ -219,6 +244,7 @@ public class SearchFlightResultPanel extends JPanel {
             button.setOpaque(true);
             button.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
+            //todo: valutare cosa rimuovere (principalmente se questo listener può essere rimosso)
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
