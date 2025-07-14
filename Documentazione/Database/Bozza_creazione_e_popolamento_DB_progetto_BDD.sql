@@ -1,8 +1,10 @@
 CREATE TABLE Admin (
 
-	username VARCHAR(20) PRIMARY KEY,
+	id_admin SERIAL PRIMARY KEY,
+	username VARCHAR(20) NOT NULL,
 	mail VARCHAR(50) UNIQUE NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
+	is_deleted BOOLEAN NOT NULL DEFAULT false,
 
 	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 ),
 	CONSTRAINT correct_mail_format CHECK( mail LIKE '%@%.%' AND mail NOT LIKE '%@%@%')
@@ -14,9 +16,11 @@ CREATE TABLE Admin (
 
 CREATE TABLE Customer (
 
+	id_customer SERIAL PRIMARY KEY,
 	username VARCHAR(20) PRIMARY KEY,
 	mail VARCHAR(50) UNIQUE NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
+	is_deleted BOOLEAN NOT NULL DEFAULT false,
 
 	CONSTRAINT correctness_of_username_minimal_length CHECK( LENGTH(username) >= 4 ),
 	CONSTRAINT correct_mail_format CHECK( mail LIKE '%@%.%' AND mail NOT LIKE '%@%@%')
@@ -34,7 +38,7 @@ AS $$
 BEGIN
 
 	IF EXISTS(SELECT * FROM CUSTOMER C
-			  WHERE C.username = NEW.username) THEN 
+			  WHERE C.username = NEW.username AND C.is_deleted = false) THEN 
 
 		RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
 
@@ -61,7 +65,7 @@ AS $$
 BEGIN
 
 	IF EXISTS(SELECT * FROM ADMIN A
-			  WHERE A.username = NEW.username) THEN 
+			  WHERE A.username = NEW.username AND A.is_deleted = false) THEN 
 
 		RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
 
@@ -87,7 +91,7 @@ AS $$
 BEGIN
 
 	IF EXISTS(SELECT * FROM CUSTOMER C
-			  WHERE C.mail = NEW.mail) THEN 
+			  WHERE C.mail = NEW.mail AND C.is_deleted = false) THEN 
 
 		RAISE EXCEPTION 'Mail %L già utilizzato da un altro utente!', NEW.mail;
 
@@ -113,7 +117,7 @@ AS $$
 BEGIN
 
 	IF EXISTS(SELECT * FROM ADMIN A
-			  WHERE A.mail = NEW.mail) THEN 
+			  WHERE A.mail = NEW.mail AND A.is_deleted = false) THEN 
 
 		RAISE EXCEPTION 'Mail %L già utilizzato da un altro utente!', NEW.mail;
 
@@ -266,11 +270,11 @@ CREATE TABLE Booking (
 	id_booking SERIAL PRIMARY KEY,
 	booking_status BookingStatus NOT NULL,
 	booking_time TIME NOT NULL,
-	buyer VARCHAR(20) NOT NULL,
-	id_flight  VARCHAR(15) NOT NULL,
+	buyer INTEGER NOT NULL,
+	id_flight VARCHAR(15) NOT NULL,
 
 	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIME),
-	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(username) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE RESTRICT ON UPDATE RESTRICT,
 	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
@@ -335,14 +339,27 @@ CREATE TABLE Passenger (
 	
 	first_name VARCHAR(30),
 	last_name VARCHAR(30),
-	SSN VARCHAR(16),
+	birth_date DATE,
+	SSN VARCHAR(16) PRIMARY KEY,
+
+	CONSTRAINT first_name_not_empty CHECK(first_name IS NULL OR LENGTH(first_name) > 0),
+	CONSTRAINT last_name_not_empty CHECK(last_name IS NULL OR LENGTH(last_name) > 0)
+
+);
+
+-------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Ticket (
+	
+	ticket_number CHAR(13) PRIMARY KEY,
 	seat INTEGER,
 	checked_in BOOLEAN NOT NULL DEFAULT false,
 	id_booking INTEGER NOT NULL,
+	id_passenger VARCHAR(16) NOT NULL,
 	id_flight  VARCHAR(15) NOT NULL,
 
-
 	CONSTRAINT booking_FK FOREIGN KEY(id_booking) REFERENCES Booking(id_booking),
+	CONSTRAINT passenger_FK FOREIGN KEY(id_passenger) REFERENCES Passenger(SSN),
 	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight),
 	CONSTRAINT numeric_ticket_number CHECK( ticket_number ~ '^[0-9]+$' )
 
@@ -844,10 +861,10 @@ CREATE TABLE Luggage (
 	id_luggage_after_check_in VARCHAR(20) UNIQUE,
 	luggage_type LuggageType,
 	luggage_status LuggageStatus NOT NULL,
-	id_passenger CHAR(13) NOT NULL,
+	id_ticket CHAR(13) NOT NULL,
 
 
-	CONSTRAINT passenger_FK FOREIGN KEY(id_passenger) REFERENCES Passenger(ticket_number),
+	CONSTRAINT ticket_FK FOREIGN KEY(id_ticket) REFERENCES Ticket(ticket_number),
 	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR LENGTH(id_luggage_after_check_in) > 13)
 	--questa check serve per come è costruito id_luggage_after_check_in, 
 	--ossia come concatenazione di ticket_number del passeggero associato + 'numero del bagaglio'
