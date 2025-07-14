@@ -19,7 +19,7 @@ public class TestFlightInfo {
     private static ArrayList<Passenger> passengers;
 
     public static void main(String[] args) throws InvalidPassengerNumber {
-
+/*
         try{
             UIManager.setLookAndFeel(new FlatLightLaf());
         }
@@ -85,7 +85,7 @@ public class TestFlightInfo {
         //chiamo FlightInfo
         ArrayList<DisposableObject> callingObjects = new ArrayList<DisposableObject>();
         new BookingPageCustomer (callingObjects, controller, new Dimension(800, 800), new Point(10, 10), JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(false);
+        frame.setVisible(false);*/
     }
 
 }

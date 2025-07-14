@@ -2,9 +2,7 @@ package controller;
 
 import gui.DisposableObject;
 import gui.PassengerPanel;
-import model.Arriving;
-import model.BookingStatus;
-import model.Departing;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +24,7 @@ public class Controller {
     private UserController userController;
     private FlightStatusController flightStatusController;
     private BookingStatusController bookingStatusController;
+    private TicketController ticketController;
 
     public Controller() {
         adminController = new AdminController();
@@ -40,6 +39,7 @@ public class Controller {
         userController = new UserController();
         flightStatusController = new FlightStatusController();
         bookingStatusController = new BookingStatusController();
+        ticketController = new TicketController();
     }
 
     public boolean developerMode = false;
@@ -58,7 +58,7 @@ public class Controller {
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
             result[i][0] = arrivingFlights.get(i).getCompanyName();
-            result[i][1] = arrivingFlights.get(i).get_origin();
+            result[i][1] = arrivingFlights.get(i).getOrigin();
             result[i][2] = Integer.valueOf(arrivingFlights.get(i).getDate().getDate()).toString() +
                             " " + arrivingFlights.get(i).getMonthName();
             result[i][3] = arrivingFlights.get(i).getArrivalTime();
@@ -80,12 +80,18 @@ public class Controller {
                 new Time(1), new Time(1), 100, "Dubai"));
 
         for (int i = 0; i < departingFlights.size(); i++) {
+
+            try {departingFlights.get(i).setGate(new Gate((byte)i));}
+            catch (InvalidGate e) {
+                e.printStackTrace();
+            }
+
             result[i][0] = departingFlights.get(i).getCompanyName();
-            result[i][1] = departingFlights.get(i).get_destination();
+            result[i][1] = departingFlights.get(i).getDestination();
             result[i][2] = Integer.valueOf(departingFlights.get(i).getDate().getDate()).toString() +
                     " " + departingFlights.get(i).getMonthName();
             result[i][3] = departingFlights.get(i).getDepartureTime();
-            result[i][4] = Integer.valueOf(departingFlights.get(i).get_gate().get_Id()).toString();
+            result[i][4] = Integer.valueOf(departingFlights.get(i).getGate().getId()).toString();
         }
 
         return result;
@@ -152,7 +158,7 @@ public class Controller {
 
     public boolean checkBooking (int index) {
         if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().getBookings().get(index)) return false;
-        if (getFlightController().getFlight().getBookings().get(index).get_status() == BookingStatus.CANCELLED) return false;
+        if (getFlightController().getFlight().getBookings().get(index).getStatus() == BookingStatus.CANCELLED) return false;
 
         return true;
     }

@@ -36,7 +36,7 @@ public class BookingPageCustomer extends BookingPage {
     @Override
     protected void insertPassengers (Controller controller) {
 
-        for (int i = 0; i < controller.getBookingController().getPassengersSize(); i++) {
+        for (int i = 0; i < controller.getBookingController().getTicketsSize(); i++) {
 
             PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels);
 

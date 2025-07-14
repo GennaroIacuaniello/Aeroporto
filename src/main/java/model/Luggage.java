@@ -20,7 +20,7 @@ public class Luggage {
     private LuggageStatus status = LuggageStatus.BOOKED;
     Ticket ticket;
 
-    public Luggage( Ticket parTicket) {
+    public Luggage( Ticket parTicket) throws InvalidTicket {
 
         if(parTicket != null){
             this.ticket = parTicket;
@@ -30,7 +30,7 @@ public class Luggage {
 
     }
 
-    public Luggage(LuggageType parType, Ticket parTicket) {
+    public Luggage(LuggageType parType, Ticket parTicket) throws InvalidTicket {
 
         if(parTicket != null){
             this.type = parType;
@@ -42,7 +42,7 @@ public class Luggage {
 
     }
 
-    public Luggage(int parId, LuggageType parType, Ticket parTicket) {
+    public Luggage(int parId, LuggageType parType, Ticket parTicket) throws InvalidTicket {
 
         if(parTicket != null){
             this.id = parId;

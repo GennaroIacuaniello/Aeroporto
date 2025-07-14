@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class BookingController {
@@ -9,11 +10,15 @@ public class BookingController {
 
     public BookingController() {}
 
-    public void setBooking(Customer customer, Flight flight, ArrayList<Passenger> passengers) {
+    public void setBooking(Customer customer, Flight flight, ArrayList<Ticket> tickets) {
         try {
-            booking = new Booking(customer, flight, passengers);
+            booking = new Booking(customer, flight, new Time(10, 0, 0), tickets);
         } catch (InvalidPassengerNumber e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid passenger number", e);
+        } catch (InvalidBuyer e) {
+            throw new RuntimeException("Invalid buyer", e);
+        } catch (InvalidFlight e) {
+            throw new RuntimeException("Invalid flight", e);
         }
     }
 
@@ -26,46 +31,54 @@ public class BookingController {
     }
 
     public ArrayList<Passenger> getPassengers() {
-        return booking.get_passengers();
+
+        ArrayList<Passenger> passengers = new ArrayList<Passenger>();
+
+        for (Ticket ticket : booking.getTickets()) {
+
+            passengers.add(ticket.getPassenger());
+        }
+
+        return passengers;
     }
 
-    public int getPassengersSize() {
-        return booking.get_passengers().size();
+    public int getTicketsSize() {
+        return booking.getTickets().size();
     }
 
     public Passenger getPassenger(int index) {
-        return booking.get_passengers().get(index);
+        return booking.getTickets().get(index).getPassenger();
     }
 
     public String getPassengerName(int index) {
-        return getPassenger(index).get_First_name();
+        return getPassenger(index).getFirstName();
     }
 
     public String getPassengerLastName(int index) {
-        return getPassenger(index).get_Last_name();
+        return getPassenger(index).getLastName();
     }
 
     public String getPassengerSSN(int index) {
-        return getPassenger(index).get_SSN();
+        return getPassenger(index).getSSN();
     }
 
     public String getPassengerTicketNumber(int index) {
-        return getPassenger(index).get_Ticket_number();
+        return getTicket(index).getTicketNumber();
     }
 
     public int getPassengerSeat (int index) {
-        return getPassenger(index).get_Seat();
+        return getTicket(index).getSeat();
     }
 
     public ArrayList<Luggage> getPassengerLuggages (int index) {
-        return getPassenger(index).get_Luggages();
+        return getTicket(index).getLuggages();
     }
 
     public ArrayList<Integer> getPassengerLuggagesTypes (int index) {
         ArrayList<Integer> types = new ArrayList<Integer>();
 
         for (Luggage luggage : getPassengerLuggages(index)) {
-            switch (luggage.get_type()) {
+            switch (luggage.getType()) {
                 case LuggageType.CARRY_ON -> types.add(0);
                 case LuggageType.CHECKED -> types.add(1);
             }
@@ -75,12 +88,16 @@ public class BookingController {
     }
 
     public boolean checkPendingButton () {
-        return this.booking == null || (this.booking != null && this.booking.get_status() == BookingStatus.PENDING);
+        return this.booking == null || this.booking.getStatus() == BookingStatus.PENDING;
     }
 
     public BookingStatus getBookingStatus() {
-        return this.booking.get_status();
+        return this.booking.getStatus();
     }
 
     public void deleteBooking() {}
+
+    public Ticket getTicket(int index) {
+        return booking.getTickets().get(index);
+    }
 }

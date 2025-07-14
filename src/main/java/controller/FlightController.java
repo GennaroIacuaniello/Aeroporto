@@ -94,8 +94,8 @@ public class FlightController {
         return flight.getStatus();
     }
 
-    public int getPassengersSize () {
-        return flight.getPassengers().size();
+    public int getTicketsSize () {
+        return flight.getTickets().size();
     }
 
     public int getBookingsSize () {
@@ -103,35 +103,35 @@ public class FlightController {
     }
 
     public int getBookingSize (int index) {
-        return flight.getBookings().get(index).get_passengers().size();
+        return flight.getBookings().get(index).getTickets().size();
     }
 
     public String getPassengerNameFromBooking (int bookingIndex, int passengerIndex) {
-        return flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_First_name();
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getFirstName();
     }
 
     public String getPassengerSurnameFromBooking (int bookingIndex, int passengerIndex) {
-        return flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Last_name();
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getLastName();
     }
 
     public String getPassengerCFFromBooking (int bookingIndex, int passengerIndex) {
-        return flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_SSN();
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getSSN();
     }
 
     public String getPassengerTicketNumberFromBooking (int bookingIndex, int passengerIndex) {
-        return flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Ticket_number();
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getTicketNumber();
     }
 
     public int getPassengerSeatFromBooking (int bookingIndex, int passengerIndex) {
-        return flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Seat();
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getSeat();
     }
 
     public ArrayList<Integer> getPassengerLuggagesTypesFromBooking(int bookingIndex, int passengerIndex) {
 
         ArrayList<Integer> types = new ArrayList<Integer>();
 
-        for (Luggage luggage : flight.getBookings().get(bookingIndex).get_passengers().get(passengerIndex).get_Luggages()) {
-            switch (luggage.get_type()) {
+        for (Luggage luggage : flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getLuggages()) {
+            switch (luggage.getType()) {
                 case LuggageType.CARRY_ON -> types.add(0);
                 case LuggageType.CHECKED -> types.add(1);
             }
@@ -141,23 +141,23 @@ public class FlightController {
     }
 
     public int getPassengerSeat (int index) {
-        return flight.getPassengers().get(index).get_Seat();
+        return flight.getTickets().get(index).getSeat();
     }
 
     public String getPassengerName (int index) {
-        return flight.getPassengers().get(index).get_First_name();
+        return flight.getTickets().get(index).getPassenger().getFirstName();
     }
 
     public String getPassengerSurname (int index) {
-        return flight.getPassengers().get(index).get_Last_name();
+        return flight.getTickets().get(index).getPassenger().getLastName();
     }
 
     public String getPassengerCF (int index) {
-        return flight.getPassengers().get(index).get_SSN();
+        return flight.getTickets().get(index).getPassenger().getSSN();
     }
 
     public String getPassengerTicketNumber (int index) {
-        return flight.getPassengers().get(index).get_Ticket_number();
+        return flight.getTickets().get(index).getTicketNumber();
     }
 
     public ArrayList<Integer> getPassengerLuggagesTypes(int index) {
@@ -165,7 +165,7 @@ public class FlightController {
         ArrayList<Integer> types = new ArrayList<Integer>();
 
         for (Luggage luggage : getPassengerLuggages(index)) {
-            switch (luggage.get_type()) {
+            switch (luggage.getType()) {
                 case LuggageType.CARRY_ON -> types.add(0);
                 case LuggageType.CHECKED -> types.add(1);
             }
@@ -176,7 +176,7 @@ public class FlightController {
 
     public ArrayList<Luggage> getPassengerLuggages (int index) {
 
-        return flight.getPassengers().get(index).get_Luggages();
+        return flight.getTickets().get(index).getLuggages();
     }
 
     public String getDateString () {
@@ -189,7 +189,7 @@ public class FlightController {
 
     public boolean checkBookingConfirm (int index) {
 
-        return flight.getBookings().get(index).get_status().equals(BookingStatus.CONFIRMED);
+        return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED);
     }
 
     public void setFlightStatus (FlightStatus flightStatus) {
@@ -197,15 +197,15 @@ public class FlightController {
     }
 
     public boolean getPassengerCheckedin (int index) {
-        return flight.getPassengers().get(index).get_check_in();
+        return flight.getTickets().get(index).isCheckedIn();
     }
 
     public String getCity () {
 
         if(flight instanceof Arriving)
-            return ((Arriving) flight).get_origin();
+            return ((Arriving) flight).getOrigin();
         else
-            return ((Departing) flight).get_destination();
+            return ((Departing) flight).getDestination();
     }
 
     public void startCheckin () {}

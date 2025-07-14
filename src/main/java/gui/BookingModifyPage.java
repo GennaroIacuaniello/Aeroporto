@@ -77,8 +77,8 @@ public class BookingModifyPage extends BookingPageCustomer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println(controller.getFlightController().getFreeSeats() + " " + passengerPanels.size() + " " + controller.getBookingController().getPassengersSize());
-                if (controller.getFlightController().getFreeSeats() - passengerPanels.size() + controller.getBookingController().getPassengersSize() > 0)
+                System.out.println(controller.getFlightController().getFreeSeats() + " " + passengerPanels.size() + " " + controller.getBookingController().getTicketsSize());
+                if (controller.getFlightController().getFreeSeats() - passengerPanels.size() + controller.getBookingController().getTicketsSize() > 0)
                     insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
                 else
                     new FloatingMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton, FloatingMessage.ERROR_MESSAGE);

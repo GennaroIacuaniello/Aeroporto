@@ -131,9 +131,9 @@ public class SearchFlightResultPanel extends JPanel {
                     return flight.getCompanyName();
                 case 1:
                     if (flight instanceof Arriving)
-                        return ((Arriving) flight).get_origin() + " → Napoli";
+                        return ((Arriving) flight).getOrigin() + " → Napoli";
                     else
-                        return "Napoli → " + ((Departing) flight).get_destination();
+                        return "Napoli → " + ((Departing) flight).getDestination();
                 case 2:
                     return flight.getDate().toString();
                 case 3:
@@ -153,7 +153,7 @@ public class SearchFlightResultPanel extends JPanel {
                     }
 
                 case 4:
-                    int delay = (flight instanceof Arriving) ? ((Arriving) flight).get_arrival_delay() : ((Departing) flight).get_departure_delay();
+                    int delay = (flight instanceof Arriving) ? ((Arriving) flight).getArrivalDelay() : ((Departing) flight).getDepartureDelay();
                     return delay > 0 ? delay + " min" : "--";
                 case 5:
                     hours = flight.getArrivalTime().getHours();
