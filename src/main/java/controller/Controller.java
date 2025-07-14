@@ -2,10 +2,12 @@ package controller;
 
 import gui.DisposableObject;
 import gui.PassengerPanel;
+import implementazioniPostgresDAO.BookingDAOImpl;
 import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
@@ -222,7 +224,28 @@ public class Controller {
 
     public void addBooking(ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
 
+        try {
+
+            BookingDAOImpl bookingDAO = new BookingDAOImpl();
+
+            //bookingDAO.addBooking();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
+
+    public ArrayList<String> generateTicketsNumbers (int lenght) {
+
+        ArrayList<String> ticketsNumbers = new ArrayList<>();
+
+        for (int i = 0; i < lenght; i++) {
+
+            ticketsNumbers.add("i");
+        }
+
+        return ticketsNumbers;
+    }
 }
