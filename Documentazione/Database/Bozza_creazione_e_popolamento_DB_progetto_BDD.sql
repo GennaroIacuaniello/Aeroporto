@@ -358,9 +358,9 @@ CREATE TABLE Ticket (
 	id_passenger VARCHAR(16) NOT NULL,
 	id_flight  VARCHAR(15) NOT NULL,
 
-	CONSTRAINT booking_FK FOREIGN KEY(id_booking) REFERENCES Booking(id_booking),
-	CONSTRAINT passenger_FK FOREIGN KEY(id_passenger) REFERENCES Passenger(SSN),
-	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight),
+	CONSTRAINT booking_FK FOREIGN KEY(id_booking) REFERENCES Booking(id_booking) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT passenger_FK FOREIGN KEY(id_passenger) REFERENCES Passenger(SSN) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT numeric_ticket_number CHECK( ticket_number ~ '^[0-9]+$' )
 
 );
@@ -401,26 +401,36 @@ EXECUTE FUNCTION fun_valid_ticket_seat();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER I PASSEGERI POSSONO AVERE QUALUNQUE DATO (APPARTE IL TICKET_NUMBER PK) A NULL, MA QUESTO SOLO SE LA PRENOTAZIONE NON È 'CONFFIRMED', 
---SE INVECE LO È, SOLO IL POSTO PUÒ ESSERE NULL
+--TRIGGER I PASSEGERI POSSONO AVERE QUALUNQUE DATO (TRANNE L'SSN PK) A NULL, MA QUESTO SOLO SE NESSUNA LORO PRENOTAZIONE È 'CONFFIRMED', 
+--SE INVECE ALMENO UNA LO È, NIENTE DEVE ESSERE NULL
 
-CREATE OR REPLACE FUNCTION fun_valid_booking_data()
+CREATE OR REPLACE FUNCTION fun_valid_passenger_data()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-					     WHERE B.id_booking = NEW.id_booking);
+	selected_ticket TICKET%ROWTYPE;
+	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 
-	IF associated_booking.booking_status = 'confirmed' THEN
- 
-		IF (NEW.full_name IS NULL) OR (NEW.SSN IS NULL) THEN
-			
-			RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %L', NEW.ticket_number;
-	
-		END IF;
+	IF NEW.first_name IS NULL OR NEW.last_name IS NULL OR NEW.birth_date IS NULL THEN
+	--solo se effettivamente qualcosa è a null faccio il controllo
+
+		FOR selected_ticket IN (SELECT * FROM TICKET T
+								WHERE T.id_passenger = NEW.SSN) LOOP
+
+			associated_booking := (SELECT * FROM BOOKING B
+								   WHERE B.id_booking = selected_ticket.id_booking);
+
+			IF associated_booking.booking_status = 'confirmed' THEN
+
+				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %L, per la prenotazione %L', 
+															selected_ticket.ticket_number, associate_booking.id_booking;
+
+			END IF;
+
+		END LOOP;
 
 	END IF;
 
@@ -429,17 +439,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER valid_booking_data
+CREATE OR REPLACE TRIGGER valid_passenger_data
 BEFORE INSERT OR UPDATE ON Passenger
 FOR EACH ROW
-EXECUTE FUNCTION fun_valid_booking_data();
+EXECUTE FUNCTION fun_valid_passenger_data();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE FACCIO IL CHECK-IN (OSSIA SE CHECK-IN = TRUE), ALLORA SE POSTO È NULL, ASSEGNO AL PASSEGGERO IL PRIMO POSTO LIBERO 
---(E QUESTO TRIGGER È BEFORE INSERT OR UPDATE OF CHECKED_IN, SEAT; COSÌ NON PUÒ MAI ACCADERE CHE UN PASSEGGERO CON CHECK-IN TRUE NON ABBIA POSTO)
+--TRIGGER SE FACCIO IL CHECK-IN (OSSIA SE CHECK-IN = TRUE), ALLORA SE POSTO È NULL, ASSEGNO AL TICKET IL PRIMO POSTO LIBERO 
+--(E QUESTO TRIGGER È BEFORE INSERT OR UPDATE OF CHECKED_IN, SEAT; COSÌ NON PUÒ MAI ACCADERE CHE UN TICKET CON CHECK-IN TRUE NON ABBIA POSTO)
 
-CREATE OR REPLACE FUNCTION fun_valid_passenger_seat_after_check_in()
+CREATE OR REPLACE FUNCTION fun_valid_seat_after_check_in()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -447,19 +457,19 @@ DECLARE
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
 				     WHERE id_flight = NEW.id_flight);
 
-	prev_seat PASSENGER.seat%TYPE := -1; -- (-1) perché i posti iniziano da 0
+	prev_seat TICKET.seat%TYPE := -1; -- (-1) perché i posti iniziano da 0
 	
-	selected_seat PASSENGER.seat%TYPE;
+	selected_seat TICKET.seat%TYPE;
 
 BEGIN
 
 	IF NEW.checked_in = true AND NEW.seat IS NULL THEN
  	
-		FOR selected_seat IN (SELECT P.seat FROM PASSENGER P
-				      WHERE P.ticket_number <> NEW.ticket_number AND P.id_flight = NEW.id_flight AND 
-					(SELECT B.booking_status FROM BOOKING B
-					 WHERE B.id_booking = P.id_booking) <> 'cancelled' AND P.seat IS NOT NULL
-					 ORDER BY P.seat) LOOP
+		FOR selected_seat IN (SELECT T.seat FROM TICKET T
+				    		  WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND 
+								    (SELECT B.booking_status FROM BOOKING B
+									 WHERE B.id_booking = T.id_booking) <> 'cancelled' AND T.seat IS NOT NULL
+					 		  ORDER BY P.seat) LOOP
 			
 			IF selected_seat = prev_seat + 1 THEN
 				
@@ -495,10 +505,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER valid_passenger_seat_after_check_in
-BEFORE INSERT OR UPDATE OF checked_in, seat ON Passenger
+CREATE OR REPLACE TRIGGER valid_seat_after_check_in
+BEFORE INSERT OR UPDATE OF checked_in, seat ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_valid_passenger_seat_after_check_in();
+EXECUTE FUNCTION fun_valid_seat_after_check_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
