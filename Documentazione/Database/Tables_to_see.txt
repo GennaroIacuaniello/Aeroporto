@@ -2,7 +2,7 @@ CREATE TABLE Admin (
 
 	id_admin SERIAL PRIMARY KEY,
 	username VARCHAR(20) NOT NULL,
-	mail VARCHAR(50) UNIQUE NOT NULL,
+	mail VARCHAR(50) NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 	is_deleted BOOLEAN NOT NULL DEFAULT false,
 
@@ -17,8 +17,8 @@ CREATE TABLE Admin (
 CREATE TABLE Customer (
 
 	id_customer SERIAL PRIMARY KEY,
-	username VARCHAR(20) PRIMARY KEY,
-	mail VARCHAR(50) UNIQUE NOT NULL,
+	username VARCHAR(20) NOT NULL,
+	mail VARCHAR(50) NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 	is_deleted BOOLEAN NOT NULL DEFAULT false,
 
@@ -53,7 +53,7 @@ CREATE TABLE Flight (
 	max_seats SMALLINT NOT NULL,
 	free_seats SMALLINT NOT NULL,
 	destination_or_origin VARCHAR(64) NOT NULL,
-	flight_delay Minutes NOT NUL,
+	flight_delay Minutes NOT NULL,
 	flight_type FlightType NOT NULL,
 	id_gate SMALLINT,
 	

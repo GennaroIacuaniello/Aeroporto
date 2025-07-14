@@ -2,7 +2,7 @@ CREATE TABLE Admin (
 
 	id_admin SERIAL PRIMARY KEY,
 	username VARCHAR(20) NOT NULL,
-	mail VARCHAR(50) UNIQUE NOT NULL,
+	mail VARCHAR(50) NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 	is_deleted BOOLEAN NOT NULL DEFAULT false,
 
@@ -17,8 +17,8 @@ CREATE TABLE Admin (
 CREATE TABLE Customer (
 
 	id_customer SERIAL PRIMARY KEY,
-	username VARCHAR(20) PRIMARY KEY,
-	mail VARCHAR(50) UNIQUE NOT NULL,
+	username VARCHAR(20) NOT NULL,
+	mail VARCHAR(50) NOT NULL,
 	hashed_password CHAR(64) NOT NULL,
 	is_deleted BOOLEAN NOT NULL DEFAULT false,
 
@@ -158,7 +158,7 @@ CREATE TABLE Flight (
 	max_seats SMALLINT NOT NULL,
 	free_seats SMALLINT NOT NULL,
 	destination_or_origin VARCHAR(64) NOT NULL,
-	flight_delay Minutes NOT NUL,
+	flight_delay Minutes NOT NULL,
 	flight_type FlightType NOT NULL,
 	id_gate SMALLINT,
 	
@@ -205,7 +205,7 @@ EXECUTE FUNCTION fun_block_update_of_flight_type();
 
 --TRIGGER SOLO UN VOLO DEPARTING PUò AVERE FLIGHT_STATUS AD ABOUTTODEPART
 
-CREATE OR REPLACE FUNCTION fun_only_a_departing_flight_can_become_aboutToDepart()
+CREATE OR REPLACE FUNCTION fun_only_a_dep_flight_can_become_aToDepart()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -225,16 +225,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER only_a_departing_flight_can_become_aboutToDepart
+CREATE OR REPLACE TRIGGER only_a_dep_flight_can_become_aToDepart
 BEFORE INSERT OR UPDATE OF flight_status ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_only_a_departing_flight_can_become_aboutToDepart();
+EXECUTE FUNCTION fun_only_a_dep_flight_can_become_aToDepart();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER SOLO UN VOLO ARRIVING PUò AVERE FLIGHT_STATUS AD ABOUTTOARRIVE
 
-CREATE OR REPLACE FUNCTION fun_only_an_arriving_flight_can_become_aboutToArrive()
+CREATE OR REPLACE FUNCTION fun_only_an_arr_flight_can_become_aToArrive()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -254,10 +254,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER only_an_arriving_flight_can_become_aboutToArrive
+CREATE OR REPLACE TRIGGER only_an_arr_flight_can_become_aToArrive
 BEFORE INSERT OR UPDATE OF flight_status ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_only_an_arriving_flight_can_become_aboutToArrive();
+EXECUTE FUNCTION fun_only_an_arr_flight_can_become_aToArrive();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -283,7 +283,7 @@ CREATE TABLE Booking (
 
 --TRIGGER NON SI POSSONO MAI MODIFICARE I CAMPI id_booking, buyer, id_flight DI UNA PRENOTAZIONE
 
-CREATE OR REPLACE FUNCTION fun_block_updates_of_id_booking_buyer_id_flight_on_passenger()
+CREATE OR REPLACE FUNCTION fun_block_upd_of_id_booking_buyer_id_flight_on_passenger()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -295,16 +295,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_updates_of_id_booking_buyer_id_flight_on_passenger
+CREATE OR REPLACE TRIGGER block_upd_of_id_booking_buyer_id_flight_on_passenger
 BEFORE UPDATE OF id_booking, buyer, id_flight ON BOOKING
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_updates_of_id_booking_buyer_id_flight_on_passenger();
+EXECUTE FUNCTION fun_block_upd_of_id_booking_buyer_id_flight_on_passenger();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER SE UN VOLO è aboutToDepart, DEPARTED, aboutToArrive, o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
 
-CREATE OR REPLACE FUNCTION fun_block_modifying_booking_if_flight_aboutToDepart_departed_aboutToArrive_landed()
+CREATE OR REPLACE FUNCTION fun_block_mod_booking_if_flight_aToDep_dep_aToArr_landed()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -327,10 +327,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_modifying_booking_if_flight_aboutToDepart_departed_aboutToArrive_landed
+CREATE OR REPLACE TRIGGER block_mod_booking_if_flight_aToDep_dep_aToArr_landed
 BEFORE UPDATE ON Booking
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_modifying_booking_if_flight_aboutToDepart_departed_aboutToArrive_landed();
+EXECUTE FUNCTION fun_block_mod_booking_if_flight_aToDep_dep_aToArr_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -369,7 +369,7 @@ CREATE TABLE Ticket (
 
 --TRIGGER POSTI SONO INTERI DA 0 A ASSOCIATED_FLIGHT.MAX_SEATS - 1
 
-CREATE OR REPLACE FUNCTION fun_valid_passenger_seat()
+CREATE OR REPLACE FUNCTION fun_valid_ticket_seat()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -394,10 +394,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER valid_passenger_seat
-BEFORE INSERT OR UPDATE OF seat ON Passenger
+CREATE OR REPLACE TRIGGER valid_ticket_seat
+BEFORE INSERT OR UPDATE OF seat ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_valid_passenger_seat();
+EXECUTE FUNCTION fun_valid_ticket_seat();
 
 -------------------------------------------------------------------------------------------------------------------------
 
