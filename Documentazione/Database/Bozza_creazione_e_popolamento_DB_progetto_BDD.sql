@@ -512,25 +512,33 @@ EXECUTE FUNCTION fun_valid_seat_after_check_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO È aboutToDepart, PUÒ ESSERE MOFIFICATO SOLO IL POSTO DI UN PASSEGGERO
+--TRIGGER SE ALMENO UN VOLO DI UN PASSEGGERO È DEPARTED o aboutToArrive O LANDED, I DATI DEL PASSEGGERO NON POSSONO PIÙ ESSERE MODIFICATI
 
-CREATE OR REPLACE FUNCTION fun_block_updates_not_of_seat_of_passenger_if_flight_aboutToDepart()
+CREATE OR REPLACE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     WHERE id_flight = NEW.id_flight);
+	selected_ticket TICKET%ROWTYPE;
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
-	IF NEW.full_name <> OLD.full_name OR NEW.SSN <> OLD.SSN THEN
+	IF NEW.first_name <> OLD.first_name OR NEW.last_name <> OLD.last_name OR NEW.birth_date <> OLD.birth_date THEN
 
-		IF associated_flight.flight_status = 'aboutToDepart' THEN
+		FOR selected_ticket IN (SELECT * FROM TICKET T
+								WHERE T.id_passenger = NEW.SSN) LOOP
 
-			RAISE EXCEPTION 'Il volo %L è in partenza, non si possono modificare i dati personali del passeggero!', NEW.id_flight;
+			associated_flght := (SELECT * FROM FLIGHT F
+				    			 WHERE F.id_flight = selected_ticket.id_flight);
+			
+			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		END IF;
+				RAISE EXCEPTION 'Il volo %L è partito/sta per atterrare/atterrato, non si possono modificare i dati del passeggero %L!', NEW.id_flight, NEW.SSN;
+
+			END IF;
+
+		END LOOP;
 
 	END IF;
 
@@ -539,32 +547,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_updates_not_of_seat_of_passenger_if_flight_aboutToDepart
-BEFORE UPDATE OF full_name, SSN ON PASSENGER
+CREATE OR REPLACE TRIGGER block_upd_pass_if_flight_departed_aToArr_landed
+BEFORE UPDATE OF first_name, last_name, birth_date ON PASSENGER
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_updates_not_of_seat_of_passenger_if_flight_aboutToDepart();
+EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landedd();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO È DEPARTED o aboutToArrive O LANDED, I DATI DEI PASSEGGERI NON POSSONO PIÙ ESSERE MODIFICATI
+--TRIGGER NON SI POSSONO MAI MODIFICARE I CAMPI ticket_number, id_booking, id_passenger e id_flight DI UN TICKET
 
-CREATE OR REPLACE FUNCTION fun_block_updates_on_passenger_if_flight_departed_aboutToArrive_landed()
+CREATE OR REPLACE FUNCTION fun_block_upd_of_tic_num_id_b_id_p_id_f_on_ticket()
 RETURNS TRIGGER
 AS $$
-DECLARE
-
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				    					 WHERE id_flight = NEW.id_flight);
-
 BEGIN
-	
-	IF NEW.full_name <> OLD.full_name OR NEW.SSN <> OLD.SSN OR NEW.seat <> OLD.seat THEN
 
-		IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	IF NEW.ticket_number <> OLD.ticket_number OR NEW.id_booking <> OLD.id_booking OR NEW.id_passenger <> OLD.id_passenger OR NEW.id_flight <> OLD.id_flight THEN
 
-			RAISE EXCEPTION 'Il volo %L è partito/sta per atterrare/atterrato, non si possono modificare i dati del passeggero %L!', NEW.id_flight, NEW.ticket_number;
-
-		END IF;
+		RAISE EXCEPTION 'Non si possono modificare i dati ticket_number, prenotazione associata, passeggero associato e volo associato di un biglietto!';
 
 	END IF;
 
@@ -573,51 +572,31 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_updates_on_passenger_if_flight_departed_aboutToArrive_landed
-BEFORE UPDATE OF full_name, SSN, seat ON PASSENGER
+CREATE OR REPLACE TRIGGER block_upd_of_tic_num_id_b_id_p_id_f_on_ticket
+BEFORE UPDATE OF ticket_number, id_booking, id_passenger, id_flight ON TICKET
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_updates_on_passenger_if_flight_departed_aboutToArrive_landed();
+EXECUTE FUNCTION fun_block_upd_of_tic_num_id_b_id_p_id_f_on_ticket();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MAI MODIFICARE I CAMPI ticket_number, id_booking e id_flight DI UN PASSEGGERO
+--TRIGGER NON CI SONO BIGLIETTI PER LO STESSO POSTO SU UN DATO VOLO
 
-CREATE OR REPLACE FUNCTION fun_block_updates_of_ticket_number_id_booking_id_flight_on_passenger()
-RETURNS TRIGGER
-AS $$
-BEGIN
-
-	RAISE EXCEPTION 'Non si possono modificare i dati ticket_number, prenotazione associata, volo associato di un passeggero!';
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER block_updates_of_ticket_number_id_booking_id_flight_on_passenger
-BEFORE UPDATE OF ticket_number, id_booking, id_flight ON PASSENGER
-FOR EACH ROW
-EXECUTE FUNCTION fun_block_updates_of_ticket_number_id_booking_id_flight_on_passenger();
-
--------------------------------------------------------------------------------------------------------------------------
-
---TRIGGER NON CI SONO PASSEGGERI CHE OCCUPANO LO STESSO POSTO SU UN DATO VOLO
-
-CREATE OR REPLACE FUNCTION fun_unique_passenger_per_seat_per_flight()
+CREATE OR REPLACE FUNCTION fun_unique_ticket_per_seat_per_flight()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_booking FLIGHT%ROWTYPE := (SELECT * FROM BOOKING B
-					     				  WHERE B.id_booking = NEW.id_booking);
+	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
+					     				   WHERE B.id_booking = NEW.id_booking);
 
 BEGIN
 	
 	IF associate_booking.booking_status <> 'cancelled' AND NEW.seat IS NOT NULL THEN
 
-		IF EXISTS(SELECT * FROM PASSENGER P
-		  	  WHERE P.ticket_number <> NEW.ticket_number AND P.id_flight = NEW.id_flight AND P.seat = NEW.seat AND (SELECT B.booking_status FROM BOOKING B
-					     																							WHERE B.id_booking = P.id_booking) <> 'cancelled' ) THEN
+		IF EXISTS(SELECT * FROM TICKET T
+		  	      WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND T.seat = NEW.seat 
+				  AND (SELECT B.booking_status FROM BOOKING B
+				       WHERE B.id_booking = T.id_booking) <> 'cancelled' ) THEN
 		
 			RAISE EXCEPTION 'Posto già occupato per il volo %L', NEW.id_flight;
 
@@ -628,10 +607,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER unique_passenger_per_seat_per_flight
-BEFORE INSERT OR UPDATE OF seat ON Passenger
+CREATE OR REPLACE TRIGGER unique_ticket_per_seat_per_flight
+BEFORE INSERT OR UPDATE OF seat ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_unique_passenger_per_seat_per_flight();
+EXECUTE FUNCTION fun_unique_ticket_per_seat_per_flightt();
 
 -------------------------------------------------------------------------------------------------------------------------
 
