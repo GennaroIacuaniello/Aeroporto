@@ -8,7 +8,7 @@ public class ConnessioneDatabase {
 
 	// ATTRIBUTI
 	private static ConnessioneDatabase instance;
-	public Connection connection = null;
+	private Connection connection = null;
 	private String nome = "postgres";
 	private String password = "password";
 	private String url = "jdbc:postgresql://localhost:5432/Aeroporto";
@@ -35,5 +35,21 @@ public class ConnessioneDatabase {
 			instance = new ConnessioneDatabase();
 		}
 		return instance;
+	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void closeConnection() {
+
+		try {
+
+			connection.close();
+		} catch (SQLException ex) {
+
+			System.out.println("Database Connection Close Failed : " + ex.getMessage());
+			ex.printStackTrace();
+		}
 	}
 }

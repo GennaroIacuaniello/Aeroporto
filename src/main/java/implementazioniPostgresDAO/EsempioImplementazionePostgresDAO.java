@@ -13,7 +13,7 @@ public class EsempioImplementazionePostgresDAO implements EsempioDAO {
 
 	public void EsempioImplementazionePostgresDAO() {
 		try {
-			connection = ConnessioneDatabase.getInstance().connection;
+			connection = ConnessioneDatabase.getInstance().getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
