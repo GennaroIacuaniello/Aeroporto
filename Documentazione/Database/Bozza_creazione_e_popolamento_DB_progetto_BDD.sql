@@ -614,54 +614,9 @@ EXECUTE FUNCTION fun_unique_ticket_per_seat_per_flightt();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON CI SONO PIÙ PASSEGGERI CHE POSTI MASSIMI PER UN VOLO 
+--TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALL'INSERIMENTO DI UN BIGLIETTO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
 
-CREATE OR REPLACE FUNCTION fun_not_more_passengers_then_seats()
-RETURNS TRIGGER
-AS $$
-DECLARE
-
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = NEW.id_flight);
-
-	associated_booking FLIGHT%ROWTYPE := (SELECT * FROM BOOKING B
-					     				  WHERE B.id_booking = NEW.id_booking);
-
-	n_actually_occupied_seats FLIGHT.max_seats%TYPE;
-
-BEGIN
-	
-	IF associate_booking.booking_status <> 'cancelled' THEN
-
-		SELECT COUNT(*) INTO n_actually_occupied_seats
-		FROM PASSENGER P
-		WHERE P.id_flight = NEW.id_flight AND (SELECT B.booking_status FROM BOOKING B
-					    	       			   WHERE B.id_booking = P.id_booking) <> 'cancelled';
-
-		IF n_actually_occupied_seats + 1 > associated_flight.max_seats THEN
-		-- + 1 perché sono in BEFORE INSERT, quindi "simulo" l'inserimento
-	
-			RAISE EXCEPTION 'Il volo %L è già pieno!', NEW.id_flight;
-
-		END IF;
-	
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER not_more_passengers_then_seats
-BEFORE INSERT ON Passenger
-FOR EACH ROW
-EXECUTE FUNCTION fun_not_more_passengers_then_seats();
-
--------------------------------------------------------------------------------------------------------------------------
-
---TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALL'INSERIMENTO DI UN PASSEGGERO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
-
-CREATE OR REPLACE FUNCTION fun_if_passenger_inserted_update_free_seats()
+CREATE OR REPLACE FUNCTION fun_if_ticket_inserted_upd_free_seats()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -695,16 +650,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER if_passenger_inserted_update_free_seats
-BEFORE INSERT ON Passenger
+CREATE OR REPLACE TRIGGER if_ticket_inserted_upd_free_seats
+BEFORE INSERT ON TICKET
 FOR EACH ROW
-EXECUTE FUNCTION fun_if_passenger_inserted_update_free_seats();
+EXECUTE FUNCTION fun_if_ticket_inserted_upd_free_seats();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO PER LE PRENOTAZIONI 'CONFIRMED' UN PASSEGERO PUò ESSERE CHECKED_IN
+--TRIGGER SOLO PER LE PRENOTAZIONI 'CONFIRMED' UN BIGLIETTO PUò ESSERE CHECKED_IN
 
-CREATE OR REPLACE FUNCTION fun_check_passenger_checked_in_only_if_confirmed_booking()
+CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_conf_book()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -729,16 +684,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_passenger_checked_in_only_if_confirmed_booking
-BEFORE INSERT OR UPDATE OF checked_in ON Passenger
+CREATE OR REPLACE TRIGGER check_ticket_checked_in_only_if_conf_book
+BEFORE INSERT OR UPDATE OF checked_in ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_passenger_checked_in_only_if_confirmed_booking();
+EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_conf_book();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO PER I VOLI aboutToDepart, DEPARTED, aboutToArrive o LANDED UN PASSEGERO PUÒ ESSERE CHECKED_IN
+--TRIGGER SOLO PER I VOLI aboutToDepart, DEPARTED, aboutToArrive o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
 
-CREATE OR REPLACE FUNCTION fun_check_passenger_checked_in_only_if_flight_aboutToDepart_departed_landed()
+CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -763,16 +718,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_passenger_checked_in_only_if_flight_aboutToDepart_departed_landed
-BEFORE INSERT OR UPDATE OF checked_in ON Passenger
+CREATE OR REPLACE TRIGGER check_ticket_checked_in_only_if_flight_aToDep_dep_lan
+BEFORE INSERT OR UPDATE OF checked_in ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_passenger_checked_in_only_if_flight_aboutToDepart_departed_landed();
+EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, aboutToArrive O LANDED
 
-CREATE OR REPLACE FUNCTION fun_check_cancelling_check_in_only_if_flight_not_departed_landed()
+CREATE OR REPLACE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -797,10 +752,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_cancelling_check_in_only_if_flight_not_departed_landed
-BEFORE UPDATE OF checked_in ON Passenger
+CREATE OR REPLACE TRIGGER check_canc_check_in_only_if_flight_not_dep_lan
+BEFORE UPDATE OF checked_in ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_cancelling_check_in_only_if_flight_not_departed_landed();
+EXECUTE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -813,9 +768,9 @@ AS $$
 BEGIN
 	
 	IF NEW.free_seats <> NEW.max_seats - (SELECT COUNT (*)
-					      				  FROM PASSENGER P
-					      				  WHERE P.id_flight = NEW.id_flight AND (SELECT B.booking_status FROM BOOKING B
-					    	       				     					WHERE B.id_booking = P.id_booking) <> 'cancelled') THEN
+					      				  FROM TICKET T
+					      				  WHERE T.id_flight = NEW.id_flight AND (SELECT B.booking_status FROM BOOKING B
+					    	       				     					WHERE B.id_booking = T.id_booking) <> 'cancelled') THEN
 
 		RAISE EXCEPTION 'Errore nei posti liberi del volo %L!', NEW.id_flight;
 	
@@ -861,28 +816,28 @@ CREATE TABLE Luggage (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER PER I BAGAGLI, SE LA PRENOTAZIONE DEL PASSEGGERO ASSOCIATO NON è CONFIRMED, IL TIPO PUò ESSERE A NULL, MA SE è CONFIRMED NO
+--TRIGGER PER I BAGAGLI, SE LA PRENOTAZIONE DEL BIGLIETTO ASSOCIATO NON è CONFIRMED, IL TIPO PUò ESSERE A NULL, MA SE è CONFIRMED NO
 
 CREATE OR REPLACE FUNCTION fun_valid_luggage_type()
 RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_passenger PASSENGER%ROWTYPE := (SELECT * FROM PASSENGER P
-					          WHERE P.ticket_number = NEW.id_passenger);
+	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
+					          			 WHERE T.ticket_number = NEW.id_ticket);
 
 	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
 	associated_booking := (SELECT * FROM BOOKING B
-			      		   WHERE B.id_booking = associated_passenger.id_booking);
+			      		   WHERE B.id_booking = associated_ticket.id_booking);
 
 	IF associated_booking.booking_status = 'confirmed' THEN
  
 		IF NEW.luggage_type IS NULL THEN
 			
-			RAISE EXCEPTION 'Dati mancanti per il bagaglio %L del passeggero il cui biglietto ha numero %L', NEW.id_luggage, associated_passenger.ticket_number;
+			RAISE EXCEPTION 'Dati mancanti per il bagaglio %L del passeggero il cui biglietto ha numero %L', NEW.id_luggage, associated_ticket.ticket_number;
 	
 		END IF;
 
@@ -900,15 +855,15 @@ EXECUTE FUNCTION fun_valid_luggage_type();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE IL PASSEGGERO NON è CHECKED_IN, IL LUGGAGE_STATUS PUò ESSERE SOLO BOOKED
+--TRIGGER SE IL BLIGLIETTO NON è CHECKED_IN, IL LUGGAGE_STATUS PUò ESSERE SOLO BOOKED
 
-CREATE OR REPLACE FUNCTION fun_luggage_status_only_booked_if_booking_cancelled()
+CREATE OR REPLACE FUNCTION fun_lug_status_only_booked_if_booking_canc()
 RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_passenger PASSENGER%ROWTYPE := (SELECT * FROM PASSENGER P
-					          WHERE P.ticket_number = NEW.id_passenger);
+	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
+					          			 WHERE T.ticket_number = NEW.id_ticket);
 
 BEGIN
 
@@ -916,7 +871,7 @@ BEGIN
  
 		IF NEW.luggage_status <> 'booked' THEN
 			
-			RAISE EXCEPTION 'Il passeggero con ticket number %L non ha ancora fatto il check_in, il bagaglio %L non può avere stato divero da ''prenotato''!', associated_passenger.ticket_number, OLD.id_luggage;
+			RAISE EXCEPTION 'Il biglietto con ticket number %L non ha ancora fatto il check_in, il bagaglio %L non può avere stato divero da ''prenotato''!', associated_ticket.ticket_number, OLD.id_luggage;
 	
 		END IF;
 
@@ -927,14 +882,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER luggage_status_only_booked_if_booking_cancelled
+CREATE OR REPLACE TRIGGER lug_status_only_booked_if_booking_canc
 BEFORE INSERT OR UPDATE OF luggage_status ON Luggage
 FOR EACH ROW
-EXECUTE FUNCTION fun_luggage_status_only_booked_if_booking_cancelled();
+EXECUTE FUNCTION fun_lug_status_only_booked_if_booking_cancd();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO UN PASSEGGERO FA IL CHECK-IN, VIENE GENERATO L'id_luggage_after_check_in PER TUTTI I SUOI BAGAGLI
+--TRIGGER QUANDO PER UN BIGLIETTO VIENE FATTO IL CHECK-IN, VIENE GENERATO L'id_luggage_after_check_in PER TUTTI I SUOI BAGAGLI
 --(VIENE GENERATO COME ticket_number concatenato un intero da 0 a numero di bagagli del passeggero - 1)
 
 CREATE OR REPLACE FUNCTION fun_generation_of_id_luggage_after_check_in()
@@ -951,7 +906,7 @@ BEGIN
 	IF OLD.checked_in = false AND NEW.checked_in = true THEN
 
 		FOR selected_luggage IN (SELECT * FROM LUGGAGE L
-								 WHERE L.id_passenger = NEW.ticket_number) LOOP
+								 WHERE L.id_ticket = NEW.ticket_number) LOOP
 
 			UPDATE LUGGAGE
 			SET id_luggage_after_check_in = NEW.ticket_number || i
@@ -969,29 +924,29 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER generation_of_id_luggage_after_check_in
-AFTER UPDATE OF checked_in ON PASSENGER
+AFTER UPDATE OF checked_in ON TICKET
 FOR EACH ROW
 EXECUTE FUNCTION fun_generation_of_id_luggage_after_check_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SU id_luggage_after_check_in NOT NULL SE IL SUO PASSEGGERO è CHECKED-IN
+--TRIGGER SU id_luggage_after_check_in NOT NULL SE IL SUO BIGLIETTO è CHECKED-IN
 
-CREATE OR REPLACE FUNCTION fun_check_id_luggage_after_check_in_not_null_if_passenger_checked_in()
+CREATE OR REPLACE FUNCTION fun_check_id_lu_after_check_in_not_null_if_ticket_checked_in()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_passenger PASSENGER%ROWTYPE := (SELECT * FROM PASSENGER P
-					          				   WHERE P.ticket_number = NEW.id_passenger);
+	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
+					          			 WHERE T.ticket_number = NEW.id_ticket);
 
 BEGIN
 	
-	IF associated_passenger.checked_in = true THEN
+	IF associated_ticket.checked_in = true THEN
 
 		IF NEW.id_luggage_after_check_in IS NULL THEN
 
-			RAISE EXCEPTION 'Il passeggero con ticket number %L ha efettuato il check_in, il suo bagaglio non può non avere id_luggage_after_check_in!', associated_passenger.ticket_number;
+			RAISE EXCEPTION 'Il biglietto con ticket number %L ha efettuato il check_in, il suo bagaglio non può non avere id_luggage_after_check_in!', associated_ticket.ticket_number;
 
 		END IF;
 
@@ -1002,10 +957,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_id_luggage_after_check_in_not_null_if_passenger_checked_in
+CREATE OR REPLACE TRIGGER check_id_lu_after_check_in_not_null_if_ticket_checked_in
 BEFORE INSERT OR UPDATE OF id_luggage_after_check_in ON LUGGAGE
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_id_luggage_after_check_in_not_null_if_passenger_checked_in();
+EXECUTE FUNCTION fun_check_id_lu_after_check_in_not_null_if_ticket_checked_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
