@@ -379,9 +379,9 @@ DECLARE
 
 BEGIN
 
-	IF seat IS NOT NULL THEN
+	IF NEW.seat IS NOT NULL THEN
  
-		IF NOT (seat BETWEEN 0 AND associated_flight.max_seats - 1) THEN
+		IF NOT (NEW.seat BETWEEN 0 AND associated_flight.max_seats - 1) THEN
 			
 			RAISE EXCEPTION 'Posto non valido per il volo %L', NEW.id_flight;
 	
@@ -426,7 +426,7 @@ BEGIN
 			IF associated_booking.booking_status = 'confirmed' THEN
 
 				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %L, per la prenotazione %L', 
-															selected_ticket.ticket_number, associate_booking.id_booking;
+															selected_ticket.ticket_number, associated_booking.id_booking;
 
 			END IF;
 
@@ -469,7 +469,7 @@ BEGIN
 				    		  WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND 
 								    (SELECT B.booking_status FROM BOOKING B
 									 WHERE B.id_booking = T.id_booking) <> 'cancelled' AND T.seat IS NOT NULL
-					 		  ORDER BY P.seat) LOOP
+					 		  ORDER BY T.seat) LOOP
 			
 			IF selected_seat = prev_seat + 1 THEN
 				
@@ -529,7 +529,7 @@ BEGIN
 		FOR selected_ticket IN (SELECT * FROM TICKET T
 								WHERE T.id_passenger = NEW.SSN) LOOP
 
-			associated_flght := (SELECT * FROM FLIGHT F
+			associated_flight := (SELECT * FROM FLIGHT F
 				    			 WHERE F.id_flight = selected_ticket.id_flight);
 			
 			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
@@ -550,7 +550,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER block_upd_pass_if_flight_departed_aToArr_landed
 BEFORE UPDATE OF first_name, last_name, birth_date ON PASSENGER
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landedd();
+EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -591,7 +591,7 @@ DECLARE
 
 BEGIN
 	
-	IF associate_booking.booking_status <> 'cancelled' AND NEW.seat IS NOT NULL THEN
+	IF associated_booking.booking_status <> 'cancelled' AND NEW.seat IS NOT NULL THEN
 
 		IF EXISTS(SELECT * FROM TICKET T
 		  	      WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND T.seat = NEW.seat 
@@ -610,7 +610,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER unique_ticket_per_seat_per_flight
 BEFORE INSERT OR UPDATE OF seat ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_unique_ticket_per_seat_per_flightt();
+EXECUTE FUNCTION fun_unique_ticket_per_seat_per_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -630,7 +630,7 @@ DECLARE
 
 BEGIN
 	
-	IF associate_booking.booking_status <> 'cancelled' THEN
+	IF associated_booking.booking_status <> 'cancelled' THEN
 
 		IF associated_flight.free_seats = 0 THEN
 	
@@ -671,7 +671,7 @@ BEGIN
 	
 	IF NEW.checked_in = true THEN
 
-		IF associate_booking.booking_status <> 'confirmed' THEN
+		IF associated_booking.booking_status <> 'confirmed' THEN
 
 			RAISE EXCEPTION 'La prenotazione %L non è confermata, non si può fare il check-in!', NEW.id_booking;
 		
@@ -867,7 +867,7 @@ DECLARE
 
 BEGIN
 
-	IF associated_passenger.checked_in = false THEN
+	IF associated_ticket.checked_in = false THEN
  
 		IF NEW.luggage_status <> 'booked' THEN
 			
@@ -1278,7 +1278,7 @@ BEGIN
 			END IF;
 
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-									 WHERE B.id_flight = NEW.id_flight AND B.boking_status <> 'cancelled') LOOP
+									 WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'cancelled') LOOP
 
 					
 				--non devo controllare la prenotazione non sia pending, 
@@ -1325,7 +1325,7 @@ AS $$
 DECLARE
 
 	selected_booking BOOKING%ROWTYPE;
-	selected_ticket TICKET%ROWTYPE;;
+	selected_ticket TICKET%ROWTYPE;
 	selected_luggage LUGGAGE%ROWTYPE;
 
 BEGIN
@@ -1343,7 +1343,7 @@ BEGIN
 			END IF;
 
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-										WHERE B.id_flight = NEW.id_flight AND B.boking_status <> 'cancelled') LOOP
+										WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'cancelled') LOOP
 
 					
 				--non devo controllare la prenotazione non sia pending, 
@@ -1352,7 +1352,7 @@ BEGIN
 											WHERE T.id_booking = selected_booking.id_booking AND T.checked_in = true) LOOP
 
 					FOR selected_luggage IN (SELECT * FROM LUGGAGE L
-												WHERE L.id_passenger = selected_ticket.ticket_number) LOOP
+												WHERE L.id_ticket = selected_ticket.ticket_number) LOOP
 
 						UPDATE LUGGAGE
 						SET luggage_status = 'withdrowable'
@@ -1659,7 +1659,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER block_upd_date_if_already_departed
-BEFORE UPDATE OF date ON FLIGHT
+BEFORE UPDATE OF flight_date ON FLIGHT
 FOR EACH ROW
 EXECUTE FUNCTION fun_block_upd_date_if_already_departed();
 
@@ -1819,7 +1819,7 @@ BEGIN
 		--non controllo se è 'aboutToDepart' perché se lo fosse, c'è un altro trigger che aggiorna le 'pending' a 'cancelled'
 		
 			IF EXISTS(SELECT * FROM BOOKING B
-					  WHERE B.id_flight = NEW.id_flight AND B.boking_status = 'pending') THEN
+					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') THEN
 
 				RAISE EXCEPTION 'Il volo %L non può partire finchè ha prenotazioni pending!', NEW.id_flight;
 
@@ -1855,7 +1855,7 @@ BEGIN
 		IF NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN
 		
 			IF EXISTS(SELECT * FROM BOOKING B
-					  WHERE B.id_flight = NEW.id_flight AND B.boking_status = 'pending') THEN
+					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') THEN
 
 				RAISE EXCEPTION 'Il volo %L non può partire finchè ha prenotazioni pending!', NEW.id_flight;
 
