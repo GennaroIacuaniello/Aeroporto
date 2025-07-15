@@ -2083,7 +2083,7 @@ EXECUTE FUNCTION fun_arriving_check_assign_gate_only_if_aToArr_delayed();
 
 --TRIGGER NON SI POSSONO INSERIRE VOLI PROGRAMMED O CANCELLED CON UN GATE
 
-CREATE OR REPLACE FUNCTION fun_block_assignment_of_a_gate_to_a_programmed_or_cancelled_flight()
+CREATE OR REPLACE FUNCTION fun_block_assign_gate_to_a_prog_or_canc_flight()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -2103,16 +2103,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_assignment_of_a_gate_to_a_programmed_or_cancelled_flight
+CREATE OR REPLACE TRIGGER block_assign_gate_to_a_prog_or_canc_flight
 BEFORE INSERT OR UPDATE OF id_gate ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_assignment_of_a_gate_to_a_programmed_or_cancelled_flight();
+EXECUTE FUNCTION fun_block_assign_gate_to_a_prog_or_canc_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER NON SI POSSONO INSERIRE VOLI DEPARTING DEPARTED O LANDED SENZA GATE
 
-CREATE OR REPLACE FUNCTION fun_block_having_a_departing_flight_departed_or_landed_without_gate()
+CREATE OR REPLACE FUNCTION fun_block_departing_flight_dep_or_landed_without_gate()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -2136,16 +2136,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_having_a_departing_flight_departed_or_landed_without_gate
+CREATE OR REPLACE TRIGGER block_departing_flight_dep_or_landed_without_gate
 BEFORE INSERT OR UPDATE OF id_gate ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_having_a_departing_flight_departed_or_landed_without_gate();
+EXECUTE FUNCTION fun_block_departing_flight_dep_or_landed_without_gate();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER NON SI POSSONO INSERIRE VOLI ARRIVING LANDED SENZA GATE
 
-CREATE OR REPLACE FUNCTION fun_block_having_an_arriving_flight_landed_without_gate()
+CREATE OR REPLACE FUNCTION fun_block_arriving_flight_landed_without_gate()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -2169,43 +2169,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_having_an_arriving_flight_landed_without_gate
+CREATE OR REPLACE TRIGGER block_arriving_flight_landed_without_gate
 BEFORE INSERT OR UPDATE OF id_gate ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_having_an_arriving_flight_landed_without_gate();
-
--------------------------------------------------------------------------------------------------------------------------
-
---TRIGGER NON SI POSSONO INSERIRE VOLI DEPARTING DEPARTED O LANDED SENZA GATE
-
-CREATE OR REPLACE FUNCTION fun_block_having_a_departing_flight_departed_or_landed_without_gate()
-RETURNS TRIGGER
-AS $$
-BEGIN
-
-	IF NEW.flight_type = true THEN
-	
-		IF NEW.id_gate IS NULL THEN
-
-			IF NEW.flight_status = 'departed' OR NEW.flight_status = 'landed' THEN
-
-				RAISE EXCEPTION 'Il volo da napoli %L è in stato %L, non può non avere un gate da cui è partito!', NEW.id_flight, NEW.flight_status;
-
-			END IF;
-
-		END IF;
-
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER block_having_a_departing_flight_departed_or_landed_without_gate
-BEFORE INSERT OR UPDATE OF id_gate ON FLIGHT
-FOR EACH ROW
-EXECUTE FUNCTION fun_block_having_a_departing_flight_departed_or_landed_without_gate();
+EXECUTE FUNCTION fun_block_arriving_flight_landed_without_gate();
 
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -2219,13 +2186,13 @@ EXECUTE FUNCTION fun_block_having_a_departing_flight_departed_or_landed_without_
 
 --TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
 
-CREATE OR REPLACE FUNCTION fun_block_booking_an_aboutToDepart_or_more_flight()
+CREATE OR REPLACE FUNCTION fun_block_booking_an_aToDep_or_more_flight()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     WHERE id_flight = NEW.id_flight);
+				     					 WHERE id_flight = NEW.id_flight);
 
 BEGIN
 				
@@ -2240,28 +2207,28 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_booking_an_aboutToDepart_or_more_flight
+CREATE OR REPLACE TRIGGER block_booking_an_aToDep_or_more_flight
 BEFORE INSERT ON BOOKING
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_booking_an_aboutToDepart_or_more_flight();
+EXECUTE FUNCTION fun_block_booking_an_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PASSEGGERO SU UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
 
-CREATE OR REPLACE FUNCTION fun_block_inserting_a_passenger_on_an_aboutToDepart_or_more_flight()
+CREATE OR REPLACE FUNCTION fun_block_ins_tickets_aToDep_or_more_flight()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				             WHERE id_flight = NEW.id_flight);
+				             			 WHERE id_flight = NEW.id_flight);
 
 BEGIN
 				
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito!', NEW.id_flight;
+		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, non si possono inserire biglietti!', NEW.id_flight;
 
 	END IF;
 
@@ -2270,33 +2237,33 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_inserting_a_passenger_on_an_aboutToDepart_or_more_flight
-BEFORE INSERT ON PASSENGER
+CREATE OR REPLACE TRIGGER block_ins_tickets_aToDep_or_more_flight
+BEFORE INSERT ON TICKET
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_inserting_a_passenger_on_an_aboutToDepart_or_more_flight();
+EXECUTE FUNCTION fun_block_ins_tickets_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE BAGAGLIO PER UN PASSEGGERO DI UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
 
-CREATE OR REPLACE FUNCTION fun_block_inserting_a_luggage_for_a_passenger_on_an_aboutToDepart_or_more_flight()
+CREATE OR REPLACE FUNCTION fun_block_ins_luggage_aToDep_or_more_flight()
 RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_passenger PASSENGER%ROWTYPE := (SELECT * FROM PASSENGER P
-					          WHERE P.ticket_number = NEW.id_passenger);
+	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
+					          			 WHERE T.ticket_number = NEW.id_ticket);
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
 	associated_flight := (SELECT * FROM FLIGHT F
-			      WHERE F.id_flight = associated_flight.id_flight);
+			      		  WHERE F.id_flight = associated_ticket.id_flight);
 			
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, il bagaglio nn può essere inserito!', associated_flght.id_flight;
+		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, il bagaglio non può essere inserito!', associated_flght.id_flight;
 
 	END IF;
 
@@ -2305,10 +2272,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_inserting_a_luggage_for_a_passenger_on_an_aboutToDepart_or_more_flight
+CREATE OR REPLACE TRIGGER block_ins_luggage_aToDep_or_more_flight
 BEFORE INSERT ON LUGGAGE
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_inserting_a_luggage_for_a_passenger_on_an_aboutToDepart_or_more_flight();
+EXECUTE FUNCTION fun_block_ins_luggage_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
