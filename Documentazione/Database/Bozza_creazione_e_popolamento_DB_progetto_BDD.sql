@@ -30,6 +30,130 @@ CREATE TABLE Customer (
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER UNO USERNAME NON SI RIPETE NELLA TABELLA ADMIN TRA GLI ACCOUNT NON CANCELLATI
+
+CREATE OR REPLACE FUNCTION fun_unique_username_admin_not_deleted()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.is_deleted = false THEN
+
+		IF EXISTS(SELECT * FROM ADMIN A
+				WHERE A.id_admin <> NEW.id_admin AND A.is_deleted = false AND A.username = NEW.username) THEN 
+
+			RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER unique_username_admin_not_deleted
+BEFORE INSERT OR UPDATE OF username ON Admin
+FOR EACH ROW
+EXECUTE FUNCTION fun_unique_username_admin_not_deleted();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER UNA MAIL NON SI RIPETE NELLA TABELLA ADMIN TRA GLI ACCOUNT NON CANCELLATI
+
+CREATE OR REPLACE FUNCTION fun_unique_mail_admin_not_deleted()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.is_deleted = false THEN
+
+		IF EXISTS(SELECT * FROM ADMIN A
+				WHERE A.id_admin <> NEW.id_admin AND A.is_deleted = false AND A.mail = NEW.mail) THEN 
+
+			RAISE EXCEPTION 'Mail %L già utilizzata da un altro utente!', NEW.mail;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER unique_mail_admin_not_deleted
+BEFORE INSERT OR UPDATE OF mail ON Admin
+FOR EACH ROW
+EXECUTE FUNCTION fun_unique_mail_admin_not_deleted();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER UNO USERNAME NON SI RIPETE NELLA TABELLA CUSTOMER TRA GLI ACCOUNT NON CANCELLATI
+
+CREATE OR REPLACE FUNCTION fun_unique_username_customer_not_deleted()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.is_deleted = false THEN
+
+		IF EXISTS(SELECT * FROM CUSTOMER C
+				WHERE C.id_customer <> NEW.id_customer AND C.is_deleted = false AND C.username = NEW.username) THEN 
+
+			RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER unique_username_customer_not_deleted
+BEFORE INSERT OR UPDATE OF username ON CUSTOMER
+FOR EACH ROW
+EXECUTE FUNCTION fun_unique_username_customer_not_deleted();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER UNA MAIL NON SI RIPETE NELLA TABELLA CUSTOMER TRA GLI ACCOUNT NON CANCELLATI
+
+CREATE OR REPLACE FUNCTION fun_unique_mail_customer_not_deleted()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.is_deleted = false THEN
+
+		IF EXISTS(SELECT * FROM CUSTOMER C
+				  WHERE C.id_customer <> NEW.id_customer AND C.is_deleted = false AND C.mail = NEW.mail) THEN 
+
+			RAISE EXCEPTION 'Mail %L già utilizzata da un altro utente!', NEW.mail;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER unique_mail_customer_not_deleted
+BEFORE INSERT OR UPDATE OF mail ON CUSTOMER
+FOR EACH ROW
+EXECUTE FUNCTION fun_unique_mail_customer_not_deleted();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 --TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
 
 CREATE OR REPLACE FUNCTION fun_unique_username_admin_with_customer()
@@ -135,6 +259,56 @@ EXECUTE FUNCTION fun_unique_mail_customer_with_admin();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER BLOCCO LE MODIFICHE SU UN ACCOUNT ADMIN CANCELLATO
+
+CREATE OR REPLACE FUNCTION fun_block_upd_canc_admin()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.is_deleted = true THEN
+
+		RAISE EXCEPTION 'L''account dell''utente %L è cancellato, non può essere modificato!', OLD.id_admin;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_upd_canc_admin
+BEFORE UPDATE ON ADMIN
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_upd_canc_admin();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER BLOCCO LE MODIFICHE SU UN ACCOUNT CUSTOMER CANCELLATO
+
+CREATE OR REPLACE FUNCTION fun_block_upd_canc_customer()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.is_deleted = true THEN
+
+		RAISE EXCEPTION 'L''account dell''utente %L è cancellato, non può essere modificato!', OLD.id_customer;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_upd_canc_customer
+BEFORE UPDATE ON CUSTOMER
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_upd_canc_customer();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 CREATE TYPE FlightStatus AS ENUM ('programmed', 'cancelled', 'aboutToDepart', 'departed', 'delayed', 'landed', 'aboutToArrive');
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -152,8 +326,8 @@ CREATE TABLE Flight (
 	id_flight VARCHAR(15) PRIMARY KEY,
 	company_name VARCHAR(32) NOT NULL,
 	flight_date DATE NOT NULL,
-	departure_time TIME NOT NULL,
-	arrival_time TIME NOT NULL,
+	departure_time TIMESTAMP NOT NULL,
+	arrival_time TIMESTAMP NOT NULL,
 	flight_status FlightStatus NOT NULL,
 	max_seats SMALLINT NOT NULL,
 	free_seats SMALLINT NOT NULL,
@@ -269,36 +443,15 @@ CREATE TABLE Booking (
 
 	id_booking SERIAL PRIMARY KEY,
 	booking_status BookingStatus NOT NULL,
-	booking_time TIME NOT NULL,
+	booking_time TIMESTAMP NOT NULL,
 	buyer INTEGER NOT NULL,
 	id_flight VARCHAR(15) NOT NULL,
 
 	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIME),
-	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
-
--------------------------------------------------------------------------------------------------------------------------
-
---TRIGGER NON SI POSSONO MAI MODIFICARE I CAMPI id_booking, buyer, id_flight DI UNA PRENOTAZIONE
-
-CREATE OR REPLACE FUNCTION fun_block_upd_of_id_booking_buyer_id_flight_on_passenger()
-RETURNS TRIGGER
-AS $$
-BEGIN
-
-	RAISE EXCEPTION 'Non si possono modificare i dati di prenotazione associata, acquirente, volo associato di una prenotazione!';
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER block_upd_of_id_booking_buyer_id_flight_on_passenger
-BEFORE UPDATE OF id_booking, buyer, id_flight ON BOOKING
-FOR EACH ROW
-EXECUTE FUNCTION fun_block_upd_of_id_booking_buyer_id_flight_on_passenger();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -512,7 +665,7 @@ EXECUTE FUNCTION fun_valid_seat_after_check_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE ALMENO UN VOLO DI UN PASSEGGERO È DEPARTED o aboutToArrive O LANDED, I DATI DEL PASSEGGERO NON POSSONO PIÙ ESSERE MODIFICATI
+--TRIGGER SE ALMENO UN VOLO DI UN PASSEGGERO NON È IN STATO PROGRAMMED O CANCELLED, I DATI DEL PASSEGGERO NON POSSONO PIÙ ESSERE MODIFICATI
 
 CREATE OR REPLACE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed()
 RETURNS TRIGGER
@@ -524,17 +677,19 @@ DECLARE
 
 BEGIN
 	
-	IF NEW.first_name <> OLD.first_name OR NEW.last_name <> OLD.last_name OR NEW.birth_date <> OLD.birth_date THEN
+	IF NEW.first_name <> OLD.first_name OR NEW.last_name <> OLD.last_name OR NEW.birth_date <> OLD.birth_date OR NEW.SSN <> OLD.SSN THEN
 
 		FOR selected_ticket IN (SELECT * FROM TICKET T
-								WHERE T.id_passenger = NEW.SSN) LOOP
+								WHERE T.id_passenger = OLD.SSN) LOOP
+								--uso old perchè potenzialmente NEW.SSN <> OLD.SSN
 
 			associated_flight := (SELECT * FROM FLIGHT F
 				    			 WHERE F.id_flight = selected_ticket.id_flight);
 			
-			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+			IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN
 
-				RAISE EXCEPTION 'Il volo %L è partito/sta per atterrare/atterrato, non si possono modificare i dati del passeggero %L!', NEW.id_flight, NEW.SSN;
+				RAISE EXCEPTION 'Il volo %L è in stato %L, non si possono modificare i dati del passeggero con SSN %L!', 
+															  associated_flight.id_flight, associated_flight.flight_status, NEW.SSN;
 
 			END IF;
 
@@ -548,22 +703,32 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER block_upd_pass_if_flight_departed_aToArr_landed
-BEFORE UPDATE OF first_name, last_name, birth_date ON PASSENGER
+BEFORE UPDATE ON PASSENGER
 FOR EACH ROW
 EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MAI MODIFICARE I CAMPI ticket_number, id_booking, id_passenger e id_flight DI UN TICKET
+--TRIGGER SE UN VOLO È aboutToDepart, PUÒ ESSERE MOFIFICATO SOLO IL POSTO O CHECKED_IN DI UN TICKET
 
-CREATE OR REPLACE FUNCTION fun_block_upd_of_tic_num_id_b_id_p_id_f_on_ticket()
+CREATE OR REPLACE FUNCTION fun_only_mod_seat_if_flight_aToDep()
 RETURNS TRIGGER
 AS $$
+DECLARE
+
+	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
+					     				 WHERE F.id_flight = NEW.id_flight);
+
 BEGIN
+	
+	IF associated_flight.flight_status = 'aboutToDepart' THEN
 
-	IF NEW.ticket_number <> OLD.ticket_number OR NEW.id_booking <> OLD.id_booking OR NEW.id_passenger <> OLD.id_passenger OR NEW.id_flight <> OLD.id_flight THEN
+		IF OLD.ticket_number <> NEW.ticket_number OR OLD.id_booking <> NEW.id_booking OR OLD.id_passenger <> NEW.id_passenger OR OLD.id_flight <> NEW.id_flight THEN
+		
+			RAISE EXCEPTION 'Il volo %L è in stato ''in partenza'', per il biglietto con ticket_number %L si può solo modificare il posto o fare il check-in!',
+																															NEW.id_flight, NEW.ticket_number;
 
-		RAISE EXCEPTION 'Non si possono modificare i dati ticket_number, prenotazione associata, passeggero associato e volo associato di un biglietto!';
+		END IF;
 
 	END IF;
 
@@ -572,10 +737,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_upd_of_tic_num_id_b_id_p_id_f_on_ticket
-BEFORE UPDATE OF ticket_number, id_booking, id_passenger, id_flight ON TICKET
+CREATE OR REPLACE TRIGGER only_mod_seat_if_flight_aToDep
+BEFORE UPDATE ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_upd_of_tic_num_id_b_id_p_id_f_on_ticket();
+EXECUTE FUNCTION fun_only_mod_seat_if_flight_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -759,38 +924,6 @@ EXECUTE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER CONTROLLO CHE L'ATTRIBBUTO FREE_SEATS SIA CORRETTO QUANDO LO SI INSERISCE/MODIFICA
---POTREI FARLO SOLO SU INSERIMENTO, MA, DATO CHE MI SERVE SIA MODIFICABILE, POTREI POI POTENZIALMENTE MODIFICARLO A CASO
-
-CREATE OR REPLACE FUNCTION fun_correctness_of_free_seats_per_flight()
-RETURNS TRIGGER
-AS $$
-BEGIN
-	
-	IF NEW.free_seats <> NEW.max_seats - (SELECT COUNT (*)
-					      				  FROM TICKET T
-					      				  WHERE T.id_flight = NEW.id_flight AND (SELECT B.booking_status FROM BOOKING B
-					    	       				     					WHERE B.id_booking = T.id_booking) <> 'cancelled') THEN
-
-		RAISE EXCEPTION 'Errore nei posti liberi del volo %L!', NEW.id_flight;
-	
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER correctness_of_free_seats_per_flight
-BEFORE INSERT OR UPDATE OF free_seats ON FLIGHT
-FOR EACH ROW
-EXECUTE FUNCTION fun_correctness_of_free_seats_per_flight();
-
--- È BEFORE perché altrimenti dà conflitti quando si fa l'update dei free_seats quando si inserisce un passeggero o si fa l'update di un booking_status 
---(verrebbe controllato il nuovo valore dei free_seats, ma senza aver effettivamente aggiornato la tabella PASSENGER/BOOKING, dando quindi errore)
-
--------------------------------------------------------------------------------------------------------------------------
-
 CREATE TYPE LuggageStatus AS ENUM ('booked', 'loaded', 'withdrawable', 'lost');
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -808,7 +941,7 @@ CREATE TABLE Luggage (
 	id_ticket CHAR(13) NOT NULL,
 
 
-	CONSTRAINT ticket_FK FOREIGN KEY(id_ticket) REFERENCES Ticket(ticket_number),
+	CONSTRAINT ticket_FK FOREIGN KEY(id_ticket) REFERENCES Ticket(ticket_number) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR LENGTH(id_luggage_after_check_in) > 13)
 	--questa check serve per come è costruito id_luggage_after_check_in, 
 	--ossia come concatenazione di ticket_number del passeggero associato + 'numero del bagaglio'
@@ -932,7 +1065,7 @@ EXECUTE FUNCTION fun_generation_of_id_luggage_after_check_in();
 
 --TRIGGER SU id_luggage_after_check_in NOT NULL SE IL SUO BIGLIETTO è CHECKED-IN
 
-CREATE OR REPLACE FUNCTION fun_check_id_lu_after_check_in_not_null_if_ticket_checked_in()
+CREATE OR REPLACE FUNCTION fun_check_id_lug_after_check_in_not_null_if_ticket_checked_in()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -958,14 +1091,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_id_lu_after_check_in_not_null_if_ticket_checked_in
+CREATE OR REPLACE TRIGGER check_id_lug_after_check_in_not_null_if_ticket_checked_in
 BEFORE INSERT OR UPDATE OF id_luggage_after_check_in ON LUGGAGE
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_id_lu_after_check_in_not_null_if_ticket_checked_in();
+EXECUTE FUNCTION fun_check_id_lug_after_check_in_not_null_if_ticket_checked_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON PUÒ ESSERE BOOKED SE IL VOLO È DEPARTED, ABOUTTOARRIVE O LANDED
+--TRIGGER IL LUGGAGE_STATUS (DEI BAGAGLI DELLE PRENOTAZIONI NON CANCELLATE) NON PUÒ ESSERE BOOKED SE IL VOLO È DEPARTED, ABOUTTOARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_valid_luggage_status_after_departure()
 RETURNS TRIGGER
@@ -975,20 +1108,28 @@ DECLARE
 	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
 					          			 WHERE T.ticket_number = NEW.id_ticket);
 
+	associated_booking BOOKING%ROWTYPE;
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 
 	IF NEW.luggage_status = 'booked' THEN
-	
-		associated_flight := (SELECT * FROM FLIGHT F
-			      		  	  WHERE F.id_flight = associated_ticket.id_flight);
 
-		IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
- 
-			RAISE EXCEPTION 'Il volo %L del passeggero con ticket number %L è già partito, il bagaglio %L non può avere stato ''prenotato''!', 
-																associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
+		associated_booking := (SELECT * FROM BOOKING B
+						   	   WHERE B.id_booking = associated_ticket.id_booking);
+
+		IF associated_booking.booking_status <> 'cancelled' THEN
+
+			associated_flight := (SELECT * FROM FLIGHT F
+								WHERE F.id_flight = associated_ticket.id_flight);
+
+			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 	
+				RAISE EXCEPTION 'Il volo %L del passeggero con ticket number %L è già partito, il bagaglio %L non può avere stato ''prenotato''!', 
+																	associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
+		
+			END IF;
+
 		END IF;
 
 	END IF;
@@ -1005,7 +1146,7 @@ EXECUTE FUNCTION fun_valid_luggage_status_after_departure();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON Può ESSERE WITHDROWABLE SE IL VOLO NON è LANDED
+--TRIGGER IL LUGGAGE_STATUS NON Può ESSERE withdrawable SE IL VOLO NON è LANDED
 
 CREATE OR REPLACE FUNCTION fun_luggage_not_withd_if_flight_not_landed()
 RETURNS TRIGGER
@@ -1019,7 +1160,7 @@ DECLARE
 
 BEGIN
 	
-	IF NEW.luggage_status = 'withdrowable' THEN
+	IF NEW.luggage_status = 'withdrawable' THEN
 		
 		associated_flight := (SELECT * FROM FLIGHT F
 			      			  WHERE F.id_flight = associated_ticket.id_flight);
@@ -1194,7 +1335,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_loaded_only_if_booked();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED PUò DIVENTARE WITHDROWABLE
+--TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED PUò DIVENTARE withdrawable
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_withd_only_if_loaded()
 RETURNS TRIGGER
@@ -1203,7 +1344,7 @@ BEGIN
 
 	IF NEW.luggage_status <> OLD.luggage_status THEN
  
-		IF NEW.luggage_status = 'withdrowable' AND OLD.luggage_status <> 'loaded' THEN
+		IF NEW.luggage_status = 'withdrawable' AND OLD.luggage_status <> 'loaded' THEN
 			
 			RAISE EXCEPTION 'Il bagaglio %L non era in stato ''caricato'', non può diventare ''ritirabile''!', OLD.id_luggage;
 	
@@ -1223,7 +1364,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_withd_only_if_loaded();
 
 ----------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS WITHDROWABLE PUò DIVENTARE LOST
+--TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS withdrawable PUò DIVENTARE LOST
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_lost_only_if_withd()
 RETURNS TRIGGER
@@ -1232,7 +1373,7 @@ BEGIN
 
 	IF NEW.luggage_status <> OLD.luggage_status THEN
  
-		IF NEW.luggage_status = 'lost' AND OLD.luggage_status <> 'withdrowable' THEN
+		IF NEW.luggage_status = 'lost' AND OLD.luggage_status <> 'withdrawable' THEN
 			
 			RAISE EXCEPTION 'Il bagaglio %L non era in stato ''ritirabile'', non può diventare ''smarrito''!', OLD.id_luggage;
 	
@@ -1317,9 +1458,9 @@ EXECUTE FUNCTION fun_luggages_loaded_when_depart();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO UN VOLO ATTERRA, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CHECKED_IN VENGONO MESSI A WITHDROWABLE
+--TRIGGER QUANDO UN VOLO ATTERRA, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CHECKED_IN VENGONO MESSI A withdrawable
 
-CREATE OR REPLACE FUNCTION fun_luggages_withdrowable_when_landed()
+CREATE OR REPLACE FUNCTION fun_luggages_withdrawable_when_landed()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -1355,7 +1496,7 @@ BEGIN
 												WHERE L.id_ticket = selected_ticket.ticket_number) LOOP
 
 						UPDATE LUGGAGE
-						SET luggage_status = 'withdrowable'
+						SET luggage_status = 'withdrawable'
 						WHERE id_luggage = selected_luggage.id_luggage;
 
 					END LOOP;
@@ -1373,14 +1514,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER luggages_withdrowable_when_landed
+CREATE OR REPLACE TRIGGER luggages_withdrawable_when_landed
 AFTER UPDATE OF flight_status ON Flight
 FOR EACH ROW
-EXECUTE FUNCTION fun_luggages_withdrowable_when_landed();
+EXECUTE FUNCTION fun_luggages_withdrawable_when_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED = aboutToArrive O LANDED SOLO SE FLIGHT.FLIGHT_DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
+--TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED O aboutToArrive O LANDED SOLO SE FLIGHT.FLIGHT_DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
 
 CREATE OR REPLACE FUNCTION fun_check_date_before_aToDep_or_more()
 RETURNS TRIGGER
@@ -2175,6 +2316,51 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_block_arriving_flight_landed_without_gate();
 
 -------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER SE UN ACCOUNT CUSTOMER VIENE CANCELLATO, METTO A CANCELLED TUTTE LE SUE PRENOTAZIONI PER I VOLI CHE DEVONO ANCORA PARTIRE
+--(OSSIA IL CUI FLIGHT_STATUS è ANCORA PROGRAMMED)
+
+CREATE OR REPLACE FUNCTION fun_canc_future_booking_if_cust_canc()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	selected_booking BOOKING%ROWTYPE;
+	associated_flight FLIGHT%ROWTYPE;
+
+BEGIN
+
+	IF OLD.is_deleted = false AND NEW.is_deleted = true THEN
+	
+		FOR selected_booking IN (SELECT * FROM BOOKING B
+								 WHERE B.buyer = NEW.id_customer AND B.booking_status <> 'cancelled') LOOP
+
+			associated_flight := (SELECT * FROM FLIGHT F
+			      		  		  WHERE F.id_flight = selected_booking.id_flight);
+			
+			IF associated_flight.flight_status = 'programmed' THEN
+
+				UPDATE BOOKING
+				SET booking_status = 'cancelled'
+				WHERE id_booking = selected_booking.id_booking;
+
+			END IF;
+
+		END LOOP;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER canc_future_booking_if_cust_canc
+BEFORE UPDATE OF is_deleted ON CUSTOMER
+FOR EACH ROW
+EXECUTE FUNCTION fun_canc_future_booking_if_cust_canc();
+
+-------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 
 
@@ -2182,6 +2368,58 @@ EXECUTE FUNCTION fun_block_arriving_flight_landed_without_gate();
 
 
 -------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER NON SI PUò INSERIRE UN ACCOUNT ADMIN CANCELLATO
+
+CREATE OR REPLACE FUNCTION fun_block_ins_deleted_admin()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.is_deleted = true THEN
+
+		RAISE EXCEPTION 'Non si può inserire un account già cancellato!';
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER block_ins_deleted_admin
+BEFORE INSERT ON Admin
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_ins_deleted_admin();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER NON SI PUò INSERIRE UN ACCOUNT CUSTOMER CANCELLATO
+
+CREATE OR REPLACE FUNCTION fun_block_ins_deleted_customer()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.is_deleted = true THEN
+
+		RAISE EXCEPTION 'Non si può inserire un account già cancellato!';
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE TRIGGER block_ins_deleted_customer
+BEFORE INSERT ON CUSTOMER
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_ins_deleted_customer();
+
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
@@ -2263,7 +2501,7 @@ BEGIN
 			
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, il bagaglio non può essere inserito!', associated_flght.id_flight;
+		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, il bagaglio non può essere inserito!', associated_flight.id_flight;
 
 	END IF;
 
