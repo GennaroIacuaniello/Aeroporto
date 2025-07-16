@@ -46,9 +46,8 @@ CREATE TABLE Flight (
 
 	id_flight VARCHAR(15) PRIMARY KEY,
 	company_name VARCHAR(32) NOT NULL,
-	flight_date DATE NOT NULL,
-	departure_time TIME NOT NULL,
-	arrival_time TIME NOT NULL,
+	departure_time TIMESTAMP NOT NULL,
+	arrival_time TIMESTAMP NOT NULL,
 	flight_status FlightStatus NOT NULL,
 	max_seats SMALLINT NOT NULL,
 	free_seats SMALLINT NOT NULL,
@@ -81,7 +80,7 @@ CREATE TABLE Booking (
 
 	id_booking SERIAL PRIMARY KEY,
 	booking_status BookingStatus NOT NULL,
-	booking_time TIME NOT NULL,
+	booking_time TIMESTAMP NOT NULL,
 	buyer INTEGER NOT NULL,
 	id_flight VARCHAR(15) NOT NULL,
 
