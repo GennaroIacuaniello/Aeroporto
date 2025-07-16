@@ -351,16 +351,50 @@ CREATE TABLE Flight (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MAI MODIFICARE GLI ATTRIBUTI FLIGHT_DATE, DEPARTURE_TIME, ARRIVAL_TIME, MAX_SEATS, FLIGHT_TYPE DI FLIGHT
+--TRIGGER SI PUò MODIFICARE ID_FLIGHT DI FLIGHT SOLO FINCHè IL VOLO è PROGRAMMED O CANCELLED
+
+CREATE OR REPLACE FUNCTION fun_block_upd_id_flight_aToDep_or_more()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.flight_status <> 'programmed' AND NEW.flight_status <> 'cancelled' THEN
+
+		IF OLD.id_flight <> NEW.id_flight THEN
+
+			RAISE EXCEPTION 'Il volo %L non è in stato ''programmaato'' o ''cancellato'' non può cambiare id!', OLD.id_flight;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_upd_id_flight_aToDep_or_more
+BEFORE UPDATE OF id_flight ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_upd_id_flight_aToDep_or_more();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER NON SI POSSONO MODIFICARE GLI ATTRIBUTI ID_FLIGHT, COMPANY_NAME, MAX_SEATS, FREE_SEATS, DESTINATION_OR_ORIGIN, FLIGHT_TYPE 
+--DI FLIGHT SE IL VOLO NON è PROGRAMMED O CANCELLED (OSSIA SE è ABOUTTODEPART O PIù)
 
 CREATE OR REPLACE FUNCTION fun_blocked_updates_flight()
 RETURNS TRIGGER
 AS $$
 BEGIN
+LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+	IF NEW.flight_status <> 'programmed' AND NEW.flight_status <> 'cancelled' THEN
 
-	IF OLD.flight_date <> NEW.flight_date OR OLD.departure_time <> NEW.departure_time OR OLD.arrival_time <> NEW.arrival_time OR OLD.max_seats <> NEW.max_seats OR OLD.flight_type <> NEW.flight_type THEN
+		IF OLD.id_flight <> NEW.id_flight OR OLD.company_name <> NEW.company_name OR OLD.max_seats <> NEW.max_seats OR OLD.free_seats <> NEW.free_seats OR OLD.destination_or_origin <> NEW.destination_or_origin OR OLD.flight_type <> NEW.flight_type THEN
 
-		RAISE EXCEPTION 'I voli non possono cambiare data di partenza/ ora di partenza/ numero posti massimi/ tipo!';
+			RAISE EXCEPTION 'I voli non possono cambiare data di partenza/ ora di partenza/ numero posti massimi/ tipo!';
+
+		END IF;
 
 	END IF;
 
