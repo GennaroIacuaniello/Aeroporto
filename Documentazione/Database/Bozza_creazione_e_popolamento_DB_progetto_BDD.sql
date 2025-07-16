@@ -380,42 +380,6 @@ EXECUTE FUNCTION fun_block_upd_id_flight_aToDep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MODIFICARE GLI ATTRIBUTI COMPANY_NAME, MAX_SEATS, DESTINATION_OR_ORIGIN, FLIGHT_TYPE 
---DI FLIGHT SE IL VOLO HA ALMENO UNA PRENOTAZIONE ASSOCIATA
-
-CREATE OR REPLACE FUNCTION fun_blocked_updates_flight()
-RETURNS TRIGGER
-AS $$
-DECLARE
-
-	associated_booking BOOKING%ROWTYPE;
-
-BEGIN
-
-	IF OLD.company_name <> NEW.company_name OR OLD.max_seats <> NEW.max_seats OR OLD.destination_or_origin <> NEW.destination_or_origin OR OLD.flight_type <> NEW.flight_type THEN
-
-		IF EXISTS(SELECT * FROM BOOKING B
-				  WHERE B.id_flight = OLD.id_flight) THEN
-
-			RAISE EXCEPTION 'Il volo %L ha già almeno una prenotazione associata, non si possono modificare i suoi: nome compagnia, posti massimi, destinazione o origine, tipo!', OLD.id_flight;
-
-		END IF;
-
-	END IF;
-
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER blocked_updates_flight
-BEFORE UPDATE OF company_name, max_seats, destination_or_origin, flight_type ON FLIGHT
-FOR EACH ROW
-EXECUTE FUNCTION fun_blocked_updates_flight();
-
--------------------------------------------------------------------------------------------------------------------------
-
 --TRIGGER NON SI POSSONO MODIFICARE IL DEPARTURE TIME E I FREE_SEATS PER UN VOLO DEPARTING DEPARTED O LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land()
@@ -680,7 +644,7 @@ CREATE TABLE Booking (
 	buyer INTEGER NOT NULL,
 	id_flight VARCHAR(15) NOT NULL,
 
-	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIME),
+	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIMESTAMP),
 	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE
 
@@ -688,7 +652,43 @@ CREATE TABLE Booking (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---ID BOOKING IN BOOKING SI PUò MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED O CANCELLED
+--TRIGGER NON SI POSSONO MODIFICARE GLI ATTRIBUTI COMPANY_NAME, MAX_SEATS, DESTINATION_OR_ORIGIN, FLIGHT_TYPE 
+--DI FLIGHT SE IL VOLO HA ALMENO UNA PRENOTAZIONE ASSOCIATA
+
+CREATE OR REPLACE FUNCTION fun_blocked_updates_flight()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	associated_booking BOOKING%ROWTYPE;
+
+BEGIN
+
+	IF OLD.company_name <> NEW.company_name OR OLD.max_seats <> NEW.max_seats OR OLD.destination_or_origin <> NEW.destination_or_origin OR OLD.flight_type <> NEW.flight_type THEN
+
+		IF EXISTS(SELECT * FROM BOOKING B
+				  WHERE B.id_flight = OLD.id_flight) THEN
+
+			RAISE EXCEPTION 'Il volo %L ha già almeno una prenotazione associata, non si possono modificare i suoi: nome compagnia, posti massimi, destinazione o origine, tipo!', OLD.id_flight;
+
+		END IF;
+
+	END IF;
+
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER blocked_updates_flight
+BEFORE UPDATE OF company_name, max_seats, destination_or_origin, flight_type ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_blocked_updates_flight();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER ID BOOKING IN BOOKING SI PUò MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED O CANCELLED
 
 CREATE OR REPLACE FUNCTION fun_block_mod_id_booking_if_f_not_prog_canc()
 RETURNS TRIGGER
@@ -849,7 +849,7 @@ EXECUTE FUNCTION fun_correctness_of_id_flight_booking_with_tickets();
 
 --TRIGGER PER UN DATO BIGLIETTO, ID_FLIGHT è LO STESSO DELLA PRENOTAZIONE ASSOCIATA (lato TICKET)
 
-CREATE OR REPLACE FUNCTION fun_correctness_of_id_flight_ticket_with_bookings()
+CREATE OR REPLACE FUNCTION fun_correctness_of_id_flight_ticket_with_booking()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -1252,7 +1252,7 @@ BEGIN
 
 
 		RAISE EXCEPTION 'Il volo %L è in stato %L, non si possono modificare i dati del biglietto con ticket_number %L!',
-														NEW.id_flight, associated_flight.flight_status NEW.ticket_number;
+														NEW.id_flight, associated_flight.flight_status, NEW.ticket_number;
 
 	END IF;
 

@@ -84,7 +84,7 @@ CREATE TABLE Booking (
 	buyer INTEGER NOT NULL,
 	id_flight VARCHAR(15) NOT NULL,
 
-	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIME),
+	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIMESTAMP),
 	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE
 
