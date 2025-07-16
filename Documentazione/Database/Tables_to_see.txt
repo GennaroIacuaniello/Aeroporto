@@ -86,7 +86,7 @@ CREATE TABLE Booking (
 	id_flight VARCHAR(15) NOT NULL,
 
 	CONSTRAINT correctness_of_booking_time CHECK( booking_time <= CURRENT_TIME),
-	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT buyer_FK FOREIGN KEY(buyer) REFERENCES Customer(id_customer) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT id_flight_FK FOREIGN KEY(id_flight) REFERENCES Flight(id_flight) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
@@ -143,7 +143,7 @@ CREATE TABLE Luggage (
 	id_ticket CHAR(13) NOT NULL,
 
 
-	CONSTRAINT ticket_FK FOREIGN KEY(id_ticket) REFERENCES Ticket(ticket_number),
+	CONSTRAINT ticket_FK FOREIGN KEY(id_ticket) REFERENCES Ticket(ticket_number) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR LENGTH(id_luggage_after_check_in) > 13)
 	--questa check serve per come è costruito id_luggage_after_check_in, 
 	--ossia come concatenazione di ticket_number del passeggero associato + 'numero del bagaglio'
@@ -153,6 +153,6 @@ CREATE TABLE Luggage (
 
 
 
-WHERE WAS I 2084
+WHERE WAS I 154
 
 
