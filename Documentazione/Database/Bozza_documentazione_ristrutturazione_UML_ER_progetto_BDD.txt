@@ -43,16 +43,6 @@ Per passenger, accorpiamo gli attributi name e last_name in un unica stringa ful
 
 A livello implementativo, alcuni dei nomi che abbiamo usato per i vari attributi sono parole non strettamente riservate in sql, ma il cui utilizzo è comunque sconsigliato. Per questo motivo, eseguiamo le seguenti rinominazioni:
 
-Admin e Customer
-password -> hashed_password
-
-Flight
-date -> flight_date
-delay -> flight_delay
-type -> flight_type
-
-Luggage
-type -> luggage_type
 
 
 
