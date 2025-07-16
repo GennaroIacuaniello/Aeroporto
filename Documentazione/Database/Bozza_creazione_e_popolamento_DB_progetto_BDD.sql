@@ -325,7 +325,6 @@ CREATE TABLE Flight (
 
 	id_flight VARCHAR(15) PRIMARY KEY,
 	company_name VARCHAR(32) NOT NULL,
-	flight_date DATE NOT NULL,
 	departure_time TIMESTAMP NOT NULL,
 	arrival_time TIMESTAMP NOT NULL,
 	flight_status FlightStatus NOT NULL,
@@ -352,16 +351,16 @@ CREATE TABLE Flight (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO NON PUò MAI CAMBIARE TIPO
+--TRIGGER NON SI POSSONO MAI MODIFICARE GLI ATTRIBUTI FLIGHT_DATE, DEPARTURE_TIME, ARRIVAL_TIME, MAX_SEATS, FLIGHT_TYPE DI FLIGHT
 
-CREATE OR REPLACE FUNCTION fun_block_update_of_flight_type()
+CREATE OR REPLACE FUNCTION fun_blocked_updates_flight()
 RETURNS TRIGGER
 AS $$
 BEGIN
 
-	IF OLD.flight_type <> NEW.flight_type THEN
+	IF OLD.flight_date <> NEW.flight_date OR OLD.departure_time <> NEW.departure_time OR OLD.arrival_time <> NEW.arrival_time OR OLD.max_seats <> NEW.max_seats OR OLD.flight_type <> NEW.flight_type THEN
 
-		RAISE EXCEPTION 'I voli non possono cambiare tipo!';
+		RAISE EXCEPTION 'I voli non possono cambiare data di partenza/ ora di partenza/ numero posti massimi/ tipo!';
 
 	END IF;
 
@@ -370,10 +369,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_update_of_flight_type
+CREATE OR REPLACE TRIGGER blocked_updates_flight
 BEFORE UPDATE OF flight_type ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_update_of_flight_type();
+EXECUTE FUNCTION fun_blocked_updates_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -455,7 +454,7 @@ CREATE TABLE Booking (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO è aboutToDepart, DEPARTED, aboutToArrive, o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
+--TRIGGER SE UN VOLO è aboutToDepart, DEPARTED, aboutToArrive o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
 
 CREATE OR REPLACE FUNCTION fun_block_mod_booking_if_flight_aToDep_dep_aToArr_landed()
 RETURNS TRIGGER
@@ -463,7 +462,7 @@ AS $$
 DECLARE
 
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     WHERE id_flight = NEW.id_flight);
+				     					 WHERE id_flight = OLD.id_flight);
 
 BEGIN
 	
@@ -599,6 +598,50 @@ EXECUTE FUNCTION fun_valid_passenger_data();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER PRIMA DI METTERE UN PRENOTAZIONE A CONFERMATA, CONTROLLO CHE TUTTI I PASSEGGERI AD ESSA ASSOCIATA NON ABBIANO DATI NULL
+
+CREATE OR REPLACE FUNCTION fun_check_passenger_data_before_conf_booking()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	selected_ticket TICKET%ROWTYPE;
+	associated_passenger PASSENGER%ROWTYPE;
+
+BEGIN
+
+	IF OLD.booking_status <> 'confirmed' AND NEW.booking_status = 'confirmed' THEN
+
+		FOR selected_ticket IN (SELECT * FROM TICKET T
+								WHERE T.id_booking = OLD.id_booking) LOOP
+
+			associated_passenger := (SELECT * FROM PASSENGER P
+								     WHERE P.SSN = selected_ticket.id_passenger);
+
+			IF associated_passenger.first_name IS NULL OR associated_passenger.last_name IS NULL OR associated_passenger.birth_date IS NULL THEN
+
+				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %L, la prenotazione %L non può essere confermata!', 
+																								selected_ticket.ticket_number, NEW.id_booking;
+
+			END IF;
+
+		END LOOP;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER check_passenger_data_before_conf_booking
+BEFORE UPDATE OF booking_status ON BOOKING
+FOR EACH ROW
+EXECUTE FUNCTION fun_check_passenger_data_before_conf_booking();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
 --TRIGGER SE FACCIO IL CHECK-IN (OSSIA SE CHECK-IN = TRUE), ALLORA SE POSTO È NULL, ASSEGNO AL TICKET IL PRIMO POSTO LIBERO 
 --(E QUESTO TRIGGER È BEFORE INSERT OR UPDATE OF CHECKED_IN, SEAT; COSÌ NON PUÒ MAI ACCADERE CHE UN TICKET CON CHECK-IN TRUE NON ABBIA POSTO)
 
@@ -711,13 +754,13 @@ EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed();
 
 --TRIGGER SE UN VOLO È aboutToDepart, PUÒ ESSERE MOFIFICATO SOLO IL POSTO O CHECKED_IN DI UN TICKET
 
-CREATE OR REPLACE FUNCTION fun_only_mod_seat_if_flight_aToDep()
+CREATE OR REPLACE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep()
 RETURNS TRIGGER
 AS $$
 DECLARE
 
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-					     				 WHERE F.id_flight = NEW.id_flight);
+					     				 WHERE F.id_flight = OLD.id_flight);
 
 BEGIN
 	
@@ -737,12 +780,45 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER only_mod_seat_if_flight_aToDep
+CREATE OR REPLACE TRIGGER only_mod_seat_checked_in_if_flight_aToDep
 BEFORE UPDATE ON Ticket
 FOR EACH ROW
-EXECUTE FUNCTION fun_only_mod_seat_if_flight_aToDep();
+EXECUTE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER SE UN VOLO È DEPARTED o aboutToArrive O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
+
+CREATE OR REPLACE FUNCTION fun_block_mod_ticket_if_flight_dep_or_more()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
+					     				 WHERE F.id_flight = OLD.id_flight);
+
+BEGIN
+	
+	IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+
+
+		RAISE EXCEPTION 'Il volo %L è in stato %L, non si possono modificare i dati del biglietto con ticket_number %L!',
+														NEW.id_flight, associated_flight.flight_status NEW.ticket_number;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_mod_ticket_if_flight_dep_or_more
+BEFORE UPDATE ON Ticket
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_mod_ticket_if_flight_dep_or_more();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 
 --TRIGGER NON CI SONO BIGLIETTI PER LO STESSO POSTO SU UN DATO VOLO
 
@@ -898,7 +974,7 @@ AS $$
 DECLARE
 
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = NEW.id_flight);
+				     					 WHERE id_flight = OLD.id_flight);
 
 BEGIN
 	
@@ -1521,7 +1597,7 @@ EXECUTE FUNCTION fun_luggages_withdrawable_when_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED O aboutToArrive O LANDED SOLO SE FLIGHT.FLIGHT_DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
+--TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED O aboutToArrive O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
 
 CREATE OR REPLACE FUNCTION fun_check_date_before_aToDep_or_more()
 RETURNS TRIGGER
@@ -1530,20 +1606,20 @@ BEGIN
 		
 	IF NEW.flight_status = 'aboutToDepart' THEN
 	
-		IF NEW.flight_date > CURRENT_DATE + 1 THEN
+		IF (NEW.departure_time::date) > CURRENT_DATE + 1 THEN
 		--posso aprire i check-in (e quindi mettere ad aboutToDepart) al più il giorno prima della partenza del volo
-		--e quindi non posso aprirli solo se NEW.flight_date non è nè oggi nè domani
+		--e quindi non posso aprirli solo se NEW.departure_time::date non è nè oggi nè domani
 
-			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %L! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.flight_date, NEW.flight_delay;
+			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %L! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
 
 		END IF;
 	
 	ELSIF  NEW.flight_status = 'departed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN 
 
-		IF NEW.flight_date > CURRENT_DATE THEN
+		IF (NEW.departure_time::date) > CURRENT_DATE THEN
 		--un volo deve invece partire almeno nella data stabilita, al più partirà dopo per ritardi
 
-			RAISE EXCEPTION 'Il volo %L non può ancora partire! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.flight_date, NEW.flight_delay;
+			RAISE EXCEPTION 'Il volo %L non può ancora partire! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
 
 		END IF;
 
@@ -1781,31 +1857,6 @@ EXECUTE FUNCTION fun_block_mod_flight_status_if_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IMPEDIRE L'AGGIORNAMENTO DI DATE PER UN VOLO GIA DEPARTED O aboutToArrive O LANDED
-
-CREATE OR REPLACE FUNCTION fun_block_upd_date_if_already_departed()
-RETURNS TRIGGER
-AS $$
-BEGIN
-		
-	IF OLD.flight_status = 'departed' OR OLD.flight_status = 'aboutToArrive' OR OLD.flight_status = 'landed' THEN
-
-		RAISE EXCEPTION 'Il volo %L è già partito, nn si può modificare la sua data di partenza!', OLD.id_flight;
-	
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER block_upd_date_if_already_departed
-BEFORE UPDATE OF flight_date ON FLIGHT
-FOR EACH ROW
-EXECUTE FUNCTION fun_block_upd_date_if_already_departed();
-
--------------------------------------------------------------------------------------------------------------------------
-
 --TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'aboutToDepart', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
 
 CREATE OR REPLACE FUNCTION fun_change_booking_status_when_dep_aToDep()
@@ -1830,7 +1881,7 @@ BEGIN
 		IF OLD.flight_status <> 'aboutToDepart' AND NEW.flight_status = 'aboutToDepart' THEN
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-										WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') LOOP
+										WHERE B.id_flight = OLD.id_flight AND B.booking_status = 'pending') LOOP
 
 				UPDATE BOOKING
 				SET booking_status = 'cancelled'
@@ -1888,7 +1939,7 @@ BEGIN
 		IF OLD.flight_status <> 'departed' AND NEW.flight_status = 'departed' THEN
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-									 WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'cancelled') LOOP
+									 WHERE B.id_flight = OLD.id_flight AND B.booking_status <> 'cancelled') LOOP
 
 				IF selected_booking.booking_status = 'pending' THEN
 
@@ -2026,8 +2077,7 @@ AS $$
 DECLARE
 
 	n_passenger INTEGER := 0;
-	--serve la variabile n_passenger perchè altrimenti questo trigger va in conflitto
-	--con quello che controlla la correttezza dei free_seats
+	
 	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
 				     					 WHERE id_flight = NEW.id_flight);
 
@@ -2317,6 +2367,72 @@ EXECUTE FUNCTION fun_block_arriving_flight_landed_without_gate();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER NON SI PUò MODIFICARE IL GATE DI UN VOLO DEPARTING DEPARTED o più
+
+CREATE OR REPLACE FUNCTION fun_block_mod_gate_departing_dep()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.flight_type = true THEN
+	
+		IF OLD.id_gate <> NEW.id_gate THEN
+
+			IF (OLD.flight_status = 'departed' OR OLD.flight_status = 'landed') AND (NEW.flight_status = 'departed' OR NEW.flight_status = 'landed') THEN
+
+				RAISE EXCEPTION 'Il volo da napoli %L è in stato %L, non si può modificare il gate da cui è partito!', OLD.id_flight, NEW.flight_status;
+
+			END IF;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_mod_gate_departing_dep
+BEFORE UPDATE OF id_gate ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_mod_gate_departing_dep();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER NON SI PUò MODIFICARE IL GATE DI UN VOLO ARRIVING LANDED
+
+CREATE OR REPLACE FUNCTION fun_block_mod_gate_arriving_landed()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.flight_type = false THEN
+	
+		IF OLD.id_gate <> NEW.id_gate THEN
+
+			IF OLD.flight_status = 'landed' AND NEW.flight_status = 'landed' THEN
+
+				RAISE EXCEPTION 'Il volo per napoli %L è in stato ''atterrato'', non si può modificare il gate in cui è atterrato!', OLD.id_flight;
+
+			END IF;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_mod_gate_arriving_landed
+BEFORE UPDATE OF id_gate ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_mod_gate_arriving_landed();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 --TRIGGER SE UN ACCOUNT CUSTOMER VIENE CANCELLATO, METTO A CANCELLED TUTTE LE SUE PRENOTAZIONI PER I VOLI CHE DEVONO ANCORA PARTIRE
 --(OSSIA IL CUI FLIGHT_STATUS è ANCORA PROGRAMMED)
 
@@ -2333,7 +2449,7 @@ BEGIN
 	IF OLD.is_deleted = false AND NEW.is_deleted = true THEN
 	
 		FOR selected_booking IN (SELECT * FROM BOOKING B
-								 WHERE B.buyer = NEW.id_customer AND B.booking_status <> 'cancelled') LOOP
+								 WHERE B.buyer = OLD.id_customer AND B.booking_status <> 'cancelled') LOOP
 
 			associated_flight := (SELECT * FROM FLIGHT F
 			      		  		  WHERE F.id_flight = selected_booking.id_flight);
