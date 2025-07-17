@@ -658,10 +658,6 @@ CREATE TABLE Booking (
 CREATE OR REPLACE FUNCTION fun_blocked_updates_flight()
 RETURNS TRIGGER
 AS $$
-DECLARE
-
-	associated_booking BOOKING%ROWTYPE;
-
 BEGIN
 
 	IF OLD.company_name <> NEW.company_name OR OLD.max_seats <> NEW.max_seats OR OLD.destination_or_origin <> NEW.destination_or_origin OR OLD.flight_type <> NEW.flight_type THEN
@@ -695,11 +691,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-										 WHERE F.id_flight = OLD.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT F
+	WHERE F.id_flight = OLD.id_flight;
+
 	IF OLD.id_booking <> NEW.id_booking THEN
 
 		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
@@ -755,11 +754,13 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = OLD.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT
+	WHERE id_flight = OLD.id_flight;
 
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
@@ -854,11 +855,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-										   WHERE B.id_booking = OLD.id_booking);
+	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_booking
+	FROM BOOKING B
+	WHERE B.id_booking = OLD.id_booking;
+
 	IF OLD.id_flight <> NEW.id_flight THEN
 
 		IF NEW.id_flight <> associated_booking.id_flight THEN
@@ -889,11 +893,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-										 WHERE F.id_flight = OLD.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT F
+	WHERE F.id_flight = OLD.id_flight;
+
 	IF OLD.ticket_number <> NEW.ticket_number THEN
 
 		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
@@ -925,14 +932,19 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-										   WHERE B.id_booking = OLD.id_booking);
+	associated_booking BOOKING%ROWTYPE;
 
-	associated_passenger PASSENGER%ROWTYPE := (SELECT * FROM PASSENGER P
-										   	   WHERE P.SSN = OLD.id_passenger);
+	associated_passenger PASSENGER%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_booking
+	FROM BOOKING B
+	WHERE B.id_booking = OLD.id_booking;
+
+	SELECT * INTO associated_passenger
+	FROM PASSENGER P
+	WHERE P.SSN = OLD.id_passenger;
 
 	IF NOT EXISTS(SELECT * FROM TICKET T
 				  WHERE T.id_booking = associated_booking.id_booking) THEN
@@ -975,10 +987,13 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-					     				 WHERE F.id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
+
+	SELECT * INTO associated_flight
+	FROM FLIGHT F
+	WHERE F.id_flight = NEW.id_flight;
 
 	IF NEW.seat IS NOT NULL THEN
  
@@ -1021,8 +1036,9 @@ BEGIN
 		FOR selected_ticket IN (SELECT * FROM TICKET T
 								WHERE T.id_passenger = NEW.SSN) LOOP
 
-			associated_booking := (SELECT * FROM BOOKING B
-								   WHERE B.id_booking = selected_ticket.id_booking);
+			SELECT * INTO associated_booking 
+			FROM BOOKING B
+			WHERE B.id_booking = selected_ticket.id_booking;
 
 			IF associated_booking.booking_status = 'confirmed' THEN
 
@@ -1064,8 +1080,9 @@ BEGIN
 		FOR selected_ticket IN (SELECT * FROM TICKET T
 								WHERE T.id_booking = OLD.id_booking) LOOP
 
-			associated_passenger := (SELECT * FROM PASSENGER P
-								     WHERE P.SSN = selected_ticket.id_passenger);
+			SELECT * INTO associated_passenger 
+			FROM PASSENGER P
+			WHERE P.SSN = selected_ticket.id_passenger;
 
 			IF associated_passenger.first_name IS NULL OR associated_passenger.last_name IS NULL OR associated_passenger.birth_date IS NULL THEN
 
@@ -1099,8 +1116,7 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     WHERE id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 	prev_seat TICKET.seat%TYPE := -1; -- (-1) perché i posti iniziano da 0
 	
@@ -1109,7 +1125,11 @@ DECLARE
 BEGIN
 
 	IF NEW.checked_in = true AND NEW.seat IS NULL THEN
- 	
+
+		SELECT * INTO associated_flight
+		FROM FLIGHT
+		WHERE id_flight = NEW.id_flight;
+
 		FOR selected_seat IN (SELECT T.seat FROM TICKET T
 				    		  WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND 
 								    (SELECT B.booking_status FROM BOOKING B
@@ -1175,8 +1195,9 @@ BEGIN
 								WHERE T.id_passenger = OLD.SSN) LOOP
 								--uso old perchè potenzialmente NEW.SSN <> OLD.SSN
 
-			associated_flight := (SELECT * FROM FLIGHT F
-				    			 WHERE F.id_flight = selected_ticket.id_flight);
+			SELECT * INTO associated_flight 
+			FROM FLIGHT F
+			WHERE F.id_flight = selected_ticket.id_flight;
 			
 			IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN
 
@@ -1208,11 +1229,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-					     				 WHERE F.id_flight = OLD.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT F
+	WHERE F.id_flight = OLD.id_flight;
+
 	IF associated_flight.flight_status = 'aboutToDepart' THEN
 
 		IF OLD.ticket_number <> NEW.ticket_number OR OLD.id_booking <> NEW.id_booking OR OLD.id_passenger <> NEW.id_passenger OR OLD.id_flight <> NEW.id_flight THEN
@@ -1243,13 +1267,15 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-					     				 WHERE F.id_flight = OLD.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
-	IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	SELECT * INTO associated_flight
+	FROM FLIGHT F
+	WHERE F.id_flight = OLD.id_flight;
 
+	IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
 		RAISE EXCEPTION 'Il volo % è in stato %, non si possono modificare i dati del biglietto con ticket_number %!',
 														NEW.id_flight, associated_flight.flight_status, NEW.ticket_number;
@@ -1275,11 +1301,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-					     				   WHERE B.id_booking = NEW.id_booking);
+	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_booking
+	FROM BOOKING B
+	WHERE B.id_booking = NEW.id_booking;
+
 	IF associated_booking.booking_status <> 'cancelled' AND NEW.seat IS NOT NULL THEN
 
 		IF EXISTS(SELECT * FROM TICKET T
@@ -1310,15 +1339,20 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-					     				   WHERE B.id_booking = NEW.id_booking);
-
+	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight 
+	FROM FLIGHT
+	WHERE id_flight = NEW.id_flight;
+
+	SELECT * INTO associated_booking
+	FROM BOOKING B
+	WHERE B.id_booking = NEW.id_booking;
+
 	IF associated_booking.booking_status <> 'cancelled' THEN
 
 		IF associated_flight.free_seats = 0 THEN
@@ -1353,11 +1387,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-					     				   WHERE B.id_booking = NEW.id_booking);
+	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_booking
+	FROM BOOKING B
+	WHERE B.id_booking = NEW.id_booking;
+
 	IF NEW.checked_in = true THEN
 
 		IF associated_booking.booking_status <> 'confirmed' THEN
@@ -1387,11 +1424,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT
+	WHERE id_flight = NEW.id_flight;
+
 	IF NEW.checked_in = true THEN
 
 		IF associated_flight.flight_status <> 'aboutToDepart' AND associated_flight.flight_status <> 'departed' AND associated_flight.flight_status <> 'aboutToArrive' AND associated_flight.flight_status <> 'landed' THEN
@@ -1421,11 +1461,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = OLD.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT
+	WHERE id_flight = OLD.id_flight;
+
 	IF OLD.checked_in = true AND NEW.checked_in = false THEN
 
 		IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
@@ -1480,17 +1523,21 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-										 WHERE T.ticket_number = OLD.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket
+	FROM TICKET T
+	WHERE T.ticket_number = OLD.id_ticket;
+
 	IF (OLD.id_luggage <> NEW.id_luggage) OR (OLD.id_ticket <> NEW.id_ticket) THEN
 
-		associated_flight := (SELECT * FROM FLIGHT F
-							  WHERE F.id_flight = associated_ticket.id_flight);
+		SELECT * INTO associated_flight 
+		FROM FLIGHT F
+		WHERE F.id_flight = associated_ticket.id_flight;
 
 		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
 
@@ -1545,15 +1592,19 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
-	associated_booking := (SELECT * FROM BOOKING B
-			      		   WHERE B.id_booking = associated_ticket.id_booking);
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
+	SELECT * INTO associated_booking 
+	FROM BOOKING B
+	WHERE B.id_booking = associated_ticket.id_booking;
 
 	IF associated_booking.booking_status = 'confirmed' THEN
  
@@ -1584,10 +1635,13 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 BEGIN
+
+	SELECT * INTO associated_ticket
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
 
 	IF associated_ticket.checked_in = false THEN
  
@@ -1659,11 +1713,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF associated_ticket.checked_in = true THEN
 
 		IF NEW.id_luggage_after_check_in IS NULL THEN
@@ -1694,23 +1751,28 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_booking BOOKING%ROWTYPE;
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF NEW.luggage_status = 'booked' THEN
 
-		associated_booking := (SELECT * FROM BOOKING B
-						   	   WHERE B.id_booking = associated_ticket.id_booking);
+		SELECT * INTO associated_booking 
+		FROM BOOKING B
+		WHERE B.id_booking = associated_ticket.id_booking;
 
 		IF associated_booking.booking_status <> 'cancelled' THEN
 
-			associated_flight := (SELECT * FROM FLIGHT F
-								WHERE F.id_flight = associated_ticket.id_flight);
+			SELECT * INTO associated_flight 
+			FROM FLIGHT F
+			WHERE F.id_flight = associated_ticket.id_flight;
 
 			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 	
@@ -1742,17 +1804,21 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF NEW.luggage_status = 'withdrawable' THEN
 		
-		associated_flight := (SELECT * FROM FLIGHT F
-			      			  WHERE F.id_flight = associated_ticket.id_flight);
+		SELECT * INTO associated_flight 
+		FROM FLIGHT F
+		WHERE F.id_flight = associated_ticket.id_flight;
 
 		IF associated_flight.flight_status <> 'landed' THEN
 			
@@ -1782,17 +1848,21 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF NEW.luggage_status = 'lost' THEN
 
-		associated_flight := (SELECT * FROM FLIGHT F
-			      			  WHERE F.id_flight = associated_ticket.id_flight);
+		SELECT * INTO associated_flight 
+		FROM FLIGHT F
+		WHERE F.id_flight = associated_ticket.id_flight;
  
 		IF associated_flight.flight_status <> 'landed' THEN
 			
@@ -1822,17 +1892,21 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF NEW.luggage_status = 'loaded' THEN
 
-		associated_flight := (SELECT * FROM FLIGHT F
-			      			  WHERE F.id_flight = associated_ticket.id_flight);
+		SELECT * INTO associated_flight 
+		FROM FLIGHT F
+		WHERE F.id_flight = associated_ticket.id_flight;
 
 		IF associated_flight.flight_status = 'programmed' OR associated_flight.flight_status = 'cancelled' OR associated_flight.flight_status = 'landed' THEN
 			
@@ -1862,17 +1936,21 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF NEW.luggage_status <> 'booked' THEN
 
-		associated_booking := (SELECT * FROM BOOKING B
-			      			   WHERE B.id_booking = associated_ticket.id_booking);
+		SELECT * INTO associated_booking 
+		FROM BOOKING B
+		WHERE B.id_booking = associated_ticket.id_booking;
 
 		IF associated_booking.booking_status = 'cancelled' THEN
 				
@@ -2591,13 +2669,16 @@ DECLARE
 
 	n_passenger INTEGER := 0;
 	
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 	selected_ticket TICKET%ROWTYPE;
 
 BEGIN
-		
+	
+	SELECT * INTO associated_flight 
+	FROM FLIGHT
+	WHERE id_flight = NEW.id_flight;
+
 	IF OLD.booking_status <> 'cancelled' AND NEW.booking_status = 'cancelled' THEN
 	
 		FOR selected_ticket IN (SELECT * FROM TICKET T
@@ -2964,8 +3045,9 @@ BEGIN
 		FOR selected_booking IN (SELECT * FROM BOOKING B
 								 WHERE B.buyer = OLD.id_customer AND B.booking_status <> 'cancelled') LOOP
 
-			associated_flight := (SELECT * FROM FLIGHT F
-			      		  		  WHERE F.id_flight = selected_booking.id_flight);
+			SELECT * INTO associated_flight 
+			FROM FLIGHT F
+			WHERE F.id_flight = selected_booking.id_flight;
 			
 			IF associated_flight.flight_status = 'programmed' THEN
 
@@ -3034,16 +3116,16 @@ INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Flight
 
 INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
-('AZ1001', 'Alitalia', '2025-08-01 10:00:00', '2025-08-01 12:00:00', 'programmed', 150, 150, 'Rome', 0, true, 1),
-('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'programmed', 200, 200, 'London', 0, false, 2),
-('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'programmed', 180, 180, 'Frankfurt', 0, true, 3),
-('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'programmed', 160, 160, 'Paris', 0, false, 4),
-('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'programmed', 250, 250, 'New York', 0, true, 5),
-('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'programmed', 300, 300, 'Dubai', 0, false, 6),
-('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'programmed', 220, 220, 'Doha', 0, true, 7),
-('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'programmed', 190, 190, 'Istanbul', 0, false, 8),
-('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'programmed', 210, 210, 'Atlanta', 0, true, 9),
-('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'programmed', 170, 170, 'Zurich', 0, false, 10),
+('AZ1001', 'Alitalia', '2025-08-01 10:00:00', '2025-08-01 12:00:00', 'programmed', 150, 150, 'Rome', 0, true, null),
+('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'programmed', 200, 200, 'London', 0, false, null),
+('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'programmed', 180, 180, 'Frankfurt', 0, true, null),
+('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'programmed', 160, 160, 'Paris', 0, false, null),
+('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'programmed', 250, 250, 'New York', 0, true, null),
+('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'programmed', 300, 300, 'Dubai', 0, false, null),
+('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'programmed', 220, 220, 'Doha', 0, true, null),
+('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'programmed', 190, 190, 'Istanbul', 0, false, null),
+('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'programmed', 210, 210, 'Atlanta', 0, true, null),
+('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'programmed', 170, 170, 'Zurich', 0, false, null),
 ('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'cancelled', 100, 100, 'Dublin', 0, true, NULL),
 ('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'delayed', 120, 120, 'Barcelona', 60, false, 11);
 
@@ -3063,7 +3145,7 @@ INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES
 ('Francesco', 'Russo', '1982-01-01', 'FRNRSS82A01F111A'),
 ('Sofia', 'Mancini', '1991-02-02', 'SFAMNC91B02G222B'),
 ('Alessandro', 'Costa', '1977-03-03', 'LSSCSC77C03H333C'),
-('Chiara', 'Romano', '1993-04-04', 'CHRRMNN93D04I444D'),
+('Chiara', 'Romano', '1993-04-04', 'CHRRMN93D04I444D'),
 ('Simone', 'Gallo', '1986-05-05', 'SMNGLL86E05J555E'),
 ('Valentina', 'Fontana', '1994-06-06', 'VLTFNT94F06K666F'),
 ('Andrea', 'Conti', '1979-07-07', 'NDRCNT79G07L777G'),
@@ -3114,7 +3196,7 @@ INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, i
 ('0000000000012', 1, false, 5, 'SFAMNC91B02G222B', 'UA5005'),
 ('0000000000013', 2, false, 5, 'LSSCSC77C03H333C', 'UA5005'),
 -- Booking 6 (pending, EK6006) - 2 tickets
-('0000000000014', NULL, false, 6, 'CHRRMNN93D04I444D', 'EK6006'),
+('0000000000014', NULL, false, 6, 'CHRRMN93D04I444D', 'EK6006'),
 ('0000000000015', NULL, false, 6, 'SMNGLL86E05J555E', 'EK6006'),
 -- Booking 7 (confirmed, QR7007) - 3 tickets
 ('0000000000016', 0, false, 7, 'VLTFNT94F06K666F', 'QR7007'),
@@ -3273,11 +3355,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				     					 WHERE id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
-				
+
+	SELECT * INTO associated_flight 
+	FROM FLIGHT
+	WHERE id_flight = NEW.id_flight;
+
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
 		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, non si possono inserire nuove prenotazioni!', NEW.id_flight;
@@ -3303,11 +3388,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT
-				             			 WHERE id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
-				
+
+	SELECT * INTO associated_flight 
+	FROM FLIGHT
+	WHERE id_flight = NEW.id_flight;
+
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
 		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, non si possono inserire biglietti!', NEW.id_flight;
@@ -3333,15 +3421,19 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-					          			 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
-	associated_flight := (SELECT * FROM FLIGHT F
-			      		  WHERE F.id_flight = associated_ticket.id_flight);
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
+	SELECT * INTO associated_flight 
+	FROM FLIGHT F
+	WHERE F.id_flight = associated_ticket.id_flight;
 			
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
@@ -3368,11 +3460,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_customer CUSTOMER%ROWTYPE := (SELECT * FROM CUSTOMER C
-					          			 	 WHERE C.id_customer = NEW.buyer);
+	associated_customer CUSTOMER%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_customer 
+	FROM CUSTOMER C
+	WHERE C.id_customer = NEW.buyer;
+
 	IF associated_customer.is_deleted = true THEN
 
 		RAISE EXCEPTION 'L''account dell''utente % è stato cancellato, non è possibile inserire nuove prenotazioni!', associated_customer.id_customer;
@@ -3398,11 +3493,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-					          			 WHERE F.id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight
+	FROM FLIGHT F
+	WHERE F.id_flight = NEW.id_flight;
+
 	IF associated_flight.flight_status <> 'programmed' THEN
 
 		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuove prenotazioni!', associated_flight.id_flight;
@@ -3428,11 +3526,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_flight FLIGHT%ROWTYPE := (SELECT * FROM FLIGHT F
-					          			 WHERE F.id_flight = NEW.id_flight);
+	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_flight 
+	FROM FLIGHT F
+	WHERE F.id_flight = NEW.id_flight;
+
 	IF associated_flight.flight_status <> 'programmed' THEN
 
 		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi biglietti!', associated_flight.id_flight;
@@ -3458,11 +3559,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_booking BOOKING%ROWTYPE := (SELECT * FROM BOOKING B
-					          			   WHERE B.id_booking = NEW.id_booking);
+	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_booking 
+	FROM BOOKING B
+	WHERE B.id_booking = NEW.id_booking;
+
 	IF associated_booking.booking_status = 'cancelled' THEN
 
 		RAISE EXCEPTION 'La prenotazione % è stata cancellata, non è possibile inserire nuovi biglietti!', associated_booking.id_booking;
@@ -3488,15 +3592,19 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-										 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_flight FLIGHT%ROWTYPE;
 
 BEGIN
 	
-	associated_flight := (SELECT * FROM FLIGHT F
-					      WHERE F.id_flight = associated_ticket.id_flight);
+	SELECT * INTO associated_ticket
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
+	SELECT * INTO associated_flight 
+	FROM FLIGHT F
+	WHERE F.id_flight = associated_ticket.id_flight;
 
 	IF associated_flight.flight_status <> 'programmed' THEN
 
@@ -3524,11 +3632,14 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-										 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 BEGIN
 	
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
 	IF associated_ticket.checked_in = true THEN
 
 		RAISE EXCEPTION 'Per il biglietto con numero % è già stato fatto il check-in, non è possibile inserire nuovi bagagli!', associated_ticket.ticket_number;
@@ -3541,7 +3652,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER block_ins_luggages_checked_in_tickets
-BEFORE INSERT ON TICKET
+BEFORE INSERT ON LUGGAGE
 FOR EACH ROW
 EXECUTE FUNCTION fun_block_ins_luggages_checked_in_tickets();
 
@@ -3555,15 +3666,19 @@ RETURNS TRIGGER
 AS $$
 DECLARE
 	
-	associated_ticket TICKET%ROWTYPE := (SELECT * FROM TICKET T
-										 WHERE T.ticket_number = NEW.id_ticket);
+	associated_ticket TICKET%ROWTYPE;
 
 	associated_booking BOOKING%ROWTYPE;
 
 BEGIN
 	
-	associated_booking := (SELECT * FROM BOOKING B
-					       WHERE B.id_booking = associated_ticket.id_booking);
+	SELECT * INTO associated_ticket 
+	FROM TICKET T
+	WHERE T.ticket_number = NEW.id_ticket;
+
+	SELECT * INTO associated_booking 
+	FROM BOOKING B
+	WHERE B.id_booking = associated_ticket.id_booking;
 
 	IF associated_booking.booking_status = 'cancelled' THEN
 
@@ -3577,7 +3692,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER block_ins_luggages_canc_bookings
-BEFORE INSERT ON TICKET
+BEFORE INSERT ON LUGGAGE
 FOR EACH ROW
 EXECUTE FUNCTION fun_block_ins_luggages_canc_bookings();
 
