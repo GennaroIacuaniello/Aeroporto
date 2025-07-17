@@ -42,7 +42,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM ADMIN A
 				WHERE A.id_admin <> NEW.id_admin AND A.is_deleted = false AND A.username = NEW.username) THEN 
 
-			RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+			RAISE EXCEPTION 'Username % già utilizzato da un altro utente!', NEW.username;
 
 		END IF;
 
@@ -73,7 +73,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM ADMIN A
 				WHERE A.id_admin <> NEW.id_admin AND A.is_deleted = false AND A.mail = NEW.mail) THEN 
 
-			RAISE EXCEPTION 'Mail %L già utilizzata da un altro utente!', NEW.mail;
+			RAISE EXCEPTION 'Mail % già utilizzata da un altro utente!', NEW.mail;
 
 		END IF;
 
@@ -104,7 +104,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM CUSTOMER C
 				WHERE C.id_customer <> NEW.id_customer AND C.is_deleted = false AND C.username = NEW.username) THEN 
 
-			RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+			RAISE EXCEPTION 'Username % già utilizzato da un altro utente!', NEW.username;
 
 		END IF;
 
@@ -135,7 +135,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM CUSTOMER C
 				  WHERE C.id_customer <> NEW.id_customer AND C.is_deleted = false AND C.mail = NEW.mail) THEN 
 
-			RAISE EXCEPTION 'Mail %L già utilizzata da un altro utente!', NEW.mail;
+			RAISE EXCEPTION 'Mail % già utilizzata da un altro utente!', NEW.mail;
 
 		END IF;
 
@@ -164,7 +164,7 @@ BEGIN
 	IF EXISTS(SELECT * FROM CUSTOMER C
 			  WHERE C.username = NEW.username AND C.is_deleted = false) THEN 
 
-		RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+		RAISE EXCEPTION 'Username % già utilizzato da un altro utente!', NEW.username;
 
 	END IF;
 
@@ -191,7 +191,7 @@ BEGIN
 	IF EXISTS(SELECT * FROM ADMIN A
 			  WHERE A.username = NEW.username AND A.is_deleted = false) THEN 
 
-		RAISE EXCEPTION 'Username %L già utilizzato da un altro utente!', NEW.username;
+		RAISE EXCEPTION 'Username % già utilizzato da un altro utente!', NEW.username;
 
 	END IF;
 
@@ -217,7 +217,7 @@ BEGIN
 	IF EXISTS(SELECT * FROM CUSTOMER C
 			  WHERE C.mail = NEW.mail AND C.is_deleted = false) THEN 
 
-		RAISE EXCEPTION 'Mail %L già utilizzato da un altro utente!', NEW.mail;
+		RAISE EXCEPTION 'Mail % già utilizzato da un altro utente!', NEW.mail;
 
 	END IF;
 
@@ -243,7 +243,7 @@ BEGIN
 	IF EXISTS(SELECT * FROM ADMIN A
 			  WHERE A.mail = NEW.mail AND A.is_deleted = false) THEN 
 
-		RAISE EXCEPTION 'Mail %L già utilizzato da un altro utente!', NEW.mail;
+		RAISE EXCEPTION 'Mail % già utilizzato da un altro utente!', NEW.mail;
 
 	END IF;
 
@@ -268,7 +268,7 @@ BEGIN
 
 	IF OLD.is_deleted = true THEN
 
-		RAISE EXCEPTION 'L''account dell''utente %L è cancellato, non può essere modificato!', OLD.id_admin;
+		RAISE EXCEPTION 'L''account dell''utente % è cancellato, non può essere modificato!', OLD.id_admin;
 
 	END IF;
 
@@ -293,7 +293,7 @@ BEGIN
 
 	IF OLD.is_deleted = true THEN
 
-		RAISE EXCEPTION 'L''account dell''utente %L è cancellato, non può essere modificato!', OLD.id_customer;
+		RAISE EXCEPTION 'L''account dell''utente % è cancellato, non può essere modificato!', OLD.id_customer;
 
 	END IF;
 
@@ -362,7 +362,7 @@ BEGIN
 
 		IF OLD.id_flight <> NEW.id_flight THEN
 
-			RAISE EXCEPTION 'Il volo %L non è in stato ''programmaato'' o ''cancellato'' non può cambiare id!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % non è in stato ''programmaato'' o ''cancellato'' non può cambiare id!', OLD.id_flight;
 
 		END IF;
 
@@ -393,7 +393,7 @@ BEGIN
 
 			IF OLD.departure_time <> NEW.departure_time OR OLD.free_seats <> NEW.free_seats THEN
 
-				RAISE EXCEPTION 'Il volo %L è già partito, non si possono modificare i suoi: orario di partenza, posti liberi!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % è già partito, non si possono modificare i suoi: orario di partenza, posti liberi!', OLD.id_flight;
 
 			END IF;
 
@@ -426,7 +426,7 @@ BEGIN
 
 			IF OLD.free_seats <> NEW.free_seats THEN
 
-				RAISE EXCEPTION 'Il volo %L è già partito, non si possono modificare i suoi posti liberi!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % è già partito, non si possono modificare i suoi posti liberi!', OLD.id_flight;
 
 			END IF;
 
@@ -459,7 +459,7 @@ BEGIN
 
 			IF OLD.departure_time <> NEW.departure_time THEN
 
-				RAISE EXCEPTION 'Il volo %L è già partito, non si può modificare il suo orario di partenza!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % è già partito, non si può modificare il suo orario di partenza!', OLD.id_flight;
 
 			END IF;
 
@@ -490,7 +490,7 @@ BEGIN
 
 		IF OLD.arrival_time <> NEW.arrival_time THEN
 
-			RAISE EXCEPTION 'Il volo %L è già atterrato, non si può modificare il suo orario di arrivo!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % è già atterrato, non si può modificare il suo orario di arrivo!', OLD.id_flight;
 
 		END IF;
 
@@ -521,7 +521,7 @@ BEGIN
 
 			IF OLD.flight_delay <> NEW.flight_delay THEN
 
-				RAISE EXCEPTION 'Il volo da Napoli %L è già partito, non si può modificare il ritardo di partenza!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo da Napoli % è già partito, non si può modificare il ritardo di partenza!', OLD.id_flight;
 
 			END IF;
 
@@ -554,7 +554,7 @@ BEGIN
 
 			IF OLD.flight_delay <> NEW.flight_delay THEN
 
-				RAISE EXCEPTION 'Il volo per Napoli %L è già atterrato, non si può modificare il ritardo di arrivo!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo per Napoli % è già atterrato, non si può modificare il ritardo di arrivo!', OLD.id_flight;
 
 			END IF;
 
@@ -585,7 +585,7 @@ BEGIN
 
 		IF NEW.flight_status = 'aboutToDepart' THEN
 
-			RAISE EXCEPTION 'Il volo %L è verso Napoli, non può avere stato ''in partenza''', NEW.id_flight;
+			RAISE EXCEPTION 'Il volo % è verso Napoli, non può avere stato ''in partenza''', NEW.id_flight;
 
 		END IF;
 
@@ -614,7 +614,7 @@ BEGIN
 
 		IF NEW.flight_status = 'aboutToArrive' THEN
 
-			RAISE EXCEPTION 'Il volo %L è da Napoli, non può avere stato ''in arrivo''', NEW.id_flight;
+			RAISE EXCEPTION 'Il volo % è da Napoli, non può avere stato ''in arrivo''', NEW.id_flight;
 
 		END IF;
 
@@ -669,7 +669,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM BOOKING B
 				  WHERE B.id_flight = OLD.id_flight) THEN
 
-			RAISE EXCEPTION 'Il volo %L ha già almeno una prenotazione associata, non si possono modificare i suoi: nome compagnia, posti massimi, destinazione o origine, tipo!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % ha già almeno una prenotazione associata, non si possono modificare i suoi: nome compagnia, posti massimi, destinazione o origine, tipo!', OLD.id_flight;
 
 		END IF;
 
@@ -704,7 +704,7 @@ BEGIN
 
 		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
 
-			RAISE EXCEPTION 'Il volo %L, associato alla prenotazione %L, non è in stato ''programmato'' o ''cancellato'', non si può modificare l''id della prenotazione!', 
+			RAISE EXCEPTION 'Il volo %, associato alla prenotazione %, non è in stato ''programmato'' o ''cancellato'', non si può modificare l''id della prenotazione!', 
 																																associated_flight.id_flight, OLD.id_booking;
 
 		END IF;
@@ -763,7 +763,7 @@ BEGIN
 
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza/partito/sta per atterrare/atterrato, non si può modificare la prenotazione!', NEW.id_flight;
+		RAISE EXCEPTION 'Il volo % è in partenza/partito/sta per atterrare/atterrato, non si può modificare la prenotazione!', NEW.id_flight;
 
 	END IF;
 
@@ -826,7 +826,7 @@ BEGIN
 		IF EXISTS(SELECT * FROM TICKET T
 				  WHERE T.id_booking = OLD.id_booking AND T.id_flight <> NEW.id_flight) THEN
 
-			RAISE EXCEPTION 'La prenotazione %L ha almeno un biglietto associato che si riferisce ad un altro volo, non è possibile renderla una prenotazione per il volo %L!', 
+			RAISE EXCEPTION 'La prenotazione % ha almeno un biglietto associato che si riferisce ad un altro volo, non è possibile renderla una prenotazione per il volo %!', 
 																																				OLD.id_booking, NEW.id_flight;
 
 		END IF;
@@ -863,7 +863,7 @@ BEGIN
 
 		IF NEW.id_flight <> associated_booking.id_flight THEN
 
-			RAISE EXCEPTION 'Il biglietto con numero %L è associato ad una prenotazione per un altro volo, non è possibile renderl un biglietto per il volo %L!', 
+			RAISE EXCEPTION 'Il biglietto con numero % è associato ad una prenotazione per un altro volo, non è possibile renderl un biglietto per il volo %!', 
 																																OLD.ticket_number, NEW.id_flight;
 
 		END IF;
@@ -898,7 +898,7 @@ BEGIN
 
 		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
 
-			RAISE EXCEPTION 'Il volo %L, associato al biglietto con numero %L, non è in stato ''programmato'' o ''cancellato'', non si può modificare il numero del biglietto!', 
+			RAISE EXCEPTION 'Il volo %, associato al biglietto con numero %, non è in stato ''programmato'' o ''cancellato'', non si può modificare il numero del biglietto!', 
 																																associated_flight.id_flight, OLD.ticket_number;
 
 		END IF;
@@ -984,7 +984,7 @@ BEGIN
  
 		IF NOT (NEW.seat BETWEEN 0 AND associated_flight.max_seats - 1) THEN
 			
-			RAISE EXCEPTION 'Posto non valido per il volo %L', NEW.id_flight;
+			RAISE EXCEPTION 'Posto non valido per il volo %', NEW.id_flight;
 	
 		END IF;
 
@@ -1026,7 +1026,7 @@ BEGIN
 
 			IF associated_booking.booking_status = 'confirmed' THEN
 
-				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %L, per la prenotazione %L', 
+				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %, per la prenotazione %', 
 															selected_ticket.ticket_number, associated_booking.id_booking;
 
 			END IF;
@@ -1069,7 +1069,7 @@ BEGIN
 
 			IF associated_passenger.first_name IS NULL OR associated_passenger.last_name IS NULL OR associated_passenger.birth_date IS NULL THEN
 
-				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %L, la prenotazione %L non può essere confermata!', 
+				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %, la prenotazione % non può essere confermata!', 
 																								selected_ticket.ticket_number, NEW.id_booking;
 
 			END IF;
@@ -1138,7 +1138,7 @@ BEGIN
 		
 		IF NEW.seat >= associated_flight.max_seats THEN		--controllo di non aver sforato il posto massimo
 			
-			RAISE EXCEPTION 'Errore nell''assegnazione del posto per il passeggero con ticket_number: %L, per il volo: %L', NEW.ticket_number, NEW.id_flight;
+			RAISE EXCEPTION 'Errore nell''assegnazione del posto per il passeggero con ticket_number: %, per il volo: %', NEW.ticket_number, NEW.id_flight;
 		
 		END IF;
 
@@ -1180,7 +1180,7 @@ BEGIN
 			
 			IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN
 
-				RAISE EXCEPTION 'Il volo %L è in stato %L, non si possono modificare i dati del passeggero con SSN %L!', 
+				RAISE EXCEPTION 'Il volo % è in stato %, non si possono modificare i dati del passeggero con SSN %!', 
 															  associated_flight.id_flight, associated_flight.flight_status, NEW.SSN;
 
 			END IF;
@@ -1217,7 +1217,7 @@ BEGIN
 
 		IF OLD.ticket_number <> NEW.ticket_number OR OLD.id_booking <> NEW.id_booking OR OLD.id_passenger <> NEW.id_passenger OR OLD.id_flight <> NEW.id_flight THEN
 		
-			RAISE EXCEPTION 'Il volo %L è in stato ''in partenza'', per il biglietto con ticket_number %L si può solo modificare il posto o fare il check-in!',
+			RAISE EXCEPTION 'Il volo % è in stato ''in partenza'', per il biglietto con ticket_number % si può solo modificare il posto o fare il check-in!',
 																															NEW.id_flight, NEW.ticket_number;
 
 		END IF;
@@ -1251,7 +1251,7 @@ BEGIN
 	IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
 
-		RAISE EXCEPTION 'Il volo %L è in stato %L, non si possono modificare i dati del biglietto con ticket_number %L!',
+		RAISE EXCEPTION 'Il volo % è in stato %, non si possono modificare i dati del biglietto con ticket_number %!',
 														NEW.id_flight, associated_flight.flight_status, NEW.ticket_number;
 
 	END IF;
@@ -1287,7 +1287,7 @@ BEGIN
 				  AND (SELECT B.booking_status FROM BOOKING B
 				       WHERE B.id_booking = T.id_booking) <> 'cancelled' ) THEN
 		
-			RAISE EXCEPTION 'Posto già occupato per il volo %L', NEW.id_flight;
+			RAISE EXCEPTION 'Posto già occupato per il volo %', NEW.id_flight;
 
 		END IF;
 	END IF;
@@ -1323,7 +1323,7 @@ BEGIN
 
 		IF associated_flight.free_seats = 0 THEN
 	
-			RAISE EXCEPTION 'Volo %L pieno!', NEW.id_flight;
+			RAISE EXCEPTION 'Volo % pieno!', NEW.id_flight;
 	
 		END IF;
 	
@@ -1362,7 +1362,7 @@ BEGIN
 
 		IF associated_booking.booking_status <> 'confirmed' THEN
 
-			RAISE EXCEPTION 'La prenotazione %L non è confermata, non si può fare il check-in!', NEW.id_booking;
+			RAISE EXCEPTION 'La prenotazione % non è confermata, non si può fare il check-in!', NEW.id_booking;
 		
 		END IF;
 
@@ -1396,7 +1396,7 @@ BEGIN
 
 		IF associated_flight.flight_status <> 'aboutToDepart' AND associated_flight.flight_status <> 'departed' AND associated_flight.flight_status <> 'aboutToArrive' AND associated_flight.flight_status <> 'landed' THEN
 
-			RAISE EXCEPTION 'Il volo %L non è in partenza/partito/sta per atterrare/atterrato, non si può essere checked-in!', NEW.id_flight;
+			RAISE EXCEPTION 'Il volo % non è in partenza/partito/sta per atterrare/atterrato, non si può essere checked-in!', NEW.id_flight;
 		
 		END IF;
 
@@ -1430,7 +1430,7 @@ BEGIN
 
 		IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-			RAISE EXCEPTION 'Il volo %L è già partito, non si può annullare il check-in!', NEW.id_flight;
+			RAISE EXCEPTION 'Il volo % è già partito, non si può annullare il check-in!', NEW.id_flight;
 		
 		END IF;
 
@@ -1494,7 +1494,7 @@ BEGIN
 
 		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
 
-			RAISE EXCEPTION 'Il volo %L, associato al bagaglio %L, non è in stato ''programmato'' o ''cancellato'', non si può modificare l''id del bagaglio o il suo biglietto associato!', 
+			RAISE EXCEPTION 'Il volo %, associato al bagaglio %, non è in stato ''programmato'' o ''cancellato'', non si può modificare l''id del bagaglio o il suo biglietto associato!', 
 																																				associated_flight.id_flight, OLD.id_luggage;
 
 		END IF;
@@ -1522,7 +1522,7 @@ BEGIN
 	
 	IF (OLD.id_luggage_after_check_in IS NOT NULL) AND (OLD.id_luggage_after_check_in <> NEW.id_luggage_after_check_in) THEN
 
-		RAISE EXCEPTION 'Per il bagaglio %L è già stato generato l''id after check-in, non si può modificarlo!', OLD.id_luggage;
+		RAISE EXCEPTION 'Per il bagaglio % è già stato generato l''id after check-in, non si può modificarlo!', OLD.id_luggage;
 
 	END IF;
 
@@ -1559,7 +1559,7 @@ BEGIN
  
 		IF NEW.luggage_type IS NULL THEN
 			
-			RAISE EXCEPTION 'Dati mancanti per il bagaglio %L del passeggero il cui biglietto ha numero %L', NEW.id_luggage, associated_ticket.ticket_number;
+			RAISE EXCEPTION 'Dati mancanti per il bagaglio % del passeggero il cui biglietto ha numero %', NEW.id_luggage, associated_ticket.ticket_number;
 	
 		END IF;
 
@@ -1593,7 +1593,7 @@ BEGIN
  
 		IF NEW.luggage_status <> 'booked' THEN
 			
-			RAISE EXCEPTION 'Il biglietto con ticket number %L non ha ancora fatto il check_in, il bagaglio %L non può avere stato divero da ''prenotato''!', associated_ticket.ticket_number, NEW.id_luggage;
+			RAISE EXCEPTION 'Il biglietto con ticket number % non ha ancora fatto il check_in, il bagaglio % non può avere stato divero da ''prenotato''!', associated_ticket.ticket_number, NEW.id_luggage;
 	
 		END IF;
 
@@ -1668,7 +1668,7 @@ BEGIN
 
 		IF NEW.id_luggage_after_check_in IS NULL THEN
 
-			RAISE EXCEPTION 'Il biglietto con ticket number %L ha efettuato il check_in, il suo bagaglio non può non avere id_luggage_after_check_in!', 
+			RAISE EXCEPTION 'Il biglietto con ticket number % ha efettuato il check_in, il suo bagaglio non può non avere id_luggage_after_check_in!', 
 																														associated_ticket.ticket_number;
 
 		END IF;
@@ -1714,7 +1714,7 @@ BEGIN
 
 			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 	
-				RAISE EXCEPTION 'Il volo %L del passeggero con ticket number %L è già partito, il bagaglio %L non può avere stato ''prenotato''!', 
+				RAISE EXCEPTION 'Il volo % del passeggero con ticket number % è già partito, il bagaglio % non può avere stato ''prenotato''!', 
 																	associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
 		
 			END IF;
@@ -1756,7 +1756,7 @@ BEGIN
 
 		IF associated_flight.flight_status <> 'landed' THEN
 			
-			RAISE EXCEPTION 'Il volo %L del passeggero con ticket number %L non è ancora atterrato, il bagaglio %L non può avere stato ''ritirabile''!', 
+			RAISE EXCEPTION 'Il volo % del passeggero con ticket number % non è ancora atterrato, il bagaglio % non può avere stato ''ritirabile''!', 
 																			associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
 	
 		END IF;
@@ -1796,7 +1796,7 @@ BEGIN
  
 		IF associated_flight.flight_status <> 'landed' THEN
 			
-			RAISE EXCEPTION 'Il volo %L del passeggero con ticket number %L non è ancora atterrato, il bagaglio %L non può avere stato ''smarrito''!', 
+			RAISE EXCEPTION 'Il volo % del passeggero con ticket number % non è ancora atterrato, il bagaglio % non può avere stato ''smarrito''!', 
 																			associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
 	
 		END IF;
@@ -1836,7 +1836,7 @@ BEGIN
 
 		IF associated_flight.flight_status = 'programmed' OR associated_flight.flight_status = 'cancelled' OR associated_flight.flight_status = 'landed' THEN
 			
-			RAISE EXCEPTION 'Il volo %L del passeggero con ticket number %L è progammato/cancellato/atterrato, il bagaglio %L non può avere stato ''caricato''!', 
+			RAISE EXCEPTION 'Il volo % del passeggero con ticket number % è progammato/cancellato/atterrato, il bagaglio % non può avere stato ''caricato''!', 
 																					associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
 	
 		END IF;
@@ -1876,7 +1876,7 @@ BEGIN
 
 		IF associated_booking.booking_status = 'cancelled' THEN
 				
-			RAISE EXCEPTION 'La prenotazione %L del passeggero con ticket number %L è cancellata, il bagaglio %L non può avere stato divero da ''prenotato''!', 
+			RAISE EXCEPTION 'La prenotazione % del passeggero con ticket number % è cancellata, il bagaglio % non può avere stato divero da ''prenotato''!', 
 																				associated_ticket.id_booking, associated_ticket.ticket_number, NEW.id_luggage;
 		
 		END IF;
@@ -1906,7 +1906,7 @@ BEGIN
  
 		IF NEW.luggage_status = 'loaded' AND OLD.luggage_status <> 'booked' THEN
 			
-			RAISE EXCEPTION 'Il bagaglio %L non era in stato ''prenotato'', non può diventare ''caricato''!', OLD.id_luggage;
+			RAISE EXCEPTION 'Il bagaglio % non era in stato ''prenotato'', non può diventare ''caricato''!', OLD.id_luggage;
 	
 		END IF;
 
@@ -1935,7 +1935,7 @@ BEGIN
  
 		IF NEW.luggage_status = 'withdrawable' AND OLD.luggage_status <> 'loaded' THEN
 			
-			RAISE EXCEPTION 'Il bagaglio %L non era in stato ''caricato'', non può diventare ''ritirabile''!', OLD.id_luggage;
+			RAISE EXCEPTION 'Il bagaglio % non era in stato ''caricato'', non può diventare ''ritirabile''!', OLD.id_luggage;
 	
 		END IF;
 
@@ -1964,7 +1964,7 @@ BEGIN
  
 		IF NEW.luggage_status = 'lost' AND OLD.luggage_status <> 'withdrawable' THEN
 			
-			RAISE EXCEPTION 'Il bagaglio %L non era in stato ''ritirabile'', non può diventare ''smarrito''!', OLD.id_luggage;
+			RAISE EXCEPTION 'Il bagaglio % non era in stato ''ritirabile'', non può diventare ''smarrito''!', OLD.id_luggage;
 	
 		END IF;
 
@@ -2003,7 +2003,7 @@ BEGIN
 			--questo if serve perché solo un volo aboutToDepart può essere impostato a departed
 			IF OLD.flight_status <> 'aboutToDepart' THEN
 
-				RAISE EXCEPTION 'Il volo da Napoli %L non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
 
 			END IF;
 
@@ -2068,7 +2068,7 @@ BEGIN
 			--questo if serve perché solo un volo departed o aboutToArrive può essere impostato a departed
 			IF OLD.flight_status <> 'departed' AND OLD.flight_status <> 'aboutToArrive' THEN
 
-				RAISE EXCEPTION 'Il volo %L non era in stato ''partito'' o ''sta per arrivare'', non può diventare ''atterrato''!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % non era in stato ''partito'' o ''sta per arrivare'', non può diventare ''atterrato''!', OLD.id_flight;
 
 			END IF;
 
@@ -2123,7 +2123,7 @@ BEGIN
 		--posso aprire i check-in (e quindi mettere ad aboutToDepart) al più il giorno prima della partenza del volo
 		--e quindi non posso aprirli solo se NEW.departure_time::date non è nè oggi nè domani
 
-			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %L! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
+			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %! La sua data di partenza è % con ritardo di % minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
 
 		END IF;
 	
@@ -2132,7 +2132,7 @@ BEGIN
 		IF (NEW.departure_time::date) > CURRENT_DATE THEN
 		--un volo deve invece partire almeno nella data stabilita, al più partirà dopo per ritardi
 
-			RAISE EXCEPTION 'Il volo %L non può ancora partire! La sua data di partenza è %L con ritardo di %L minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
+			RAISE EXCEPTION 'Il volo % non può ancora partire! La sua data di partenza è % con ritardo di % minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
 
 		END IF;
 
@@ -2161,13 +2161,13 @@ BEGIN
 
 		IF OLD.flight_type = false THEN
 
-			RAISE EXCEPTION 'Il volo %L è verso Napoli, non può avere stato ''in partenza''', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % è verso Napoli, non può avere stato ''in partenza''', OLD.id_flight;
 
 		END IF;
 
 		IF OLD.flight_status <> 'programmed' THEN
 
-			RAISE EXCEPTION 'Il volo %L non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
 
 		END IF;
 	
@@ -2197,7 +2197,7 @@ BEGIN
 	
 		IF OLD.flight_status <> 'aboutToDepart' THEN
 
-			RAISE EXCEPTION 'Il volo %L non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
 
 		END IF;
 	
@@ -2226,7 +2226,7 @@ BEGIN
 	
 		IF OLD.flight_status <> 'programmed' AND OLD.flight_status <> 'aboutToDepart' AND OLD.flight_status <> 'departed' AND OLD.flight_status <> 'aboutToArrive' THEN
 
-			RAISE EXCEPTION 'Il volo %L non era in stato ''programmato'' o ''in partenza'', non può diventare ''in ritardo''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % non era in stato ''programmato'' o ''in partenza'', non può diventare ''in ritardo''!', OLD.id_flight;
 
 		END IF;
 	
@@ -2258,7 +2258,7 @@ BEGIN
 		
 			IF OLD.flight_status <> 'departed' THEN
 
-				RAISE EXCEPTION 'Il volo %L non era in stato ''partito'', non può diventare ''atterrato''!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % non era in stato ''partito'', non può diventare ''atterrato''!', OLD.id_flight;
 
 			END IF;
 		
@@ -2292,7 +2292,7 @@ BEGIN
 		
 			IF OLD.flight_status <> 'departed' THEN
 
-				RAISE EXCEPTION 'Il volo %L non era in stato ''partito'', non può diventare ''in arrivo''!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % non era in stato ''partito'', non può diventare ''in arrivo''!', OLD.id_flight;
 
 			END IF;
 		
@@ -2326,7 +2326,7 @@ BEGIN
 		
 			IF OLD.flight_status <> 'departed' AND OLD.flight_status <> 'aboutToArrive' THEN
 
-				RAISE EXCEPTION 'Il volo %L non era in stato ''partito'' o ''in arrivo'', non può diventare ''atterrato''!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo % non era in stato ''partito'' o ''in arrivo'', non può diventare ''atterrato''!', OLD.id_flight;
 
 			END IF;
 		
@@ -2354,7 +2354,7 @@ BEGIN
 	
 	IF OLD.flight_status = 'landed' AND NEW.flight_status <> 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è già atterrato, non può più cambiare stato!', OLD.id_flight;
+		RAISE EXCEPTION 'Il volo % è già atterrato, non può più cambiare stato!', OLD.id_flight;
 		
 	END IF;
 
@@ -2387,7 +2387,7 @@ BEGIN
 		--questo if serve perché solo un volo programmed può essere impostato ad aboutToDepart
 		IF OLD.flight_status <> 'programmed' THEN
 
-			RAISE EXCEPTION 'Il volo da Napoli %L non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
 
 		END IF;
 
@@ -2444,7 +2444,7 @@ BEGIN
 		--questo if serve perché solo un volo programmed o aboutToDepart può essere impostato a departed
 		IF OLD.flight_status <> 'programmed' AND OLD.flight_status <> 'aboutToDepart' THEN
 
-			RAISE EXCEPTION 'Il volo verso Napoli %L non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', OLD.id_flight;
 
 		END IF;
 
@@ -2526,7 +2526,7 @@ BEGIN
 			IF EXISTS(SELECT * FROM BOOKING B
 					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') THEN
 
-				RAISE EXCEPTION 'Il volo %L non può partire finchè ha prenotazioni pending!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo % non può partire finchè ha prenotazioni pending!', NEW.id_flight;
 
 			END IF;
 		
@@ -2562,7 +2562,7 @@ BEGIN
 			IF EXISTS(SELECT * FROM BOOKING B
 					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') THEN
 
-				RAISE EXCEPTION 'Il volo %L non può partire finchè ha prenotazioni pending!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo % non può partire finchè ha prenotazioni pending!', NEW.id_flight;
 
 			END IF;
 		
@@ -2665,7 +2665,7 @@ BEGIN
 
 			IF NEW.flight_status <> 'aboutToDepart' AND NEW.flight_status <> 'delayed' AND NEW.flight_status <> 'departed' AND NEW.flight_status <> 'landed' THEN
 
-				RAISE EXCEPTION 'Il volo da Napoli %L non è in stato ''in partenza'', ''in ritardo'', ''partito'', ''atterrato'', non lo si può inserire con un gate!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo da Napoli % non è in stato ''in partenza'', ''in ritardo'', ''partito'', ''atterrato'', non lo si può inserire con un gate!', NEW.id_flight;
 
 			END IF;
 
@@ -2698,7 +2698,7 @@ BEGIN
 
 			IF NEW.flight_status <> 'aboutToArrive' AND NEW.flight_status <> 'delayed' AND NEW.flight_status <> 'departed' AND NEW.flight_status <> 'landed' THEN
 
-				RAISE EXCEPTION 'Il volo per Napoli %L non è in stato ''in arrivo'', ''in ritardo'', ''partito'', ''atterrato'', non lo si può inserire con un gate!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo per Napoli % non è in stato ''in arrivo'', ''in ritardo'', ''partito'', ''atterrato'', non lo si può inserire con un gate!', NEW.id_flight;
 
 			END IF;
 
@@ -2732,7 +2732,7 @@ BEGIN
 
 			IF NEW.flight_status <> 'aboutToDepart' AND NEW.flight_status <> 'delayed' THEN
 
-				RAISE EXCEPTION 'Il volo da Napoli %L non è in stato ''in partenza'' o ''in ritardo'', non gli si può assegnare un gate!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo da Napoli % non è in stato ''in partenza'' o ''in ritardo'', non gli si può assegnare un gate!', OLD.id_flight;
 
 			END IF;
 
@@ -2765,7 +2765,7 @@ BEGIN
 
 			IF NEW.flight_status <> 'aboutToArrive' AND NEW.flight_status <> 'delayed' THEN
 
-				RAISE EXCEPTION 'Il volo verso Napoli %L non è in stato ''in arrivo'' o ''in ritardo'', non gli si può assegnare un gate!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo verso Napoli % non è in stato ''in arrivo'' o ''in ritardo'', non gli si può assegnare un gate!', NEW.id_flight;
 
 			END IF;
 
@@ -2796,7 +2796,7 @@ BEGIN
 
 		IF NEW.flight_status = 'programmed' OR NEW.flight_status = 'cancelled' THEN
 
-			RAISE EXCEPTION 'Il volo %L è in stato %L, non gli si può assegnare un gate!', NEW.id_flight, NEW.flight_status;
+			RAISE EXCEPTION 'Il volo % è in stato %, non gli si può assegnare un gate!', NEW.id_flight, NEW.flight_status;
 
 		END IF;
 
@@ -2827,7 +2827,7 @@ BEGIN
 
 			IF NEW.flight_status = 'departed' OR NEW.flight_status = 'landed' THEN
 
-				RAISE EXCEPTION 'Il volo da napoli %L è in stato %L, non può non avere un gate da cui è partito!', NEW.id_flight, NEW.flight_status;
+				RAISE EXCEPTION 'Il volo da napoli % è in stato %, non può non avere un gate da cui è partito!', NEW.id_flight, NEW.flight_status;
 
 			END IF;
 
@@ -2860,7 +2860,7 @@ BEGIN
 
 			IF NEW.flight_status = 'landed' THEN
 
-				RAISE EXCEPTION 'Il volo verso napoli %L è in stato ''atterrato'', non può non avere un gate dove è atterrato!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo verso napoli % è in stato ''atterrato'', non può non avere un gate dove è atterrato!', NEW.id_flight;
 
 			END IF;
 
@@ -2893,7 +2893,7 @@ BEGIN
 
 			IF (OLD.flight_status = 'departed' OR OLD.flight_status = 'landed') AND (NEW.flight_status = 'departed' OR NEW.flight_status = 'landed') THEN
 
-				RAISE EXCEPTION 'Il volo da napoli %L è in stato %L, non si può modificare il gate da cui è partito!', OLD.id_flight, NEW.flight_status;
+				RAISE EXCEPTION 'Il volo da napoli % è in stato %, non si può modificare il gate da cui è partito!', OLD.id_flight, NEW.flight_status;
 
 			END IF;
 
@@ -2926,7 +2926,7 @@ BEGIN
 
 			IF OLD.flight_status = 'landed' AND NEW.flight_status = 'landed' THEN
 
-				RAISE EXCEPTION 'Il volo per napoli %L è in stato ''atterrato'', non si può modificare il gate in cui è atterrato!', OLD.id_flight;
+				RAISE EXCEPTION 'Il volo per napoli % è in stato ''atterrato'', non si può modificare il gate in cui è atterrato!', OLD.id_flight;
 
 			END IF;
 
@@ -3280,7 +3280,7 @@ BEGIN
 				
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, non si possono inserire nuove prenotazioni!', NEW.id_flight;
+		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, non si possono inserire nuove prenotazioni!', NEW.id_flight;
 
 	END IF;
 
@@ -3310,7 +3310,7 @@ BEGIN
 				
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, non si possono inserire biglietti!', NEW.id_flight;
+		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, non si possono inserire biglietti!', NEW.id_flight;
 
 	END IF;
 
@@ -3345,7 +3345,7 @@ BEGIN
 			
 	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
 
-		RAISE EXCEPTION 'Il volo %L è in partenza oppure è già partito, il bagaglio non può essere inserito!', associated_flight.id_flight;
+		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, il bagaglio non può essere inserito!', associated_flight.id_flight;
 
 	END IF;
 
@@ -3375,7 +3375,7 @@ BEGIN
 	
 	IF associated_customer.is_deleted = true THEN
 
-		RAISE EXCEPTION 'L''account dell''utente %L è stato cancellato, non è possibile inserire nuove prenotazioni!', associated_customer.id_customer;
+		RAISE EXCEPTION 'L''account dell''utente % è stato cancellato, non è possibile inserire nuove prenotazioni!', associated_customer.id_customer;
 
 	END IF;
 
@@ -3405,7 +3405,7 @@ BEGIN
 	
 	IF associated_flight.flight_status <> 'programmed' THEN
 
-		RAISE EXCEPTION 'Il volo %L non è in stato ''programmato'', non è possibile inserire nuove prenotazioni!', associated_flight.id_flight;
+		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuove prenotazioni!', associated_flight.id_flight;
 
 	END IF;
 
@@ -3435,7 +3435,7 @@ BEGIN
 	
 	IF associated_flight.flight_status <> 'programmed' THEN
 
-		RAISE EXCEPTION 'Il volo %L non è in stato ''programmato'', non è possibile inserire nuovi biglietti!', associated_flight.id_flight;
+		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi biglietti!', associated_flight.id_flight;
 
 	END IF;
 
@@ -3465,7 +3465,7 @@ BEGIN
 	
 	IF associated_booking.booking_status = 'cancelled' THEN
 
-		RAISE EXCEPTION 'La prenotazione %L è stata cancellata, non è possibile inserire nuovi biglietti!', associated_booking.id_booking;
+		RAISE EXCEPTION 'La prenotazione % è stata cancellata, non è possibile inserire nuovi biglietti!', associated_booking.id_booking;
 
 	END IF;
 
@@ -3500,7 +3500,7 @@ BEGIN
 
 	IF associated_flight.flight_status <> 'programmed' THEN
 
-		RAISE EXCEPTION 'Il volo %L non è in stato ''programmato'', non è possibile inserire nuovi bagagli!', associated_flight.id_flight;
+		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi bagagli!', associated_flight.id_flight;
 
 	END IF;
 
@@ -3531,7 +3531,7 @@ BEGIN
 	
 	IF associated_ticket.checked_in = true THEN
 
-		RAISE EXCEPTION 'Per il biglietto con numero %L è già stato fatto il check-in, non è possibile inserire nuovi bagagli!', associated_ticket.ticket_number;
+		RAISE EXCEPTION 'Per il biglietto con numero % è già stato fatto il check-in, non è possibile inserire nuovi bagagli!', associated_ticket.ticket_number;
 
 	END IF;
 
@@ -3567,7 +3567,7 @@ BEGIN
 
 	IF associated_booking.booking_status = 'cancelled' THEN
 
-		RAISE EXCEPTION 'La prenotazione %L è stata cancellata, non è possibile inserire nuovi bagagli!', associated_booking.id_booking;
+		RAISE EXCEPTION 'La prenotazione % è stata cancellata, non è possibile inserire nuovi bagagli!', associated_booking.id_booking;
 
 	END IF;
 
