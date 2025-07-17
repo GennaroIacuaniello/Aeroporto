@@ -2993,6 +2993,226 @@ EXECUTE FUNCTION fun_canc_future_booking_if_cust_canc();
 -------------------------------------------------------------------------------------------------------------------------
 
 
+-----------------------------------------------------POPOLAMENTO---------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+
+-- Dati per la tabella Admin
+
+INSERT INTO Admin (username, mail, hashed_password, is_deleted) VALUES
+
+                                                                    ('admin_user1', 'admin1@aureportodinapoli.it', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', false),
+                                                                    ('admin_user2', 'admin2@adn.it', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', false),
+                                                                    ('admin_user3', 'admin3@aureportodinapoli.it', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
+                                                                    ('admin_user4', 'admin4@adn.it', 'c147773260467885b57f0064379361a45484814c1945a6c4295d53a9926d24f0', false),
+                                                                    ('admin_user5', 'admin5@aureportodinapoli.it', '1a9e7011d8fb6168e376a9177f525867201c1070e6a392b49de489b0365778a0', false),
+                                                                    ('admin_user6', 'admin6@adn.it', '2a67776a3b7d1591e1d0859550b07c87c093a0b41170cf82a6081c7f4e91a2a4', false),
+                                                                    ('admin_user7', 'admin7@aureportodinapoli.it', '3a78887b4c8e2602f2e1960661c18d98d1a42b152281df93b7192d805f02b3b5', false),
+                                                                    ('admin_user8', 'admin8@adn.it', '4b89998c5d9f3713g3f2071772d29e09e2b53c263392eg04c8203e916g13c4c6', false),
+                                                                    ('admin_user9', 'admin9@aureportodinapoli.it', '5c90009d6e0g4824h4g3182883e30f10f3c64d374403fh15d9314f027h24d5d7', false),
+                                                                    ('admin_user10', 'admin10@adn.it', '6d01110e7f1h5935i5h4293994f41g21g4d75e485514gi26e045i136e6e8', false),
+                                                                    ('admin_deleted1', 'deleted1@aureportodinapoli.it', 'deletedhash1', true),
+                                                                    ('admin_deleted2', 'deleted2@adn.it', 'deletedhash2', true);
+
+-- Dati per la tabella Customer
+
+INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
+
+                                                                       ('customer_user1', 'customer1@example.com', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', false),
+                                                                       ('customer_user2', 'customer2@test.org', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', false),
+                                                                       ('customer_user3', 'customer3@mail.net', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
+                                                                       ('customer_user4', 'customer4@service.co', 'c147773260467885b57f0064379361a45484814c1945a6c4295d53a9926d24f0', false),
+                                                                       ('customer_user5', 'customer5@domain.info', '1a9e7011d8fb6168e376a9177f525867201c1070e6a392b49de489b0365778a0', false),
+                                                                       ('customer_user6', 'customer6@web.biz', '2a67776a3b7d1591e1d0859550b07c87c093a0b41170cf82a6081c7f4e91a2a4', false),
+                                                                       ('customer_user7', 'customer7@company.xyz', '3a78887b4c8e2602f2e1960661c18d98d1a42b152281df93b7192d805f02b3b5', false),
+                                                                       ('customer_user8', 'customer8@site.club', '4b89998c5d9f3713g3f2071772d29e09e2b53c263392eg04c8203e916g13c4c6', false),
+                                                                       ('customer_user9', 'customer9@app.space', '5c90009d6e0g4824h4g3182883e30f10f3c64d374403fh15d9314f027h24d5d7', false),
+                                                                       ('customer_user10', 'customer10@data.io', '6d01110e7f1h5935i5h4293994f41g21g4d75e485514gi26e045i136e6e8', false),
+                                                                       ('customer_deleted1', 'deletedcust1@example.com', 'deletedhashcust1', true),
+                                                                       ('customer_deleted2', 'deletedcust2@test.org', 'deletedhashcust2', true);
+
+-- Dati per la tabella Flight
+
+INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
+
+                                                                                                                                                                                ('AZ1001', 'Alitalia', '2025-08-01 10:00:00', '2025-08-01 12:00:00', 'programmed', 150, 150, 'Rome', 0, true, 1),
+                                                                                                                                                                                ('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'programmed', 200, 200, 'London', 0, false, 2),
+                                                                                                                                                                                ('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'programmed', 180, 180, 'Frankfurt', 0, true, 3),
+                                                                                                                                                                                ('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'programmed', 160, 160, 'Paris', 0, false, 4),
+                                                                                                                                                                                ('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'programmed', 250, 250, 'New York', 0, true, 5),
+                                                                                                                                                                                ('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'programmed', 300, 300, 'Dubai', 0, false, 6),
+                                                                                                                                                                                ('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'programmed', 220, 220, 'Doha', 0, true, 7),
+                                                                                                                                                                                ('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'programmed', 190, 190, 'Istanbul', 0, false, 8),
+                                                                                                                                                                                ('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'programmed', 210, 210, 'Atlanta', 0, true, 9),
+                                                                                                                                                                                ('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'programmed', 170, 170, 'Zurich', 0, false, 10),
+                                                                                                                                                                                ('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'cancelled', 100, 100, 'Dublin', 0, true, NULL),
+                                                                                                                                                                                ('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'delayed', 120, 120, 'Barcelona', 60, false, 11);
+
+-- Dati per la tabella Passenger
+
+INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES
+
+                                                                   ('Mario', 'Rossi', '1980-01-15', 'MRORSS80A15H501F'),
+                                                                   ('Anna', 'Bianchi', '1992-03-22', 'NNABNC92C22G273J'),
+                                                                   ('Giuseppe', 'Verdi', '1975-07-01', 'GSPVRD75G01L219K'),
+                                                                   ('Maria', 'Gialli', '1998-11-30', 'MRAGLL98S70F839A'),
+                                                                   ('Paolo', 'Neri', '1985-05-10', 'PAONRI85E10C351B'),
+                                                                   ('Laura', 'Brambilla', '1990-09-05', 'LRAZMZ90P05D612C'),
+                                                                   ('Luca', 'Colombo', '1983-02-18', 'LCACLM83B18E089D'),
+                                                                   ('Sara', 'Ferrari', '1995-06-25', 'SRAFRA95F25H701E'),
+                                                                   ('Marco', 'Ricci', '1970-12-03', 'MRCRCC70T03L389G'),
+                                                                   ('Elena', 'Esposito', '1988-04-08', 'ELNSPT88D08I170H'),
+                                                                   ('Francesco', 'Russo', '1982-01-01', 'FRNRSS82A01F111A'),
+                                                                   ('Sofia', 'Mancini', '1991-02-02', 'SFAMNC91B02G222B'),
+                                                                   ('Alessandro', 'Costa', '1977-03-03', 'LSSCSC77C03H333C'),
+                                                                   ('Chiara', 'Romano', '1993-04-04', 'CHRRMNN93D04I444D'),
+                                                                   ('Simone', 'Gallo', '1986-05-05', 'SMNGLL86E05J555E'),
+                                                                   ('Valentina', 'Fontana', '1994-06-06', 'VLTFNT94F06K666F'),
+                                                                   ('Andrea', 'Conti', '1979-07-07', 'NDRCNT79G07L777G'),
+                                                                   ('Beatrice', 'Greco', '1996-08-08', 'BTBGRC96H08M888H'),
+                                                                   ('Giovanni', 'Riva', '1981-09-09', 'GVNRIV81I09N999I'),
+                                                                   ('Francesca', 'Mariani', '1989-10-10', 'FRNMRA89R10O000J');
+
+-- Dati per la tabella Booking
+
+INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES
+
+                                                                         ('confirmed', '2025-07-10 10:30:00', 1, 'AZ1001'), -- ID Booking 1
+                                                                         ('pending', '2025-07-11 11:00:00', 2, 'BA2002'), -- ID Booking 2
+                                                                         ('confirmed', '2025-07-12 12:15:00', 3, 'LH3003'), -- ID Booking 3
+                                                                         ('pending', '2025-07-13 13:45:00', 4, 'AF4004'), -- ID Booking 4
+                                                                         ('confirmed', '2025-07-14 09:00:00', 5, 'UA5005'), -- ID Booking 5
+                                                                         ('pending', '2025-07-15 14:00:00', 6, 'EK6006'), -- ID Booking 6
+                                                                         ('confirmed', '2025-07-10 15:30:00', 7, 'QR7007'), -- ID Booking 7
+                                                                         ('pending', '2025-07-11 16:00:00', 8, 'TK8008'), -- ID Booking 8
+                                                                         ('confirmed', '2025-07-12 17:15:00', 9, 'DL9009'), -- ID Booking 9
+                                                                         ('pending', '2025-07-13 18:45:00', 10, 'LX1010'), -- ID Booking 10
+                                                                         ('cancelled', '2025-07-09 09:00:00', 1, 'FR1111'), -- ID Booking 11,
+                                                                         ('confirmed', '2025-07-10 10:00:00', 3, 'FR1111'), -- ID Booking 12,
+                                                                         ('confirmed', '2025-07-14 11:00:00', 5, 'VY1212'), -- ID Booking 13,
+                                                                         ('pending', '2025-07-15 12:00:00', 7, 'VY1212'), -- ID Booking 14,
+                                                                         ('confirmed', '2025-07-16 09:30:00', 1, 'AZ1001'), -- ID Booking 15
+                                                                         ('confirmed', '2025-07-16 09:35:00', 2, 'AZ1001'); -- ID Booking 16
+
+-- Dati per la tabella Ticket
+
+INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, id_flight) VALUES
+
+-- Booking 1 (confirmed, AZ1001) - 3 tickets
+('0000000000001', 0, false, 1, 'MRORSS80A15H501F', 'AZ1001'),
+('0000000000002', 1, false, 1, 'NNABNC92C22G273J', 'AZ1001'),
+('0000000000003', 2, false, 1, 'GSPVRD75G01L219K', 'AZ1001'),
+-- Booking 2 (pending, BA2002) - 2 tickets
+('0000000000004', NULL, false, 2, 'MRAGLL98S70F839A', 'BA2002'),
+('0000000000005', NULL, false, 2, 'PAONRI85E10C351B', 'BA2002'),
+-- Booking 3 (confirmed, LH3003) - 3 tickets, some checked-in
+('0000000000006', 3, true, 3, 'LRAZMZ90P05D612C', 'LH3003'),
+('0000000000007', 4, false, 3, 'LCACLM83B18E089D', 'LH3003'),
+('0000000000008', 5, true, 3, 'SRAFRA95F25H701E', 'LH3003'),
+-- Booking 4 (pending, AF4004) - 2 tickets
+('0000000000009', NULL, false, 4, 'MRCRCC70T03L389G', 'AF4004'),
+('0000000000010', NULL, false, 4, 'ELNSPT88D08I170H', 'AF4004'),
+-- Booking 5 (confirmed, UA5005) - 3 tickets
+('0000000000011', 0, false, 5, 'FRNRSS82A01F111A', 'UA5005'),
+('0000000000012', 1, false, 5, 'SFAMNC91B02G222B', 'UA5005'),
+('0000000000013', 2, false, 5, 'LSSCSC77C03H333C', 'UA5005'),
+-- Booking 6 (pending, EK6006) - 2 tickets
+('0000000000014', NULL, false, 6, 'CHRRMNN93D04I444D', 'EK6006'),
+('0000000000015', NULL, false, 6, 'SMNGLL86E05J555E', 'EK6006'),
+-- Booking 7 (confirmed, QR7007) - 3 tickets
+('0000000000016', 0, false, 7, 'VLTFNT94F06K666F', 'QR7007'),
+('0000000000017', 1, false, 7, 'NDRCNT79G07L777G', 'QR7007'),
+('0000000000018', 2, false, 7, 'BTBGRC96H08M888H', 'QR7007'),
+-- Booking 8 (pending, TK8008) - 2 tickets
+('0000000000019', NULL, false, 8, 'GVNRIV81I09N999I', 'TK8008'),
+('0000000000020', NULL, false, 8, 'FRNMRA89R10O000J', 'TK8008'),
+-- Booking 9 (confirmed, DL9009) - 3 tickets
+('0000000000021', 0, false, 9, 'MRORSS80A15H501F', 'DL9009'),
+('0000000000022', 1, false, 9, 'NNABNC92C22G273J', 'DL9009'),
+('0000000000023', 2, false, 9, 'GSPVRD75G01L219K', 'DL9009'),
+-- Booking 10 (pending, LX1010) - 2 tickets
+('0000000000024', NULL, false, 10, 'MRAGLL98S70F839A', 'LX1010'),
+('0000000000025', NULL, false, 10, 'PAONRI85E10C351B', 'LX1010'),
+-- Booking 11 (cancelled, FR1111) - 2 tickets
+('0000000000026', 0, false, 11, 'LRAZMZ90P05D612C', 'FR1111'),
+('0000000000027', 1, false, 11, 'LCACLM83B18E089D', 'FR1111'),
+-- Booking 12 (confirmed for cancelled flight, FR1111) - 2 tickets
+('0000000000028', 2, true, 12, 'SRAFRA95F25H701E', 'FR1111'),
+('0000000000029', 3, false, 12, 'MRCRCC70T03L389G', 'FR1111'),
+-- Booking 13 (confirmed, VY1212 - delayed flight) - 2 tickets
+('0000000000030', 0, false, 13, 'ELNSPT88D08I170H', 'VY1212'),
+('0000000000031', 1, false, 13, 'FRNRSS82A01F111A', 'VY1212'),
+-- Booking 14 (pending, VY1212 - delayed flight) - 2 tickets
+('0000000000032', NULL, false, 14, 'SFAMNC91B02G222B', 'VY1212'),
+('0000000000033', NULL, false, 14, 'LSSCSC77C03H333C', 'VY1212');
+
+
+-- Dati per la tabella Luggage
+
+INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES
+
+-- Per ticket 0000000000001 (Booking 1)
+('checked', 'booked', '0000000000001'),
+('carry_on', 'booked', '0000000000001'),
+-- Per ticket 0000000000002 (Booking 1)
+('checked', 'booked', '0000000000002'),
+-- Per ticket 0000000000003 (Booking 1)
+('carry_on', 'booked', '0000000000003'),
+('checked', 'booked', '0000000000003'),
+-- Per ticket 0000000000004 (Booking 2)
+(NULL, 'booked', '0000000000004'),
+-- Per ticket 0000000000006 (Booking 3)
+('checked', 'booked', '0000000000006'),
+('carry_on', 'booked', '0000000000006'),
+-- Per ticket 0000000000007 (Booking 3)
+('checked', 'booked', '0000000000007'),
+-- Per ticket 0000000000008 (Booking 3)
+('checked', 'booked', '0000000000008'),
+('carry_on', 'booked', '0000000000008'),
+-- Per ticket 0000000000009 (Booking 4)
+(NULL, 'booked', '0000000000009'),
+-- Per ticket 0000000000011 (Booking 5)
+('checked', 'booked', '0000000000011'),
+('carry_on', 'booked', '0000000000011'),
+-- Per ticket 0000000000012 (Booking 5)
+('checked', 'booked', '0000000000012'),
+-- Per ticket 0000000000013 (Booking 5)
+('carry_on', 'booked', '0000000000013'),
+('checked', 'booked', '0000000000013'),
+-- Per ticket 0000000000014 (Booking 6)
+(NULL, 'booked', '0000000000014'),
+-- Per ticket 0000000000016 (Booking 7)
+('checked', 'booked', '0000000000016'),
+('carry_on', 'booked', '0000000000016'),
+-- Per ticket 0000000000017 (Booking 7)
+('checked', 'booked', '0000000000017'),
+-- Per ticket 0000000000018 (Booking 7)
+('carry_on', 'booked', '0000000000018'),
+('checked', 'booked', '0000000000018'),
+-- Per ticket 0000000000019 (Booking 8)
+(NULL, 'booked', '0000000000019'),
+-- Per ticket 0000000000021 (Booking 9)
+('checked', 'booked', '0000000000021'),
+('carry_on', 'booked', '0000000000021'),
+-- Per ticket 0000000000022 (Booking 9)
+('checked', 'booked', '0000000000022'),
+-- Per ticket 0000000000023 (Booking 9)
+('carry_on', 'booked', '0000000000023'),
+('checked', 'booked', '0000000000023'),
+-- Per ticket 0000000000024 (Booking 10)
+(NULL, 'booked', '0000000000024'),
+-- Per ticket 0000000000026 (Booking 11)
+('checked', 'booked', '0000000000026'),
+-- Per ticket 0000000000028 (Booking 12)
+('checked', 'booked', '0000000000028'),
+('carry_on', 'booked', '0000000000028');
+
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+
+
 -----------------------------------------------TRIGGER POST POPOLAMENTO-------------------------------------------------
 
 
