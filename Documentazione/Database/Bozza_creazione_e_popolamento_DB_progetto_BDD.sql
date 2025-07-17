@@ -1347,6 +1347,46 @@ EXECUTE FUNCTION fun_if_ticket_inserted_upd_free_seats();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALLA CANCELLAZIONE DI UN BIGLIETTO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
+
+CREATE OR REPLACE FUNCTION fun_if_ticket_deleted_upd_free_seats()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	associated_flight FLIGHT%ROWTYPE;
+
+	associated_booking BOOKING%ROWTYPE;
+
+BEGIN
+	
+	SELECT * INTO associated_flight 
+	FROM FLIGHT
+	WHERE id_flight = NEW.id_flight;
+
+	SELECT * INTO associated_booking
+	FROM BOOKING B
+	WHERE B.id_booking = NEW.id_booking;
+
+	IF associated_booking.booking_status <> 'cancelled' THEN
+
+		UPDATE FLIGHT
+		SET free_seats = free_seats + 1
+		WHERE id_flight = NEW.id_flight;
+
+	END IF;
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER if_ticket_deleted_upd_free_seats
+AFTER DELETE ON TICKET
+FOR EACH ROW
+EXECUTE FUNCTION fun_if_ticket_deleted_upd_free_seats();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 --TRIGGER SOLO PER LE PRENOTAZIONI 'CONFIRMED' UN BIGLIETTO PUò ESSERE CHECKED_IN
 
 CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_conf_book()
