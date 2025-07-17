@@ -3665,6 +3665,31 @@ EXECUTE FUNCTION fun_block_ins_luggages_canc_bookings();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER ALL'INSERIMENTO DI UN VOLO, MAX_SEATS E FREE_SEATS DEVONO COINCIDERE
+
+CREATE OR REPLACE FUNCTION fun_check_max_seats_eq_free_ins_flight()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.max_seats <> NEW.free_seats THEN
+
+		RAISE EXCEPTION 'Non si può inserire un volo già con posti occupati!';
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER check_max_seats_eq_free_ins_flight
+BEFORE INSERT ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_check_max_seats_eq_free_ins_flight();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 --TRIGGER NON SI POSSONO MODIFICARE I FREE_SEATS PER UN VOLO ARRIVING DELAYED, ABOUTTOARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land()
@@ -3697,6 +3722,5 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
 
 -------------------------------------------------------------------------------------------------------------------------
-
 
 
