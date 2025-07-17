@@ -413,39 +413,6 @@ EXECUTE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MODIFICARE I FREE_SEATS PER UN VOLO ARRIVING DELAYED, ABOUTTOARRIVE O LANDED
-
-CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land()
-RETURNS TRIGGER
-AS $$
-BEGIN
-
-	IF OLD.flight_type = false THEN 
-
-		IF NEW.flight_status = 'delayed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN
-
-			IF OLD.free_seats <> NEW.free_seats THEN
-
-				RAISE EXCEPTION 'Il volo % è già partito, non si possono modificare i suoi posti liberi!', OLD.id_flight;
-
-			END IF;
-
-		END IF;
-
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER blocked_upd_arriving_free_seats_if_del_aToArr_land
-BEFORE UPDATE OF free_seats ON FLIGHT
-FOR EACH ROW
-EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
-
--------------------------------------------------------------------------------------------------------------------------
-
 --TRIGGER NON SI PUò MODIFICARE IL DEPARTURE TIME PER UN VOLO ARRIVING DEPARTED, DELAYED, ABOUTTOARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_dep_time_if_dep_or_more()
@@ -3185,9 +3152,9 @@ INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, i
 ('0000000000004', NULL, false, 2, 'MRAGLL98S70F839A', 'BA2002'),
 ('0000000000005', NULL, false, 2, 'PAONRI85E10C351B', 'BA2002'),
 -- Booking 3 (confirmed, LH3003) - 3 tickets, some checked-in
-('0000000000006', 3, true, 3, 'LRAZMZ90P05D612C', 'LH3003'),
+('0000000000006', 3, false, 3, 'LRAZMZ90P05D612C', 'LH3003'),
 ('0000000000007', 4, false, 3, 'LCACLM83B18E089D', 'LH3003'),
-('0000000000008', 5, true, 3, 'SRAFRA95F25H701E', 'LH3003'),
+('0000000000008', 5, false, 3, 'SRAFRA95F25H701E', 'LH3003'),
 -- Booking 4 (pending, AF4004) - 2 tickets
 ('0000000000009', NULL, false, 4, 'MRCRCC70T03L389G', 'AF4004'),
 ('0000000000010', NULL, false, 4, 'ELNSPT88D08I170H', 'AF4004'),
@@ -3216,7 +3183,7 @@ INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, i
 ('0000000000026', 0, false, 11, 'LRAZMZ90P05D612C', 'FR1111'),
 ('0000000000027', 1, false, 11, 'LCACLM83B18E089D', 'FR1111'),
 -- Booking 12 (confirmed for cancelled flight, FR1111) - 2 tickets
-('0000000000028', 2, true, 12, 'SRAFRA95F25H701E', 'FR1111'),
+('0000000000028', 2, false, 12, 'SRAFRA95F25H701E', 'FR1111'),
 ('0000000000029', 3, false, 12, 'MRCRCC70T03L389G', 'FR1111'),
 -- Booking 13 (confirmed, VY1212 - delayed flight) - 2 tickets
 ('0000000000030', 0, false, 13, 'ELNSPT88D08I170H', 'VY1212'),
@@ -3698,6 +3665,38 @@ EXECUTE FUNCTION fun_block_ins_luggages_canc_bookings();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER NON SI POSSONO MODIFICARE I FREE_SEATS PER UN VOLO ARRIVING DELAYED, ABOUTTOARRIVE O LANDED
+
+CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.flight_type = false THEN 
+
+		IF NEW.flight_status = 'delayed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN
+
+			IF OLD.free_seats <> NEW.free_seats THEN
+
+				RAISE EXCEPTION 'Il volo % è già partito, non si possono modificare i suoi posti liberi!', OLD.id_flight;
+
+			END IF;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER blocked_upd_arriving_free_seats_if_del_aToArr_land
+BEFORE UPDATE OF free_seats ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
+
+-------------------------------------------------------------------------------------------------------------------------
 
 
 
