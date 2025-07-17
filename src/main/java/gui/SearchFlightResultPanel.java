@@ -39,25 +39,27 @@ public class SearchFlightResultPanel extends JPanel {
             resultsTable = new JTable(tableModel);
 
         resultsTable.addMouseListener(new MouseAdapter() {
+
             public void mousePressed(MouseEvent mouseEvent) {
+
                 JTable table = (JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
                 int row = table.rowAtPoint(point);
                 int col = table.columnAtPoint(point);
-                if (table.getSelectedRow() != -1 && row != -1 && col == 8) {
+                if (table.getSelectedRow() != -1 && row != -1 && col == tableModel.getColumnCount() - 1) {
 
                     Flight selectedFlight = searchedFlights.get(table.rowAtPoint(point));
 
-                    controller.getFlightController().setFlight(selectedFlight);
+                    if (selectedFlight.getFreeSeats() > 0 && (selectedFlight .getStatus().toString()).equals("PROGRAMMED")){
 
-                    new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
-                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
-                    
-                    // the row number is the visual row number
-                    // when filtering or sorting it is not the model's row number
-                    // this line takes care of that
-                    // int modelRow = table.convertRowIndexToModel(row);
+                        controller.getFlightController().setFlight(selectedFlight);
+
+                        new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                        callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+
+                    }
+
                 }
             }
         });
@@ -107,7 +109,7 @@ public class SearchFlightResultPanel extends JPanel {
 
         int bookColumnIndex = tableModel.getColumnCount() - 1;
         resultsTable.getColumnModel().getColumn(bookColumnIndex).setCellRenderer(new ButtonRenderer());
-        resultsTable.getColumnModel().getColumn(bookColumnIndex).setCellEditor(new ButtonEditor(callingObjects, controller, tableModel.getFlights()));
+
     }
 
     private static class FlightTableModel extends AbstractTableModel {
@@ -136,11 +138,6 @@ public class SearchFlightResultPanel extends JPanel {
         @Override
         public String getColumnName(int column) {
             return colNames[column];
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int col) {
-            return col == (colNames.length - 1);
         }
 
         @Override
@@ -210,82 +207,34 @@ public class SearchFlightResultPanel extends JPanel {
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
 
-        public ButtonRenderer(){
-
+        public ButtonRenderer() {
             setOpaque(true);
             setFont(new Font("Segoe UI", Font.BOLD, 12));
-
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
 
             setText((value == null) ? "" : value.toString());
 
+            FlightTableModel model = (FlightTableModel) table.getModel();
+            Flight flight = model.getFlights().get(row);
+
+            setEnabled(flight.getFreeSeats() > 0 && (flight.getStatus().toString()).equals("PROGRAMMED"));
+
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(UIManager.getColor("Button.background"));
+            }
+
             return this;
-
-        }
-
-    }
-
-    private static class ButtonEditor extends DefaultCellEditor {
-
-        protected JButton button;
-        private final List<Flight> flights;
-        private int currentRow;
-
-        public ButtonEditor(ArrayList<DisposableObject> callingObjects, Controller controller, List<Flight> flights) {
-
-            super(new JCheckBox());
-
-            this.flights = flights;
-
-            button = new JButton();
-            button.setOpaque(true);
-            button.setFont(new Font("Segoe UI", Font.BOLD, 12));
-
-            //todo: valutare cosa rimuovere (principalmente se questo listener può essere rimosso)
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                    fireEditingStopped();
-
-                    Flight selectedFlight = flights.get(currentRow);
-
-                    controller.getFlightController().setFlight(selectedFlight);
-
-                    new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
-                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
-                }
-            });
-        }
-
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-
-            this.currentRow = row;
-
-            button.setText("Prenota");
-
-            Flight flight = flights.get(row);
-
-            if(flight.getFreeSeats() > 0 && "programmed".equals(flight.getStatus().toString()))
-                button.setEnabled(true);
-            else
-                button.setEnabled(false);
-
-            return button;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-
-            return "Prenota";
-
         }
     }
+
 
     private static class JTableWithEmptyMessage extends JTable {
 

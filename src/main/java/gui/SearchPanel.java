@@ -244,6 +244,7 @@ public class SearchPanel extends JPanel {
                                                                     //timeFrom.getTime(), timeTo.getTime());
 
                     searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 100, "ciao"));
+                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 0, "ciao"));
 
                     searchPerformed = true;
                     updateResultsPanel(callingObjects, controller, searched_flights, true);
