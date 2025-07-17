@@ -980,9 +980,9 @@ DECLARE
 
 BEGIN
 
-	IF NEW.seat IS NOT NULL THEN
+	IF seat IS NOT NULL THEN
  
-		IF NOT (NEW.seat BETWEEN 0 AND associated_flight.max_seats - 1) THEN
+		IF NOT (seat BETWEEN 0 AND associated_flight.max_seats - 1) THEN
 			
 			RAISE EXCEPTION 'Posto non valido per il volo %L', NEW.id_flight;
 	
