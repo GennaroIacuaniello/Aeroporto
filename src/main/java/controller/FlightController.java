@@ -43,36 +43,19 @@ public class FlightController {
     public void searchFlightCustomer(String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                                                   List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                                   List<Integer> delays, List<FlightStatus> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities,
-                                                  JButton searchButton){
+                                                  List<Boolean> types, JButton searchButton){
 
         try{
             FlightDAO flightDAO = new FlightDAOImpl();
 
-            flightDAO.
+            flightDAO.searchFlight(departingCity, arrivingCity, initialDate, finalDate, initialTime, finalTime, ids, companyNames,
+                                    dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats, cities, types);
 
         } catch (SQLException e) {
             new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
         }
 
 
-
-        ArrayList<Flight> res = new ArrayList<>(0);
-
-        res.add(new Arriving("01", "Ciao", new Date(6),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(7),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(8),
-                new Time(1), new Time(1), 100, "Dubai"));
-
-        res.add(new Departing("04", "HELLO", new Date(9),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(10),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(11),
-                new Time(1), new Time(1), 100, "Dubai"));
-
-        return res;
     }
 
     public void setFlight(Flight flight) {
