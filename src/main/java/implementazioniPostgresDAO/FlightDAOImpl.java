@@ -21,10 +21,10 @@ public class FlightDAOImpl implements FlightDAO {
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
             String query = "SELECT id_flight, company_name, flight_date, departure_time, arrival_time, flight_status," +
-                           "max_seats, free_seats, destination_or_origin, flight_delay, id_gate" +
-                           "FROM FLIGHT" +
-                           "WHERE flight_type = false AND flight_status <> 'landed' AND flight_status <> 'cancelled'" +
-                           "ORDER BY flight_date" +
+                           "max_seats, free_seats, destination_or_origin, flight_delay, id_gate " +
+                           "FROM FLIGHT " +
+                           "WHERE flight_type = false AND flight_status <> 'landed' AND flight_status <> 'cancelled' " +
+                           "ORDER BY flight_date " +
                            "LIMIT 10;";
 
             PreparedStatement preparedQuery = connection.prepareStatement(query);
@@ -55,129 +55,131 @@ public class FlightDAOImpl implements FlightDAO {
 
     public void searchFlight (String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                               List<String> ids, List<String> companyNames, List<java.sql.Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
-                              List<Integer> delays, List<FlightStatus> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types) throws SQLException{
+                              List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types) throws SQLException{
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
-            String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type" +
-                           "FROM \"FLIGHT\"" +
-                           "WHERE ";
+        String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type " +
+                        "FROM FLIGHT " +
+                        "WHERE ";
 
-            ArrayList<Object> searchParam = new ArrayList<>(0);
+        ArrayList<Object> searchParam = new ArrayList<>(0);
 
-            java.sql.Date dInitialDate;
-            java.sql.Date dFinalDate;
-            java.sql.Time dInitialTime;
-            java.sql.Time dFinalTime;
+        java.sql.Date dInitialDate;
+        java.sql.Date dFinalDate;
+        java.sql.Time dInitialTime;
+        java.sql.Time dFinalTime;
 
-            if( !(departingCity != null && !departingCity.equalsIgnoreCase("Napoli")) || !(arrivingCity != null && !arrivingCity.equalsIgnoreCase("Napoli"))){
+        if(  "Napoli".equalsIgnoreCase(departingCity)   || "Napoli".equalsIgnoreCase(arrivingCity)  ||  ((departingCity == null || departingCity.trim().isEmpty()) && (arrivingCity == null || arrivingCity.trim().isEmpty()) ) ){
 
-                if( departingCity != null && !departingCity.equals("") ){
+            if( departingCity != null && !departingCity.trim().isEmpty() && !"Napoli".equalsIgnoreCase(departingCity) ){
 
-                    query += "(destination_or_origin LIKE ? AND type false) ";
-                    searchParam.add(departingCity);
+                query += "(destination_or_origin ILIKE ? AND flight_type = false) ";
+                searchParam.add(departingCity);
 
-                }else if( arrivingCity != null && !arrivingCity.equals("") ){
+            }else if( arrivingCity != null && !arrivingCity.trim().isEmpty() && !"Napoli".equalsIgnoreCase(arrivingCity)){
 
-                    query += "(destination_or_origin LIKE ? AND type true) ";
-                    searchParam.add(arrivingCity);
-                }
+                query += "(destination_or_origin ILIKE ? AND flight_type = true) ";
+                searchParam.add(arrivingCity);
+            }
 
-                if(initialDate != null && finalDate != null){
+            if(initialDate != null && finalDate != null){
 
-                    dInitialDate = java.sql.Date.valueOf(initialDate);
-                    dFinalDate = java.sql.Date.valueOf(finalDate);
+                dInitialDate = java.sql.Date.valueOf(initialDate);
+                dFinalDate = java.sql.Date.valueOf(finalDate);
 
-                    if(query.endsWith("WHERE ")){
+                if(query.trim().endsWith("WHERE")){
 
-                        query += "(departure_time::date BETWEEN ? AND ?) ";
+                    query += "(departure_time::date BETWEEN ? AND ?) ";
 
-                    }else{
-
-                        query += "AND (departure_time::date BETWEEN ? AND ?) ";
-
-                    }
-
-                    searchParam.add(dInitialDate);
-                    searchParam.add(dFinalDate);
-
-                }
-
-                if(initialTime != null && finalTime != null){
-
-                    dInitialTime = java.sql.Time.valueOf(initialTime);
-                    dFinalTime = java.sql.Time.valueOf(finalTime);
-
-                    String tmpCompare = "";
-
-                    if(initialTime.isBefore(finalTime)){
-
-                        tmpCompare += "(departure_time::time BETWEEN ? AND ?) ";
-
-                    }else{
-                        tmpCompare += "departure_time::time >= ? OR departure_time::time <= ? ";
-                    }
-
-                    if(query.endsWith("WHERE ")){
-
-                        query += tmpCompare;
-
-                    }else{
-
-                        query += "AND " + tmpCompare;
-
-                    }
-
-                    searchParam.add(dInitialTime);
-                    searchParam.add(dFinalTime);
-
-                }
-
-                if(!searchParam.isEmpty()){
-                    query = query.trim();
                 }else{
-                    query = query.substring( 0, query.length() - ("WHERE ".length()) );
-                }
-                query += ";";
 
-                PreparedStatement statement = connection.prepareStatement(query);
-
-                for(int i = 0; i < searchParam.size(); i++){
-
-                    statement.setObject( i + 1, searchParam.get(i));
+                    query += "AND (departure_time::date BETWEEN ? AND ?) ";
 
                 }
 
-                ResultSet rs = statement.executeQuery();
-
-                while (rs.next()){
-
-                    ids.add(rs.getString("id_flight"));
-                    companyNames.add(rs.getString("company_name"));
-
-                    Timestamp tmpTS = rs.getTimestamp("departure_time");
-                    dates.add(new java.sql.Date(tmpTS.getTime()));
-                    departureTimes.add(new java.sql.Time(tmpTS.getTime()));
-
-                    tmpTS = rs.getTimestamp("arrival_time");
-                    arrivalTimes.add(new java.sql.Time(tmpTS.getTime()));
-
-                    status.add(FlightStatus.valueOf(rs.getString("flight_status")));
-
-                    delays.add(rs.getInt("flight_delay"));
-
-                    maxSeats.add(rs.getInt("max_seats"));
-                    freeSeats.add(rs.getInt("free_seats"));
-
-                    cities.add(rs.getString("destination_or_origin"));
-
-                    types.add(rs.getBoolean("flight_type"));
-
-                }
-
-                rs.close();
+                searchParam.add(dInitialDate);
+                searchParam.add(dFinalDate);
 
             }
+
+            if(initialTime != null && finalTime != null){
+
+                dInitialTime = java.sql.Time.valueOf(initialTime);
+                dFinalTime = java.sql.Time.valueOf(finalTime);
+
+                String tmpCompare = "";
+
+                if(initialTime.isBefore(finalTime)){
+
+                    tmpCompare += "(departure_time::time BETWEEN ? AND ?) ";
+
+                }else{
+                    tmpCompare += "(departure_time::time >= ? OR departure_time::time <= ?)";
+                }
+
+                if(query.trim().endsWith("WHERE")){
+
+                    query += tmpCompare;
+
+                }else{
+
+                    query += "AND " + tmpCompare;
+
+                }
+
+                searchParam.add(dInitialTime);
+                searchParam.add(dFinalTime);
+
+            }
+
+            if(!searchParam.isEmpty()){
+                query = query.trim();
+            }else{
+                query = query.trim();
+                query = query.substring( 0, query.length() - ("WHERE".length()) );
+            }
+            query += ";";
+
+
+        }
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            for(int i = 0; i < searchParam.size(); i++){
+
+                statement.setObject( i + 1, searchParam.get(i));
+
+            }
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+
+                ids.add(rs.getString("id_flight"));
+                companyNames.add(rs.getString("company_name"));
+
+                Timestamp tmpTS = rs.getTimestamp("departure_time");
+                dates.add(new java.sql.Date(tmpTS.getTime()));
+                departureTimes.add(new java.sql.Time(tmpTS.getTime()));
+
+                tmpTS = rs.getTimestamp("arrival_time");
+                arrivalTimes.add(new java.sql.Time(tmpTS.getTime()));
+
+                status.add(rs.getString("flight_status"));
+
+                delays.add(rs.getInt("flight_delay"));
+
+                maxSeats.add(rs.getInt("max_seats"));
+                freeSeats.add(rs.getInt("free_seats"));
+
+                cities.add(rs.getString("destination_or_origin"));
+
+                types.add(rs.getBoolean("flight_type"));
+
+            }
+
+            rs.close();
 
             //connection.close(); non serve perchè la fa in automatico il try-with-resources
 

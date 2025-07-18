@@ -42,8 +42,10 @@ public class FlightController {
 
     public void searchFlightCustomer(String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                                                   List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
-                                                  List<Integer> delays, List<FlightStatus> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities,
-                                                  List<Boolean> types, JButton searchButton){
+                                                  List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities,
+                                                  JButton searchButton){
+
+        ArrayList<Boolean> types = new ArrayList<>();
 
         try{
             FlightDAO flightDAO = new FlightDAOImpl();
@@ -51,15 +53,41 @@ public class FlightController {
             flightDAO.searchFlight(departingCity, arrivingCity, initialDate, finalDate, initialTime, finalTime, ids, companyNames,
                                     dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats, cities, types);
 
+            searchResult = new ArrayList<>(0);
+
         } catch (SQLException e) {
             new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
         }
 
 
+
+        for(int i = 0; i < ids.size(); i++){
+
+            if(types.get(i)){   //alloco Departing
+
+                searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                                                FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+
+            }else{              //alloco Arriving
+
+                searchResult.add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                                               FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+
+
+            }
+
+        }
+
     }
 
     public void setFlight(Flight flight) {
         this.flight = flight;
+    }
+
+    public void setFlight(int index) {
+
+        this.flight = searchResult.get(index);
+
     }
 
     public Flight getFlight() {
@@ -215,4 +243,10 @@ public class FlightController {
     public void startCheckin () {}
 
     public void setCheckins (ArrayList<PassengerPanel> passengerPanels, JButton callingButton) {}
+
+    public boolean getFlightType(int index) {
+
+        return searchResult.get(index) instanceof Departing;
+
+    }
 }
