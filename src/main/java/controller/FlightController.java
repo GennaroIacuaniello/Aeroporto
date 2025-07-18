@@ -1,12 +1,19 @@
 package controller;
 
+import dao.FlightDAO;
+import gui.FloatingMessage;
 import gui.PassengerPanel;
+import implementazioniPostgresDAO.FlightDAOImpl;
 import model.*;
 
 import javax.swing.*;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FlightController {
 
@@ -33,7 +40,21 @@ public class FlightController {
 
     }
 
-    public ArrayList<Flight> searchFlightCustomer(String departingCity, String arrivingCity, Date initialDate, Date finalDate, String initialTime, String finalTime){
+    public void searchFlightCustomer(String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
+                                                  List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
+                                                  List<Integer> delays, List<FlightStatus> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities,
+                                                  JButton searchButton){
+
+        try{
+            FlightDAO flightDAO = new FlightDAOImpl();
+
+            flightDAO.
+
+        } catch (SQLException e) {
+            new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+
 
         ArrayList<Flight> res = new ArrayList<>(0);
 

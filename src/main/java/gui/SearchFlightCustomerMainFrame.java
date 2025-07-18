@@ -5,6 +5,7 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFlightCustomerMainFrame extends DisposableObject {
 
@@ -13,20 +14,20 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     private NavigatorBarPanel navigatorBarPanel;
     private MenuPanelCustomer menu;
     private UserPanel userPanel;
-    private SearchPanel search_panel;
+    private SearchPanel searchPanel;
     Constraints constraints;
 
-    public SearchFlightCustomerMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
+    public SearchFlightCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super();
         constraints = new Constraints();
-        this.setMainFrame(callingObjects, dimension, point, fullScreen);
+        this.setMainFrame((ArrayList<DisposableObject>)callingObjects, dimension, point, fullScreen);
 
-        this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
-        this.addNavigatorBarPanel(callingObjects, controller);
-        this.add_menu_panel(callingObjects, controller);
-        this.addUserPanel(callingObjects, controller);
-        this.add_search_panel(callingObjects, controller);
+        this.addTitlePanel(controller);
+        this.addNavigatorBarPanel((ArrayList<DisposableObject>)callingObjects, controller);
+        this.addMenuPanel((ArrayList<DisposableObject>)callingObjects, controller);
+        this.addUserPanel((ArrayList<DisposableObject>)callingObjects, controller);
+        this.addSearchPanel((ArrayList<DisposableObject>)callingObjects, controller);
 
         mainFrame.setVisible(true);
     }
@@ -47,9 +48,9 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     }
 
-    private void addTitlePanel(String title, Controller controller) {
+    private void addTitlePanel(Controller controller) {
 
-        titlePanel = new TitlePanel(title, controller);
+        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
 
         titlePanel.setOpaque(false);
 
@@ -73,7 +74,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         navigatorBarPanel.setVisible(true);
     }
 
-    private void add_menu_panel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         menu = new MenuPanelCustomer(callingObjects, controller);
 
@@ -99,15 +100,15 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         userPanel.setVisible(true);
     }
 
-    private void add_search_panel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        search_panel = new SearchPanel(callingObjects, controller);
+        searchPanel = new SearchPanel(callingObjects, controller);
 
         constraints.setConstraints(0, 3, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 40, 40, 40));
 
-        mainFrame.add(search_panel, constraints.getConstraints());
-        search_panel.setVisible(true);
+        mainFrame.add(searchPanel, constraints.getConstraints());
+        searchPanel.setVisible(true);
     }
 
     @Override

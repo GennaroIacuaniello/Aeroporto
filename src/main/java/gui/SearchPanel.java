@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
@@ -235,20 +237,60 @@ public class SearchPanel extends JPanel {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller != null) {
+
+                String origin = fromField.getText();
+                String destination = toField.getText();
+                LocalDate dateBefore = dateFrom.getDate();
+                LocalDate dateAfter = dateTo.getDate();
+                LocalTime timeBefore = timeFrom.getTime();
+                LocalTime timeAfter = timeTo.getTime();
+
+                if( (dateBefore != null && dateAfter == null) || (dateBefore == null && dateAfter != null) ){
+
+                    new FloatingMessage("Errore nel range di date!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller, null, true);
+
+                } else if (dateBefore != null /*&& dateAfter != null*/ && dateAfter.isBefore(dateBefore)) {
+
+                    new FloatingMessage("La seconda data deve essere successiva alla prima!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller, null, true);
+
+                } else if ((timeBefore != null && timeAfter == null) || (timeBefore == null && timeAfter != null)) {
+
+                    new FloatingMessage("Errore nella fascia oraria!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller, null, true);
+                }else{
+
+                    if (controller != null) {
 
 
-                    ArrayList<Flight> searched_flights = new ArrayList<>();//controller.search_flight_customer(
-                                                                    //fromField.getText(), toField.getText(),
-                                                                    //dateFrom.getDate(), dateTo.getDate(),
-                                                                    //timeFrom.getTime(), timeTo.getTime());
+                        ArrayList<Flight> searched_flights = new ArrayList<>();//controller.search_flight_customer(
+                        //fromField.getText(), toField.getText(),
+                        //dateFrom.getDate(), dateTo.getDate(),
+                        //timeFrom.getTime(), timeTo.getTime());
 
-                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 100, "ciao"));
-                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 0, "ciao"));
+                        searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 100, "ciao"));
+                        searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 0, "ciao"));
 
-                    searchPerformed = true;
-                    updateResultsPanel(callingObjects, controller, searched_flights, true);
+                        searchPerformed = true;
+                        updateResultsPanel(callingObjects, controller, searched_flights, true);
+                    }
+
                 }
+
+
+                //if orario 1 > orario 2
+
+                  //  allora cerco da orario 1 a mezza notte e da mezza notte a orario 2
+
+                //Date dateBefore = Date.valueOf(dateFrom.getDate());
+                //Date dateAfter = Date.valueOf(dateTo.getDate());
+                //Time timeBefore = Time.valueOf(timeFrom.getTime());
+                //Time timeAfter = Time.valueOf(timeTo.getTime());
+
+
+
+
             }
         });
 
