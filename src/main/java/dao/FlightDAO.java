@@ -1,7 +1,5 @@
 package dao;
 
-import model.*;
-
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;

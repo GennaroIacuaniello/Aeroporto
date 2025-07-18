@@ -2,9 +2,8 @@ package implementazioniPostgresDAO;
 
 import dao.FlightDAO;
 import database.ConnessioneDatabase;
-import model.FlightStatus;
 
-import javax.swing.*;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;

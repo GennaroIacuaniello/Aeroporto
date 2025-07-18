@@ -1,10 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Arriving;
-import model.Departing;
-import model.Flight;
-import model.FlightStatus;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -14,7 +10,6 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
