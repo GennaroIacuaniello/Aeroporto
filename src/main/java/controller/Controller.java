@@ -1,6 +1,7 @@
 package controller;
 
 import gui.DisposableObject;
+import gui.LuggagePanel;
 import gui.PassengerPanel;
 import implementazioniPostgresDAO.BookingDAOImpl;
 import model.*;
@@ -228,7 +229,35 @@ public class Controller {
 
             BookingDAOImpl bookingDAO = new BookingDAOImpl();
 
-            //bookingDAO.addBooking();
+            ArrayList<String> ticketsNumbers = new ArrayList<String>();
+            ArrayList<Integer> seats = new ArrayList<Integer>();
+            ArrayList<String> firstNames = new ArrayList<String>();
+            ArrayList<String> lastNames = new ArrayList<String>();
+            ArrayList<Date> birthDate = new ArrayList<Date>();
+            ArrayList<String> SSNs = new ArrayList<String>();
+            ArrayList<String> luggagesTypes = new ArrayList<String>();
+            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
+
+            for (PassengerPanel passengerPanel : passengerPanels) {
+
+                ticketsNumbers.add(generateTicketsNumber());
+                seats.add(passengerPanel.getSeat());
+                firstNames.add(passengerPanel.getPassengerName());
+                lastNames.add(passengerPanel.getPassengerSurname());
+                birthDate.add(passengerPanel.getPassengerDate());
+                SSNs.add(passengerPanel.getPassengerCF());
+
+                for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+
+                    if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
+                        luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
+                        ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
+                    }
+                }
+            }
+
+            bookingDAO.addBooking(getUserController().getId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
+                    seats, firstNames, lastNames, birthDate, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -237,15 +266,8 @@ public class Controller {
 
     public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
 
-    public ArrayList<String> generateTicketsNumbers (int lenght) {
+    public String generateTicketsNumber () {
 
-        ArrayList<String> ticketsNumbers = new ArrayList<>();
-
-        for (int i = 0; i < lenght; i++) {
-
-            ticketsNumbers.add("i");
-        }
-
-        return ticketsNumbers;
+        return "ticketsNumber";
     }
 }

@@ -4,6 +4,15 @@ import model.User;
 
 public class UserController {
     private User user;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id  = id;
+    }
 
     public String getUsername() {
         return user.getUsername();

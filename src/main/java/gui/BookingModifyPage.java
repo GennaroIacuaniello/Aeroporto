@@ -306,8 +306,11 @@ public class BookingModifyPage extends BookingPageCustomer {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
-                controller.goBack(callingObjects);
+                if (checkSavePendingButton()) {
+                    controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
+                    controller.goBack(callingObjects);
+                } else
+                    new FloatingMessage("I codici fiscali dei passeggeri sono incompleti", savePendingButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -319,13 +322,20 @@ public class BookingModifyPage extends BookingPageCustomer {
         savePendingButton.setVisible (true);
     }
 
-    protected boolean checkConfirmButton() {
+    protected boolean checkSavePendingButton() {
 
+        for (PassengerPanel passengerPanel : passengerPanels) if (passengerPanel.checkPassengerCF()) return false;
+
+        return true;
+    }
+
+    protected boolean checkConfirmButton() {
+        System.out.println("check");
         for (PassengerPanel passengerPanel : passengerPanels) {
 
-            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF())
+            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerDate())
                 return false;
-
+            System.out.println("we");
             for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels())
                 if (luggagePanel.checkLuggage())
                     return false;

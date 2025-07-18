@@ -20,15 +20,21 @@ public class BookingDAOImpl implements BookingDAO {
             PreparedStatement preparedQuery;
             ResultSet resultSet;
 
-            long generatedId;
+            int generatedId;
 
             //inserisci in booking
-            query = "INSERT INTO Booking VALUES ('" + bookingStatus + "', " + LocalDateTime.now() + ", '" + idCustomer + "', '" + idFlight + "');";
+            query = "INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES (?, ?, ?, ?);";
 
             preparedQuery = connection.prepareStatement(query);
+
+            preparedQuery.setString(1, bookingStatus);
+            preparedQuery.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            preparedQuery.setString(3, idCustomer);
+            preparedQuery.setString(4, idFlight);
+
             preparedQuery.executeUpdate();
 
-            generatedId = preparedQuery.getGeneratedKeys().getLong(0);
+            generatedId = preparedQuery.getGeneratedKeys().getInt(0);
 
             //eventuale inserimento in passenger
             for (int i = 0; i < SSNs.size(); i++) {
@@ -40,8 +46,14 @@ public class BookingDAOImpl implements BookingDAO {
 
                 if (resultSet.getBoolean(0)) {
 
-                    query = "INSERT INTO Passenger VALUES ('" + firstNames.get(i) + "', '" + lastNames.get(i) + "', " + birthDates.get(i) + ", '" + SSNs.get(i) + "');";
+                    query = "INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES (?, ?, ?, ?);";
                     preparedQuery = connection.prepareStatement(query);
+
+                    preparedQuery.setString(1, firstNames.get(i));
+                    preparedQuery.setString(2, lastNames.get(i));
+                    preparedQuery.setDate(3, birthDates.get(i));
+                    preparedQuery.setString(4, SSNs.get(i));
+
                     preparedQuery.executeUpdate();
                 }
             }
@@ -49,25 +61,32 @@ public class BookingDAOImpl implements BookingDAO {
             //inserisci in ticket
             for (int i = 0; i < ticketNumbers.size(); i++) {
 
-                query = "INSERT INTO Ticket VALUES ('" + ticketNumbers.get(i) + "', " + seats.get(i) + ", " + false + ", " + generatedId + ", '" + SSNs.get(i) + "', '" + idFlight + "');";
-
+                query = "INSERT INTO Ticket (ticket_number, seat, id_booking, id_passenger, id_flight) VALUES (?, ?, ?, ?, ?);";
                 preparedQuery = connection.prepareStatement(query);
+
+                preparedQuery.setString(1, ticketNumbers.get(i));
+                preparedQuery.setInt(2, seats.get(i));
+                preparedQuery.setInt(3, generatedId);
+                preparedQuery.setString(4, SSNs.get(i));
+                preparedQuery.setString(5, idFlight);
+
                 preparedQuery.executeUpdate();
             }
 
             //inserisci in luggage
             for (int i = 0; i < ticketForLuggages.size(); i++) {
 
-                query = "INSERT INTO Lugages VALUES ('', " + luggagesTypes.get(i) + ", BOOKED, '" + ticketForLuggages.get(i) + "');";
-
+                query = "INSERT INTO Lugages (luggage_type, luggage_status, id_ticket) VALUES (?, ?, ?);";
                 preparedQuery = connection.prepareStatement(query);
+
+                preparedQuery.setString(1, luggagesTypes.get(i));
+                preparedQuery.setString(2, "BOOKED");
+                preparedQuery.setString(3, ticketForLuggages.get(i));
+
                 preparedQuery.executeUpdate();
             }
 
-            //aggiusta free seats
-            query = " UPDATE TABLE Flight" +
-                    " SET free_seats = free_seats - " + seats.size() +
-                    " WHERE id_flight like '" + idFlight + "';";
+            ConnessioneDatabase.getInstance().closeConnection();
 
         } catch (SQLException e) {
 
