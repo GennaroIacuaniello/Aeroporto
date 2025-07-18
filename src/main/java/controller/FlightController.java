@@ -1,12 +1,19 @@
 package controller;
 
+import dao.FlightDAO;
+import gui.FloatingMessage;
 import gui.PassengerPanel;
+import implementazioniPostgresDAO.FlightDAOImpl;
 import model.*;
 
 import javax.swing.*;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FlightController {
 
@@ -33,29 +40,54 @@ public class FlightController {
 
     }
 
-    public ArrayList<Flight> searchFlightCustomer(String departingCity, String arrivingCity, Date initialDate, Date finalDate, String initialTime, String finalTime){
+    public void searchFlightCustomer(String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
+                                                  List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
+                                                  List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities,
+                                                  JButton searchButton){
 
-        ArrayList<Flight> res = new ArrayList<>(0);
+        ArrayList<Boolean> types = new ArrayList<>();
 
-        res.add(new Arriving("01", "Ciao", new Date(6),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Arriving("02", "IO", new Date(7),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Arriving("03", "TU", new Date(8),
-                new Time(1), new Time(1), 100, "Dubai"));
+        try{
+            FlightDAO flightDAO = new FlightDAOImpl();
 
-        res.add(new Departing("04", "HELLO", new Date(9),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Departing("05", "ME", new Date(10),
-                new Time(1), new Time(1), 100, "Dubai"));
-        res.add(new Departing("06", "YOU", new Date(11),
-                new Time(1), new Time(1), 100, "Dubai"));
+            flightDAO.searchFlight(departingCity, arrivingCity, initialDate, finalDate, initialTime, finalTime, ids, companyNames,
+                                    dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats, cities, types);
 
-        return res;
+            searchResult = new ArrayList<>(0);
+
+        } catch (SQLException e) {
+            new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+
+
+        for(int i = 0; i < ids.size(); i++){
+
+            if(types.get(i)){   //alloco Departing
+
+                searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                                                FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+
+            }else{              //alloco Arriving
+
+                searchResult.add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                                               FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+
+
+            }
+
+        }
+
     }
 
     public void setFlight(Flight flight) {
         this.flight = flight;
+    }
+
+    public void setFlight(int index) {
+
+        this.flight = searchResult.get(index);
+
     }
 
     public Flight getFlight() {
@@ -211,4 +243,10 @@ public class FlightController {
     public void startCheckin () {}
 
     public void setCheckins (ArrayList<PassengerPanel> passengerPanels, JButton callingButton) {}
+
+    public boolean getFlightType(int index) {
+
+        return searchResult.get(index) instanceof Departing;
+
+    }
 }

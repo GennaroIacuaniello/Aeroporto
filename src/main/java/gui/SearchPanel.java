@@ -3,8 +3,6 @@ package gui;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import controller.Controller;
-import model.Arriving;
-import model.Flight;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class SearchPanel extends JPanel {
@@ -36,7 +36,18 @@ public class SearchPanel extends JPanel {
     private JButton arrivingButton;
     private JButton departingButton;
 
-    private boolean searchPerformed = false;
+    ArrayList<String> ids = new ArrayList<>();
+    ArrayList<String> companyNames = new ArrayList<>();
+    ArrayList<Date> dates = new ArrayList<>();
+    ArrayList<Time> departureTimes = new ArrayList<>();
+    ArrayList<Time> arrivalTimes = new ArrayList<>();
+    ArrayList<Integer> delays = new ArrayList<>();
+    ArrayList<String> status = new ArrayList<>();
+    ArrayList<Integer> maxSeats = new ArrayList<>();
+    ArrayList<Integer> freeSeats = new ArrayList<>();
+    ArrayList<String> cities = new ArrayList<>();
+
+    //private boolean searchPerformed = false;
 
     public SearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
@@ -76,7 +87,7 @@ public class SearchPanel extends JPanel {
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
         this.add(resultsScrollPane, constraints.getConstraints());
 
-        updateResultsPanel(callingObjects, controller, new ArrayList<>(), false);
+        updateResultsPanel(callingObjects, controller, false);
     }
 
     private JPanel createSymmetricFormPanel(Controller controller) {
@@ -235,29 +246,69 @@ public class SearchPanel extends JPanel {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller != null) {
 
+                String origin = fromField.getText();
+                String destination = toField.getText();
+                LocalDate dateBefore = dateFrom.getDate();
+                LocalDate dateAfter = dateTo.getDate();
+                LocalTime timeBefore = timeFrom.getTime();
+                LocalTime timeAfter = timeTo.getTime();
 
-                    ArrayList<Flight> searched_flights = new ArrayList<>();//controller.search_flight_customer(
-                                                                    //fromField.getText(), toField.getText(),
-                                                                    //dateFrom.getDate(), dateTo.getDate(),
-                                                                    //timeFrom.getTime(), timeTo.getTime());
+                if( (fromField.getText().equals("") && !toField.getText().equals("")) || (!fromField.getText().equals("") && toField.getText().equals(""))){
 
-                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 100, "ciao"));
-                    searched_flights.add( new Arriving("ciao", "ciao", new Date(1,2,3), new Time(1), new Time(1), 0, "ciao"));
+                    new FloatingMessage("Se si specifica una città, vanno specificate entrambe!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller, true);
 
-                    searchPerformed = true;
-                    updateResultsPanel(callingObjects, controller, searched_flights, true);
+                }else if( (dateBefore != null && dateAfter == null) || (dateBefore == null && dateAfter != null) ){
+
+                    new FloatingMessage("Errore nel range di date!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller, true);
+
+                } else if (dateBefore != null /*&& dateAfter != null*/ && dateAfter.isBefore(dateBefore)) {
+
+                    new FloatingMessage("La seconda data deve essere successiva alla prima!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller,true);
+
+                } else if ((timeBefore != null && timeAfter == null) || (timeBefore == null && timeAfter != null)) {
+
+                    new FloatingMessage("Errore nella fascia oraria!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    updateResultsPanel(callingObjects, controller,true);
+                }else{
+
+                    if (controller != null) {
+
+                        ids = new ArrayList<>();
+                        companyNames = new ArrayList<>();
+                        dates = new ArrayList<>();
+                        departureTimes = new ArrayList<>();
+                        arrivalTimes = new ArrayList<>();
+                        delays = new ArrayList<>();
+                        status = new ArrayList<>();
+                        maxSeats = new ArrayList<>();
+                        freeSeats = new ArrayList<>();
+                        cities = new ArrayList<>();
+
+                        controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
+                                                                              ids, companyNames, dates, departureTimes, arrivalTimes, delays, status,
+                                                                              maxSeats, freeSeats, cities, searchButton);
+
+                        //searchPerformed = true;
+                        updateResultsPanel(callingObjects, controller, true);
+                    }
+
                 }
+
             }
         });
 
         return searchButton;
     }
 
-    private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, ArrayList<Flight> searchedFlights, boolean ifSearched) {
+    private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
 
-        SearchFlightResultPanel resultsPanel = new SearchFlightResultPanel(callingObjects, controller, searchedFlights, ifSearched);
+        SearchFlightResultPanel resultsPanel = new SearchFlightResultPanel(callingObjects, controller,
+                                                                           ids, companyNames, dates, departureTimes, arrivalTimes,
+                                                                           delays, status, maxSeats, freeSeats, cities, ifSearched);
 
         resultsScrollPane.setViewportView(resultsPanel);
 
