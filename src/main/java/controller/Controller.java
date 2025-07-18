@@ -44,12 +44,10 @@ public class Controller {
         ticketController = new TicketController();
     }
 
-    public boolean developerMode = false;
-
     public Object[][] getImminentArrivingFlights(){
 
         ArrayList<Arriving> arrivingFlights = new ArrayList<Arriving>();
-        Object[][] result = new Object[10][4];
+        Object[][] result = new Object[10][6];
 
         arrivingFlights.add(new Arriving("01", "Compagnia", new Date(0),
                 new Time(1), new Time(1), 100, "Dubai"));
@@ -59,11 +57,13 @@ public class Controller {
                 new Time(1), new Time(1), 100, "Dubai"));
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
-            result[i][0] = arrivingFlights.get(i).getCompanyName();
-            result[i][1] = arrivingFlights.get(i).getOrigin();
-            result[i][2] = Integer.valueOf(arrivingFlights.get(i).getDate().getDate()).toString() +
+            result[i][0] = arrivingFlights.get(i).getId();
+            result[i][1] = arrivingFlights.get(i).getCompanyName();
+            result[i][2] = arrivingFlights.get(i).getOrigin();
+            result[i][3] = Integer.valueOf(arrivingFlights.get(i).getDate().getDate()).toString() +
                             " " + arrivingFlights.get(i).getMonthName();
-            result[i][3] = arrivingFlights.get(i).getArrivalTime();
+            result[i][4] = arrivingFlights.get(i).getArrivalTime();
+            result[i][5] = "\uD83D\uDEC8";
         }
 
         return result;

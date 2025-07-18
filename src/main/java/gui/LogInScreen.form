@@ -67,6 +67,7 @@
               <background color="-2302736"/>
               <enabled value="false"/>
               <font/>
+              <minimumSize width="100" height="200"/>
             </properties>
             <border type="none"/>
             <children>
