@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import gui.ImminentFlightsTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,8 @@ public class MainCustomerScreen extends DisposableObject {
     private MenuPanelCustomer hamburgerPanel;
     private UserPanel userPanel;
     private FooterPanel footerPanel;
-    private FlightTable arrivingTable;
-    private FlightTable departingTable;
+    private gui.ImminentFlightsTable arrivingTable;
+    private ImminentFlightsTable departingTable;
     private JPanel arrivingPanel;
     private JPanel departingPanel;
     Constraints constraints;
@@ -128,22 +129,13 @@ public class MainCustomerScreen extends DisposableObject {
 
     private void setArrivingTable(JPanel tablePanel, Controller controller) {
 
-        String[] columnTitle = {"Company", "From", "Day", "Arrival Time"};
+        String[] columnTitle = {"Id", "Company", "From", "Day", "Arrival Time", ""};
         Object[][] data = controller.getImminentArrivingFlights();
-        arrivingTable = new FlightTable(data, columnTitle);
+        arrivingTable = new ImminentFlightsTable(data, columnTitle);
 
         arrivingTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent mouseEvent) {
-                JTable table = (JTable) mouseEvent.getSource();
-                Point point = mouseEvent.getPoint();
-                int row = table.rowAtPoint(point);
-                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1 && row != -1) {//double click on a row
-                    // the row number is the visual row number
-                    // when filtering or sorting it is not the model's row number
-                    // this line takes care of that
-                    int modelRow = table.convertRowIndexToModel(row);
-                    JOptionPane.showMessageDialog(mainFrame, "Show info of the flight");
-                }
+                showFlightInfoEvent(mouseEvent);
             }
         });
 
@@ -182,26 +174,34 @@ public class MainCustomerScreen extends DisposableObject {
 
         String[] columnTitles = {"Company", "Going to", "Day", "Departing Time", "Gate"};
         Object[][] data = controller.getImminentDepartingFlights();
-        departingTable = new FlightTable(data, columnTitles);
+        departingTable = new ImminentFlightsTable(data, columnTitles);
 
         departingTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent mouseEvent) {
-                JTable table = (JTable) mouseEvent.getSource();
-                Point point = mouseEvent.getPoint();
-                int row = table.rowAtPoint(point);
-                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1 && row != -1) {//double click on a row
-                    // the row number is the visual row number
-                    // when filtering or sorting it is not the model's row number
-                    // this line takes care of that
-                    int modelRow = table.convertRowIndexToModel(row);
-                    JOptionPane.showMessageDialog(mainFrame, "Show info of the flight");
-                }
+                showFlightInfoEvent(mouseEvent);
+
             }
         });
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
         tablePanel.add(departingTable.getScrollContainer(), constraints.getConstraints());
+    }
+
+    private void showFlightInfoEvent(MouseEvent mouseEvent) {
+        JTable table = (JTable) mouseEvent.getSource();
+        Point point = mouseEvent.getPoint();
+        int row = table.rowAtPoint(point);
+        int col = table.columnAtPoint(point);
+        if(table.getSelectedRow() != -1 && row != -1){
+            if (mouseEvent.getClickCount() == 2 || col == table.getColumnCount()-1) {//double click on a row or click on last column
+                // the row number is the visual row number
+                // when filtering or sorting it is not the model's row number
+                // this line takes care of that
+                // int modelRow = table.convertRowIndexToModel(row);
+                JOptionPane.showMessageDialog(mainFrame, "Show info of the flight" + table.getColumnCount());
+            }
+        }
     }
 
     @Override

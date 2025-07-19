@@ -148,41 +148,6 @@ public class BookingModifyPage extends BookingPageCustomer {
 
     protected void setPassengersVisibility () {
 
-        /*if (currPage != (passengerPanels.size() - 1) / 3) //non siamo all'ultima pagina quindi sono 3
-        {
-            for (int i = 0; i < 3; i++) {
-                passengerPanels.get((currPage * 3) + i).setVisible(false);
-                removePassengerButtons.get((currPage * 3) + i).setVisible(false);
-            }
-
-            for (int i = passengerPanels.size() % 3; i > 0; i--) //aggiungo all'ultima pagina quindi non so quanti sono
-            {
-                passengerPanels.get((passengerPanels.size() - i)).setVisible(true);
-                removePassengerButtons.get((passengerPanels.size() - i)).setVisible(true);
-            }
-
-            currPage = passengerPanels.size() / 3;
-            if (currentPageLabel != null) currentPageLabel.setText(Integer.toString(currPage + 1));
-
-            if (currPage != 0 && prevPageButton != null) prevPageButton.setEnabled(true);
-
-        } else //siamo all'ultima pagina quindi non so quanti sono
-        {
-            if (passengerPanels.size() % 3 == 0) //l'ultima pagina è piena quindi ne creo un'altra
-            {
-                for (int i = 0; i < 3; i++) {
-                    passengerPanels.get((currPage * 3) + i).setVisible(false);
-                    removePassengerButtons.get((currPage * 3) + i).setVisible(false);
-                }
-
-                currPage = passengerPanels.size() / 3;
-                if (currentPageLabel != null) currentPageLabel.setText(Integer.toString(currPage + 1));
-                if (currPage != 0 && prevPageButton != null) prevPageButton.setEnabled(true);
-            }
-        }
-
-        if (nextPageButton != null) nextPageButton.setEnabled(false);*/
-
         goToPage(passengerPanels.size() / 3);
     }
 
@@ -306,8 +271,11 @@ public class BookingModifyPage extends BookingPageCustomer {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
-                controller.goBack(callingObjects);
+                if (checkSavePendingButton()) {
+                    controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
+                    controller.goBack(callingObjects);
+                } else
+                    new FloatingMessage("I codici fiscali dei passeggeri sono incompleti", savePendingButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -319,13 +287,20 @@ public class BookingModifyPage extends BookingPageCustomer {
         savePendingButton.setVisible (true);
     }
 
-    protected boolean checkConfirmButton() {
+    protected boolean checkSavePendingButton() {
 
+        for (PassengerPanel passengerPanel : passengerPanels) if (passengerPanel.checkPassengerCF()) return false;
+
+        return true;
+    }
+
+    protected boolean checkConfirmButton() {
+        System.out.println("check");
         for (PassengerPanel passengerPanel : passengerPanels) {
 
-            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF())
+            if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerDate())
                 return false;
-
+            System.out.println("we");
             for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels())
                 if (luggagePanel.checkLuggage())
                     return false;

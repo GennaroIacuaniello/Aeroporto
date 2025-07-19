@@ -73,17 +73,6 @@ public class CheckinPassengers extends BookingPageAdmin{
 
     protected void setCheckinCheckBoxes (Controller controller) {
 
-        /*int index = 0;
-
-        for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
-
-            for (int j = 0; j < controller.getFlightController().getBookingSize(i); j++, index++) {
-
-                passengerPanels.get(index).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(index));
-                passengerPanels.get(index).getCheckinCheckBox().setEnabled(controller.getFlightController().checkBookingConfirm(i));
-            }
-        }*/
-
         for (int i = 0; i < passengerPanels.size(); i++)
             passengerPanels.get(i).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(i));
     }

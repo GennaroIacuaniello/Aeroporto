@@ -6,6 +6,14 @@ public class UserController {
     private int loggedUserId;
     private User loggedUser;
 
+    public int getLoggedUserId() {
+        return loggedUserId;
+    }
+
+    public void setLoggedUserId(int id) {
+        this.loggedUserId  = id;
+    }
+
     public String getUsername() {
         return loggedUser.getUsername();
     }

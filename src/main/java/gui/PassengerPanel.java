@@ -1,5 +1,6 @@
 package gui;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import controller.Controller;
 
 import javax.swing.*;
@@ -8,28 +9,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.sql.Date;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
-public class PassengerPanel extends JPanel
-{
+public class PassengerPanel extends JPanel {
+
+    //label con eventuale ticketNumber
+    protected JLabel passengerLabel;
+    protected String ticketNumber;
+
+    //info
+    protected JTextField passengerNameField;
+    protected JTextField passengerSurnameField;
+    protected JTextField passengerCField;
+    protected DatePicker passengerDatePicker;
+
+    //posto
+    protected JButton seatButton;
+    protected SeatChooser seatChooser;
+    protected int seat = -1;
+
+    //bagagli
+    protected JButton luggagesViewButton;
+    protected LuggagesView luggagesView;
+
+    //checkin
+    private JCheckBox checkinCheckBox;
+
+    protected Constraints constraints;
+
+    //cose utili
     private String displayedNameText = "~Nome~";
     private String displayedSurnameText = "~Cognome~";
     private String displayedCFText = "~Codice Fiscale~";
+    private String displayedDateText = "00/00/00";
     private Color displayedTextColor = new Color(128, 128, 128);
     private Color userTextColor = new Color(32, 32, 32);
-    protected SeatChooser seatChooser;
-    protected int seat = -1;
-    protected LuggagesView luggagesView;
-    protected JButton luggagesViewButton;
-    protected JButton seatButton;
-    protected Constraints constraints;
-    protected JLabel passengerLabel;
-    protected String ticketNumber;
-    private JCheckBox checkinCheckBox;
-
-    protected JTextField passengerNameField;
-    protected JTextField passengerSurnameField;
-    protected JTextField passengerCFField;
 
     public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels)
     {
@@ -41,15 +57,36 @@ public class PassengerPanel extends JPanel
         this.setOpaque(false);
 
         passengerLabel = new JLabel ("Passenger");
+
+        //info
         passengerNameField = new JTextField(displayedNameText, 20);
         passengerNameField.setForeground(displayedTextColor);
         passengerSurnameField = new JTextField (displayedSurnameText, 20);
         passengerSurnameField.setForeground(displayedTextColor);
-        passengerCFField = new JTextField (displayedCFText, 20);
-        passengerCFField.setForeground(displayedTextColor);
+        passengerCField = new JTextField (displayedCFText, 20);
+        passengerCField.setForeground(displayedTextColor);
+
+        //posto
         seatButton = new JButton("Scegli Posto");
+
+        seatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (PassengerPanel passengerPanel : passengerPanels) {
+                    passengerPanel.getSeatButton().setEnabled(false);
+                }
+                seatChooser = new SeatChooser (controller, thisPanel(), passengerPanels);
+            }
+        });
+
+        if (!passengerPanels.isEmpty())
+            this.seatButton.setEnabled(passengerPanels.getFirst().getSeatButton().isEnabled());
+
+        //bagagli
         luggagesViewButton = new JButton("Luggages");
+
         luggagesView = new LuggagesView (controller);
+
         luggagesViewButton.addActionListener (new ActionListener () {
            @Override
            public void actionPerformed (ActionEvent e) {
@@ -58,41 +95,56 @@ public class PassengerPanel extends JPanel
            }
         });
 
+        //date
+        passengerDatePicker = new DatePicker();
+        passengerDatePicker.getComponentDateTextField().setText(displayedDateText);
+        passengerDatePicker.getComponentDateTextField().setForeground(displayedTextColor);
+
+        //posizionamento
+        //label
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (passengerLabel, constraints.getConstraints());
         passengerLabel.setVisible (true);
 
+        //name
         constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (passengerNameField, constraints.getConstraints());
         passengerNameField.setVisible (true);
 
-        constraints.setConstraints (1, 1, 2, 1, GridBagConstraints.NONE,
+        //surname
+        constraints.setConstraints (1, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
         this.add (passengerSurnameField, constraints.getConstraints());
         passengerSurnameField.setVisible (true);
 
-        constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.NONE,
+        //luggages
+        constraints.setConstraints (2, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (passengerCFField, constraints.getConstraints());
-        passengerCFField.setVisible (true);
-
-        constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_END, new Insets (5, 5, 5, 5));
-        this.add (seatButton, constraints.getConstraints());
-        seatButton.setVisible (true);
-
-        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_START, new Insets (5, 5, 5, 5));
-        //this.add (seatLabel, constraints.getConstraints());
-        //seatLabel.setVisible (true);
-
-        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.LINE_END, new Insets (5, 5, 5, 5));
         this.add (luggagesViewButton, constraints.getConstraints());
         luggagesViewButton.setVisible (true);
 
+        //CF
+        constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
+        this.add (passengerCField, constraints.getConstraints());
+        passengerCField.setVisible (true);
+
+        //date
+        constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
+        this.add (passengerDatePicker, constraints.getConstraints());
+        passengerDatePicker.setVisible (true);
+
+        //seat
+        constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
+        this.add (seatButton, constraints.getConstraints());
+        seatButton.setVisible (true);
+
+
+        //valori di default
         passengerNameField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -133,38 +185,46 @@ public class PassengerPanel extends JPanel
             }
         });
 
-        passengerCFField.addFocusListener(new FocusAdapter() {
+        passengerCField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (passengerCFField.getText().equals(displayedCFText)) {
-                    passengerCFField.setText("");
-                    passengerCFField.setForeground(userTextColor);
+                if (passengerCField.getText().equals(displayedCFText)) {
+                    passengerCField.setText("");
+                    passengerCField.setForeground(userTextColor);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
-                if (passengerCFField.getText().isEmpty()) {
-                    passengerCFField.setText(displayedCFText);
-                    passengerCFField.setForeground(displayedTextColor);
+                if (passengerCField.getText().isEmpty()) {
+                    passengerCField.setText(displayedCFText);
+                    passengerCField.setForeground(displayedTextColor);
                 }
             }
         });
 
-        seatButton.addActionListener(new ActionListener() {
+        passengerDatePicker.getComponentDateTextField().addFocusListener(new FocusAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                for (PassengerPanel passengerPanel : passengerPanels) {
-                    passengerPanel.getSeatButton().setEnabled(false);
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                if (passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText)) {
+                    passengerDatePicker.getComponentDateTextField().setText("");
+                    passengerDatePicker.getComponentDateTextField().setForeground(userTextColor);
                 }
-                seatChooser = new SeatChooser (controller, thisPanel(), passengerPanels);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                if (passengerDatePicker.getComponentDateTextField().getText().isEmpty()) {
+                    System.out.println("ciao");
+                    passengerDatePicker.getComponentDateTextField().setText(displayedDateText);
+                    passengerDatePicker.getComponentDateTextField().setForeground(displayedTextColor);
+                }
             }
         });
-
-        if (!passengerPanels.isEmpty())
-            this.seatButton.setEnabled(passengerPanels.getFirst().getSeatButton().isEnabled());
 
         this.setVisible (true);
     }
@@ -202,15 +262,15 @@ public class PassengerPanel extends JPanel
     }
 
     public String getPassengerName(){
-        return passengerNameField.getText ();
+        return passengerNameField.getText().equals(displayedNameText) ? null : passengerNameField.getText();
     }
 
     public String getPassengerSurname(){
-        return passengerSurnameField.getText ();
+        return passengerSurnameField.getText().equals(displayedSurnameText) ? null : passengerSurnameField.getText() ;
     }
 
     public String getPassengerCF(){
-        return passengerCFField.getText ();
+        return passengerCField.getText ();
     }
 
     public void setPassengerName(String passengerName){
@@ -222,7 +282,7 @@ public class PassengerPanel extends JPanel
     }
 
     public void setPassengerCF(String passengerCF){
-        passengerCFField.setText (passengerCF);
+        passengerCField.setText (passengerCF);
     }
 
     public boolean checkPassengerName (){
@@ -234,7 +294,7 @@ public class PassengerPanel extends JPanel
     }
 
     public boolean checkPassengerCF (){
-        return passengerCFField.getText().equals(displayedCFText) || passengerCFField.getText().equals("");
+        return passengerCField.getText().equals(displayedCFText) || passengerCField.getText().equals("");
     }
 
     public boolean checkPassengerSeat (){
@@ -275,8 +335,9 @@ public class PassengerPanel extends JPanel
 
         passengerNameField.setEnabled(flag);
         passengerSurnameField.setEnabled(flag);
-        passengerCFField.setEnabled(flag);
+        passengerCField.setEnabled(flag);
         seatButton.setEnabled(flag);
+        passengerDatePicker.setEnabled(flag);
 
         luggagesView.getAddLuggageButton().setVisible(flag);
         luggagesView.getConfirmButton().setVisible(flag);
@@ -298,5 +359,18 @@ public class PassengerPanel extends JPanel
 
     public JCheckBox getCheckinCheckBox () {
         return checkinCheckBox;
+    }
+
+    public Date getPassengerDate () {
+        return passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText) ? null
+                : new java.sql.Date(passengerDatePicker.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+    }
+
+    public boolean checkPassengerDate () {
+        return passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText) || !passengerDatePicker.isTextFieldValid();
+    }
+
+    public void setPassengerDate (Date passengerDate) {
+        passengerDatePicker.setDate(passengerDate.toLocalDate());
     }
 }

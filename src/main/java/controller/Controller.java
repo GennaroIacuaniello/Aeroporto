@@ -3,6 +3,8 @@ package controller;
 import dao.BookingDAO;
 import gui.DisposableObject;
 import gui.FloatingMessage;
+
+import gui.LuggagePanel;
 import gui.PassengerPanel;
 import implementazioniPostgresDAO.BookingDAOImpl;
 import model.*;
@@ -47,12 +49,10 @@ public class Controller {
         ticketController = new TicketController();
     }
 
-    public boolean developerMode = false;
-
     public Object[][] getImminentArrivingFlights(){
 
         ArrayList<Arriving> arrivingFlights = new ArrayList<Arriving>();
-        Object[][] result = new Object[10][4];
+        Object[][] result = new Object[10][6];
 
         arrivingFlights.add(new Arriving("01", "Compagnia", new Date(0),
                 new Time(1), new Time(1), 100, "Dubai"));
@@ -62,11 +62,13 @@ public class Controller {
                 new Time(1), new Time(1), 100, "Dubai"));
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
-            result[i][0] = arrivingFlights.get(i).getCompanyName();
-            result[i][1] = arrivingFlights.get(i).getOrigin();
-            result[i][2] = Integer.valueOf(arrivingFlights.get(i).getDate().getDate()).toString() +
+            result[i][0] = arrivingFlights.get(i).getId();
+            result[i][1] = arrivingFlights.get(i).getCompanyName();
+            result[i][2] = arrivingFlights.get(i).getOrigin();
+            result[i][3] = Integer.valueOf(arrivingFlights.get(i).getDate().getDate()).toString() +
                             " " + arrivingFlights.get(i).getMonthName();
-            result[i][3] = arrivingFlights.get(i).getArrivalTime();
+            result[i][4] = arrivingFlights.get(i).getArrivalTime();
+            result[i][5] = "\uD83D\uDEC8";
         }
 
         return result;
@@ -231,7 +233,35 @@ public class Controller {
 
             BookingDAOImpl bookingDAO = new BookingDAOImpl();
 
-            //bookingDAO.addBooking();
+            ArrayList<String> ticketsNumbers = new ArrayList<String>();
+            ArrayList<Integer> seats = new ArrayList<Integer>();
+            ArrayList<String> firstNames = new ArrayList<String>();
+            ArrayList<String> lastNames = new ArrayList<String>();
+            ArrayList<Date> birthDate = new ArrayList<Date>();
+            ArrayList<String> SSNs = new ArrayList<String>();
+            ArrayList<String> luggagesTypes = new ArrayList<String>();
+            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
+
+            for (PassengerPanel passengerPanel : passengerPanels) {
+
+                ticketsNumbers.add(generateTicketsNumber());
+                seats.add(passengerPanel.getSeat());
+                firstNames.add(passengerPanel.getPassengerName());
+                lastNames.add(passengerPanel.getPassengerSurname());
+                birthDate.add(passengerPanel.getPassengerDate());
+                SSNs.add(passengerPanel.getPassengerCF());
+
+                for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+
+                    if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
+                        luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
+                        ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
+                    }
+                }
+            }
+
+            bookingDAO.addBooking(getUserController().getId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
+                    seats, firstNames, lastNames, birthDate, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -240,16 +270,9 @@ public class Controller {
 
     public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
 
-    public ArrayList<String> generateTicketsNumbers (int lenght) {
+    public String generateTicketsNumber () {
 
-        ArrayList<String> ticketsNumbers = new ArrayList<>();
-
-        for (int i = 0; i < lenght; i++) {
-
-            ticketsNumbers.add("i");
-        }
-
-        return ticketsNumbers;
+        return "ticketsNumber";
     }
 
     public void getAllBooksLoogedCustomer(List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {

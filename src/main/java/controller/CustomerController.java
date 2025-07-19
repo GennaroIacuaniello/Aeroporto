@@ -24,4 +24,8 @@ public class CustomerController {
     public int getLoggedCustomerId() {
         return loggedCustomerId;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
 }

@@ -30,7 +30,7 @@ CREATE TABLE Customer (
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE FlightStatus AS ENUM ('programmed', 'cancelled', 'aboutToDepart', 'departed', 'delayed', 'landed', 'aboutToArrive');
+CREATE TYPE FlightStatus AS ENUM ('PROGRAMMED', 'CANCELLED', 'ABOUT_TO_DEPART', 'DEPARTED', 'DELAYED', 'LANDED', 'ABOUT_TO_ARRIVE');
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ CREATE TABLE Flight (
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE BookingStatus AS ENUM ('confirmed', 'pending', 'cancelled');
+CREATE TYPE BookingStatus AS ENUM ('CONFIRMED', 'PENDING', 'CANCELLED');
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -126,11 +126,11 @@ CREATE TABLE Ticket (
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE LuggageStatus AS ENUM ('booked', 'loaded', 'withdrawable', 'lost');
+CREATE TYPE LuggageStatus AS ENUM ('BOOKED', 'LOADED', 'WITHDRAWABLE', 'LOST');
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE LuggageType AS ENUM ('carry_on', 'checked');
+CREATE TYPE LuggageType AS ENUM ('CARRY_ON', 'CHECKED');
 
 -------------------------------------------------------------------------------------------------------------------------
 

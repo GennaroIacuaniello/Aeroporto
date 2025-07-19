@@ -103,7 +103,7 @@ public class Book extends BookingModifyPage {
         savePendingButton.addActionListener (new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent e) {
-                    if (checkSavePendingButton(controller)) {
+                    if (checkSavePendingButton()) {
 
                         controller.addBooking(passengerPanels, controller.getBookingStatusController().pending);
 
@@ -127,22 +127,5 @@ public class Book extends BookingModifyPage {
     protected void insertPassengers (Controller controller) {
 
         insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
-    }
-
-    private boolean checkSavePendingButton (Controller controller) {
-
-        for (PassengerPanel passengerPanel : passengerPanels) {
-
-            if (!passengerPanel.checkPassengerName()) return true;
-            if (!passengerPanel.checkPassengerSurname()) return true;
-            if (!passengerPanel.checkPassengerCF()) return true;
-            if (!passengerPanel.checkPassengerSeat()) return true;
-
-            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
-                if (!luggagePanel.checkLuggage()) return true;
-            }
-        }
-
-        return false;
     }
 }
