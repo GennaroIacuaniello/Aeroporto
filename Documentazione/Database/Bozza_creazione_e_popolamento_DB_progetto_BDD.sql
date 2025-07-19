@@ -3847,3 +3847,5 @@ EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
 
 
 
+
+
