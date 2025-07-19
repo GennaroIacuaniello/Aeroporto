@@ -22,7 +22,7 @@ public class Home extends DisposableObject {
         frameHome.pack();
         frameHome.setVisible(true);
 
-        controller.setCustomerNUser("Tramontana", "whenAreYouGonnaPutHashesHere?");
+        controller.setCustomerNUser("Tramontana", "whenAreYouGonnaPutHashesHere?", 0);
         controller.getFlightController().setDepartingFlight("01", "Compagnia", new Date(1),
                 new Time(1,1,1), new Time(1,1,1), FlightStatus.PROGRAMMED, 66, 33, "Roma", 0);
 

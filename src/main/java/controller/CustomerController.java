@@ -3,15 +3,25 @@ package controller;
 import model.Customer;
 
 public class CustomerController {
-    private Customer customer;
+    private int loggedCustomerId;
+    private Customer loggedCustomer;
 
     public CustomerController() {}
 
-    public void setCustomer(String username, String hashedPassword) {
-        customer = new Customer(username, hashedPassword);
+    public void setCustomer(String username, String hashedPassword, int id) {
+        loggedCustomer = new Customer(username, hashedPassword);
+        loggedCustomerId = id;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setLoggedCustomer(Customer loggedCustomer) {
+        this.loggedCustomer = loggedCustomer;
+    }
+
+    public Customer getLoggedUser() {
+        return loggedCustomer;
+    }
+
+    public int getLoggedCustomerId() {
+        return loggedCustomerId;
     }
 }

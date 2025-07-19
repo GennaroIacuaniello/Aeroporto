@@ -19,7 +19,7 @@ public class SearchBookingResultPanel extends JPanel {
     private JTable resultsTable;
     private BookingTableModel tableModel;
 
-    public SearchBookingResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<Integer> numPassengers,
+    public SearchBookingResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<String> bookingStatus,
                                     List<String> ids) {
                                     //la lista di id è in parallelo con quella delle prenotazioni, e in base a quelli prendo poi il volo associato dal FlightController
 
@@ -27,7 +27,7 @@ public class SearchBookingResultPanel extends JPanel {
         this.setBackground(Color.WHITE);
 
         //se searchedFlights fosse null, darebbe nullPointerException, quindi gli passo una lista vuota
-        tableModel = new BookingTableModel( controller, bookingDates, numPassengers, ids);
+        tableModel = new BookingTableModel( controller, bookingDates, bookingStatus, ids);
 
         boolean hasResults = (ids != null && !ids.isEmpty());
 
@@ -115,7 +115,7 @@ public class SearchBookingResultPanel extends JPanel {
 
         private Controller controller;
         private final ArrayList<Date> bookingDates;
-        private final ArrayList<Integer> numPassengers;
+        private final ArrayList<String> bookingStatus;
         private final ArrayList<String> ids;
         //private final ArrayList<String> companyNames;
         //private final ArrayList<Date> dates;
@@ -127,13 +127,13 @@ public class SearchBookingResultPanel extends JPanel {
         //private final ArrayList<Integer> freeSeats;
         //private final ArrayList<String> cities;
 
-        private final String[] colNames = {"Data prenotazione", "Numero passeggeri", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
+        private final String[] colNames = {"Data prenotazione", "Stato prenotazione", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
 
-        public BookingTableModel( Controller controller, List<Date> parBookingDates, List<Integer> parNumPassengers, List<String> parIds) {
+        public BookingTableModel( Controller controller, List<Date> parBookingDates, List<String> bookingStatus, List<String> parIds) {
 
             this.controller = controller;
             this.bookingDates = (ArrayList<Date>) parBookingDates;
-            this.numPassengers = (ArrayList<Integer>) parNumPassengers;
+            this.bookingStatus = (ArrayList<String>) bookingStatus;
             this.ids = (ArrayList<String>) parIds;
             //this.companyNames= (ArrayList<String>) parCompanyNames;
             //this.dates = (ArrayList<Date>) parDates;
@@ -172,7 +172,7 @@ public class SearchBookingResultPanel extends JPanel {
                 case 0:
                     return bookingDates.get(row).toString();
                 case 1:
-                    return numPassengers.get(row);
+                    return bookingStatus.get(row);
                 case 2:
                     return "ciao";//controller.getFlightController().getCompanyName(row);
                 case 3:

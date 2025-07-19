@@ -55,7 +55,7 @@ public class SearchBookingPanel extends JPanel {
 
 
     ArrayList<Date> bookingDates = new ArrayList<>();
-    ArrayList<Integer> numPassengers = new ArrayList<>();
+    ArrayList<String> bookingStatus = new ArrayList<>();
     ArrayList<String> ids = new ArrayList<>();
 
     public SearchBookingPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
@@ -72,7 +72,7 @@ public class SearchBookingPanel extends JPanel {
 
         this.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
 
-        controller.getBookingController().getAllBooksLoogedCustomer(bookingDates, numPassengers, ids);
+        //controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, ids);
 
         setComponents(callingObjects, controller);
     }
@@ -398,13 +398,13 @@ public class SearchBookingPanel extends JPanel {
             if (controller != null) {
 
                 bookingDates = new ArrayList<>();
-                numPassengers = new ArrayList<>();
+                bookingStatus = new ArrayList<>();
                 ids = new ArrayList<>();
                 //controller.getFlightController().searchFlightLoggedCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
                   //      bookingDates, numPassengers, ids, searchButton);
 
                 bookingDates.add(new Date(1));
-                numPassengers.add(1);
+                bookingStatus.add("Ciao");
                 ids.add("Ciao");
                 updateResultsPanel(callingObjects, controller, true);
 
@@ -438,13 +438,13 @@ public class SearchBookingPanel extends JPanel {
 
 
             bookingDates = new ArrayList<>();
-            numPassengers = new ArrayList<>();
+            bookingStatus = new ArrayList<>();
             ids = new ArrayList<>();
             //controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
              //       bookingDates, numPassengers, ids, searchButton);
 
             bookingDates.add(new Date(1));
-            numPassengers.add(1);
+            bookingStatus.add("Ciao");
             ids.add("Ciao");
 
             updateResultsPanel(callingObjects, controller, true);
@@ -458,7 +458,7 @@ public class SearchBookingPanel extends JPanel {
     private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
 
         SearchBookingResultPanel resultsPanel = new SearchBookingResultPanel(callingObjects, controller,
-                                                                             bookingDates, numPassengers, ids);
+                                                                             bookingDates, bookingStatus, ids);
 
         resultsScrollPane.setViewportView(resultsPanel);
 

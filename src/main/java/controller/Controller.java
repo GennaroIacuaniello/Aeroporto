@@ -1,12 +1,10 @@
 package controller;
 
 import dao.BookingDAO;
-import dao.FlightDAO;
 import gui.DisposableObject;
 import gui.FloatingMessage;
 import gui.PassengerPanel;
 import implementazioniPostgresDAO.BookingDAOImpl;
-import implementazioniPostgresDAO.FlightDAOImpl;
 import model.*;
 
 import javax.swing.*;
@@ -154,13 +152,13 @@ public class Controller {
     }
 
     public void setAdminNUser (String username, String email, String hashedPassword) {
-        adminController.setAdmin (username, email, hashedPassword);
+        adminController.setAdmin (username, email, hashedPassword, 0);
         userController.setUser (username, email, hashedPassword);
     }
 
-    public void setCustomerNUser (String username, String hashedPassword) {
-        customerController.setCustomer (username, hashedPassword);
-        userController.setUser (username, hashedPassword);
+    public void setCustomerNUser (String username, String hashedPassword, int id) {
+        customerController.setCustomer (username, hashedPassword, id);
+        userController.setUser (username, hashedPassword, id);
     }
 
     public boolean checkBooking (int index) {
@@ -254,26 +252,29 @@ public class Controller {
         return ticketsNumbers;
     }
 
-    public void getAllBooksLoogedCustomer(List<Date> bookingDates, List<Integer> numPassengers, List<String> ids) {
+    public void getAllBooksLoogedCustomer(List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {
 
-        ArrayList<Boolean> types = new ArrayList<>();
+
         ArrayList<Flight>  searchBookingFlightsResult = new ArrayList<>(0);
 
         ArrayList<String> companyNames = new ArrayList<>();
         ArrayList<Date> dates = new ArrayList<>();
         ArrayList<Time> departureTimes = new ArrayList<>();
         ArrayList<Time> arrivalTimes = new ArrayList<>();
-        ArrayList<Integer> delays = new ArrayList<>();
         ArrayList<String> status = new ArrayList<>();
         ArrayList<Integer> maxSeats = new ArrayList<>();
         ArrayList<Integer> freeSeats = new ArrayList<>();
         ArrayList<String> cities = new ArrayList<>();
 
+        ArrayList<Boolean> types = new ArrayList<>();
+
+        ArrayList<Integer> bookingIds = new ArrayList<>();
+
         try{
             BookingDAO bookingDAO = new BookingDAOImpl();
 
-            bookingDAO.getAllBooksCustomer(loggedUser, ids, companyNames, dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats,
-                    cities, types);
+            bookingDAO.getAllBooksCustomer(getCustomerController().getLoggedCustomerId(), flightIds, companyNames, dates, departureTimes, arrivalTimes, status, maxSeats, freeSeats,
+                                            cities, types, bookingDates, bookingStatus, bookingIds);
 
 
 
@@ -283,17 +284,17 @@ public class Controller {
 
         ArrayList<String> actualIds = new ArrayList<>();
 
-        for(int i = 0; i < ids.size(); i++){
+        for(int i = 0; i < flightIds.size(); i++){
 
             if(types.get(i)){   //alloco Departing
 
-                searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
-                        FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+                //getFlightController().getsearchBookingResult().add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                  //      FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
 
             }else{              //alloco Arriving
 
-                searchResult.add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
-                        FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+                //getFlightController().getsearchBookingResult().add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                  //      FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
 
 
             }
