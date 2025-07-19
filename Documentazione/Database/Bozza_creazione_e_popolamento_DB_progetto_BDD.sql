@@ -1523,6 +1523,84 @@ CREATE TABLE Luggage (
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER SE PER UN BIGLIETTO C'è GIà UN BAGAGLIO A MANO, NON SE NE POSSONO INSERIRE ALTRI (BEFORE INSERT)
+
+CREATE OR REPLACE FUNCTION fun_block_ins_multiple_carry_on_luggages()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	associated_ticket TICKET%ROWTYPE;
+
+BEGIN
+	
+	IF NEW.luggage_type = 'carry_on' THEN
+
+		SELECT * INTO associated_ticket
+		FROM TICKET T
+		WHERE T.ticket_number = NEW.id_ticket;
+
+		IF EXISTS(SELECT * FROM LUGGAGE L
+				  WHERE L.id_ticket = NEW.id_ticket AND L.luggage_type = 'carry_on') THEN
+
+			RAISE EXCEPTION 'Per il biglietto con numero % c''è già un bagaglio a mano, non se ne possono inserire altri!', 
+																						   associated_ticket.ticket_number;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_ins_multiple_carry_on_luggages
+BEFORE INSERT ON LUGGAGE
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_ins_multiple_carry_on_luggages();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER SE PER UN BIGLIETTO C'è GIà UN BAGAGLIO A MANO, NON SI PUò MODIFICARE IL TIPO DI UN ALTRO BAGAGLIO PER FAR SI CHE CE NE SIANO DUE (BEFORE UPDATE)
+
+CREATE OR REPLACE FUNCTION fun_block_upd_to_have_multiple_carry_on_luggages()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	associated_ticket TICKET%ROWTYPE;
+
+BEGIN
+	
+	IF OLD.luggage_type <> 'carry_on' AND NEW.luggage_type = 'carry_on' THEN
+
+		SELECT * INTO associated_ticket
+		FROM TICKET T
+		WHERE T.ticket_number = OLD.id_ticket;
+
+		IF EXISTS(SELECT * FROM LUGGAGE L
+				  WHERE L.id_luggage <> OLD.id_luggage AND L.id_ticket = OLD.id_ticket AND L.luggage_type = 'carry_on') THEN
+
+			RAISE EXCEPTION 'Per il biglietto con numero % c''è già un bagaglio a mano, non se ne possono avere altri!', 
+																					    associated_ticket.ticket_number;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_upd_to_have_multiple_carry_on_luggages
+BEFORE UPDATE OF luggage_type ON LUGGAGE
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_upd_to_have_multiple_carry_on_luggages();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 --TRIGGER ID LUGGAGE E ID TICKET IN LUGGAGE SI POSSONO MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED
 
 CREATE OR REPLACE FUNCTION fun_block_mod_id_lug_ticket_if_f_not_prog_canc()
