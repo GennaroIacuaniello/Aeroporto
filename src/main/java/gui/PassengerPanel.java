@@ -19,6 +19,7 @@ public class PassengerPanel extends JPanel {
     protected JLabel passengerLabel;
     protected String ticketNumber;
 
+    //info
     protected JTextField passengerNameField;
     protected JTextField passengerSurnameField;
     protected JTextField passengerCField;
@@ -336,6 +337,7 @@ public class PassengerPanel extends JPanel {
         passengerSurnameField.setEnabled(flag);
         passengerCField.setEnabled(flag);
         seatButton.setEnabled(flag);
+        passengerDatePicker.setEnabled(flag);
 
         luggagesView.getAddLuggageButton().setVisible(flag);
         luggagesView.getConfirmButton().setVisible(flag);
@@ -365,5 +367,9 @@ public class PassengerPanel extends JPanel {
 
     public boolean checkPassengerDate () {
         return passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText) || !passengerDatePicker.isTextFieldValid();
+    }
+
+    public void setPassengerDate (Date passengerDate) {
+        passengerDatePicker.setDate(passengerDate.toLocalDate());
     }
 }

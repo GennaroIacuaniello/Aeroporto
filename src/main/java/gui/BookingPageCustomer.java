@@ -44,6 +44,7 @@ public class BookingPageCustomer extends BookingPage {
             passengerPanel.setPassengerSurname(controller.getBookingController().getPassengerLastName(i));
             passengerPanel.setPassengerCF(controller.getBookingController().getPassengerSSN(i));
             passengerPanel.setSeat(controller.getBookingController().getPassengerSeat(i));
+            passengerPanel.setPassengerDate(controller.getBookingController().getPassengerDate(i));
             passengerPanel.setTicketNumber(controller.getBookingController().getPassengerTicketNumber(i));
             passengerPanel.setLuggagesTypes(controller.getBookingController().getPassengerLuggagesTypes(i), controller);
 

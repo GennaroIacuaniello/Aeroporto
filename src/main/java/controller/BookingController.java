@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -99,5 +100,9 @@ public class BookingController {
 
     public Ticket getTicket(int index) {
         return booking.getTickets().get(index);
+    }
+
+    public Date getPassengerDate(int index) {
+        return getPassenger(index).getBirthDate();
     }
 }

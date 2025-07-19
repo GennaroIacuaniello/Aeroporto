@@ -148,41 +148,6 @@ public class BookingModifyPage extends BookingPageCustomer {
 
     protected void setPassengersVisibility () {
 
-        /*if (currPage != (passengerPanels.size() - 1) / 3) //non siamo all'ultima pagina quindi sono 3
-        {
-            for (int i = 0; i < 3; i++) {
-                passengerPanels.get((currPage * 3) + i).setVisible(false);
-                removePassengerButtons.get((currPage * 3) + i).setVisible(false);
-            }
-
-            for (int i = passengerPanels.size() % 3; i > 0; i--) //aggiungo all'ultima pagina quindi non so quanti sono
-            {
-                passengerPanels.get((passengerPanels.size() - i)).setVisible(true);
-                removePassengerButtons.get((passengerPanels.size() - i)).setVisible(true);
-            }
-
-            currPage = passengerPanels.size() / 3;
-            if (currentPageLabel != null) currentPageLabel.setText(Integer.toString(currPage + 1));
-
-            if (currPage != 0 && prevPageButton != null) prevPageButton.setEnabled(true);
-
-        } else //siamo all'ultima pagina quindi non so quanti sono
-        {
-            if (passengerPanels.size() % 3 == 0) //l'ultima pagina è piena quindi ne creo un'altra
-            {
-                for (int i = 0; i < 3; i++) {
-                    passengerPanels.get((currPage * 3) + i).setVisible(false);
-                    removePassengerButtons.get((currPage * 3) + i).setVisible(false);
-                }
-
-                currPage = passengerPanels.size() / 3;
-                if (currentPageLabel != null) currentPageLabel.setText(Integer.toString(currPage + 1));
-                if (currPage != 0 && prevPageButton != null) prevPageButton.setEnabled(true);
-            }
-        }
-
-        if (nextPageButton != null) nextPageButton.setEnabled(false);*/
-
         goToPage(passengerPanels.size() / 3);
     }
 

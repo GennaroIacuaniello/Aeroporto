@@ -158,6 +158,10 @@ public class FlightController {
         return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getSeat();
     }
 
+    public Date getPassengerDateFromBooking (int bookingIndex, int passengerIndex) {
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getBirthDate();
+    }
+
     public ArrayList<Integer> getPassengerLuggagesTypesFromBooking(int bookingIndex, int passengerIndex) {
 
         ArrayList<Integer> types = new ArrayList<Integer>();
