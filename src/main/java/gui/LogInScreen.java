@@ -36,7 +36,6 @@ public class LogInScreen extends DisposableObject {
 
     //Bottom options
     private JButton registerButton;
-    private JButton newPasswordButton;
 
     public LogInScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
@@ -54,7 +53,6 @@ public class LogInScreen extends DisposableObject {
 
         loginMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
-        registerButton.setPreferredSize(newPasswordButton.getPreferredSize());
         resizeFrame();
 
         logInButton.addActionListener(new ActionListener() {
@@ -208,8 +206,8 @@ public class LogInScreen extends DisposableObject {
          /(not only because of parity, but i have no idea what is it other than that)
          */
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int desiredWidth = (int)screenSize.getWidth() * 3 / 10;
         int desiredHeight = (int)screenSize.getHeight() * 2 / 3;
+        int desiredWidth = desiredHeight * 7 / 10;
         mainFrame.setPreferredSize(new Dimension(desiredWidth, desiredHeight));
         int paddingHeight = max((mainFrame.getHeight() - desiredHeight) / 2, 36);
         int paddingWidth = max((mainFrame.getWidth() - desiredWidth) / 2, 27);

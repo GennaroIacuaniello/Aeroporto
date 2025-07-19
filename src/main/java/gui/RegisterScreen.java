@@ -48,7 +48,7 @@ public class RegisterScreen extends DisposableObject {
 
         registerMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
-
+        resizeFrame();
 
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -160,8 +160,12 @@ public class RegisterScreen extends DisposableObject {
          /the actual dimension of the loginMenufluctuate a little (max 2 in either direction)
          /(not only because of parity, but i have no idea what is it other than that)
          */
-        int paddingHeight = max(mainFrame.getHeight() / 2 - 239, 36);
-        int paddingWidth = max(mainFrame.getWidth() / 2 - 168, 27);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int desiredHeight = (int)screenSize.getHeight() * 2 / 3;
+        int desiredWidth = desiredHeight * 7 / 10;
+        mainFrame.setPreferredSize(new Dimension(desiredWidth, desiredHeight));
+        int paddingHeight = max((mainFrame.getHeight() - desiredHeight) / 2, 36);
+        int paddingWidth = max((mainFrame.getWidth() - desiredWidth) / 2, 27);
 
         topPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(paddingHeight, 0, 0, 0), -1, -1));
         bottomPadding.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, paddingHeight, 0), -1, -1));

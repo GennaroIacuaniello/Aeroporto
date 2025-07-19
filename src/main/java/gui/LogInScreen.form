@@ -122,8 +122,8 @@
               </component>
               <component id="e7137" class="javax.swing.JButton" binding="registerButton">
                 <constraints>
-                  <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="16" bottom="16" right="0" weightx="0.0" weighty="0.0"/>
+                  <grid row="18" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag top="0" left="16" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
                   <focusable value="false"/>
@@ -139,18 +139,6 @@
                   <enabled value="false"/>
                   <focusable value="false"/>
                   <text value="Log In"/>
-                </properties>
-              </component>
-              <component id="c2766" class="javax.swing.JButton" binding="newPasswordButton">
-                <constraints>
-                  <grid row="18" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag top="0" left="0" bottom="16" right="16" weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <focusable value="false"/>
-                  <horizontalAlignment value="0"/>
-                  <horizontalTextPosition value="11"/>
-                  <text value="Recupera Password"/>
                 </properties>
               </component>
               <component id="73fcc" class="javax.swing.JLabel" binding="pageTitle">
