@@ -309,7 +309,7 @@ EXECUTE FUNCTION fun_block_upd_canc_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE FlightStatus AS ENUM ('programmed', 'cancelled', 'aboutToDepart', 'departed', 'delayed', 'landed', 'aboutToArrive');
+CREATE TYPE FlightStatus AS ENUM ('PROGRAMMED', 'CANCELLED', 'ABOUT_TO_DEPART', 'DEPARTED', 'DELAYED', 'LANDED', 'ABOUT_TO_ARRIVE');
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -358,11 +358,11 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 
-	IF NEW.flight_status <> 'programmed' AND NEW.flight_status <> 'cancelled' THEN
+	IF NEW.flight_status <> 'PROGRAMMED' AND NEW.flight_status <> 'CANCELLED' THEN
 
 		IF OLD.id_flight <> NEW.id_flight THEN
 
-			RAISE EXCEPTION 'Il volo % non è in stato ''programmaato'' o ''cancellato'' non può cambiare id!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo % non è in stato ''programmato'' o ''cancellato'' non può cambiare id!', OLD.id_flight;
 
 		END IF;
 
@@ -389,7 +389,7 @@ BEGIN
 
 	IF OLD.flight_type = true THEN 
 
-		IF NEW.flight_status = 'departed' OR NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED' THEN
 
 			IF OLD.departure_time <> NEW.departure_time OR OLD.free_seats <> NEW.free_seats THEN
 
@@ -422,7 +422,7 @@ BEGIN
 
 	IF OLD.flight_type = false THEN 
 
-		IF NEW.flight_status = 'departed' OR NEW.flight_status = 'delayed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'DELAYED' OR NEW.flight_status = 'ABOUT_TO_ARRIVE' OR NEW.flight_status = 'LANDED' THEN
 
 			IF OLD.departure_time <> NEW.departure_time THEN
 
@@ -453,7 +453,7 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 
-	IF OLD.flight_status = 'landed' AND NEW.flight_status = 'landed' THEN
+	IF OLD.flight_status = 'LANDED' AND NEW.flight_status = 'LANDED' THEN
 
 		IF OLD.arrival_time <> NEW.arrival_time THEN
 
@@ -484,7 +484,7 @@ BEGIN
 
 	IF OLD.flight_type = true THEN 
 
-		IF NEW.flight_status = 'departed' OR NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED' THEN
 
 			IF OLD.flight_delay <> NEW.flight_delay THEN
 
@@ -517,7 +517,7 @@ BEGIN
 
 	IF OLD.flight_type = false THEN 
 
-		IF NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'LANDED' THEN
 
 			IF OLD.flight_delay <> NEW.flight_delay THEN
 
@@ -550,7 +550,7 @@ BEGIN
 
 	IF NEW.flight_type = false THEN
 
-		IF NEW.flight_status = 'aboutToDepart' THEN
+		IF NEW.flight_status = 'ABOUT_TO_DEPART' THEN
 
 			RAISE EXCEPTION 'Il volo % è verso Napoli, non può avere stato ''in partenza''', NEW.id_flight;
 
@@ -579,7 +579,7 @@ BEGIN
 
 	IF NEW.flight_type = true THEN
 
-		IF NEW.flight_status = 'aboutToArrive' THEN
+		IF NEW.flight_status = 'ABOUT_TO_ARRIVE' THEN
 
 			RAISE EXCEPTION 'Il volo % è da Napoli, non può avere stato ''in arrivo''', NEW.id_flight;
 
@@ -599,7 +599,7 @@ EXECUTE FUNCTION fun_only_an_arr_flight_can_become_aToArrive();
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE BookingStatus AS ENUM ('confirmed', 'pending', 'cancelled');
+CREATE TYPE BookingStatus AS ENUM ('CONFIRMED', 'PENDING', 'CANCELLED');
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -668,7 +668,7 @@ BEGIN
 
 	IF OLD.id_booking <> NEW.id_booking THEN
 
-		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
+		IF associated_flight.flight_status <> 'PROGRAMMED' AND associated_flight.flight_status <> 'CANCELLED' THEN 
 
 			RAISE EXCEPTION 'Il volo %, associato alla prenotazione %, non è in stato ''programmato'' o ''cancellato'', non si può modificare l''id della prenotazione!', 
 																																associated_flight.id_flight, OLD.id_booking;
@@ -714,7 +714,7 @@ EXECUTE FUNCTION fun_block_mod_booking_time();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO è aboutToDepart, DEPARTED, aboutToArrive o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
+--TRIGGER SE UN VOLO è ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
 
 CREATE OR REPLACE FUNCTION fun_block_mod_booking_if_flight_aToDep_dep_aToArr_landed()
 RETURNS TRIGGER
@@ -729,7 +729,7 @@ BEGIN
 	FROM FLIGHT
 	WHERE id_flight = OLD.id_flight;
 
-	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	IF associated_flight.flight_status = 'ABOUT_TO_DEPART' OR associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è in partenza/partito/sta per atterrare/atterrato, non si può modificare la prenotazione!', NEW.id_flight;
 
@@ -870,7 +870,7 @@ BEGIN
 
 	IF OLD.ticket_number <> NEW.ticket_number THEN
 
-		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
+		IF associated_flight.flight_status <> 'PROGRAMMED' AND associated_flight.flight_status <> 'CANCELLED' THEN 
 
 			RAISE EXCEPTION 'Il volo %, associato al biglietto con numero %, non è in stato ''programmato'' o ''cancellato'', non si può modificare il numero del biglietto!', 
 																																associated_flight.id_flight, OLD.ticket_number;
@@ -1007,7 +1007,7 @@ BEGIN
 			FROM BOOKING B
 			WHERE B.id_booking = selected_ticket.id_booking;
 
-			IF associated_booking.booking_status = 'confirmed' THEN
+			IF associated_booking.booking_status = 'CONFIRMED' THEN
 
 				RAISE EXCEPTION 'Dati mancanti per il passeggero il cui biglietto ha numero %, per la prenotazione %', 
 															selected_ticket.ticket_number, associated_booking.id_booking;
@@ -1042,7 +1042,7 @@ DECLARE
 
 BEGIN
 
-	IF OLD.booking_status <> 'confirmed' AND NEW.booking_status = 'confirmed' THEN
+	IF OLD.booking_status <> 'CONFIRMED' AND NEW.booking_status = 'CONFIRMED' THEN
 
 		FOR selected_ticket IN (SELECT * FROM TICKET T
 								WHERE T.id_booking = OLD.id_booking) LOOP
@@ -1100,7 +1100,7 @@ BEGIN
 		FOR selected_seat IN (SELECT T.seat FROM TICKET T
 				    		  WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND 
 								    (SELECT B.booking_status FROM BOOKING B
-									 WHERE B.id_booking = T.id_booking) <> 'cancelled' AND T.seat IS NOT NULL
+									 WHERE B.id_booking = T.id_booking) <> 'CANCELLED' AND T.seat IS NOT NULL
 					 		  ORDER BY T.seat) LOOP
 			
 			IF selected_seat = prev_seat + 1 THEN
@@ -1166,7 +1166,7 @@ BEGIN
 			FROM FLIGHT F
 			WHERE F.id_flight = selected_ticket.id_flight;
 			
-			IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN
+			IF associated_flight.flight_status <> 'PROGRAMMED' AND associated_flight.flight_status <> 'CANCELLED' THEN
 
 				RAISE EXCEPTION 'Il volo % è in stato %, non si possono modificare i dati del passeggero con SSN %!', 
 															  associated_flight.id_flight, associated_flight.flight_status, NEW.SSN;
@@ -1189,7 +1189,7 @@ EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO È aboutToDepart, PUÒ ESSERE MOFIFICATO SOLO IL POSTO O CHECKED_IN DI UN TICKET
+--TRIGGER SE UN VOLO È ABOUT_TO_DEPART, PUÒ ESSERE MOFIFICATO SOLO IL POSTO O CHECKED_IN DI UN TICKET
 
 CREATE OR REPLACE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep()
 RETURNS TRIGGER
@@ -1204,7 +1204,7 @@ BEGIN
 	FROM FLIGHT F
 	WHERE F.id_flight = OLD.id_flight;
 
-	IF associated_flight.flight_status = 'aboutToDepart' THEN
+	IF associated_flight.flight_status = 'ABOUT_TO_DEPART' THEN
 
 		IF OLD.ticket_number <> NEW.ticket_number OR OLD.id_booking <> NEW.id_booking OR OLD.id_passenger <> NEW.id_passenger OR OLD.id_flight <> NEW.id_flight THEN
 		
@@ -1227,7 +1227,7 @@ EXECUTE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO È DEPARTED o aboutToArrive O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
+--TRIGGER SE UN VOLO È DEPARTED o ABOUT_TO_ARRIVE O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
 
 CREATE OR REPLACE FUNCTION fun_block_mod_ticket_if_flight_dep_or_more()
 RETURNS TRIGGER
@@ -1242,7 +1242,7 @@ BEGIN
 	FROM FLIGHT F
 	WHERE F.id_flight = OLD.id_flight;
 
-	IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	IF associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è in stato %, non si possono modificare i dati del biglietto con ticket_number %!',
 														NEW.id_flight, associated_flight.flight_status, NEW.ticket_number;
@@ -1276,12 +1276,12 @@ BEGIN
 	FROM BOOKING B
 	WHERE B.id_booking = NEW.id_booking;
 
-	IF associated_booking.booking_status <> 'cancelled' AND NEW.seat IS NOT NULL THEN
+	IF associated_booking.booking_status <> 'CANCELLED' AND NEW.seat IS NOT NULL THEN
 
 		IF EXISTS(SELECT * FROM TICKET T
 		  	      WHERE T.ticket_number <> NEW.ticket_number AND T.id_flight = NEW.id_flight AND T.seat = NEW.seat 
 				  AND (SELECT B.booking_status FROM BOOKING B
-				       WHERE B.id_booking = T.id_booking) <> 'cancelled' ) THEN
+				       WHERE B.id_booking = T.id_booking) <> 'CANCELLED' ) THEN
 		
 			RAISE EXCEPTION 'Posto già occupato per il volo %', NEW.id_flight;
 
@@ -1320,7 +1320,7 @@ BEGIN
 	FROM BOOKING B
 	WHERE B.id_booking = NEW.id_booking;
 
-	IF associated_booking.booking_status <> 'cancelled' THEN
+	IF associated_booking.booking_status <> 'CANCELLED' THEN
 
 		IF associated_flight.free_seats = 0 THEN
 	
@@ -1368,7 +1368,7 @@ BEGIN
 	FROM BOOKING B
 	WHERE B.id_booking = NEW.id_booking;
 
-	IF associated_booking.booking_status <> 'cancelled' THEN
+	IF associated_booking.booking_status <> 'CANCELLED' THEN
 
 		UPDATE FLIGHT
 		SET free_seats = free_seats + 1
@@ -1404,7 +1404,7 @@ BEGIN
 
 	IF NEW.checked_in = true THEN
 
-		IF associated_booking.booking_status <> 'confirmed' THEN
+		IF associated_booking.booking_status <> 'CONFIRMED' THEN
 
 			RAISE EXCEPTION 'La prenotazione % non è confermata, non si può fare il check-in!', NEW.id_booking;
 		
@@ -1424,7 +1424,7 @@ EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_conf_book();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO PER I VOLI aboutToDepart, DEPARTED, aboutToArrive o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
+--TRIGGER SOLO PER I VOLI ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
 
 CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan()
 RETURNS TRIGGER
@@ -1441,9 +1441,9 @@ BEGIN
 
 	IF NEW.checked_in = true THEN
 
-		IF associated_flight.flight_status <> 'aboutToDepart' AND associated_flight.flight_status <> 'departed' AND associated_flight.flight_status <> 'aboutToArrive' AND associated_flight.flight_status <> 'landed' THEN
+		IF associated_flight.flight_status <> 'ABOUT_TO_DEPART' AND associated_flight.flight_status <> 'DEPARTED' AND associated_flight.flight_status <> 'ABOUT_TO_ARRIVE' AND associated_flight.flight_status <> 'LANDED' THEN
 
-			RAISE EXCEPTION 'Il volo % non è in partenza/partito/sta per atterrare/atterrato, non si può essere checked-in!', NEW.id_flight;
+			RAISE EXCEPTION 'Il volo % non è in partenza/partito/sta per atterrare/atterrato, non si può essere CHECKED-in!', NEW.id_flight;
 		
 		END IF;
 
@@ -1461,7 +1461,7 @@ EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, aboutToArrive O LANDED
+--TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan()
 RETURNS TRIGGER
@@ -1478,7 +1478,7 @@ BEGIN
 
 	IF OLD.checked_in = true AND NEW.checked_in = false THEN
 
-		IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+		IF associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 			RAISE EXCEPTION 'Il volo % è già partito, non si può annullare il check-in!', NEW.id_flight;
 		
@@ -1498,11 +1498,11 @@ EXECUTE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE LuggageStatus AS ENUM ('booked', 'loaded', 'withdrawable', 'lost');
+CREATE TYPE LuggageStatus AS ENUM ('BOOKED', 'LOADED', 'WITHDRAWABLE', 'LOST');
 
 -------------------------------------------------------------------------------------------------------------------------
 
-CREATE TYPE LuggageType AS ENUM ('carry_on', 'checked');
+CREATE TYPE LuggageType AS ENUM ('CARRY_ON', 'CHECKED');
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -1534,14 +1534,14 @@ DECLARE
 
 BEGIN
 	
-	IF NEW.luggage_type = 'carry_on' THEN
+	IF NEW.luggage_type = 'CARRY_ON' THEN
 
 		SELECT * INTO associated_ticket
 		FROM TICKET T
 		WHERE T.ticket_number = NEW.id_ticket;
 
 		IF EXISTS(SELECT * FROM LUGGAGE L
-				  WHERE L.id_ticket = NEW.id_ticket AND L.luggage_type = 'carry_on') THEN
+				  WHERE L.id_ticket = NEW.id_ticket AND L.luggage_type = 'CARRY_ON') THEN
 
 			RAISE EXCEPTION 'Per il biglietto con numero % c''è già un bagaglio a mano, non se ne possono inserire altri!', 
 																						   associated_ticket.ticket_number;
@@ -1573,14 +1573,14 @@ DECLARE
 
 BEGIN
 	
-	IF OLD.luggage_type <> 'carry_on' AND NEW.luggage_type = 'carry_on' THEN
+	IF OLD.luggage_type <> 'CARRY_ON' AND NEW.luggage_type = 'CARRY_ON' THEN
 
 		SELECT * INTO associated_ticket
 		FROM TICKET T
 		WHERE T.ticket_number = OLD.id_ticket;
 
 		IF EXISTS(SELECT * FROM LUGGAGE L
-				  WHERE L.id_luggage <> OLD.id_luggage AND L.id_ticket = OLD.id_ticket AND L.luggage_type = 'carry_on') THEN
+				  WHERE L.id_luggage <> OLD.id_luggage AND L.id_ticket = OLD.id_ticket AND L.luggage_type = 'CARRY_ON') THEN
 
 			RAISE EXCEPTION 'Per il biglietto con numero % c''è già un bagaglio a mano, non se ne possono avere altri!', 
 																					    associated_ticket.ticket_number;
@@ -1624,7 +1624,7 @@ BEGIN
 		FROM FLIGHT F
 		WHERE F.id_flight = associated_ticket.id_flight;
 
-		IF associated_flight.flight_status <> 'programmed' AND associated_flight.flight_status <> 'cancelled' THEN 
+		IF associated_flight.flight_status <> 'PROGRAMMED' AND associated_flight.flight_status <> 'CANCELLED' THEN 
 
 			RAISE EXCEPTION 'Il volo %, associato al bagaglio %, non è in stato ''programmato'' o ''cancellato'', non si può modificare l''id del bagaglio o il suo biglietto associato!', 
 																																				associated_flight.id_flight, OLD.id_luggage;
@@ -1691,7 +1691,7 @@ BEGIN
 	FROM BOOKING B
 	WHERE B.id_booking = associated_ticket.id_booking;
 
-	IF associated_booking.booking_status = 'confirmed' THEN
+	IF associated_booking.booking_status = 'CONFIRMED' THEN
  
 		IF NEW.luggage_type IS NULL THEN
 			
@@ -1730,7 +1730,7 @@ BEGIN
 
 	IF associated_ticket.checked_in = false THEN
  
-		IF NEW.luggage_status <> 'booked' THEN
+		IF NEW.luggage_status <> 'BOOKED' THEN
 			
 			RAISE EXCEPTION 'Il biglietto con ticket number % non ha ancora fatto il check_in, il bagaglio % non può avere stato divero da ''prenotato''!', associated_ticket.ticket_number, NEW.id_luggage;
 	
@@ -1847,19 +1847,19 @@ BEGIN
 	FROM TICKET T
 	WHERE T.ticket_number = NEW.id_ticket;
 
-	IF NEW.luggage_status = 'booked' THEN
+	IF NEW.luggage_status = 'BOOKED' THEN
 
 		SELECT * INTO associated_booking 
 		FROM BOOKING B
 		WHERE B.id_booking = associated_ticket.id_booking;
 
-		IF associated_booking.booking_status <> 'cancelled' THEN
+		IF associated_booking.booking_status <> 'CANCELLED' THEN
 
 			SELECT * INTO associated_flight 
 			FROM FLIGHT F
 			WHERE F.id_flight = associated_ticket.id_flight;
 
-			IF associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+			IF associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 	
 				RAISE EXCEPTION 'Il volo % del passeggero con ticket number % è già partito, il bagaglio % non può avere stato ''prenotato''!', 
 																	associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
@@ -1882,7 +1882,7 @@ EXECUTE FUNCTION fun_valid_luggage_status_after_departure();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON Può ESSERE withdrawable SE IL VOLO NON è LANDED
+--TRIGGER IL LUGGAGE_STATUS NON Può ESSERE WITHDRAWABLE SE IL VOLO NON è LANDED
 
 CREATE OR REPLACE FUNCTION fun_luggage_not_withd_if_flight_not_landed()
 RETURNS TRIGGER
@@ -1899,13 +1899,13 @@ BEGIN
 	FROM TICKET T
 	WHERE T.ticket_number = NEW.id_ticket;
 
-	IF NEW.luggage_status = 'withdrawable' THEN
+	IF NEW.luggage_status = 'WITHDRAWABLE' THEN
 		
 		SELECT * INTO associated_flight 
 		FROM FLIGHT F
 		WHERE F.id_flight = associated_ticket.id_flight;
 
-		IF associated_flight.flight_status <> 'landed' THEN
+		IF associated_flight.flight_status <> 'LANDED' THEN
 			
 			RAISE EXCEPTION 'Il volo % del passeggero con ticket number % non è ancora atterrato, il bagaglio % non può avere stato ''ritirabile''!', 
 																			associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
@@ -1943,13 +1943,13 @@ BEGIN
 	FROM TICKET T
 	WHERE T.ticket_number = NEW.id_ticket;
 
-	IF NEW.luggage_status = 'lost' THEN
+	IF NEW.luggage_status = 'LOST' THEN
 
 		SELECT * INTO associated_flight 
 		FROM FLIGHT F
 		WHERE F.id_flight = associated_ticket.id_flight;
  
-		IF associated_flight.flight_status <> 'landed' THEN
+		IF associated_flight.flight_status <> 'LANDED' THEN
 			
 			RAISE EXCEPTION 'Il volo % del passeggero con ticket number % non è ancora atterrato, il bagaglio % non può avere stato ''smarrito''!', 
 																			associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
@@ -1987,13 +1987,13 @@ BEGIN
 	FROM TICKET T
 	WHERE T.ticket_number = NEW.id_ticket;
 
-	IF NEW.luggage_status = 'loaded' THEN
+	IF NEW.luggage_status = 'LOADED' THEN
 
 		SELECT * INTO associated_flight 
 		FROM FLIGHT F
 		WHERE F.id_flight = associated_ticket.id_flight;
 
-		IF associated_flight.flight_status = 'programmed' OR associated_flight.flight_status = 'cancelled' OR associated_flight.flight_status = 'landed' THEN
+		IF associated_flight.flight_status = 'PROGRAMMED' OR associated_flight.flight_status = 'CANCELLED' OR associated_flight.flight_status = 'LANDED' THEN
 			
 			RAISE EXCEPTION 'Il volo % del passeggero con ticket number % è progammato/cancellato/atterrato, il bagaglio % non può avere stato ''caricato''!', 
 																					associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
@@ -2031,13 +2031,13 @@ BEGIN
 	FROM TICKET T
 	WHERE T.ticket_number = NEW.id_ticket;
 
-	IF NEW.luggage_status <> 'booked' THEN
+	IF NEW.luggage_status <> 'BOOKED' THEN
 
 		SELECT * INTO associated_booking 
 		FROM BOOKING B
 		WHERE B.id_booking = associated_ticket.id_booking;
 
-		IF associated_booking.booking_status = 'cancelled' THEN
+		IF associated_booking.booking_status = 'CANCELLED' THEN
 				
 			RAISE EXCEPTION 'La prenotazione % del passeggero con ticket number % è cancellata, il bagaglio % non può avere stato divero da ''prenotato''!', 
 																				associated_ticket.id_booking, associated_ticket.ticket_number, NEW.id_luggage;
@@ -2067,7 +2067,7 @@ BEGIN
 
 	IF NEW.luggage_status <> OLD.luggage_status THEN
  
-		IF NEW.luggage_status = 'loaded' AND OLD.luggage_status <> 'booked' THEN
+		IF NEW.luggage_status = 'LOADED' AND OLD.luggage_status <> 'BOOKED' THEN
 			
 			RAISE EXCEPTION 'Il bagaglio % non era in stato ''prenotato'', non può diventare ''caricato''!', OLD.id_luggage;
 	
@@ -2087,7 +2087,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_loaded_only_if_booked();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED PUò DIVENTARE withdrawable
+--TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED PUò DIVENTARE WITHDRAWABLE
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_withd_only_if_loaded()
 RETURNS TRIGGER
@@ -2096,7 +2096,7 @@ BEGIN
 
 	IF NEW.luggage_status <> OLD.luggage_status THEN
  
-		IF NEW.luggage_status = 'withdrawable' AND OLD.luggage_status <> 'loaded' THEN
+		IF NEW.luggage_status = 'WITHDRAWABLE' AND OLD.luggage_status <> 'LOADED' THEN
 			
 			RAISE EXCEPTION 'Il bagaglio % non era in stato ''caricato'', non può diventare ''ritirabile''!', OLD.id_luggage;
 	
@@ -2116,7 +2116,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_withd_only_if_loaded();
 
 ----------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS withdrawable PUò DIVENTARE LOST
+--TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS WITHDRAWABLE PUò DIVENTARE LOST
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_lost_only_if_withd()
 RETURNS TRIGGER
@@ -2125,7 +2125,7 @@ BEGIN
 
 	IF NEW.luggage_status <> OLD.luggage_status THEN
  
-		IF NEW.luggage_status = 'lost' AND OLD.luggage_status <> 'withdrawable' THEN
+		IF NEW.luggage_status = 'LOST' AND OLD.luggage_status <> 'WITHDRAWABLE' THEN
 			
 			RAISE EXCEPTION 'Il bagaglio % non era in stato ''ritirabile'', non può diventare ''smarrito''!', OLD.id_luggage;
 	
@@ -2161,21 +2161,21 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF OLD.flight_type = true AND NEW.flight_type = true THEN
 
-		IF OLD.flight_status <> 'departed' AND NEW.flight_status = 'departed' THEN
+		IF OLD.flight_status <> 'DEPARTED' AND NEW.flight_status = 'DEPARTED' THEN
 
-			--questo if serve perché solo un volo aboutToDepart può essere impostato a departed
-			IF OLD.flight_status <> 'aboutToDepart' THEN
+			--questo if serve perché solo un volo ABOUT_TO_DEPART può essere impostato a DEPARTED
+			IF OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
 
 				RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
 
 			END IF;
 
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-									 WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'cancelled') LOOP
+									 WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'CANCELLED') LOOP
 
 					
-				--non devo controllare la prenotazione non sia pending, 
-				--perchè tanto il volo era per forza aboutToDepart, e quindi le sue prenotazioni già non potevano essere pending
+				--non devo controllare la prenotazione non sia PENDING, 
+				--perchè tanto il volo era per forza ABOUT_TO_DEPART, e quindi le sue prenotazioni già non potevano essere PENDING
 				FOR selected_ticket IN (SELECT * FROM TICKET T
 											WHERE T.id_booking = selected_booking.id_booking AND T.checked_in = true) LOOP
 
@@ -2183,7 +2183,7 @@ BEGIN
 											 WHERE L.id_ticket = selected_ticket.ticket_number) LOOP
 
 						UPDATE LUGGAGE
-						SET luggage_status = 'loaded'
+						SET luggage_status = 'LOADED'
 						WHERE id_luggage = selected_luggage.id_luggage;
 
 					END LOOP;
@@ -2210,7 +2210,7 @@ EXECUTE FUNCTION fun_luggages_loaded_when_depart();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO UN VOLO ATTERRA, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CHECKED_IN VENGONO MESSI A withdrawable
+--TRIGGER QUANDO UN VOLO ATTERRA, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CHECKED_IN VENGONO MESSI A WITHDRAWABLE
 
 CREATE OR REPLACE FUNCTION fun_luggages_withdrawable_when_landed()
 RETURNS TRIGGER
@@ -2226,21 +2226,21 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF OLD.flight_type = true AND NEW.flight_type = true THEN
 
-		IF OLD.flight_status <> 'landed' AND NEW.flight_status = 'landed' THEN 
+		IF OLD.flight_status <> 'LANDED' AND NEW.flight_status = 'LANDED' THEN 
 
-			--questo if serve perché solo un volo departed o aboutToArrive può essere impostato a departed
-			IF OLD.flight_status <> 'departed' AND OLD.flight_status <> 'aboutToArrive' THEN
+			--questo if serve perché solo un volo DEPARTED o ABOUT_TO_ARRIVE può essere impostato a DEPARTED
+			IF OLD.flight_status <> 'DEPARTED' AND OLD.flight_status <> 'ABOUT_TO_ARRIVE' THEN
 
 				RAISE EXCEPTION 'Il volo % non era in stato ''partito'' o ''sta per arrivare'', non può diventare ''atterrato''!', OLD.id_flight;
 
 			END IF;
 
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-										WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'cancelled') LOOP
+										WHERE B.id_flight = NEW.id_flight AND B.booking_status <> 'CANCELLED') LOOP
 
 					
-				--non devo controllare la prenotazione non sia pending, 
-				--perchè tanto il volo era già partito, e quindi le sue prenotazioni già non potevano essere pending
+				--non devo controllare la prenotazione non sia PENDING, 
+				--perchè tanto il volo era già partito, e quindi le sue prenotazioni già non potevano essere PENDING
 				FOR selected_ticket IN (SELECT * FROM TICKET T
 											WHERE T.id_booking = selected_booking.id_booking AND T.checked_in = true) LOOP
 
@@ -2248,7 +2248,7 @@ BEGIN
 												WHERE L.id_ticket = selected_ticket.ticket_number) LOOP
 
 						UPDATE LUGGAGE
-						SET luggage_status = 'withdrawable'
+						SET luggage_status = 'WITHDRAWABLE'
 						WHERE id_luggage = selected_luggage.id_luggage;
 
 					END LOOP;
@@ -2273,24 +2273,24 @@ EXECUTE FUNCTION fun_luggages_withdrawable_when_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO PUÒ ESSERE aboutToDepart O DEPARTED O aboutToArrive O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (aboutToDepart O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
+--TRIGGER UN VOLO PUÒ ESSERE ABOUT_TO_DEPART O DEPARTED O ABOUT_TO_ARRIVE O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (ABOUT_TO_DEPART O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
 
 CREATE OR REPLACE FUNCTION fun_check_date_before_aToDep_or_more()
 RETURNS TRIGGER
 AS $$
 BEGIN
 		
-	IF NEW.flight_status = 'aboutToDepart' THEN
+	IF NEW.flight_status = 'ABOUT_TO_DEPART' THEN
 	
 		IF (NEW.departure_time::date) > CURRENT_DATE + 1 THEN
-		--posso aprire i check-in (e quindi mettere ad aboutToDepart) al più il giorno prima della partenza del volo
+		--posso aprire i check-in (e quindi mettere ad ABOUT_TO_DEPART) al più il giorno prima della partenza del volo
 		--e quindi non posso aprirli solo se NEW.departure_time::date non è nè oggi nè domani
 
 			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %! La sua data di partenza è % con ritardo di % minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
 
 		END IF;
 	
-	ELSIF  NEW.flight_status = 'departed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN 
+	ELSIF  NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'ABOUT_TO_ARRIVE' OR NEW.flight_status = 'LANDED' THEN 
 
 		IF (NEW.departure_time::date) > CURRENT_DATE THEN
 		--un volo deve invece partire almeno nella data stabilita, al più partirà dopo per ritardi
@@ -2313,14 +2313,14 @@ EXECUTE FUNCTION fun_check_date_before_aToDep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN VOLO DEPARTING PROGRAMMED Può ESSERE AGGIORNATO AD aboutToDepart
+--TRIGGER SOLO UN VOLO DEPARTING PROGRAMMED Può ESSERE AGGIORNATO AD ABOUT_TO_DEPART
 
 CREATE OR REPLACE FUNCTION fun_only_prog_flight_can_become_aToDep()
 RETURNS TRIGGER
 AS $$
 BEGIN
 		
-	IF NEW.flight_status = 'aboutToDepart' THEN
+	IF NEW.flight_status = 'ABOUT_TO_DEPART' THEN
 
 		IF OLD.flight_type = false THEN
 
@@ -2328,7 +2328,7 @@ BEGIN
 
 		END IF;
 
-		IF OLD.flight_status <> 'programmed' THEN
+		IF OLD.flight_status <> 'PROGRAMMED' THEN
 
 			RAISE EXCEPTION 'Il volo % non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
 
@@ -2348,17 +2348,17 @@ EXECUTE FUNCTION fun_only_prog_flight_can_become_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO DEPARTING Può ESSERE AGGIORNATO A DEPARTED SOLO SE ERA aboutToDepart 
+--TRIGGER UN VOLO DEPARTING Può ESSERE AGGIORNATO A DEPARTED SOLO SE ERA ABOUT_TO_DEPART 
 
 CREATE OR REPLACE FUNCTION fun_only_aToDep_flight_can_become_dep()
 RETURNS TRIGGER
 AS $$
 BEGIN
 	--non servono controlli sul flight_type, basta controllare OLD.flight_status, 
-	--dato che solo un volo departing può diventare aboutToDepart
-	IF NEW.flight_status = 'departed' THEN
+	--dato che solo un volo departing può diventare ABOUT_TO_DEPART
+	IF NEW.flight_status = 'DEPARTED' THEN
 	
-		IF OLD.flight_status <> 'aboutToDepart' THEN
+		IF OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
 
 			RAISE EXCEPTION 'Il volo % non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
 
@@ -2385,9 +2385,9 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 		
-	IF NEW.flight_status = 'delayed' THEN
+	IF NEW.flight_status = 'DELAYED' THEN
 	
-		IF OLD.flight_status <> 'programmed' AND OLD.flight_status <> 'aboutToDepart' AND OLD.flight_status <> 'departed' AND OLD.flight_status <> 'aboutToArrive' THEN
+		IF OLD.flight_status <> 'PROGRAMMED' AND OLD.flight_status <> 'ABOUT_TO_DEPART' AND OLD.flight_status <> 'DEPARTED' AND OLD.flight_status <> 'ABOUT_TO_ARRIVE' THEN
 
 			RAISE EXCEPTION 'Il volo % non era in stato ''programmato'' o ''in partenza'', non può diventare ''in ritardo''!', OLD.id_flight;
 
@@ -2417,9 +2417,9 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF OLD.flight_type = true AND NEW.flight_type = true THEN
 
-		IF NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'LANDED' THEN
 		
-			IF OLD.flight_status <> 'departed' THEN
+			IF OLD.flight_status <> 'DEPARTED' THEN
 
 				RAISE EXCEPTION 'Il volo % non era in stato ''partito'', non può diventare ''atterrato''!', OLD.id_flight;
 
@@ -2451,9 +2451,9 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF OLD.flight_type = false AND NEW.flight_type = false THEN
 
-		IF NEW.flight_status = 'aboutToArrive' THEN
+		IF NEW.flight_status = 'ABOUT_TO_ARRIVE' THEN
 		
-			IF OLD.flight_status <> 'departed' THEN
+			IF OLD.flight_status <> 'DEPARTED' THEN
 
 				RAISE EXCEPTION 'Il volo % non era in stato ''partito'', non può diventare ''in arrivo''!', OLD.id_flight;
 
@@ -2485,9 +2485,9 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF OLD.flight_type = false AND NEW.flight_type = false THEN
 
-		IF NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'LANDED' THEN
 		
-			IF OLD.flight_status <> 'departed' AND OLD.flight_status <> 'aboutToArrive' THEN
+			IF OLD.flight_status <> 'DEPARTED' AND OLD.flight_status <> 'ABOUT_TO_ARRIVE' THEN
 
 				RAISE EXCEPTION 'Il volo % non era in stato ''partito'' o ''in arrivo'', non può diventare ''atterrato''!', OLD.id_flight;
 
@@ -2515,7 +2515,7 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 	
-	IF OLD.flight_status = 'landed' AND NEW.flight_status <> 'landed' THEN
+	IF OLD.flight_status = 'LANDED' AND NEW.flight_status <> 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è già atterrato, non può più cambiare stato!', OLD.id_flight;
 		
@@ -2533,7 +2533,7 @@ EXECUTE FUNCTION fun_block_mod_flight_status_if_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'aboutToDepart', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
+--TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'ABOUT_TO_DEPART', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
 
 CREATE OR REPLACE FUNCTION fun_change_booking_status_when_dep_aToDep()
 RETURNS TRIGGER
@@ -2547,20 +2547,20 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF OLD.flight_type = true AND NEW.flight_type = true THEN
 		
-		--questo if serve perché solo un volo programmed può essere impostato ad aboutToDepart
-		IF OLD.flight_status <> 'programmed' THEN
+		--questo if serve perché solo un volo PROGRAMMED può essere impostato ad ABOUT_TO_DEPART
+		IF OLD.flight_status <> 'PROGRAMMED' THEN
 
 			RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
 
 		END IF;
 
-		IF OLD.flight_status <> 'aboutToDepart' AND NEW.flight_status = 'aboutToDepart' THEN
+		IF OLD.flight_status <> 'ABOUT_TO_DEPART' AND NEW.flight_status = 'ABOUT_TO_DEPART' THEN
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-										WHERE B.id_flight = OLD.id_flight AND B.booking_status = 'pending') LOOP
+										WHERE B.id_flight = OLD.id_flight AND B.booking_status = 'PENDING') LOOP
 
 				UPDATE BOOKING
-				SET booking_status = 'cancelled'
+				SET booking_status = 'CANCELLED'
 				WHERE id_booking = selected_booking.id_booking;
 
 			END LOOP;
@@ -2581,7 +2581,7 @@ EXECUTE FUNCTION fun_change_booking_status_when_dep_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO ARRIVING DIVENTA 'departed', SIMULIAMO UNA CONNESSIONE CON L'AEROPORTO DI PARTENZA:
+--TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO ARRIVING DIVENTA 'DEPARTED', SIMULIAMO UNA CONNESSIONE CON L'AEROPORTO DI PARTENZA:
 --LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED', E FARE IN MODO CHE VENGANO AGGIORNATI ANCHE I FREE_SEATS DI CONSEGUENZA
 --CIRCA IL 90% DEI SUOI PASSEGGERI CON PRENOTAZIONI CONFIRMED AVRANNO FATTO IL CHECK-IN, 
 --E TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI PASSEGGERI CON CHECKED_IN A TRUE VENGONO MESSI A LOADED
@@ -2604,27 +2604,27 @@ BEGIN
 	IF OLD.flight_type = false AND NEW.flight_type = false THEN
 	
 		
-		--questo if serve perché solo un volo programmed o aboutToDepart può essere impostato a departed
-		IF OLD.flight_status <> 'programmed' AND OLD.flight_status <> 'aboutToDepart' THEN
+		--questo if serve perché solo un volo PROGRAMMED o ABOUT_TO_DEPART può essere impostato a DEPARTED
+		IF OLD.flight_status <> 'PROGRAMMED' AND OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
 
 			RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', OLD.id_flight;
 
 		END IF;
 
 
-		IF OLD.flight_status <> 'departed' AND NEW.flight_status = 'departed' THEN
+		IF OLD.flight_status <> 'DEPARTED' AND NEW.flight_status = 'DEPARTED' THEN
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-									 WHERE B.id_flight = OLD.id_flight AND B.booking_status <> 'cancelled') LOOP
+									 WHERE B.id_flight = OLD.id_flight AND B.booking_status <> 'CANCELLED') LOOP
 
-				IF selected_booking.booking_status = 'pending' THEN
+				IF selected_booking.booking_status = 'PENDING' THEN
 
 					UPDATE BOOKING
-					SET booking_status = 'cancelled'
+					SET booking_status = 'CANCELLED'
 					WHERE id_booking = selected_booking.id_booking;
 
 				ELSE
-				--basta else, perchè tanto quelle già a cancelled non le prendo proprio con la select
+				--basta else, perchè tanto quelle già a CANCELLED non le prendo proprio con la select
 					FOR selected_ticket IN (SELECT * FROM TICKET T
 										    WHERE T.id_booking = selected_booking.id_booking) LOOP
 
@@ -2639,7 +2639,7 @@ BEGIN
 													 WHERE L.id_ticket = selected_ticket.ticket_number) LOOP
 
 								UPDATE LUGGAGE
-								SET luggage_status = 'loaded', id_luggage_after_check_in = selected_ticket.ticket_number || j
+								SET luggage_status = 'LOADED', id_luggage_after_check_in = selected_ticket.ticket_number || j
 								WHERE id_luggage = selected_luggage.id_luggage;
 
 								j := j + 1;
@@ -2683,13 +2683,13 @@ BEGIN
 	
 	IF NEW.flight_type = true THEN
 
-		IF NEW.flight_status = 'departed' OR NEW.flight_status = 'landed' THEN
-		--non controllo se è 'aboutToDepart' perché se lo fosse, c'è un altro trigger che aggiorna le 'pending' a 'cancelled'
+		IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED' THEN
+		--non controllo se è 'ABOUT_TO_DEPART' perché se lo fosse, c'è un altro trigger che aggiorna le 'PENDING' a 'CANCELLED'
 		
 			IF EXISTS(SELECT * FROM BOOKING B
-					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') THEN
+					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'PENDING') THEN
 
-				RAISE EXCEPTION 'Il volo % non può partire finchè ha prenotazioni pending!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo % non può partire finchè ha prenotazioni PENDING!', NEW.id_flight;
 
 			END IF;
 		
@@ -2709,9 +2709,9 @@ EXECUTE FUNCTION fun_check_on_booking_status_after_departing();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO ARRIVING aboutToArrive O LANDED NON HA PRENOTAZIONI PENDING
---non serve il controllo su departed, perchè il trigger simulate_connection_when_arriving_departed le cancella BEFORE UPDATE, 
---mentre, se viene inserito direttamente un volo come departed, allora non posso essere inserite prenotazioni pending
+--TRIGGER UN VOLO ARRIVING ABOUT_TO_ARRIVE O LANDED NON HA PRENOTAZIONI PENDING
+--non serve il controllo su DEPARTED, perchè il trigger simulate_connection_when_arriving_departed le cancella BEFORE UPDATE, 
+--mentre, se viene inserito direttamente un volo come DEPARTED, allora non posso essere inserite prenotazioni PENDING
 
 CREATE OR REPLACE FUNCTION fun_check_on_booking_status_after_departing()
 RETURNS TRIGGER
@@ -2720,12 +2720,12 @@ BEGIN
 	
 	IF NEW.flight_type = false THEN
 
-		IF NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'ABOUT_TO_ARRIVE' OR NEW.flight_status = 'LANDED' THEN
 		
 			IF EXISTS(SELECT * FROM BOOKING B
-					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'pending') THEN
+					  WHERE B.id_flight = NEW.id_flight AND B.booking_status = 'PENDING') THEN
 
-				RAISE EXCEPTION 'Il volo % non può partire finchè ha prenotazioni pending!', NEW.id_flight;
+				RAISE EXCEPTION 'Il volo % non può partire finchè ha prenotazioni PENDING!', NEW.id_flight;
 
 			END IF;
 		
@@ -2764,7 +2764,7 @@ BEGIN
 	FROM FLIGHT
 	WHERE id_flight = NEW.id_flight;
 
-	IF OLD.booking_status <> 'cancelled' AND NEW.booking_status = 'cancelled' THEN
+	IF OLD.booking_status <> 'CANCELLED' AND NEW.booking_status = 'CANCELLED' THEN
 	
 		FOR selected_ticket IN (SELECT * FROM TICKET T
 								WHERE T.id_booking = NEW.id_booking) LOOP
@@ -2789,18 +2789,18 @@ AFTER UPDATE OF booking_status ON BOOKING
 FOR EACH ROW
 EXECUTE FUNCTION fun_upd_free_seats_on_canc_booking();
 
---Non serve invece il trigger per decremenrare i free_seats se una prenotazione passa da 'cancelled' a qualcos'altro, perché non è possibile 'ripristinare' una prenotazione
+--Non serve invece il trigger per decremenrare i free_seats se una prenotazione passa da 'CANCELLED' a qualcos'altro, perché non è possibile 'ripristinare' una prenotazione
 
 -------------------------------------------------------------------------------------------------------------------------
 
 --TRIGGER CHE IMPEDISCE DI METTERE UNA PRENOTAZIONE DA CANCELLED A QUALCOS'ALTRO
 
-CREATE OR REPLACE FUNCTION fun_block_restore_cancelled_booking()
+CREATE OR REPLACE FUNCTION fun_block_restore_CANCELLED_booking()
 RETURNS TRIGGER
 AS $$
 BEGIN
 		
-	IF OLD.booking_status = 'cancelled' AND NEW.booking_status <> 'cancelled' THEN
+	IF OLD.booking_status = 'CANCELLED' AND NEW.booking_status <> 'CANCELLED' THEN
 	
 		RAISE EXCEPTION 'Non è possibile ripristinare una prenotazione cancellata!';
 	
@@ -2811,10 +2811,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_restore_cancelled_booking
+CREATE OR REPLACE TRIGGER block_restore_CANCELLED_booking
 BEFORE UPDATE OF booking_status ON BOOKING
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_restore_cancelled_booking();
+EXECUTE FUNCTION fun_block_restore_CANCELLED_booking();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -2829,7 +2829,7 @@ BEGIN
 
 		IF NEW.id_gate IS NOT NULL THEN
 
-			IF NEW.flight_status <> 'aboutToDepart' AND NEW.flight_status <> 'delayed' AND NEW.flight_status <> 'departed' AND NEW.flight_status <> 'landed' THEN
+			IF NEW.flight_status <> 'ABOUT_TO_DEPART' AND NEW.flight_status <> 'DELAYED' AND NEW.flight_status <> 'DEPARTED' AND NEW.flight_status <> 'LANDED' THEN
 
 				RAISE EXCEPTION 'Il volo da Napoli % non è in stato ''in partenza'', ''in ritardo'', ''partito'', ''atterrato'', non lo si può inserire con un gate!', NEW.id_flight;
 
@@ -2862,7 +2862,7 @@ BEGIN
 	
 		IF NEW.id_gate IS NOT NULL THEN
 
-			IF NEW.flight_status <> 'aboutToArrive' AND NEW.flight_status <> 'delayed' AND NEW.flight_status <> 'departed' AND NEW.flight_status <> 'landed' THEN
+			IF NEW.flight_status <> 'ABOUT_TO_ARRIVE' AND NEW.flight_status <> 'DELAYED' AND NEW.flight_status <> 'DEPARTED' AND NEW.flight_status <> 'LANDED' THEN
 
 				RAISE EXCEPTION 'Il volo per Napoli % non è in stato ''in arrivo'', ''in ritardo'', ''partito'', ''atterrato'', non lo si può inserire con un gate!', NEW.id_flight;
 
@@ -2896,7 +2896,7 @@ BEGIN
 
 		IF NEW.id_gate IS NOT NULL THEN
 
-			IF NEW.flight_status <> 'aboutToDepart' AND NEW.flight_status <> 'delayed' THEN
+			IF NEW.flight_status <> 'ABOUT_TO_DEPART' AND NEW.flight_status <> 'DELAYED' THEN
 
 				RAISE EXCEPTION 'Il volo da Napoli % non è in stato ''in partenza'' o ''in ritardo'', non gli si può assegnare un gate!', OLD.id_flight;
 
@@ -2929,7 +2929,7 @@ BEGIN
 
 		IF NEW.id_gate IS NOT NULL THEN
 
-			IF NEW.flight_status <> 'aboutToArrive' AND NEW.flight_status <> 'delayed' THEN
+			IF NEW.flight_status <> 'ABOUT_TO_ARRIVE' AND NEW.flight_status <> 'DELAYED' THEN
 
 				RAISE EXCEPTION 'Il volo verso Napoli % non è in stato ''in arrivo'' o ''in ritardo'', non gli si può assegnare un gate!', NEW.id_flight;
 
@@ -2960,7 +2960,7 @@ BEGIN
 
 	IF NEW.id_gate IS NOT NULL THEN
 
-		IF NEW.flight_status = 'programmed' OR NEW.flight_status = 'cancelled' THEN
+		IF NEW.flight_status = 'PROGRAMMED' OR NEW.flight_status = 'CANCELLED' THEN
 
 			RAISE EXCEPTION 'Il volo % è in stato %, non gli si può assegnare un gate!', NEW.id_flight, NEW.flight_status;
 
@@ -2991,7 +2991,7 @@ BEGIN
 	
 		IF NEW.id_gate IS NULL THEN
 
-			IF NEW.flight_status = 'departed' OR NEW.flight_status = 'landed' THEN
+			IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED' THEN
 
 				RAISE EXCEPTION 'Il volo da napoli % è in stato %, non può non avere un gate da cui è partito!', NEW.id_flight, NEW.flight_status;
 
@@ -3024,7 +3024,7 @@ BEGIN
 	
 		IF NEW.id_gate IS NULL THEN
 
-			IF NEW.flight_status = 'landed' THEN
+			IF NEW.flight_status = 'LANDED' THEN
 
 				RAISE EXCEPTION 'Il volo verso napoli % è in stato ''atterrato'', non può non avere un gate dove è atterrato!', NEW.id_flight;
 
@@ -3057,7 +3057,7 @@ BEGIN
 	
 		IF OLD.id_gate <> NEW.id_gate THEN
 
-			IF (OLD.flight_status = 'departed' OR OLD.flight_status = 'landed') AND (NEW.flight_status = 'departed' OR NEW.flight_status = 'landed') THEN
+			IF (OLD.flight_status = 'DEPARTED' OR OLD.flight_status = 'LANDED') AND (NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED') THEN
 
 				RAISE EXCEPTION 'Il volo da napoli % è in stato %, non si può modificare il gate da cui è partito!', OLD.id_flight, NEW.flight_status;
 
@@ -3090,7 +3090,7 @@ BEGIN
 	
 		IF OLD.id_gate <> NEW.id_gate THEN
 
-			IF OLD.flight_status = 'landed' AND NEW.flight_status = 'landed' THEN
+			IF OLD.flight_status = 'LANDED' AND NEW.flight_status = 'LANDED' THEN
 
 				RAISE EXCEPTION 'Il volo per napoli % è in stato ''atterrato'', non si può modificare il gate in cui è atterrato!', OLD.id_flight;
 
@@ -3128,16 +3128,16 @@ BEGIN
 	IF OLD.is_deleted = false AND NEW.is_deleted = true THEN
 	
 		FOR selected_booking IN (SELECT * FROM BOOKING B
-								 WHERE B.buyer = OLD.id_customer AND B.booking_status <> 'cancelled') LOOP
+								 WHERE B.buyer = OLD.id_customer AND B.booking_status <> 'CANCELLED') LOOP
 
 			SELECT * INTO associated_flight 
 			FROM FLIGHT F
 			WHERE F.id_flight = selected_booking.id_flight;
 			
-			IF associated_flight.flight_status = 'programmed' THEN
+			IF associated_flight.flight_status = 'PROGRAMMED' THEN
 
 				UPDATE BOOKING
-				SET booking_status = 'cancelled'
+				SET booking_status = 'CANCELLED'
 				WHERE id_booking = selected_booking.id_booking;
 
 			END IF;
@@ -3201,18 +3201,18 @@ INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Flight
 
 INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
-('AZ1001', 'Alitalia', '2025-08-01 10:00:00', '2025-08-01 12:00:00', 'programmed', 150, 150, 'Rome', 0, true, null),
-('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'programmed', 200, 200, 'London', 0, false, null),
-('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'programmed', 180, 180, 'Frankfurt', 0, true, null),
-('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'programmed', 160, 160, 'Paris', 0, false, null),
-('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'programmed', 250, 250, 'New York', 0, true, null),
-('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'programmed', 300, 300, 'Dubai', 0, false, null),
-('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'programmed', 220, 220, 'Doha', 0, true, null),
-('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'programmed', 190, 190, 'Istanbul', 0, false, null),
-('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'programmed', 210, 210, 'Atlanta', 0, true, null),
-('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'programmed', 170, 170, 'Zurich', 0, false, null),
-('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'cancelled', 100, 100, 'Dublin', 0, true, NULL),
-('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'delayed', 120, 120, 'Barcelona', 60, false, 11);
+('AZ1001', 'Alitalia', '2025-08-01 10:00:00', '2025-08-01 12:00:00', 'PROGRAMMED', 150, 150, 'Rome', 0, true, null),
+('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'PROGRAMMED', 200, 200, 'London', 0, false, null),
+('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'PROGRAMMED', 180, 180, 'Frankfurt', 0, true, null),
+('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'PROGRAMMED', 160, 160, 'Paris', 0, false, null),
+('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'PROGRAMMED', 250, 250, 'New York', 0, true, null),
+('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'PROGRAMMED', 300, 300, 'Dubai', 0, false, null),
+('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'PROGRAMMED', 220, 220, 'Doha', 0, true, null),
+('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'PROGRAMMED', 190, 190, 'Istanbul', 0, false, null),
+('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
+('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurich', 0, false, null),
+('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublin', 0, true, NULL),
+('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'DELAYED', 120, 120, 'Barcelona', 60, false, 11);
 
 -- Dati per la tabella Passenger
 
@@ -3241,72 +3241,72 @@ INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES
 -- Dati per la tabella Booking
 
 INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES
-('confirmed', '2025-07-10 10:30:00', 1, 'AZ1001'), -- ID Booking 1
-('pending', '2025-07-11 11:00:00', 2, 'BA2002'), -- ID Booking 2
-('confirmed', '2025-07-12 12:15:00', 3, 'LH3003'), -- ID Booking 3
-('pending', '2025-07-13 13:45:00', 4, 'AF4004'), -- ID Booking 4
-('confirmed', '2025-07-14 09:00:00', 5, 'UA5005'), -- ID Booking 5
-('pending', '2025-07-15 14:00:00', 6, 'EK6006'), -- ID Booking 6
-('confirmed', '2025-07-10 15:30:00', 7, 'QR7007'), -- ID Booking 7
-('pending', '2025-07-11 16:00:00', 8, 'TK8008'), -- ID Booking 8
-('confirmed', '2025-07-12 17:15:00', 9, 'DL9009'), -- ID Booking 9
-('pending', '2025-07-13 18:45:00', 10, 'LX1010'), -- ID Booking 10
-('cancelled', '2025-07-09 09:00:00', 1, 'FR1111'), -- ID Booking 11,
-('confirmed', '2025-07-10 10:00:00', 3, 'FR1111'), -- ID Booking 12,
-('confirmed', '2025-07-14 11:00:00', 5, 'VY1212'), -- ID Booking 13,
-('pending', '2025-07-15 12:00:00', 7, 'VY1212'), -- ID Booking 14,
-('confirmed', '2025-07-16 09:30:00', 1, 'AZ1001'), -- ID Booking 15
-('confirmed', '2025-07-16 09:35:00', 2, 'AZ1001'); -- ID Booking 16
+('CONFIRMED', '2025-07-10 10:30:00', 1, 'AZ1001'), -- ID Booking 1
+('PENDING', '2025-07-11 11:00:00', 2, 'BA2002'), -- ID Booking 2
+('CONFIRMED', '2025-07-12 12:15:00', 3, 'LH3003'), -- ID Booking 3
+('PENDING', '2025-07-13 13:45:00', 4, 'AF4004'), -- ID Booking 4
+('CONFIRMED', '2025-07-14 09:00:00', 5, 'UA5005'), -- ID Booking 5
+('PENDING', '2025-07-15 14:00:00', 6, 'EK6006'), -- ID Booking 6
+('CONFIRMED', '2025-07-10 15:30:00', 7, 'QR7007'), -- ID Booking 7
+('PENDING', '2025-07-11 16:00:00', 8, 'TK8008'), -- ID Booking 8
+('CONFIRMED', '2025-07-12 17:15:00', 9, 'DL9009'), -- ID Booking 9
+('PENDING', '2025-07-13 18:45:00', 10, 'LX1010'), -- ID Booking 10
+('CANCELLED', '2025-07-09 09:00:00', 1, 'FR1111'), -- ID Booking 11,
+('CONFIRMED', '2025-07-10 10:00:00', 3, 'FR1111'), -- ID Booking 12,
+('CONFIRMED', '2025-07-14 11:00:00', 5, 'VY1212'), -- ID Booking 13,
+('PENDING', '2025-07-15 12:00:00', 7, 'VY1212'), -- ID Booking 14,
+('CONFIRMED', '2025-07-16 09:30:00', 1, 'AZ1001'), -- ID Booking 15
+('CONFIRMED', '2025-07-16 09:35:00', 2, 'AZ1001'); -- ID Booking 16
 
 -- Dati per la tabella Ticket
 
 INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, id_flight) VALUES
 
--- Booking 1 (confirmed, AZ1001) - 3 tickets
+-- Booking 1 (CONFIRMED, AZ1001) - 3 tickets
 ('0000000000001', 0, false, 1, 'MRORSS80A15H501F', 'AZ1001'),
 ('0000000000002', 1, false, 1, 'NNABNC92C22G273J', 'AZ1001'),
 ('0000000000003', 2, false, 1, 'GSPVRD75G01L219K', 'AZ1001'),
--- Booking 2 (pending, BA2002) - 2 tickets
+-- Booking 2 (PENDING, BA2002) - 2 tickets
 ('0000000000004', NULL, false, 2, 'MRAGLL98S70F839A', 'BA2002'),
 ('0000000000005', NULL, false, 2, 'PAONRI85E10C351B', 'BA2002'),
--- Booking 3 (confirmed, LH3003) - 3 tickets, some checked-in
+-- Booking 3 (CONFIRMED, LH3003) - 3 tickets, some CHECKED-in
 ('0000000000006', 3, false, 3, 'LRAZMZ90P05D612C', 'LH3003'),
 ('0000000000007', 4, false, 3, 'LCACLM83B18E089D', 'LH3003'),
 ('0000000000008', 5, false, 3, 'SRAFRA95F25H701E', 'LH3003'),
--- Booking 4 (pending, AF4004) - 2 tickets
+-- Booking 4 (PENDING, AF4004) - 2 tickets
 ('0000000000009', NULL, false, 4, 'MRCRCC70T03L389G', 'AF4004'),
 ('0000000000010', NULL, false, 4, 'ELNSPT88D08I170H', 'AF4004'),
--- Booking 5 (confirmed, UA5005) - 3 tickets
+-- Booking 5 (CONFIRMED, UA5005) - 3 tickets
 ('0000000000011', 0, false, 5, 'FRNRSS82A01F111A', 'UA5005'),
 ('0000000000012', 1, false, 5, 'SFAMNC91B02G222B', 'UA5005'),
 ('0000000000013', 2, false, 5, 'LSSCSC77C03H333C', 'UA5005'),
--- Booking 6 (pending, EK6006) - 2 tickets
+-- Booking 6 (PENDING, EK6006) - 2 tickets
 ('0000000000014', NULL, false, 6, 'CHRRMN93D04I444D', 'EK6006'),
 ('0000000000015', NULL, false, 6, 'SMNGLL86E05J555E', 'EK6006'),
--- Booking 7 (confirmed, QR7007) - 3 tickets
+-- Booking 7 (CONFIRMED, QR7007) - 3 tickets
 ('0000000000016', 0, false, 7, 'VLTFNT94F06K666F', 'QR7007'),
 ('0000000000017', 1, false, 7, 'NDRCNT79G07L777G', 'QR7007'),
 ('0000000000018', 2, false, 7, 'BTBGRC96H08M888H', 'QR7007'),
--- Booking 8 (pending, TK8008) - 2 tickets
+-- Booking 8 (PENDING, TK8008) - 2 tickets
 ('0000000000019', NULL, false, 8, 'GVNRIV81I09N999I', 'TK8008'),
 ('0000000000020', NULL, false, 8, 'FRNMRA89R10O000J', 'TK8008'),
--- Booking 9 (confirmed, DL9009) - 3 tickets
+-- Booking 9 (CONFIRMED, DL9009) - 3 tickets
 ('0000000000021', 0, false, 9, 'MRORSS80A15H501F', 'DL9009'),
 ('0000000000022', 1, false, 9, 'NNABNC92C22G273J', 'DL9009'),
 ('0000000000023', 2, false, 9, 'GSPVRD75G01L219K', 'DL9009'),
--- Booking 10 (pending, LX1010) - 2 tickets
+-- Booking 10 (PENDING, LX1010) - 2 tickets
 ('0000000000024', NULL, false, 10, 'MRAGLL98S70F839A', 'LX1010'),
 ('0000000000025', NULL, false, 10, 'PAONRI85E10C351B', 'LX1010'),
--- Booking 11 (cancelled, FR1111) - 2 tickets
+-- Booking 11 (CANCELLED, FR1111) - 2 tickets
 ('0000000000026', 0, false, 11, 'LRAZMZ90P05D612C', 'FR1111'),
 ('0000000000027', 1, false, 11, 'LCACLM83B18E089D', 'FR1111'),
--- Booking 12 (confirmed for cancelled flight, FR1111) - 2 tickets
+-- Booking 12 (CONFIRMED for CANCELLED flight, FR1111) - 2 tickets
 ('0000000000028', 2, false, 12, 'SRAFRA95F25H701E', 'FR1111'),
 ('0000000000029', 3, false, 12, 'MRCRCC70T03L389G', 'FR1111'),
--- Booking 13 (confirmed, VY1212 - delayed flight) - 2 tickets
+-- Booking 13 (CONFIRMED, VY1212 - DELAYED flight) - 2 tickets
 ('0000000000030', 0, false, 13, 'ELNSPT88D08I170H', 'VY1212'),
 ('0000000000031', 1, false, 13, 'FRNRSS82A01F111A', 'VY1212'),
--- Booking 14 (pending, VY1212 - delayed flight) - 2 tickets
+-- Booking 14 (PENDING, VY1212 - DELAYED flight) - 2 tickets
 ('0000000000032', NULL, false, 14, 'SFAMNC91B02G222B', 'VY1212'),
 ('0000000000033', NULL, false, 14, 'LSSCSC77C03H333C', 'VY1212');
 
@@ -3316,60 +3316,60 @@ INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, i
 INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES
 
 -- Per ticket 0000000000001 (Booking 1)
-('checked', 'booked', '0000000000001'),
-('carry_on', 'booked', '0000000000001'),
+('CHECKED', 'BOOKED', '0000000000001'),
+('CARRY_ON', 'BOOKED', '0000000000001'),
 -- Per ticket 0000000000002 (Booking 1)
-('checked', 'booked', '0000000000002'),
+('CHECKED', 'BOOKED', '0000000000002'),
 -- Per ticket 0000000000003 (Booking 1)
-('carry_on', 'booked', '0000000000003'),
-('checked', 'booked', '0000000000003'),
+('CARRY_ON', 'BOOKED', '0000000000003'),
+('CHECKED', 'BOOKED', '0000000000003'),
 -- Per ticket 0000000000004 (Booking 2)
-(NULL, 'booked', '0000000000004'),
+(NULL, 'BOOKED', '0000000000004'),
 -- Per ticket 0000000000006 (Booking 3)
-('checked', 'booked', '0000000000006'),
-('carry_on', 'booked', '0000000000006'),
+('CHECKED', 'BOOKED', '0000000000006'),
+('CARRY_ON', 'BOOKED', '0000000000006'),
 -- Per ticket 0000000000007 (Booking 3)
-('checked', 'booked', '0000000000007'),
+('CHECKED', 'BOOKED', '0000000000007'),
 -- Per ticket 0000000000008 (Booking 3)
-('checked', 'booked', '0000000000008'),
-('carry_on', 'booked', '0000000000008'),
+('CHECKED', 'BOOKED', '0000000000008'),
+('CARRY_ON', 'BOOKED', '0000000000008'),
 -- Per ticket 0000000000009 (Booking 4)
-(NULL, 'booked', '0000000000009'),
+(NULL, 'BOOKED', '0000000000009'),
 -- Per ticket 0000000000011 (Booking 5)
-('checked', 'booked', '0000000000011'),
-('carry_on', 'booked', '0000000000011'),
+('CHECKED', 'BOOKED', '0000000000011'),
+('CARRY_ON', 'BOOKED', '0000000000011'),
 -- Per ticket 0000000000012 (Booking 5)
-('checked', 'booked', '0000000000012'),
+('CHECKED', 'BOOKED', '0000000000012'),
 -- Per ticket 0000000000013 (Booking 5)
-('carry_on', 'booked', '0000000000013'),
-('checked', 'booked', '0000000000013'),
+('CARRY_ON', 'BOOKED', '0000000000013'),
+('CHECKED', 'BOOKED', '0000000000013'),
 -- Per ticket 0000000000014 (Booking 6)
-(NULL, 'booked', '0000000000014'),
+(NULL, 'BOOKED', '0000000000014'),
 -- Per ticket 0000000000016 (Booking 7)
-('checked', 'booked', '0000000000016'),
-('carry_on', 'booked', '0000000000016'),
+('CHECKED', 'BOOKED', '0000000000016'),
+('CARRY_ON', 'BOOKED', '0000000000016'),
 -- Per ticket 0000000000017 (Booking 7)
-('checked', 'booked', '0000000000017'),
+('CHECKED', 'BOOKED', '0000000000017'),
 -- Per ticket 0000000000018 (Booking 7)
-('carry_on', 'booked', '0000000000018'),
-('checked', 'booked', '0000000000018'),
+('CARRY_ON', 'BOOKED', '0000000000018'),
+('CHECKED', 'BOOKED', '0000000000018'),
 -- Per ticket 0000000000019 (Booking 8)
-(NULL, 'booked', '0000000000019'),
+(NULL, 'BOOKED', '0000000000019'),
 -- Per ticket 0000000000021 (Booking 9)
-('checked', 'booked', '0000000000021'),
-('carry_on', 'booked', '0000000000021'),
+('CHECKED', 'BOOKED', '0000000000021'),
+('CARRY_ON', 'BOOKED', '0000000000021'),
 -- Per ticket 0000000000022 (Booking 9)
-('checked', 'booked', '0000000000022'),
+('CHECKED', 'BOOKED', '0000000000022'),
 -- Per ticket 0000000000023 (Booking 9)
-('carry_on', 'booked', '0000000000023'),
-('checked', 'booked', '0000000000023'),
+('CARRY_ON', 'BOOKED', '0000000000023'),
+('CHECKED', 'BOOKED', '0000000000023'),
 -- Per ticket 0000000000024 (Booking 10)
-(NULL, 'booked', '0000000000024'),
+(NULL, 'BOOKED', '0000000000024'),
 -- Per ticket 0000000000026 (Booking 11)
-('checked', 'booked', '0000000000026'),
+('CHECKED', 'BOOKED', '0000000000026'),
 -- Per ticket 0000000000028 (Booking 12)
-('checked', 'booked', '0000000000028'),
-('carry_on', 'booked', '0000000000028');
+('CHECKED', 'BOOKED', '0000000000028'),
+('CARRY_ON', 'BOOKED', '0000000000028');
 
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -3433,7 +3433,7 @@ EXECUTE FUNCTION fun_block_ins_deleted_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
+--TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_booking_an_aToDep_or_more_flight()
 RETURNS TRIGGER
@@ -3448,7 +3448,7 @@ BEGIN
 	FROM FLIGHT
 	WHERE id_flight = NEW.id_flight;
 
-	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	IF associated_flight.flight_status = 'ABOUT_TO_DEPART' OR associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, non si possono inserire nuove prenotazioni!', NEW.id_flight;
 
@@ -3466,7 +3466,7 @@ EXECUTE FUNCTION fun_block_booking_an_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PASSEGGERO SU UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
+--TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PASSEGGERO SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_tickets_aToDep_or_more_flight()
 RETURNS TRIGGER
@@ -3481,7 +3481,7 @@ BEGIN
 	FROM FLIGHT
 	WHERE id_flight = NEW.id_flight;
 
-	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	IF associated_flight.flight_status = 'ABOUT_TO_DEPART' OR associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, non si possono inserire biglietti!', NEW.id_flight;
 
@@ -3499,7 +3499,7 @@ EXECUTE FUNCTION fun_block_ins_tickets_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE BAGAGLIO PER UN PASSEGGERO DI UN VOLO IL CUI FLIGHT_STATUS SIA aboutToDepart, DEPARTED, aboutToArrive O LANDED
+--TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE BAGAGLIO PER UN PASSEGGERO DI UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_luggage_aToDep_or_more_flight()
 RETURNS TRIGGER
@@ -3520,7 +3520,7 @@ BEGIN
 	FROM FLIGHT F
 	WHERE F.id_flight = associated_ticket.id_flight;
 			
-	IF associated_flight.flight_status = 'aboutToDepart' OR associated_flight.flight_status = 'departed' OR associated_flight.flight_status = 'aboutToArrive' OR associated_flight.flight_status = 'landed' THEN
+	IF associated_flight.flight_status = 'ABOUT_TO_DEPART' OR associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è in partenza oppure è già partito, il bagaglio non può essere inserito!', associated_flight.id_flight;
 
@@ -3586,7 +3586,7 @@ BEGIN
 	FROM FLIGHT F
 	WHERE F.id_flight = NEW.id_flight;
 
-	IF associated_flight.flight_status <> 'programmed' THEN
+	IF associated_flight.flight_status <> 'PROGRAMMED' THEN
 
 		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuove prenotazioni!', associated_flight.id_flight;
 
@@ -3619,7 +3619,7 @@ BEGIN
 	FROM FLIGHT F
 	WHERE F.id_flight = NEW.id_flight;
 
-	IF associated_flight.flight_status <> 'programmed' THEN
+	IF associated_flight.flight_status <> 'PROGRAMMED' THEN
 
 		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi biglietti!', associated_flight.id_flight;
 
@@ -3652,7 +3652,7 @@ BEGIN
 	FROM BOOKING B
 	WHERE B.id_booking = NEW.id_booking;
 
-	IF associated_booking.booking_status = 'cancelled' THEN
+	IF associated_booking.booking_status = 'CANCELLED' THEN
 
 		RAISE EXCEPTION 'La prenotazione % è stata cancellata, non è possibile inserire nuovi biglietti!', associated_booking.id_booking;
 
@@ -3691,7 +3691,7 @@ BEGIN
 	FROM FLIGHT F
 	WHERE F.id_flight = associated_ticket.id_flight;
 
-	IF associated_flight.flight_status <> 'programmed' THEN
+	IF associated_flight.flight_status <> 'PROGRAMMED' THEN
 
 		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi bagagli!', associated_flight.id_flight;
 
@@ -3765,7 +3765,7 @@ BEGIN
 	FROM BOOKING B
 	WHERE B.id_booking = associated_ticket.id_booking;
 
-	IF associated_booking.booking_status = 'cancelled' THEN
+	IF associated_booking.booking_status = 'CANCELLED' THEN
 
 		RAISE EXCEPTION 'La prenotazione % è stata cancellata, non è possibile inserire nuovi bagagli!', associated_booking.id_booking;
 
@@ -3817,7 +3817,7 @@ BEGIN
 
 	IF OLD.flight_type = false THEN 
 
-		IF NEW.flight_status = 'delayed' OR NEW.flight_status = 'aboutToArrive' OR NEW.flight_status = 'landed' THEN
+		IF NEW.flight_status = 'DELAYED' OR NEW.flight_status = 'ABOUT_TO_ARRIVE' OR NEW.flight_status = 'LANDED' THEN
 
 			IF OLD.free_seats <> NEW.free_seats THEN
 
@@ -3840,6 +3840,8 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
 
 -------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 
