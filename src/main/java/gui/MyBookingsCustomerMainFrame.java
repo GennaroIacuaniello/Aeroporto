@@ -7,17 +7,17 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFlightCustomerMainFrame extends DisposableObject {
+public class MyBookingsCustomerMainFrame extends DisposableObject {
 
     private JFrame mainFrame;
     private TitlePanel titlePanel;
     private NavigatorBarPanel navigatorBarPanel;
     private MenuPanelCustomer menu;
     private UserPanel userPanel;
-    private SearchFlightPanel searchFlightPanel;
+    private SearchBookingPanel searchBookingPanel;
     Constraints constraints;
 
-    public SearchFlightCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
+    public MyBookingsCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super();
         constraints = new Constraints();
@@ -34,7 +34,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension dimension, Point point, int fullScreen) {
 
-        mainFrame = new JFrame("Cerca voli");
+        mainFrame = new JFrame("Le mie prenotazioni");
         mainFrame.setSize(dimension);
         mainFrame.setLocation(point);
         mainFrame.setExtendedState(fullScreen);
@@ -102,13 +102,13 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        searchFlightPanel = new SearchFlightPanel(callingObjects, controller);
+        searchBookingPanel = new SearchBookingPanel(callingObjects, controller);
 
         constraints.setConstraints(0, 3, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 40, 40, 40));
 
-        mainFrame.add(searchFlightPanel, constraints.getConstraints());
-        searchFlightPanel.setVisible(true);
+        mainFrame.add(searchBookingPanel, constraints.getConstraints());
+        searchBookingPanel.setVisible(true);
     }
 
     @Override
@@ -145,3 +145,4 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         panel1.setLayout(new GridBagLayout());
     }
 }
+

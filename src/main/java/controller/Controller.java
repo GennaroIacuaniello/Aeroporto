@@ -1,6 +1,9 @@
 package controller;
 
+import dao.BookingDAO;
 import gui.DisposableObject;
+import gui.FloatingMessage;
+
 import gui.LuggagePanel;
 import gui.PassengerPanel;
 import implementazioniPostgresDAO.BookingDAOImpl;
@@ -11,6 +14,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 public class Controller {
@@ -150,13 +154,13 @@ public class Controller {
     }
 
     public void setAdminNUser (String username, String email, String hashedPassword) {
-        adminController.setAdmin (username, email, hashedPassword);
+        adminController.setAdmin (username, email, hashedPassword, 0);
         userController.setUser (username, email, hashedPassword);
     }
 
-    public void setCustomerNUser (String username, String hashedPassword) {
-        customerController.setCustomer (username, hashedPassword);
-        userController.setUser (username, hashedPassword);
+    public void setCustomerNUser (String username, String hashedPassword, int id) {
+        customerController.setCustomer (username, hashedPassword, id);
+        userController.setUser (username, hashedPassword, id);
     }
 
     public boolean checkBooking (int index) {
@@ -256,7 +260,7 @@ public class Controller {
                 }
             }
 
-            bookingDAO.addBooking(getUserController().getId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
+            bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
                     seats, firstNames, lastNames, birthDate, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
@@ -270,4 +274,56 @@ public class Controller {
 
         return "ticketsNumber";
     }
+
+    public void getAllBooksLoogedCustomer(List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {
+
+
+        ArrayList<Flight>  searchBookingFlightsResult = new ArrayList<>(0);
+
+        ArrayList<String> companyNames = new ArrayList<>();
+        ArrayList<Date> dates = new ArrayList<>();
+        ArrayList<Time> departureTimes = new ArrayList<>();
+        ArrayList<Time> arrivalTimes = new ArrayList<>();
+        ArrayList<String> status = new ArrayList<>();
+        ArrayList<Integer> maxSeats = new ArrayList<>();
+        ArrayList<Integer> freeSeats = new ArrayList<>();
+        ArrayList<String> cities = new ArrayList<>();
+
+        ArrayList<Boolean> types = new ArrayList<>();
+
+        ArrayList<Integer> bookingIds = new ArrayList<>();
+
+        try{
+            BookingDAO bookingDAO = new BookingDAOImpl();
+
+            bookingDAO.getAllBooksCustomer(getCustomerController().getLoggedCustomerId(), flightIds, companyNames, dates, departureTimes, arrivalTimes, status, maxSeats, freeSeats,
+                                            cities, types, bookingDates, bookingStatus, bookingIds);
+
+
+
+        } catch (SQLException e) {
+            new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+        ArrayList<String> actualIds = new ArrayList<>();
+
+        for(int i = 0; i < flightIds.size(); i++){
+
+            if(types.get(i)){   //alloco Departing
+
+                //getFlightController().getsearchBookingResult().add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                  //      FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+
+            }else{              //alloco Arriving
+
+                //getFlightController().getsearchBookingResult().add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                  //      FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+
+
+            }
+
+        }
+
+    }
+
 }

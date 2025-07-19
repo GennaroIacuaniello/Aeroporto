@@ -16,7 +16,7 @@ public class MenuPanelCustomer extends JPanel {
         ArrayList<String> options = new ArrayList<>();
         options.add("Home");
         options.add("Cerca voli");
-        options.add("I miei voli");
+        options.add("Le mie prenotazioni");
 
         menuButton.addActionListener(e -> {
 
@@ -33,13 +33,21 @@ public class MenuPanelCustomer extends JPanel {
                             break;
                         case "Cerca voli":
                             if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
+
                                 new SearchFlightCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                                         callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+
                                 callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                             }
                             break;
-                        case "I miei voli":
-                            JOptionPane.showMessageDialog(MenuPanelCustomer.this, "Apertura pagina I miei voli");
+                        case "Le mie prenotazioni":
+                            if (!callingObjects.getLast().getFrame().getTitle().equals("Le mie prenotazioni")) {
+
+                                new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+
+                                callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                            }
                             break;
                     }
                 });

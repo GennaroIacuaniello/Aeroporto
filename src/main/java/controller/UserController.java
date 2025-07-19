@@ -3,34 +3,35 @@ package controller;
 import model.User;
 
 public class UserController {
-    private User user;
-    private String id;
+    private int loggedUserId;
+    private User loggedUser;
 
-    public String getId() {
-        return id;
+    public int getLoggedUserId() {
+        return loggedUserId;
     }
 
-    public void setId(String id) {
-        this.id  = id;
+    public void setLoggedUserId(int id) {
+        this.loggedUserId  = id;
     }
 
     public String getUsername() {
-        return user.getUsername();
+        return loggedUser.getUsername();
     }
 
-    public void setUser (String username, String hashedPassword) {
-        user = new User(username, hashedPassword);
+    public void setUser (String username, String hashedPassword, int id) {
+        loggedUser = new User(username, hashedPassword);
+        loggedUserId = id;
     }
 
     public void setUser (String username, String email, String hashedPassword) {
-        user = new User(username, email, hashedPassword);
+        loggedUser = new User(username, email, hashedPassword);
     }
 
-    public void setUser (User user) {
-        this.user = user;
+    public void setLoggedUser(User loggedUser) {
+        this.loggedUser = loggedUser;
     }
 
-    public User getUser() {
-        return this.user;
+    public User getLoggedUser() {
+        return this.loggedUser;
     }
 }

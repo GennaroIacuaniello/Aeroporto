@@ -3433,6 +3433,56 @@ EXECUTE FUNCTION fun_block_ins_deleted_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER NON SI POSSONO INSERIRE PRENOTAZIONI GIà CANCELLATE
+
+CREATE OR REPLACE FUNCTION fun_block_ins_canc_booking()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.booking_status = 'CANCELLED' THEN
+
+		RAISE EXCEPTION 'Non si possono inserire prenotazioni già cancellate!';
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_ins_canc_booking
+BEFORE INSERT ON BOOKING
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_ins_canc_booking();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER NON SI POSSONO INSERIRE TICKET CON CHECKED-IN GIà A TRUE
+
+CREATE OR REPLACE FUNCTION fun_block_ins_canc_booking()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF NEW.checked_in = true THEN
+
+		RAISE EXCEPTION 'Non si possono inserire biglietti che hanno già effettuato il check-in!';
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_ins_canc_booking
+BEFORE INSERT ON TICKET
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_ins_canc_booking();
+
+-------------------------------------------------------------------------------------------------------------------------
+
 --TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_booking_an_aToDep_or_more_flight()
