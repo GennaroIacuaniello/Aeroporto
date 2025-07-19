@@ -260,7 +260,7 @@ public class Controller {
                 }
             }
 
-            bookingDAO.addBooking(getUserController().getId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
+            bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
                     seats, firstNames, lastNames, birthDate, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {

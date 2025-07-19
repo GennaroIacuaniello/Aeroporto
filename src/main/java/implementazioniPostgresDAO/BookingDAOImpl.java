@@ -13,7 +13,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     public BookingDAOImpl() throws SQLException {}
 
-    public void addBooking (String idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
+    public void addBooking (int idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
                             ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
@@ -31,7 +31,7 @@ public class BookingDAOImpl implements BookingDAO {
 
             preparedQuery.setString(1, bookingStatus);
             preparedQuery.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            preparedQuery.setString(3, idCustomer);
+            preparedQuery.setInt(3, idCustomer);
             preparedQuery.setString(4, idFlight);
 
             preparedQuery.executeUpdate();

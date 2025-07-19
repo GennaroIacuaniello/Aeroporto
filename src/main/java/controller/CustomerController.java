@@ -26,6 +26,6 @@ public class CustomerController {
     }
 
     public Customer getCustomer() {
-        return customer;
+        return loggedCustomer;
     }
 }
