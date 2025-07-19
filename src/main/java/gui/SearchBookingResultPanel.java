@@ -11,28 +11,27 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFlightResultPanel extends JPanel {
+public class SearchBookingResultPanel extends JPanel {
 
     private JTable resultsTable;
-    private FlightTableModel tableModel;
+    private BookingTableModel tableModel;
 
-    public SearchFlightResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
-                                   List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
+    public SearchBookingResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<String> bookingStatus,
+                                    List<String> ids) {
+                                    //la lista di id è in parallelo con quella delle prenotazioni, e in base a quelli prendo poi il volo associato dal FlightController
 
         super(new BorderLayout());
         this.setBackground(Color.WHITE);
 
         //se searchedFlights fosse null, darebbe nullPointerException, quindi gli passo una lista vuota
-        tableModel = new FlightTableModel( controller, ids, companyNames, dates, departureTimes, arrivalTimes,
-                                          delays, status, maxSeats, freeSeats, cities);
+        tableModel = new BookingTableModel( controller, bookingDates, bookingStatus, ids);
 
         boolean hasResults = (ids != null && !ids.isEmpty());
 
-        if (ifSearched && !hasResults)
+        if (!hasResults)
             resultsTable = new JTableWithEmptyMessage(tableModel, "Nessun risultato per i parametri di ricerca impostati");
         else
             resultsTable = new JTable(tableModel);
@@ -50,17 +49,16 @@ public class SearchFlightResultPanel extends JPanel {
                     //Flight selectedFlight = searchedFlights.get(table.rowAtPoint(point));
                     int index = table.rowAtPoint(point);   //index of the selectedFlight
 
-                    //if (selectedFlight.getFreeSeats() > 0 && (selectedFlight .getStatus().toString()).equals("PROGRAMMED")){
-                    if(freeSeats.get(index) > 0 && status.get(index).equalsIgnoreCase("PROGRAMMED")){
+                    //TO DO cambiare la pagina che viene aperta
 
-                        controller.getFlightController().setFlight(index);
+                    controller.getFlightController().setFlight(index);
 
-                        new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                    new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
-                        callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 
-                    }
+
 
                 }
             }
@@ -70,8 +68,7 @@ public class SearchFlightResultPanel extends JPanel {
 
         JTableHeader header = resultsTable.getTableHeader();
 
-        //Per mostrare l'intestazione solo dopo avere effettivamente premuto "Cerca" almeno una volta
-        header.setVisible(ifSearched);
+        header.setVisible(true);
 
         this.add(header, BorderLayout.NORTH);
         this.add(resultsTable, BorderLayout.CENTER);
@@ -114,53 +111,45 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
-    private static class FlightTableModel extends AbstractTableModel {
+    private static class BookingTableModel extends AbstractTableModel {
 
         private Controller controller;
+        private final ArrayList<Date> bookingDates;
+        private final ArrayList<String> bookingStatus;
         private final ArrayList<String> ids;
-        private final ArrayList<String> companyNames;
-        private final ArrayList<Date> dates;
-        private final ArrayList<Time> departureTimes;
-        private final ArrayList<Time> arrivalTimes;
-        private final ArrayList<Integer> delays;
-        private final ArrayList<String> status;
-        private final ArrayList<Integer> maxSeats;
-        private final ArrayList<Integer> freeSeats;
-        private final ArrayList<String> cities;
+        //private final ArrayList<String> companyNames;
+        //private final ArrayList<Date> dates;
+        //private final ArrayList<Time> departureTimes;
+        //private final ArrayList<Time> arrivalTimes;
+        //private final ArrayList<Integer> delays;
+        //private final ArrayList<String> status;
+        //private final ArrayList<Integer> maxSeats;
+        //private final ArrayList<Integer> freeSeats;
+        //private final ArrayList<String> cities;
 
-        private final String[] colNames = {"Compagnia", "Tratta", "Data", "Partenza", "Ritardo", "Arrivo", "Stato", "Posti", "Prenota"};
+        private final String[] colNames = {"Data prenotazione", "Stato prenotazione", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
 
-        public FlightTableModel( Controller controller, List<String> parIds, List<String> parCompanyNames, List<Date> parDates, List<Time> parDepartureTimes, List<Time> parArrivalTimes,
-                                List<Integer> parDelays, List<String> parStatus, List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> parCities) {
+        public BookingTableModel( Controller controller, List<Date> parBookingDates, List<String> bookingStatus, List<String> parIds) {
 
             this.controller = controller;
+            this.bookingDates = (ArrayList<Date>) parBookingDates;
+            this.bookingStatus = (ArrayList<String>) bookingStatus;
             this.ids = (ArrayList<String>) parIds;
-            this.companyNames= (ArrayList<String>) parCompanyNames;
-            this.dates = (ArrayList<Date>) parDates;
-            this.departureTimes = (ArrayList<Time>) parDepartureTimes;
-            this.arrivalTimes = (ArrayList<Time>) parArrivalTimes;
-            this.delays = (ArrayList<Integer>) parDelays;
-            this.status = (ArrayList<String>) parStatus;
-            this.maxSeats = (ArrayList<Integer>) parMaxSeats;
-            this.freeSeats = (ArrayList<Integer>) parFreeSeats;
-            this.cities = (ArrayList<String>) parCities;
+            //this.companyNames= (ArrayList<String>) parCompanyNames;
+            //this.dates = (ArrayList<Date>) parDates;
+            //this.departureTimes = (ArrayList<Time>) parDepartureTimes;
+            //this.arrivalTimes = (ArrayList<Time>) parArrivalTimes;
+            //this.delays = (ArrayList<Integer>) parDelays;
+            //this.status = (ArrayList<String>) parStatus;
+            //this.maxSeats = (ArrayList<Integer>) parMaxSeats;
+            //this.freeSeats = (ArrayList<Integer>) parFreeSeats;
+            //this.cities = (ArrayList<String>) parCities;
 
         }
-
-        public ArrayList<Integer> getFreeSeats(){
-            return freeSeats;
-        }
-
-        public ArrayList<String> getStatus(){
-            return status;
-        }
-        //public List<Flight> getFlights() {
-            //return flights;
-        //}
 
         @Override
         public int getRowCount() {
-            return ids.size();
+            return bookingDates.size();
         }
 
         @Override
@@ -181,37 +170,22 @@ public class SearchFlightResultPanel extends JPanel {
 
             switch (col) {
                 case 0:
-                    return companyNames.get(row);
+                    return bookingDates.get(row).toString();
                 case 1:
-                    if (controller.getFlightController().getFlightType(row))
-                        return "Napoli → " + cities.get(row);
-                    else
-                        return cities.get(row) + " → Napoli";
-
+                    return bookingStatus.get(row);
                 case 2:
-                    return dates.get(row).toString();
+                    return "ciao";//controller.getFlightController().getCompanyName(row);
                 case 3:
-                    hours = departureTimes.get(row).getHours();
-                    minutes = departureTimes.get(row).getMinutes();
-
-                    if(hours < 10){
-                        if(minutes < 10)
-                            return  "0" + hours +  ":" + "0" + minutes;
-                        else
-                            return  "0" + hours +  ":" + minutes;
-                    }else{
-                        if(minutes < 10)
-                            return  hours +  ":" + "0" + minutes;
-                        else
-                            return  hours +  ":" + minutes;
-                    }
-
+                    /*if (controller.getFlightController().getFlightType(row))
+                        return "Napoli → " + controller.getFlightController().getCity(row);
+                    else
+                        return controller.getFlightController().getCity(row) + " → Napoli";*/
+                    return "ciao";
                 case 4:
-                    int delay = delays.get(row);
-                    return delay > 0 ? delay + " min" : "--";
+                    return "ciao";//controller.getFlightController().getDate(row).toString();
                 case 5:
-                    hours = arrivalTimes.get(row).getHours();
-                    minutes = arrivalTimes.get(row).getMinutes();
+                    /*hours = controller.getFlightController().getDepartureTime(row).getHours();
+                    minutes = controller.getFlightController().getDepartureTime(row).getMinutes();
 
                     if(hours < 10){
                         if(minutes < 10)
@@ -223,9 +197,27 @@ public class SearchFlightResultPanel extends JPanel {
                             return  hours +  ":" + "0" + minutes;
                         else
                             return  hours +  ":" + minutes;
-                    }
+                    }*/
+                    return "ciao";
+
                 case 6:
-                    switch (status.get(row).toUpperCase()){
+                    /*hours = controller.getFlightController().getArrivalTime(row).getHours();
+                    minutes = controller.getFlightController().getArrivalTime(row).getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }*/
+                    return "ciao";
+                case 7:
+                    /*switch (controller.getFlightController().getStatusString(row).toUpperCase()){
                         case "PROGRAMMED":
                             return "In programma";
                         case "CANCELLED":
@@ -242,11 +234,10 @@ public class SearchFlightResultPanel extends JPanel {
                             return "Atterrato";
                         default:
                             return null;
-                    }
-                case 7:
-                    return freeSeats.get(row) + "/" + maxSeats.get(row);
+                    }*/
+                    return "ciao";
                 case 8:
-                    return "Prenota";
+                    return "Info";
                 default:
                     return null;
             }
@@ -266,11 +257,6 @@ public class SearchFlightResultPanel extends JPanel {
 
 
             setText((value == null) ? "" : value.toString());
-
-            FlightTableModel model = (FlightTableModel) table.getModel();
-            //Flight flight = model.getFlights().get(row);
-
-            setEnabled(model.getFreeSeats().get(row) > 0 && (model.getStatus().get(row)).equalsIgnoreCase("PROGRAMMED"));
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());

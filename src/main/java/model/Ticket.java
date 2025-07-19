@@ -154,14 +154,14 @@ public class Ticket {
     public Ticket(String parTicketNumber, int parSeat, boolean parCheckedIn, String parId, String parCompanyName, Date parDate,
                   Time parDepartureTime, Time parArrivalTime, FlightStatus parFlightStatus, int parMaxSeats, int parFreeSeats,
                   String parOrigin, int parArrivalDelay,
-                  BookingStatus parBookingStatus, Customer parBuyer, Time parBookingTime,
+                  BookingStatus parBookingStatus, Customer parBuyer, Date parBookingDate,
                   String parFirstName, String parLastName, String parSSN, Date parBirthDate) throws InvalidTicket, InvalidBuyer, InvalidFlight, InvalidPassengerNumber{
 
         if(parTicketNumber != null){
             this.ticketNumber = parTicketNumber;
             this.flight = new Arriving(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parFlightStatus, parMaxSeats, parFreeSeats,
                     parOrigin, parArrivalDelay);
-            this.booking = new Booking(parBookingStatus, parBuyer, this.flight, parBookingTime, this);
+            this.booking = new Booking(parBookingStatus, parBuyer, this.flight, parBookingDate, this);
             this.passenger = new Passenger(parFirstName, parLastName, parSSN, parBirthDate, this);
         }else{
             throw new InvalidTicket("Un biglietto deve avere un ticket number!");

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class SearchPanel extends JPanel {
+public class SearchFlightPanel extends JPanel {
 
     private JScrollPane resultsScrollPane;
 
@@ -49,7 +49,7 @@ public class SearchPanel extends JPanel {
 
     //private boolean searchPerformed = false;
 
-    public SearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public SearchFlightPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -254,7 +254,7 @@ public class SearchPanel extends JPanel {
                 LocalTime timeBefore = timeFrom.getTime();
                 LocalTime timeAfter = timeTo.getTime();
 
-                if( (fromField.getText().equals("") && !toField.getText().equals("")) || (!fromField.getText().equals("") && toField.getText().equals(""))){
+                if( (fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())){
 
                     new FloatingMessage("Se si specifica una città, vanno specificate entrambe!", searchButton, FloatingMessage.ERROR_MESSAGE);
                     updateResultsPanel(callingObjects, controller, true);

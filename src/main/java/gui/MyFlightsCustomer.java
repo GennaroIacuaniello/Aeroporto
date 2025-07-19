@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFlightCustomerMainFrame extends DisposableObject {
+public class MyFlightsCustomer extends DisposableObject {
 
     private JFrame mainFrame;
     private TitlePanel titlePanel;
@@ -17,7 +17,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     private SearchFlightPanel searchFlightPanel;
     Constraints constraints;
 
-    public SearchFlightCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
+    public MyFlightsCustomer(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super();
         constraints = new Constraints();
