@@ -254,7 +254,7 @@ public class SearchFlightPanel extends JPanel {
                 LocalTime timeBefore = timeFrom.getTime();
                 LocalTime timeAfter = timeTo.getTime();
 
-                if( (fromField.getText().equals("") && !toField.getText().equals("")) || (!fromField.getText().equals("") && toField.getText().equals(""))){
+                if( (fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())){
 
                     new FloatingMessage("Se si specifica una città, vanno specificate entrambe!", searchButton, FloatingMessage.ERROR_MESSAGE);
                     updateResultsPanel(callingObjects, controller, true);

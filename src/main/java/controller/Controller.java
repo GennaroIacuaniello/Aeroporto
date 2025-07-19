@@ -1,8 +1,11 @@
 package controller;
 
+import dao.FlightDAO;
 import gui.DisposableObject;
+import gui.FloatingMessage;
 import gui.PassengerPanel;
 import implementazioniPostgresDAO.BookingDAOImpl;
+import implementazioniPostgresDAO.FlightDAOImpl;
 import model.*;
 
 import javax.swing.*;
@@ -10,6 +13,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 public class Controller {
@@ -248,4 +252,5 @@ public class Controller {
 
         return ticketsNumbers;
     }
+
 }

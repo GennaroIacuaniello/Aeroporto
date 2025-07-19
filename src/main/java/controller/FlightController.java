@@ -19,6 +19,7 @@ public class FlightController {
 
     private Flight flight;
     private ArrayList<Flight> searchResult;
+    private ArrayList<Flight> searchBookingResult;
 
     public void setArrivingFlight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
                                   Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parOrigin, int parArrivalDelay) {
