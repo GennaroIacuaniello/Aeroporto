@@ -16,61 +16,6 @@ public class BookingController {
 
     public BookingController() {}
 
-
-    public void getAllBooksLoogedCustomer(List<Date> bookingDates, List<Integer> numPassengers, List<String> ids) {
-
-        ArrayList<Boolean> types = new ArrayList<>();
-        ArrayList<Flight>  searchBookingFlightsResult = new ArrayList<>(0);
-
-        ArrayList<String> companyNames = new ArrayList<>();
-        ArrayList<Date> dates = new ArrayList<>();
-        ArrayList<Time> departureTimes = new ArrayList<>();
-        ArrayList<Time> arrivalTimes = new ArrayList<>();
-        ArrayList<Integer> delays = new ArrayList<>();
-        ArrayList<String> status = new ArrayList<>();
-        ArrayList<Integer> maxSeats = new ArrayList<>();
-        ArrayList<Integer> freeSeats = new ArrayList<>();
-        ArrayList<String> cities = new ArrayList<>();
-
-        try{
-            BookingDAO bookingDAO = new BookingDAOImpl();
-
-            flightDAO.searchFlight(departingCity, arrivingCity, initialDate, finalDate, initialTime, finalTime, ids, companyNames,
-                    dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats, cities, types);
-
-
-
-        } catch (SQLException e) {
-            new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
-        }
-
-        ArrayList<String> actualIds = new ArrayList<>();
-
-        for(int i = 0; i < ids.size(); i++){
-
-            if(types.get(i)){   //alloco Departing
-
-                searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
-                        FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
-
-            }else{              //alloco Arriving
-
-                searchResult.add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
-                        FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
-
-
-            }
-
-        }
-
-    }
-
-
-
-
-
-
-
     public void setBooking(Customer customer, Flight flight, ArrayList<Ticket> tickets) {
         try {
             booking = new Booking(customer, flight, new Date(10, 0, 0), tickets);
