@@ -3169,17 +3169,17 @@ EXECUTE FUNCTION fun_canc_future_booking_if_cust_canc();
 -- Dati per la tabella Admin
 
 INSERT INTO Admin (username, mail, hashed_password, is_deleted) VALUES
-('admin_user1', 'admin1@aureportodinapoli.it', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', false),
+('admin_user1', 'admin1@aeroportodinapoli.it', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', false),
 ('admin_user2', 'admin2@adn.it', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', false),
-('admin_user3', 'admin3@aureportodinapoli.it', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
+('admin_user3', 'admin3@aeroportodinapoli.it', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
 ('admin_user4', 'admin4@adn.it', 'c147773260467885b57f0064379361a45484814c1945a6c4295d53a9926d24f0', false),
-('admin_user5', 'admin5@aureportodinapoli.it', '1a9e7011d8fb6168e376a9177f525867201c1070e6a392b49de489b0365778a0', false),
+('admin_user5', 'admin5@aeroportodinapoli.it', '1a9e7011d8fb6168e376a9177f525867201c1070e6a392b49de489b0365778a0', false),
 ('admin_user6', 'admin6@adn.it', '2a67776a3b7d1591e1d0859550b07c87c093a0b41170cf82a6081c7f4e91a2a4', false),
-('admin_user7', 'admin7@aureportodinapoli.it', '3a78887b4c8e2602f2e1960661c18d98d1a42b152281df93b7192d805f02b3b5', false),
+('admin_user7', 'admin7@aeroportodinapoli.it', '3a78887b4c8e2602f2e1960661c18d98d1a42b152281df93b7192d805f02b3b5', false),
 ('admin_user8', 'admin8@adn.it', '4b89998c5d9f3713g3f2071772d29e09e2b53c263392eg04c8203e916g13c4c6', false),
-('admin_user9', 'admin9@aureportodinapoli.it', '5c90009d6e0g4824h4g3182883e30f10f3c64d374403fh15d9314f027h24d5d7', false),
+('admin_user9', 'admin9@aeroportodinapoli.it', '5c90009d6e0g4824h4g3182883e30f10f3c64d374403fh15d9314f027h24d5d7', false),
 ('admin_user10', 'admin10@adn.it', '6d01110e7f1h5935i5h4293994f41g21g4d75e485514gi26e045i136e6e8', false),
-('admin_deleted1', 'deleted1@aureportodinapoli.it', 'deletedhash1', true),
+('admin_deleted1', 'deleted1@aeroportodinapoli.it', 'deletedhash1', true),
 ('admin_deleted2', 'deleted2@adn.it', 'deletedhash2', true);
 
 -- Dati per la tabella Customer
