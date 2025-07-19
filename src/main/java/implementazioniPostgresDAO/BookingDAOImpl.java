@@ -74,9 +74,6 @@ public class BookingDAOImpl implements BookingDAO {
                     if (birthDate == null) preparedQuery.setString(1, "");
                     else preparedQuery.setDate(1, birthDate);
 
-                    preparedQuery.setDate(3, birthDates.get(i));
-                    preparedQuery.setString(4, SSNs.get(i));
-
                     preparedQuery.executeUpdate();
                 }
             }
