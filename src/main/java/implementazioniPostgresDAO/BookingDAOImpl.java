@@ -46,11 +46,34 @@ public class BookingDAOImpl implements BookingDAO {
 
                 if (resultSet.getBoolean(0)) {
 
-                    query = "INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES (?, ?, ?, ?);";
+                    String firstNameInsert = "first_name, ";
+                    String firstNameValue = firstNames.get(i);
+                    if (firstNameValue == null) {
+                        firstNameInsert = "";
+                        firstNameValue = "";
+                    } else firstNameValue += ", ";
+
+                    String lastNameInsert = "last_name, ";
+                    String lastNameValue = lastNames.get(i);
+                    if (lastNameValue == null) {
+                        lastNameInsert = "";
+                        lastNameValue = "";
+                    } else lastNameValue += ", ";
+
+                    String birthDateInsert = "birth_date, ";
+                    String birthDateValue = ", ";
+                    Date birthDate = birthDates.get(i);
+                    if (birthDate == null) {
+                        birthDateInsert = "";
+                        birthDateValue = "";
+                    }
+
+                    query = "INSERT INTO Passenger (" + firstNameInsert + lastNameInsert + birthDateInsert + "SSN) VALUES (" + firstNameValue + lastNameValue + "?" + birthDateValue + SSNs.get(i) + ");";
                     preparedQuery = connection.prepareStatement(query);
 
-                    preparedQuery.setString(1, firstNames.get(i));
-                    preparedQuery.setString(2, lastNames.get(i));
+                    if (birthDate == null) preparedQuery.setString(1, "");
+                    else preparedQuery.setDate(1, birthDate);
+
                     preparedQuery.setDate(3, birthDates.get(i));
                     preparedQuery.setString(4, SSNs.get(i));
 

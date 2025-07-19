@@ -262,11 +262,11 @@ public class PassengerPanel extends JPanel {
     }
 
     public String getPassengerName(){
-        return passengerNameField.getText ();
+        return passengerNameField.getText().equals(displayedNameText) ? null : passengerNameField.getText();
     }
 
     public String getPassengerSurname(){
-        return passengerSurnameField.getText ();
+        return passengerSurnameField.getText().equals(displayedSurnameText) ? null : passengerSurnameField.getText() ;
     }
 
     public String getPassengerCF(){
@@ -362,7 +362,8 @@ public class PassengerPanel extends JPanel {
     }
 
     public Date getPassengerDate () {
-        return new java.sql.Date(passengerDatePicker.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        return passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText) ? null
+                : new java.sql.Date(passengerDatePicker.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     public boolean checkPassengerDate () {

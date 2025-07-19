@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class BookingPageAdmin extends BookingPage {
@@ -42,12 +43,24 @@ public class BookingPageAdmin extends BookingPage {
                 for (int i = 0; i < controller.getFlightController().getBookingSize(j); i++) {
                     PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels);
 
-                    passengerPanel.setPassengerName(controller.getFlightController().getPassengerNameFromBooking(j, i));
-                    passengerPanel.setPassengerSurname(controller.getFlightController().getPassengerSurnameFromBooking(j, i));
-                    passengerPanel.setPassengerCF(controller.getFlightController().getPassengerCFFromBooking(j, i));
-                    passengerPanel.setSeat(controller.getFlightController().getPassengerSeatFromBooking(j, i));
-                    passengerPanel.setPassengerDate(controller.getFlightController().getPassengerDateFromBooking(i, j));
-                    passengerPanel.setTicketNumber(controller.getFlightController().getPassengerTicketNumberFromBooking(j, i));
+                    String string = controller.getFlightController().getPassengerNameFromBooking(j, i);
+                    if (string != null) passengerPanel.setPassengerName(string);
+
+                    string = controller.getFlightController().getPassengerTicketNumberFromBooking(j, i);
+                    if (string != null) passengerPanel.setPassengerSurname(string);
+
+                    string = controller.getFlightController().getPassengerCFFromBooking(j, i);
+                    if (string != null) passengerPanel.setPassengerCF(string);
+
+                    int seat = controller.getFlightController().getPassengerSeatFromBooking(j, i);
+                    if (seat != -1) passengerPanel.setSeat(seat);
+
+                    Date date = controller.getFlightController().getPassengerDateFromBooking(j, i);
+                    if (date != null) passengerPanel.setPassengerDate(date);
+
+                    string = controller.getFlightController().getPassengerTicketNumberFromBooking(j, i);
+                    if (string != null) passengerPanel.setTicketNumber(string);
+
                     passengerPanel.setLuggagesTypes(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i), controller);
 
                     insertPassengerPanel(controller, passengerPanel);

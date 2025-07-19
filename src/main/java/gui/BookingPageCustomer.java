@@ -1,11 +1,13 @@
 package gui;
 
 import controller.Controller;
+import model.LuggageType;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class BookingPageCustomer extends BookingPage {
@@ -40,12 +42,24 @@ public class BookingPageCustomer extends BookingPage {
 
             PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels);
 
-            passengerPanel.setPassengerName(controller.getBookingController().getPassengerName(i));
-            passengerPanel.setPassengerSurname(controller.getBookingController().getPassengerLastName(i));
-            passengerPanel.setPassengerCF(controller.getBookingController().getPassengerSSN(i));
-            passengerPanel.setSeat(controller.getBookingController().getPassengerSeat(i));
-            passengerPanel.setPassengerDate(controller.getBookingController().getPassengerDate(i));
-            passengerPanel.setTicketNumber(controller.getBookingController().getPassengerTicketNumber(i));
+            String string = controller.getBookingController().getPassengerName(i);
+            if (string != null) passengerPanel.setPassengerName(string);
+
+            string = controller.getBookingController().getPassengerLastName(i);
+            if (string != null) passengerPanel.setPassengerSurname(string);
+
+            string = controller.getBookingController().getPassengerSSN(i);
+            if (string != null) passengerPanel.setPassengerCF(string);
+
+            int seat = controller.getBookingController().getPassengerSeat(i);
+            if (seat != -1) passengerPanel.setSeat(seat);
+
+            Date date = controller.getBookingController().getPassengerDate(i);
+            if(date != null) passengerPanel.setPassengerDate(date);
+
+            string = controller.getBookingController().getPassengerTicketNumber(i);
+            if (string != null) passengerPanel.setTicketNumber(string);
+
             passengerPanel.setLuggagesTypes(controller.getBookingController().getPassengerLuggagesTypes(i), controller);
 
             insertPassengerPanel(controller, passengerPanel);
