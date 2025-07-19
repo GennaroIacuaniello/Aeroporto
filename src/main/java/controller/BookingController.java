@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class BookingController {
 
     public void setBooking(Customer customer, Flight flight, ArrayList<Ticket> tickets) {
         try {
-            booking = new Booking(customer, flight, new Time(10, 0, 0), tickets);
+            booking = new Booking(customer, flight, new Date(10, 0, 0), tickets);
         } catch (InvalidPassengerNumber e) {
             throw new RuntimeException("Invalid passenger number", e);
         } catch (InvalidBuyer e) {

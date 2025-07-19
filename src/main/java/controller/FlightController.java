@@ -102,6 +102,10 @@ public class FlightController {
         return flight.getCompanyName();
     }
 
+    public String getCompanyName (int index) {
+        return searchResult.get(index).getCompanyName();
+    }
+
     public Date getFlightDate () {
         return flight.getDate();
     }
@@ -110,8 +114,16 @@ public class FlightController {
         return flight.getDepartureTime();
     }
 
+    public Time getDepartureTime (int index) {
+        return searchResult.get(index).getDepartureTime();
+    }
+
     public Time getArrivalTime () {
         return flight.getArrivalTime();
+    }
+
+    public Time getArrivalTime (int index) {
+        return searchResult.get(index).getArrivalTime();
     }
 
     public int getMaxSeats () {
@@ -219,6 +231,10 @@ public class FlightController {
         return flight.getStatus().toString();
     }
 
+    public String getStatusString (int index) {
+        return searchResult.get(index).getStatus().toString();
+    }
+
     public boolean checkBookingConfirm (int index) {
 
         return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED);
@@ -238,6 +254,18 @@ public class FlightController {
             return ((Arriving) flight).getOrigin();
         else
             return ((Departing) flight).getDestination();
+    }
+
+    public String getCity (int index) {
+
+        if(searchResult.get(index) instanceof Arriving)
+            return ((Arriving) searchResult.get(index)).getOrigin();
+        else
+            return ((Departing) searchResult.get(index)).getDestination();
+    }
+
+    public Date getDate (int index){
+        return searchResult.get(index).getDate();
     }
 
     public void startCheckin () {}

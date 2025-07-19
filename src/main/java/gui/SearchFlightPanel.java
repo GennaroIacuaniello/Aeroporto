@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class SearchPanel extends JPanel {
+public class SearchFlightPanel extends JPanel {
 
     private JScrollPane resultsScrollPane;
 
@@ -49,7 +49,7 @@ public class SearchPanel extends JPanel {
 
     //private boolean searchPerformed = false;
 
-    public SearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public SearchFlightPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 

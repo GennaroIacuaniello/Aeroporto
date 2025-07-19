@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -17,10 +18,11 @@ public class Booking {
     private BookingStatus status;
     private Customer buyer;
     private Flight bookedFlight;
-    private Time bookingTime;
+
+    private Date bookingDate;
     private ArrayList<Ticket> tickets;
 
-    public Booking(Customer parBuyer, Flight parBookedFlight, Time parBookingTime, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+    public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
 
@@ -31,7 +33,7 @@ public class Booking {
                     this.status = BookingStatus.PENDING;
                     this.buyer = parBuyer;
                     this.bookedFlight = parBookedFlight;
-                    this.bookingTime = parBookingTime;
+                    this.bookingDate = parBookingDate;
                     this.tickets = parTickets;
 
                 }else{
@@ -48,7 +50,7 @@ public class Booking {
 
     }
 
-    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Time parBookingTime, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Date parBookingDate, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
 
@@ -59,7 +61,7 @@ public class Booking {
                     this.status = parStatus;
                     this.buyer = parBuyer;
                     this.bookedFlight = parBookedFlight;
-                    this.bookingTime = parBookingTime;
+                    this.bookingDate = parBookingDate;
                     this.tickets = parTickets;
 
                 }else{
@@ -75,7 +77,7 @@ public class Booking {
 
     }
 
-    public Booking(Customer parBuyer, Flight parBookedFlight, Time parBookingTime, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+    public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
 
@@ -86,7 +88,7 @@ public class Booking {
                     this.status = BookingStatus.PENDING;
                     this.buyer = parBuyer;
                     this.bookedFlight = parBookedFlight;
-                    this.bookingTime = parBookingTime;
+                    this.bookingDate = parBookingDate;
                     this.tickets = new ArrayList<>();
                     this.tickets.add(parTicket);
 
@@ -103,7 +105,7 @@ public class Booking {
 
     }
 
-    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Time parBookingTime, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Date parBookingDate, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
 
@@ -114,7 +116,7 @@ public class Booking {
                     this.status = parStatus;
                     this.buyer = parBuyer;
                     this.bookedFlight = parBookedFlight;
-                    this.bookingTime = parBookingTime;
+                    this.bookingDate = parBookingDate;
                     this.tickets = new ArrayList<>();
                     this.tickets.add(parTicket);
 
@@ -159,8 +161,8 @@ public class Booking {
         this.bookedFlight = bookedFlight;
     }*/
 
-    public Time getBookingTime() {
-        return bookingTime;
+    public Date getBookingDate() {
+        return bookingDate;
     }
 
     //non si può modificare il momento della prenotazione

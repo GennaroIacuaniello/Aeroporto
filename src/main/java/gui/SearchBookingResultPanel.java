@@ -1,0 +1,312 @@
+package gui;
+
+import controller.Controller;
+
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SearchBookingResultPanel extends JPanel {
+
+    private JTable resultsTable;
+    private BookingTableModel tableModel;
+
+    public SearchBookingResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<Integer> numPassengers,
+                                    List<String> ids) {
+                                    //la lista di id è in parallelo con quella delle prenotazioni, e in base a quelli prendo poi il volo associato dal FlightController
+
+        super(new BorderLayout());
+        this.setBackground(Color.WHITE);
+
+        //se searchedFlights fosse null, darebbe nullPointerException, quindi gli passo una lista vuota
+        tableModel = new BookingTableModel( controller, bookingDates, numPassengers, ids);
+
+        boolean hasResults = (ids != null && !ids.isEmpty());
+
+        if (!hasResults)
+            resultsTable = new JTableWithEmptyMessage(tableModel, "Nessun risultato per i parametri di ricerca impostati");
+        else
+            resultsTable = new JTable(tableModel);
+
+        resultsTable.addMouseListener(new MouseAdapter() {
+
+            public void mousePressed(MouseEvent mouseEvent) {
+
+                JTable table = (JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                int col = table.columnAtPoint(point);
+                if (table.getSelectedRow() != -1 && row != -1 && col == tableModel.getColumnCount() - 1) {
+
+                    //Flight selectedFlight = searchedFlights.get(table.rowAtPoint(point));
+                    int index = table.rowAtPoint(point);   //index of the selectedFlight
+
+                    //TO DO cambiare la pagina che viene aperta
+
+                    controller.getFlightController().setFlight(index);
+
+                    new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+
+
+
+                }
+            }
+        });
+
+        setTableApperance(callingObjects, controller);
+
+        JTableHeader header = resultsTable.getTableHeader();
+
+        header.setVisible(true);
+
+        this.add(header, BorderLayout.NORTH);
+        this.add(resultsTable, BorderLayout.CENTER);
+
+    }
+
+    private void setTableApperance(ArrayList<DisposableObject> callingObjects, Controller controller) {
+
+        resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));
+        resultsTable.getTableHeader().setReorderingAllowed(false);
+
+        resultsTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        resultsTable.setRowHeight(35);
+        resultsTable.setRowSelectionAllowed(false);
+        resultsTable.setFillsViewportHeight(true);
+        resultsTable.setGridColor(new Color(220, 220, 220));
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (!isSelected) {
+                    //alternanza di colori nel risultato della ricerca
+                    c.setBackground(row % 2 == 0 ? new Color(248, 248, 248) : Color.WHITE);
+                }
+                return c;
+            }
+        };
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for (int i = 0; i < resultsTable.getColumnCount() - 1; i++) {
+            resultsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        int bookColumnIndex = tableModel.getColumnCount() - 1;
+        resultsTable.getColumnModel().getColumn(bookColumnIndex).setCellRenderer(new ButtonRenderer());
+
+    }
+
+    private static class BookingTableModel extends AbstractTableModel {
+
+        private Controller controller;
+        private final ArrayList<Date> bookingDates;
+        private final ArrayList<Integer> numPassengers;
+        private final ArrayList<String> ids;
+        //private final ArrayList<String> companyNames;
+        //private final ArrayList<Date> dates;
+        //private final ArrayList<Time> departureTimes;
+        //private final ArrayList<Time> arrivalTimes;
+        //private final ArrayList<Integer> delays;
+        //private final ArrayList<String> status;
+        //private final ArrayList<Integer> maxSeats;
+        //private final ArrayList<Integer> freeSeats;
+        //private final ArrayList<String> cities;
+
+        private final String[] colNames = {"Data prenotazione", "Numero passeggeri", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
+
+        public BookingTableModel( Controller controller, List<Date> parBookingDates, List<Integer> parNumPassengers, List<String> parIds) {
+
+            this.controller = controller;
+            this.bookingDates = (ArrayList<Date>) parBookingDates;
+            this.numPassengers = (ArrayList<Integer>) parNumPassengers;
+            this.ids = (ArrayList<String>) parIds;
+            //this.companyNames= (ArrayList<String>) parCompanyNames;
+            //this.dates = (ArrayList<Date>) parDates;
+            //this.departureTimes = (ArrayList<Time>) parDepartureTimes;
+            //this.arrivalTimes = (ArrayList<Time>) parArrivalTimes;
+            //this.delays = (ArrayList<Integer>) parDelays;
+            //this.status = (ArrayList<String>) parStatus;
+            //this.maxSeats = (ArrayList<Integer>) parMaxSeats;
+            //this.freeSeats = (ArrayList<Integer>) parFreeSeats;
+            //this.cities = (ArrayList<String>) parCities;
+
+        }
+
+        @Override
+        public int getRowCount() {
+            return bookingDates.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return colNames.length;
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return colNames[column];
+        }
+
+        @Override
+        public Object getValueAt(int row, int col) {
+
+            int hours;
+            int minutes;
+
+            switch (col) {
+                case 0:
+                    return bookingDates.get(row).toString();
+                case 1:
+                    return numPassengers.get(row);
+                case 2:
+                    return "ciao";//controller.getFlightController().getCompanyName(row);
+                case 3:
+                    /*if (controller.getFlightController().getFlightType(row))
+                        return "Napoli → " + controller.getFlightController().getCity(row);
+                    else
+                        return controller.getFlightController().getCity(row) + " → Napoli";*/
+                    return "ciao";
+                case 4:
+                    return "ciao";//controller.getFlightController().getDate(row).toString();
+                case 5:
+                    /*hours = controller.getFlightController().getDepartureTime(row).getHours();
+                    minutes = controller.getFlightController().getDepartureTime(row).getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }*/
+                    return "ciao";
+
+                case 6:
+                    /*hours = controller.getFlightController().getArrivalTime(row).getHours();
+                    minutes = controller.getFlightController().getArrivalTime(row).getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }*/
+                    return "ciao";
+                case 7:
+                    /*switch (controller.getFlightController().getStatusString(row).toUpperCase()){
+                        case "PROGRAMMED":
+                            return "In programma";
+                        case "CANCELLED":
+                            return "Cancellato";
+                        case "DELAYED":
+                            return "In ritardo";
+                        case "ABOUT_TO_DEPART":
+                            return "In partenza";
+                        case "DEPARTED":
+                            return "Partito";
+                        case "ABOUT_TO_ARRIVE":
+                            return "In arrivo";
+                        case "LANDED":
+                            return "Atterrato";
+                        default:
+                            return null;
+                    }*/
+                    return "ciao";
+                case 8:
+                    return "Info";
+                default:
+                    return null;
+            }
+        }
+    }
+
+
+    private static class ButtonRenderer extends JButton implements TableCellRenderer {
+
+        public ButtonRenderer() {
+            setOpaque(true);
+            setFont(new Font("Segoe UI", Font.BOLD, 12));
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+
+            setText((value == null) ? "" : value.toString());
+
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(UIManager.getColor("Button.background"));
+            }
+
+            return this;
+        }
+    }
+
+
+    private static class JTableWithEmptyMessage extends JTable {
+
+        private final String emptyMessage;
+
+        public JTableWithEmptyMessage(AbstractTableModel model, String emptyMessage) {
+
+            super(model);
+            this.emptyMessage = emptyMessage;
+
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+
+            super.paintComponent(g);
+
+            if (getRowCount() == 0) {
+
+                Graphics2D g2d = (Graphics2D) g;
+
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(Color.GRAY);
+
+                g2d.setFont(new Font("Segoe UI", Font.ITALIC, 16));
+
+                FontMetrics fm = g2d.getFontMetrics();
+
+                int stringWidth = fm.stringWidth(emptyMessage);
+                int stringHeight = fm.getAscent();
+                int x = (getWidth() - stringWidth) / 2;
+                int y = (getHeight() - stringHeight) / 2 + fm.getAscent();
+
+                g2d.drawString(emptyMessage, x, y);
+            }
+        }
+    }
+
+
+}

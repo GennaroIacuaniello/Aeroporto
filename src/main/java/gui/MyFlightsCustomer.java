@@ -14,7 +14,7 @@ public class MyFlightsCustomer extends DisposableObject {
     private NavigatorBarPanel navigatorBarPanel;
     private MenuPanelCustomer menu;
     private UserPanel userPanel;
-    private SearchPanel searchPanel;
+    private SearchFlightPanel searchFlightPanel;
     Constraints constraints;
 
     public MyFlightsCustomer(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
@@ -102,13 +102,13 @@ public class MyFlightsCustomer extends DisposableObject {
 
     private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        searchPanel = new SearchPanel(callingObjects, controller);
+        searchFlightPanel = new SearchFlightPanel(callingObjects, controller);
 
         constraints.setConstraints(0, 3, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 40, 40, 40));
 
-        mainFrame.add(searchPanel, constraints.getConstraints());
-        searchPanel.setVisible(true);
+        mainFrame.add(searchFlightPanel, constraints.getConstraints());
+        searchFlightPanel.setVisible(true);
     }
 
     @Override
