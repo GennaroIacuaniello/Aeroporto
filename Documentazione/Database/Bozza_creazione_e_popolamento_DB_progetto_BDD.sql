@@ -1375,7 +1375,7 @@ BEGIN
 		WHERE id_flight = OLD.id_flight;
 
 	END IF;
-	
+
 	RETURN OLD;
 
 END;
@@ -3897,7 +3897,6 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
 
 -------------------------------------------------------------------------------------------------------------------------
-
 
 
 
