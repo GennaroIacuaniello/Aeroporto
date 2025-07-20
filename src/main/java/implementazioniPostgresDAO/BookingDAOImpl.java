@@ -11,9 +11,7 @@ import java.util.List;
 
 public class BookingDAOImpl implements BookingDAO {
 
-    public BookingDAOImpl() throws SQLException {}
-
-    public void addBooking (String idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
+    public void addBooking (int idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
                             ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
@@ -31,7 +29,7 @@ public class BookingDAOImpl implements BookingDAO {
 
             preparedQuery.setString(1, bookingStatus);
             preparedQuery.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            preparedQuery.setString(3, idCustomer);
+            preparedQuery.setInt(3, idCustomer);
             preparedQuery.setString(4, idFlight);
 
             preparedQuery.executeUpdate();
@@ -116,17 +114,17 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
-    public void getAllBooksCustomer(int loggedUserId, List<String> flightIds, ArrayList<String> companyNames, List<Date> dates,
+    public void getAllBooksCustomer(int loggedUserId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
                                     List<Time> departureTimes, List<Time> arrivalTimes,
-                                    List<String> status, List<Integer> maxSeats, List<Integer> freeSeats,
+                                    List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats,
                                     List<String> cities, List<Boolean> types,
                                     List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException{
 
 
-        String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_type, id_booking, booking_status, booking_time " +
-                        "FROM FLIGHT NATURAL JOIN BOOKING " +
-                        "WHERE buyer = ? "+
-                        "ORDER BY departure_time";
+        String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
+                        "FROM FLIGHT F NATURAL JOIN BOOKING B " +
+                        "WHERE B.buyer = ? "+
+                        "ORDER BY F.departure_time";
 
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
@@ -142,13 +140,13 @@ public class BookingDAOImpl implements BookingDAO {
                 companyNames.add(rs.getString("company_name"));
 
                 Timestamp tmpTS = rs.getTimestamp("departure_time");
-                dates.add(new java.sql.Date(tmpTS.getTime()));
+                flightDates.add(new java.sql.Date(tmpTS.getTime()));
                 departureTimes.add(new java.sql.Time(tmpTS.getTime()));
 
                 tmpTS = rs.getTimestamp("arrival_time");
                 arrivalTimes.add(new java.sql.Time(tmpTS.getTime()));
 
-                status.add(rs.getString("flight_status"));
+                flightStatus.add(rs.getString("flight_status"));
 
                 //delays.add(rs.getInt("flight_delay"));
 
@@ -158,6 +156,14 @@ public class BookingDAOImpl implements BookingDAO {
                 cities.add(rs.getString("destination_or_origin"));
 
                 types.add(rs.getBoolean("flight_type"));
+
+                tmpTS = rs.getTimestamp("booking_time");
+                bookingDates.add(new java.sql.Date(tmpTS.getTime()));
+
+                bookingStatus.add(rs.getString("booking_status"));
+
+                bookingIds.add(rs.getInt("id_booking"));
+
 
             }
 

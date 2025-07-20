@@ -13,6 +13,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class FlightController {
@@ -281,5 +282,13 @@ public class FlightController {
 
         return searchResult.get(index) instanceof Departing;
 
+    }
+
+    public List<Flight> getSearchBookingResult() {
+        return searchBookingResult;
+    }
+
+    public void setSearchBookingResult( List<Flight> searchBookingResult ) {
+        this.searchBookingResult = (ArrayList<Flight>) searchBookingResult;
     }
 }

@@ -133,6 +133,34 @@ public class Booking {
 
     }
 
+    public Booking(BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight,
+                   String parTicketNumber, int parSeat, boolean parCheckedIn, Passenger parPassenger) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
+
+
+        this.status = parStatus;
+        this.bookingDate = parBookingDate;
+        this.buyer = parBuyer;
+        this.bookedFlight = parBookedFlight;
+        this.tickets = new ArrayList<>();
+        this.tickets.add(new Ticket(parTicketNumber, parSeat, parCheckedIn, parBookedFlight, this, parPassenger));
+
+    }
+
+    public Booking(BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight,
+                   String parTicketNumber, int parSeat, boolean parCheckedIn,
+                   String parFirstName, String parLastName, String parSSN, Date parBirthDate) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
+
+
+        this.status = parStatus;
+        this.bookingDate = parBookingDate;
+        this.buyer = parBuyer;
+        this.bookedFlight = parBookedFlight;
+        this.tickets = new ArrayList<>();
+        this.tickets.add(new Ticket(parTicketNumber, parSeat, parCheckedIn, parBookedFlight, this,
+                                    parFirstName, parLastName, parSSN, parBirthDate));
+
+    }
+
     public BookingStatus getStatus() {
         return status;
     }

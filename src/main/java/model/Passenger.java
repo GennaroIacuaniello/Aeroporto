@@ -16,12 +16,17 @@ public class Passenger {
     private final String SSN;
     private Date birthDate = null;
 
-    public Passenger(String parFirstName, String parLastName, String parSSN, Date parBirthDate, Ticket parTicket) throws InvalidTicket{
+    public Passenger(String parFirstName, String parLastName, String parSSN, Date parBirthDate, Ticket parTicket) throws InvalidTicket, InvalidPassengerNumber {
 
         if(parTicket != null){
             this.firstName = parFirstName;
             this.lastName = parLastName;
-            this.SSN = parSSN;
+            if(parSSN != null){
+                this.SSN = parSSN;
+            }else{
+                throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
+            }
+
             this.birthDate = parBirthDate;
         }else{
             throw new InvalidTicket("un passeggero deve essere associato ad un biglietto!");
@@ -30,10 +35,14 @@ public class Passenger {
 
     }
 
-    public Passenger(String parSSN, Ticket parTicket) throws InvalidTicket{
+    public Passenger(String parSSN, Ticket parTicket) throws InvalidTicket, InvalidPassengerNumber {
 
         if(parTicket != null){
-            this.SSN = parSSN;
+            if(parSSN != null){
+                this.SSN = parSSN;
+            }else{
+                throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
+            }
         }else{
             throw new InvalidTicket("un passeggero deve essere associato ad un biglietto!");
         }
@@ -41,26 +50,51 @@ public class Passenger {
 
     }
 
-    public Passenger(String parFirstName, String parLastName, String parSSN, Ticket parTicket) throws InvalidTicket{
+    public Passenger(String parFirstName, String parLastName, String parSSN, Ticket parTicket) throws InvalidTicket, InvalidPassengerNumber {
 
         if(parTicket != null){
+            if(parSSN != null){
+                this.SSN = parSSN;
+            }else{
+                throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
+            }
             this.firstName = parFirstName;
             this.lastName = parLastName;
-            this.SSN = parSSN;
         }else{
             throw new InvalidTicket("un passeggero deve essere associato ad un biglietto!");
         }
 
     }
 
-    public Passenger(String parSSN, Date parBirthDate, Ticket parTicket) throws InvalidTicket{
+    public Passenger(String parSSN, Date parBirthDate, Ticket parTicket) throws InvalidTicket, InvalidPassengerNumber {
 
         if(parTicket != null){
-            this.SSN = parSSN;
+            if(parSSN != null){
+                this.SSN = parSSN;
+            }else{
+                throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
+            }
             this.birthDate = parBirthDate;
         }else{
             throw new InvalidTicket("un passeggero deve essere associato ad un biglietto!");
         }
+
+
+    }
+
+    public Passenger(String parFirstName, String parLastName, String parSSN, Date parBirthDate,
+                     String parTicketNumber, int parSeat, boolean parCheckedIn,
+                     BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
+
+        if(parSSN != null){
+            this.SSN = parSSN;
+        }else{
+            throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
+        }
+        this.firstName = parFirstName;
+        this.lastName = parLastName;
+        this.birthDate = parBirthDate;
+        new Booking(parStatus, parBookingDate, parBuyer, parBookedFlight, parTicketNumber, parSeat, parCheckedIn, this);
 
 
     }

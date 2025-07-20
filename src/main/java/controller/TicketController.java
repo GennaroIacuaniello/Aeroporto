@@ -4,10 +4,12 @@ import model.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TicketController {
 
     private Ticket ticket;
+    private ArrayList<Ticket> searchBookingResult;
 
     public TicketController () {}
 
@@ -57,5 +59,13 @@ public class TicketController {
 
     public Date getBirthDate () {
         return ticket.getPassenger().getBirthDate();
+    }
+
+    public List<Ticket> getSearchBookingResult() {
+        return searchBookingResult;
+    }
+
+    public void setSearchBookingResult(List<Ticket> searchBookingResult) {
+        this.searchBookingResult = (ArrayList<Ticket>) searchBookingResult;
     }
 }
