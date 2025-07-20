@@ -154,7 +154,7 @@ public class BookingModifyPage extends BookingPageCustomer {
     @Override
     protected void goNextPage () {
 
-        for (int i = 0; i < 3; i++) {//metto a false la pagina corrente
+        /*for (int i = 0; i < 3; i++) {//metto a false la pagina corrente
 
             passengerPanels.get((currPage * 3) + i).setVisible(false);
             removePassengerButtons.get((currPage * 3) + i).setVisible(false);
@@ -180,13 +180,15 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         currPage++;
         currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
-        prevPageButton.setEnabled (true);
+        prevPageButton.setEnabled (true);*/
+
+        goToPage(currPage + 1);
     }
 
     @Override
     protected void goPreviousPage () {
 
-        if (currPage != (passengerPanels.size() - 1) / 3) { //non sto all'ultima pagina quindi sono 3
+        /*if (currPage != (passengerPanels.size() - 1) / 3) { //non sto all'ultima pagina quindi sono 3
 
             for (int i = 0; i < 3; i++) {
 
@@ -214,7 +216,9 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         nextPageButton.setEnabled (true);
 
-        if (currPage == 0) prevPageButton.setEnabled (false);
+        if (currPage == 0) prevPageButton.setEnabled (false);*/
+
+        goToPage(currPage - 1);
     }
 
     @Override
@@ -244,9 +248,7 @@ public class BookingModifyPage extends BookingPageCustomer {
                 if (checkConfirmButton()) {
                     controller.modifyBooking(passengerPanels, controller.getBookingStatusController().confirmed);
                     controller.goBack(callingObjects);
-                }
-
-                else
+                } else
                     new FloatingMessage("I dati dei passeggeri sono incompleti", confirmButton, FloatingMessage.ERROR_MESSAGE);
             }
         });

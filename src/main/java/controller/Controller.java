@@ -243,40 +243,71 @@ public class Controller {
             ArrayList<Integer> seats = new ArrayList<Integer>();
             ArrayList<String> firstNames = new ArrayList<String>();
             ArrayList<String> lastNames = new ArrayList<String>();
-            ArrayList<Date> birthDate = new ArrayList<Date>();
+            ArrayList<Date> birthDates = new ArrayList<Date>();
             ArrayList<String> SSNs = new ArrayList<String>();
             ArrayList<String> luggagesTypes = new ArrayList<String>();
             ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
 
-            for (PassengerPanel passengerPanel : passengerPanels) {
-
-                ticketsNumbers.add(generateTicketsNumber());
-                seats.add(passengerPanel.getSeat());
-                firstNames.add(passengerPanel.getPassengerName());
-                lastNames.add(passengerPanel.getPassengerSurname());
-                birthDate.add(passengerPanel.getPassengerDate());
-                SSNs.add(passengerPanel.getPassengerCF());
-
-                for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
-
-                    if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
-                        luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
-                        ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
-                    }
-                }
-            }
+            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
             bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
-                    seats, firstNames, lastNames, birthDate, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
+    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
 
-    public String generateTicketsNumber () {
+        try {
+
+            BookingDAOImpl bookingDAO = new BookingDAOImpl();
+
+            ArrayList<String> ticketsNumbers = new ArrayList<String>();
+            ArrayList<Integer> seats = new ArrayList<Integer>();
+            ArrayList<String> firstNames = new ArrayList<String>();
+            ArrayList<String> lastNames = new ArrayList<String>();
+            ArrayList<Date> birthDates = new ArrayList<Date>();
+            ArrayList<String> SSNs = new ArrayList<String>();
+            ArrayList<String> luggagesTypes = new ArrayList<String>();
+            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
+
+            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+
+            bookingDAO.modifyBooking(this, flightController.getId(), getBookingController().getId(), ticketsNumbers,
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void preparePassengers (ArrayList<PassengerPanel> passengerPanels, ArrayList<String> ticketsNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames, ArrayList<String> lastNames,
+                                    ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketsForLuggagesTypes) {
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+
+            if(passengerPanel.getTicketNumber() == null) ticketsNumbers.add(generateTicketNumber());
+            else ticketsNumbers.add(passengerPanel.getTicketNumber());
+
+            seats.add(passengerPanel.getSeat());
+            firstNames.add(passengerPanel.getPassengerName());
+            lastNames.add(passengerPanel.getPassengerSurname());
+            birthDates.add(passengerPanel.getPassengerDate());
+            SSNs.add(passengerPanel.getPassengerCF());
+
+            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+
+                if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
+                    luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
+                    ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
+                }
+            }
+        }
+    }
+
+    public String generateTicketNumber () {
 
         return "ticketsNumber";
     }

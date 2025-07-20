@@ -203,8 +203,15 @@ public class FlightDAOImpl implements FlightDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()){
-                bookedSeats.add(rs.getInt("seat"));
+
+                int tmpSeat = rs.getInt("seat");
+
+                if (tmpSeat != 0) bookedSeats.add(tmpSeat);
             }
+
+            rs.close();
+
+            ConnessioneDatabase.getInstance().closeConnection();
 
         } catch (SQLException e) {
             e.printStackTrace();

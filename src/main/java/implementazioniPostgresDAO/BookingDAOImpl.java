@@ -1,8 +1,8 @@
 package implementazioniPostgresDAO;
 
+import controller.Controller;
 import dao.BookingDAO;
 import database.ConnessioneDatabase;
-import model.Customer;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -34,85 +34,13 @@ public class BookingDAOImpl implements BookingDAO {
 
             preparedQuery.executeUpdate();
 
-            generatedId = preparedQuery.getGeneratedKeys().getInt(0);
+            generatedId = preparedQuery.getGeneratedKeys().getInt("id_booking");
 
             //eventuale inserimento in passenger
-            for (int i = 0; i < SSNs.size(); i++) {
-
-                query = "NOT EXISTS(SELECT SSN FROM Passenger WHERE SSN = ?);";
-                preparedQuery = connection.prepareStatement(query);
-
-                preparedQuery.setString(1, SSNs.get(i));
-
-                resultSet = preparedQuery.executeQuery();
-
-                if (resultSet.getBoolean(0)) {
-
-                    String firstNameValue = firstNames.get(i);
-                    String lastNameValue = lastNames.get(i);
-                    Date birthDateValue = birthDates.get(i);
-
-
-                    String query1 = "INSERT INTO Passenger (SSN";
-                    String query2 = ") VALUES (?";
-                    String query3 = ");";
-
-                    if (firstNameValue != null) {
-                        query1 += ", first_name";
-                        query2 += ", ?";
-                    }
-
-                    if (lastNameValue != null) {
-                        query1 += ", last_name";
-                        query2 += ", ?";
-                    }
-
-                    if (birthDateValue != null) {
-                        query1 += ", birth_date";
-                        query2 += ", ?";
-                    }
-
-                    query = query1 + query2 + query3;
-                    preparedQuery = connection.prepareStatement(query);
-
-                    int index = 1;
-
-                    preparedQuery.setString(index++, SSNs.get(i));
-                    if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
-                    if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
-                    if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
-
-                    preparedQuery.executeQuery();
-                }
-            }
+            insertPassengers(connection, firstNames, lastNames, birthDates, SSNs);
 
             //inserisci in ticket
-            for (int i = 0; i < ticketNumbers.size(); i++) {
-
-                int seatValue = seats.get(i);
-
-                String query1 = "INSERT INTO Ticket (ticket_number, ";
-                String query2 = "id_booking, id_passenger, id_flight) VALUES (?, ";
-                String query3 = "?, ?, ?);";
-
-                if (seatValue != -1) {
-                    query1 += "seat, ";
-                    query2 += "?, ";
-                }
-
-                query = query1 + query2 + query3;
-                preparedQuery = connection.prepareStatement(query);
-
-                int index = 1;
-
-                preparedQuery.setString(index++, ticketNumbers.get(i));
-                if (seatValue != -1) preparedQuery.setInt(index++, seatValue);
-                preparedQuery.setInt(index++, generatedId);
-                preparedQuery.setString(index++, SSNs.get(i));
-                preparedQuery.setString(index++, idFlight);
-
-                preparedQuery.executeUpdate();
-            }
+            insertTickets(connection, generatedId, idFlight, ticketNumbers, SSNs, seats);
 
             //inserisci in luggage
             for (int i = 0; i < ticketForLuggages.size(); i++) {
@@ -132,6 +60,173 @@ public class BookingDAOImpl implements BookingDAO {
         } catch (SQLException e) {
 
             e.printStackTrace();
+        }
+    }
+
+    public void modifyBooking (Controller controller, String idFlight, int idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
+                               ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            String query;
+            PreparedStatement preparedQuery;
+            ResultSet resultSet;
+
+            //aggiungi ticket temporaneo
+            String tmpTicket = controller.generateTicketNumber();
+
+            //prendo un passeggero per aggiungere ticket temporaneo
+            query = "SELECT id_passenger FROM Ticket WHERE id_booking = ? LIMIT 1;";
+            preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setInt(1, idBooking);
+
+            resultSet = preparedQuery.executeQuery();
+
+
+            query = "INSERT INTO Ticket (ticket_number, id_booking, id_passenger, id_flight) VALUES (?, ?, ?, ?);";
+            preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setString(1, tmpTicket);
+            preparedQuery.setInt(2, idBooking);
+            preparedQuery.setInt(3, resultSet.getInt("id_passenger"));
+            preparedQuery.setString(4, idFlight);
+
+            resultSet.close();
+
+            //cancellazione vecchi tickets
+            query = "DELETE FROM Ticket WHERE id_booking = ? AND ticket_number <> ?;";
+            preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setInt(1, idBooking);
+            preparedQuery.setString(2, tmpTicket);
+            preparedQuery.executeQuery();
+
+            //eventuale inserimento in passenger
+            insertPassengers(connection, firstNames, lastNames, birthDates, SSNs);
+
+            //inserisci in ticket
+            insertTickets(connection, idBooking, idFlight, ticketNumbers, SSNs, seats);
+
+            //inserisci in luggage
+            insertLuggages(connection, ticketForLuggages,  luggagesTypes);
+
+            //cancellazione ticket temporaneo
+            query = "DELETE FROM Ticket WHERE id_ticket = ?;";
+            preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setString(1, tmpTicket);
+
+            preparedQuery.executeUpdate();
+
+            ConnessioneDatabase.getInstance().closeConnection();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    private void insertPassengers (Connection connection, ArrayList<String> firstNames, ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs) throws SQLException {
+
+        String query;
+        PreparedStatement preparedQuery;
+        ResultSet resultSet;
+
+        for (int i = 0; i < SSNs.size(); i++) {
+
+            query = "NOT EXISTS(SELECT SSN FROM Passenger WHERE SSN = ?);";
+            preparedQuery = connection.prepareStatement(query);
+
+            preparedQuery.setString(1, SSNs.get(i));
+
+            resultSet = preparedQuery.executeQuery();
+
+            if (resultSet.getBoolean(0)) {
+
+                String firstNameValue = firstNames.get(i);
+                String lastNameValue = lastNames.get(i);
+                Date birthDateValue = birthDates.get(i);
+
+
+                String query1 = "INSERT INTO Passenger (SSN";
+                String query2 = ") VALUES (?";
+                String query3 = ");";
+
+                if (firstNameValue != null) {
+                    query1 += ", first_name";
+                    query2 += ", ?";
+                }
+
+                if (lastNameValue != null) {
+                    query1 += ", last_name";
+                    query2 += ", ?";
+                }
+
+                if (birthDateValue != null) {
+                    query1 += ", birth_date";
+                    query2 += ", ?";
+                }
+
+                query = query1 + query2 + query3;
+                preparedQuery = connection.prepareStatement(query);
+
+                int index = 1;
+
+                preparedQuery.setString(index++, SSNs.get(i));
+                if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
+                if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
+                if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
+
+                preparedQuery.executeQuery();
+            }
+        }
+    }
+
+    private void insertTickets (Connection connection, int idBooking, String idFlight,ArrayList<String> ticketNumbers, ArrayList<String> SSNs, ArrayList<Integer> seats) throws SQLException {
+
+        String query;
+        PreparedStatement preparedQuery;
+
+        for (int i = 0; i < ticketNumbers.size(); i++) {
+
+            int seatValue = seats.get(i);
+
+            String query1 = "INSERT INTO Ticket (ticket_number, ";
+            String query2 = "id_booking, id_passenger, id_flight) VALUES (?, ";
+            String query3 = "?, ?, ?);";
+
+            if (seatValue != -1) {
+                query1 += "seat, ";
+                query2 += "?, ";
+            }
+
+            query = query1 + query2 + query3;
+            preparedQuery = connection.prepareStatement(query);
+
+            int index = 1;
+
+            preparedQuery.setString(index++, ticketNumbers.get(i));
+            if (seatValue != -1) preparedQuery.setInt(index++, seatValue);
+            preparedQuery.setInt(index++, idBooking);
+            preparedQuery.setString(index++, SSNs.get(i));
+            preparedQuery.setString(index, idFlight);
+
+            preparedQuery.executeUpdate();
+        }
+    }
+
+    private void insertLuggages (Connection connection, ArrayList<String> ticketForLuggages, ArrayList<String> luggagesTypes) throws SQLException {
+
+        for (int i = 0; i < ticketForLuggages.size(); i++) {
+
+            String query;
+            PreparedStatement preparedQuery;
+
+            query = "INSERT INTO Lugages (luggage_type, luggage_status, id_ticket) VALUES (?, ?, ?);";
+            preparedQuery = connection.prepareStatement(query);
+
+            preparedQuery.setString(1, luggagesTypes.get(i));
+            preparedQuery.setString(2, "BOOKED");
+            preparedQuery.setString(3, ticketForLuggages.get(i));
+
+            preparedQuery.executeUpdate();
         }
     }
 
