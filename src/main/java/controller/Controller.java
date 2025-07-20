@@ -2,12 +2,15 @@ package controller;
 
 import dao.BookingDAO;
 import dao.TicketDAO;
+import dao.UserNotFoundException;
 import gui.DisposableObject;
 import gui.FloatingMessage;
 
 import gui.LuggagePanel;
 import gui.PassengerPanel;
+import implementazioniPostgresDAO.AdminDAOImpl;
 import implementazioniPostgresDAO.BookingDAOImpl;
+import implementazioniPostgresDAO.CustomerDAOImpl;
 import implementazioniPostgresDAO.TicketDAOImpl;
 import model.*;
 
@@ -161,12 +164,12 @@ public class Controller {
 
     public void setAdminNUser (String username, String email, String hashedPassword) {
         adminController.setAdmin (username, email, hashedPassword, 0);
-        userController.setUser (username, email, hashedPassword);
+        userController.setLoggedUser (new Admin( username, email, hashedPassword), 0);
     }
 
-    public void setCustomerNUser (String username, String hashedPassword, int id) {
-        customerController.setLoggedCustomer(username, hashedPassword, id);
-        userController.setUser (username, hashedPassword, id);
+    public void setCustomerNUser (String username, String mail, String hashedPassword, Integer id) {
+        customerController.setLoggedCustomer(username, mail, hashedPassword, id);
+        userController.setLoggedUser (new Customer(username, mail, hashedPassword), id);
     }
 
     public boolean checkBooking (int index) {
@@ -392,4 +395,52 @@ public class Controller {
 
     }
 
+    public boolean verifyUser(String loggingInfo, String hashedPassword, JButton loginButton){
+
+        if(loggingInfo.length() < 4){
+            return false;
+        }
+
+        ArrayList<Integer> userID = new ArrayList<>();
+        ArrayList<String> mail = new ArrayList<>();
+        ArrayList<String> username = new ArrayList<>();
+
+        try{
+            AdminDAOImpl adminDAO = new AdminDAOImpl();
+            if(loggingInfo.contains("@")){
+                adminDAO.searchUserByMail(userID, username, loggingInfo, hashedPassword);
+                adminController.setLoggedAdmin(new Admin(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
+                userController.setLoggedUser(new User(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
+
+            }else{
+                adminDAO.searchUserByUsername(userID, loggingInfo, mail, hashedPassword);
+                adminController.setLoggedAdmin(new Admin(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
+                userController.setLoggedUser(new User(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
+            }
+        } catch (UserNotFoundException e){
+            try{
+                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                if(loggingInfo.contains("@")){
+                    customerDAO.searchUserByMail(userID, username, loggingInfo, hashedPassword);
+                    customerController.setLoggedCustomer(new Customer(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
+                    userController.setLoggedUser(new User(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
+
+                }else{
+                    customerDAO.searchUserByUsername(userID, loggingInfo, mail, hashedPassword);
+                    customerController.setLoggedCustomer(new Customer(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
+                    userController.setLoggedUser(new User(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
+                }
+            } catch (UserNotFoundException ex){
+                new FloatingMessage("<html>User o password errati</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
+                return false;
+            } catch (SQLException ex){
+                new FloatingMessage("<html>Errore nel collegamento al DB(Customer)" + ex.getMessage() + "</html>", loginButton, FloatingMessage.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (SQLException e){
+            new FloatingMessage("<html>Errore nel collegamento al DB(Admin)" + e.getMessage() + "</html>", loginButton, FloatingMessage.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }

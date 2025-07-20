@@ -51,14 +51,21 @@ public class LogInScreen extends DisposableObject {
         }
         callingObjects.addLast(this);
 
+        //some additional manual setup
         loginMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         resizeFrame();
 
+
+        //todo ELIMINA QUESTE DUE RIGHE
+        usernameTextField.setText("customer_user1");
+        passwordField.setText("Customer_User1");
+        
+        //Logging in logic
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (validateLogin(usernameTextField.getText(), passwordField)) {
+                if (controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                     login(callingObjects, controller);
                 }
 
@@ -71,7 +78,7 @@ public class LogInScreen extends DisposableObject {
                 super.keyReleased(e);
                 toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (validateLogin(usernameTextField.getText(), passwordField)) {
+                    if (controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                         login(callingObjects, controller);
                     }
                 }
@@ -84,13 +91,14 @@ public class LogInScreen extends DisposableObject {
                 super.keyReleased(e);
                 toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (validateLogin(usernameTextField.getText(), passwordField)) {
+                    if (controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                         login(callingObjects, controller);
                     }
                 }
             }
         });
 
+        //Go to Register Screen
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,6 +109,8 @@ public class LogInScreen extends DisposableObject {
             }
         });
 
+
+        //resizing logic
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
@@ -175,22 +185,15 @@ public class LogInScreen extends DisposableObject {
         return true;
     }
 
-    private boolean validateLogin(String username, PasswordHandler password) {
-        //TODO: chiama verifyUserPassword()
-        if (!isValidUsername(usernameTextField.getText())) {
-            JOptionPane.showMessageDialog(loginScreen, "Username non valido");
-            return false;
-        }
-        if (usernameTextField.getText().equals("non esiste")) {
-            JOptionPane.showMessageDialog(loginScreen, "Questo utente non esiste");
-            return false;
-        }
+    private boolean validateLogin(String username, PasswordHandler password, Controller controller) {
+
+        controller.verifyUser(username, password.getHashedPassword(), logInButton);
 
         return true;
     }
 
     private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        controller.setCustomerNUser(usernameTextField.getText(), passwordField.getHashedPassword(), 0);
+        controller.setCustomerNUser(usernameTextField.getText(), "ciao@dinuovo", passwordField.getHashedPassword(), 0);
         usernameTextField.setText("");
         passwordField.setText("");
         logInButton.setEnabled(false);

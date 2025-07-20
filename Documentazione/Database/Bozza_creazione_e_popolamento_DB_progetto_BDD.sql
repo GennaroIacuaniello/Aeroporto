@@ -3185,7 +3185,7 @@ INSERT INTO Admin (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Customer
 
 INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
-('customer_user1', 'customer1@example.com', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', false),
+('customer_user1', 'customer1@example.com', '5041ec9f7c95cf125f660ccd5d68ccd65974f4d26dfaed0fa69a45144a0e253e', false),
 ('customer_user2', 'customer2@test.org', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', false),
 ('customer_user3', 'customer3@mail.net', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
 ('customer_user4', 'customer4@service.co', 'c147773260467885b57f0064379361a45484814c1945a6c4295d53a9926d24f0', false),

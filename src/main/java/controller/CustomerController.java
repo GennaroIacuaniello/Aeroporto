@@ -8,8 +8,8 @@ public class CustomerController {
 
     public CustomerController() {}
 
-    public void setLoggedCustomer(String username, String hashedPassword, int id) {
-        loggedCustomer = new Customer(username, hashedPassword);
+    public void setLoggedCustomer(String username, String mail, String hashedPassword, Integer id) {
+        loggedCustomer = new Customer(username, mail, hashedPassword);
         loggedCustomerId = id;
     }
 

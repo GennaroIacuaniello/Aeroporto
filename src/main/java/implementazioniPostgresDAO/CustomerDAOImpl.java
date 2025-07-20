@@ -1,6 +1,6 @@
 package implementazioniPostgresDAO;
 
-import dao.AdminDAO;
+import dao.CustomerDAO;
 import dao.UserNotFoundException;
 import database.ConnessioneDatabase;
 
@@ -10,15 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminDAOImpl implements AdminDAO {
-
-
+public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public void searchUserByUsername(List<Integer> userID, String username, List<String> mail, String password) throws SQLException, UserNotFoundException {
-
         try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
-            String query = "SELECT id_admin, mail " +
-                            "FROM Admin " +
+            String query = "SELECT id_customer, mail " +
+                            "FROM Customer " +
                             "WHERE username = ? AND hashed_password = ? AND is_deleted = false";
 
             PreparedStatement preparedQuery = connection.prepareStatement(query);
@@ -28,7 +25,7 @@ public class AdminDAOImpl implements AdminDAO {
             ResultSet rs = preparedQuery.executeQuery();
 
             while(rs.next()){
-                userID.add(rs.getInt("id_admin"));
+                userID.add(rs.getInt("id_customer"));
                 mail.add(rs.getString("mail"));
             }
 
@@ -36,7 +33,7 @@ public class AdminDAOImpl implements AdminDAO {
         }
 
         if(userID.isEmpty()){
-            throw new UserNotFoundException("User non esiste nella tabella Admin");
+            throw new UserNotFoundException("User non esiste nella tabella Customer");
         }
     }
 
@@ -44,8 +41,8 @@ public class AdminDAOImpl implements AdminDAO {
     public void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException, UserNotFoundException {
 
         try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
-            String query = "SELECT id_admin, username " +
-                            "FROM Admin " +
+            String query = "SELECT id_customer, username " +
+                            "FROM Customer " +
                             "WHERE mail = ? AND hashed_password = ? AND is_deleted = false";
 
             PreparedStatement preparedQuery = connection.prepareStatement(query);
@@ -55,7 +52,7 @@ public class AdminDAOImpl implements AdminDAO {
             ResultSet rs = preparedQuery.executeQuery();
 
             while(rs.next()){
-                userID.add(rs.getInt("id_admin"));
+                userID.add(rs.getInt("id_customer"));
                 username.add(rs.getString("username"));
             }
 
@@ -63,7 +60,7 @@ public class AdminDAOImpl implements AdminDAO {
         }
 
         if(userID.isEmpty()){
-            throw new UserNotFoundException("User non esiste nella tabella Admin");
+            throw new UserNotFoundException("User non esiste nella tabella Customer");
         }
     }
 }

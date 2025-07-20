@@ -121,7 +121,8 @@ public class BookingDAOImpl implements BookingDAO {
                                     List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException{
 
 
-        String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
+        String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, " +
+                        "F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
                         "FROM FLIGHT F NATURAL JOIN BOOKING B " +
                         "WHERE B.buyer = ? "+
                         "ORDER BY F.departure_time";

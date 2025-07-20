@@ -13,19 +13,9 @@ public class Customer extends User{
 
     private ArrayList<Booking> bookings;
 
-    public Customer(String parUsername, String parHashedPassword){
-        super(parUsername, parHashedPassword);
-        this.bookings = new ArrayList<Booking>(0);
-    }
-
     public Customer(String parUsername, String parEmail, String parHashedPassword){
         super(parUsername, parEmail, parHashedPassword);
-        this.bookings = new ArrayList<Booking>(0);
-    }
-
-    public Customer(String parUsername, String parHashedPassword, ArrayList<Booking> parBookings){
-        super(parUsername, parHashedPassword);
-        this.bookings = parBookings;
+        this.bookings = new ArrayList<>(0);
     }
 
     public Customer(String parUsername, String parEmail, String parHashedPassword, ArrayList<Booking> parBookings){

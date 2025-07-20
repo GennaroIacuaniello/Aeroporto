@@ -18,15 +18,6 @@ public class UserController {
         return loggedUser.getUsername();
     }
 
-    public void setUser (String username, String hashedPassword, int id) {
-        loggedUser = new User(username, hashedPassword);
-        loggedUserId = id;
-    }
-
-    public void setUser (String username, String email, String hashedPassword) {
-        loggedUser = new User(username, email, hashedPassword);
-    }
-
     public void setLoggedUser(User loggedUser, Integer id) {
         this.loggedUser = loggedUser;
         this.loggedUserId = id;

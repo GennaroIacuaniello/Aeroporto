@@ -43,10 +43,7 @@ public class PasswordHandler extends JPasswordField {
     }
 
     public String getHashedPassword(){
-        if(hashedPassword == null){
-            return hashPassword();
-        }
-        return hashedPassword;
+        return hashPassword();
     }
 
     private byte[] convertInBytes(){

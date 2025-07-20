@@ -109,6 +109,7 @@ public class RegisterScreen extends DisposableObject {
                             "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet;
                 }
 
+                System.out.println(passwordField.getHashedPassword());
                 if(pc == PasswordCode.validPassword){
                     if(usernameTextField.getText().length() < 4 || usernameTextField.getText().length() > 20){
                         warningMessage = "L'username deve avere tra i 4 e i 20 caratteri";

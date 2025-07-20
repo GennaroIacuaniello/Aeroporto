@@ -12,28 +12,16 @@ public class User {
     private String username;
     private String email;
     private String hashedPassword;
-    private boolean isDeleted;
 
     public User(String parUsername, String parHashedPassword){
         this.username = parUsername;
         this.hashedPassword = parHashedPassword;
-        this.isDeleted = false;
     }
 
     public User(String parUsername, String parEmail, String parHashedPassword){
         this.username = parUsername;
         this.email = parEmail;
         this.hashedPassword = parHashedPassword;
-        this.isDeleted = false;
-    }
-
-    public boolean isDeleted(){
-
-        return this.isDeleted;
-    }
-
-    public void setDeleted(boolean parDeleted){
-        this.isDeleted = parDeleted;
     }
 
     public String getUsername(){
