@@ -147,4 +147,11 @@ public class BookingController {
     public void setSearchBookingResultIds(List<Integer> searchBookingResultIds) {
         this.searchBookingResultIds = (ArrayList<Integer>) searchBookingResultIds;
     }
+
+    public void setBookingResultSelectedBooking(Integer index) {
+
+        this.booking = searchBookingResult.get(index);
+        this.id = searchBookingResultIds.get(index);
+
+    }
 }

@@ -24,4 +24,11 @@ public interface BookingDAO {
                                             List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types,
                                             List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException;
 
+    void searchBooksCustomerFilteredPassengers(String firstName, String lastName, String passengerSSN, String ticketNumber,
+                                               Integer loggedCustomerId, List<String> flightIds, List<String> companyNames, List<Date> flightDates,
+                                               List<Time> departureTimes, List<Time> arrivalTimes, List<String> flightStatus,
+                                               List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types,
+                                               List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException;
+
 }
+

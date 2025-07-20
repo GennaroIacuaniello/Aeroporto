@@ -17,7 +17,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     private SearchBookingPanel searchBookingPanel;
     Constraints constraints;
 
-    public MyBookingsCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
+    public MyBookingsCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, boolean ifOpenedFromMenu) {
 
         super();
         constraints = new Constraints();
@@ -27,7 +27,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         this.addNavigatorBarPanel((ArrayList<DisposableObject>)callingObjects, controller);
         this.addMenuPanel((ArrayList<DisposableObject>)callingObjects, controller);
         this.addUserPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addSearchPanel((ArrayList<DisposableObject>)callingObjects, controller);
+        this.addSearchPanel((ArrayList<DisposableObject>)callingObjects, controller, ifOpenedFromMenu);
 
         mainFrame.setVisible(true);
     }
@@ -100,9 +100,9 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         userPanel.setVisible(true);
     }
 
-    private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
-        searchBookingPanel = new SearchBookingPanel(callingObjects, controller);
+        searchBookingPanel = new SearchBookingPanel(callingObjects, controller, ifOpenedFromMenu);
 
         constraints.setConstraints(0, 3, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 40, 40, 40));
