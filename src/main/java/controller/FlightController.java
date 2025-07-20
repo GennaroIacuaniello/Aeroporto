@@ -3,6 +3,7 @@ package controller;
 import dao.FlightDAO;
 import gui.FloatingMessage;
 import gui.PassengerPanel;
+import implementazioniPostgresDAO.BookingDAOImpl;
 import implementazioniPostgresDAO.FlightDAOImpl;
 import model.*;
 
@@ -334,9 +335,20 @@ public class FlightController {
         return null;
     }
 
-    public void startCheckin () {}
+    public void startCheckin () {
 
-    public void setCheckins (ArrayList<PassengerPanel> passengerPanels, JButton callingButton) {}
+        try {
+            FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+            flightDAO.startCheckin(flight.getId());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void setCheckins (ArrayList<PassengerPanel> passengerPanels) {}
 
     public boolean getFlightType(int index) {
 

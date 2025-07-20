@@ -8,16 +8,15 @@ import gui.FloatingMessage;
 
 import gui.LuggagePanel;
 import gui.PassengerPanel;
-import implementazioniPostgresDAO.AdminDAOImpl;
-import implementazioniPostgresDAO.BookingDAOImpl;
-import implementazioniPostgresDAO.CustomerDAOImpl;
-import implementazioniPostgresDAO.TicketDAOImpl;
+import implementazioniPostgresDAO.*;
 import model.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
@@ -246,40 +245,71 @@ public class Controller {
             ArrayList<Integer> seats = new ArrayList<Integer>();
             ArrayList<String> firstNames = new ArrayList<String>();
             ArrayList<String> lastNames = new ArrayList<String>();
-            ArrayList<Date> birthDate = new ArrayList<Date>();
+            ArrayList<Date> birthDates = new ArrayList<Date>();
             ArrayList<String> SSNs = new ArrayList<String>();
             ArrayList<String> luggagesTypes = new ArrayList<String>();
             ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
 
-            for (PassengerPanel passengerPanel : passengerPanels) {
-
-                ticketsNumbers.add(generateTicketsNumber());
-                seats.add(passengerPanel.getSeat());
-                firstNames.add(passengerPanel.getPassengerName());
-                lastNames.add(passengerPanel.getPassengerSurname());
-                birthDate.add(passengerPanel.getPassengerDate());
-                SSNs.add(passengerPanel.getPassengerCF());
-
-                for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
-
-                    if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
-                        luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
-                        ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
-                    }
-                }
-            }
+            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
             bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
-                    seats, firstNames, lastNames, birthDate, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {}
+    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
 
-    public String generateTicketsNumber () {
+        try {
+
+            BookingDAOImpl bookingDAO = new BookingDAOImpl();
+
+            ArrayList<String> ticketsNumbers = new ArrayList<String>();
+            ArrayList<Integer> seats = new ArrayList<Integer>();
+            ArrayList<String> firstNames = new ArrayList<String>();
+            ArrayList<String> lastNames = new ArrayList<String>();
+            ArrayList<Date> birthDates = new ArrayList<Date>();
+            ArrayList<String> SSNs = new ArrayList<String>();
+            ArrayList<String> luggagesTypes = new ArrayList<String>();
+            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
+
+            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+
+            bookingDAO.modifyBooking(this, flightController.getId(), getBookingController().getId(), ticketsNumbers,
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void preparePassengers (ArrayList<PassengerPanel> passengerPanels, ArrayList<String> ticketsNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames, ArrayList<String> lastNames,
+                                    ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketsForLuggagesTypes) {
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+
+            if(passengerPanel.getTicketNumber() == null) ticketsNumbers.add(generateTicketNumber());
+            else ticketsNumbers.add(passengerPanel.getTicketNumber());
+
+            seats.add(passengerPanel.getSeat());
+            firstNames.add(passengerPanel.getPassengerName());
+            lastNames.add(passengerPanel.getPassengerSurname());
+            birthDates.add(passengerPanel.getPassengerDate());
+            SSNs.add(passengerPanel.getPassengerCF());
+
+            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+
+                if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
+                    luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
+                    ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
+                }
+            }
+        }
+    }
+
+    public String generateTicketNumber () {
 
         return "ticketsNumber";
     }
@@ -311,7 +341,7 @@ public class Controller {
             new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", searchButton, FloatingMessage.ERROR_MESSAGE);
         }
 
-        ArrayList<String> actualIds = new ArrayList<>();
+        ArrayList<String> actualFlightIds = new ArrayList<>();
 
         bookingController.setSearchBookingResult(new ArrayList<>());
         bookingController.setSearchBookingResultIds(new ArrayList<>());
@@ -319,9 +349,9 @@ public class Controller {
 
         for(int i = 0; i < flightIds.size(); i++){
 
-            if(!actualIds.contains(flightIds.get(i))){
+            if(!actualFlightIds.contains(flightIds.get(i))){
 
-                actualIds.add(flightIds.get(i));
+                actualFlightIds.add(flightIds.get(i));
 
                 if(types.get(i)){   //alloco Departing
 
@@ -401,6 +431,126 @@ public class Controller {
 
     }
 
+    public void searchBooksLoogedCustomerFilteredFlights(String origin, String destination, LocalDate dateBefore, LocalDate dateAfter, LocalTime timeBefore, LocalTime timeAfter,
+                                                         List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {
+
+        ArrayList<String> companyNames = new ArrayList<>();
+        ArrayList<Date> dates = new ArrayList<>();
+        ArrayList<Time> departureTimes = new ArrayList<>();
+        ArrayList<Time> arrivalTimes = new ArrayList<>();
+        ArrayList<String> status = new ArrayList<>();
+        ArrayList<Integer> maxSeats = new ArrayList<>();
+        ArrayList<Integer> freeSeats = new ArrayList<>();
+        ArrayList<String> cities = new ArrayList<>();
+
+        ArrayList<Boolean> types = new ArrayList<>();
+
+        ArrayList<Integer> bookingIds = new ArrayList<>();
+
+        try{
+            BookingDAO bookingDAO = new BookingDAOImpl();
+
+            bookingDAO.searchBooksCustomerFilteredFlights(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
+                                                          getCustomerController().getLoggedCustomerId(), flightIds, companyNames, dates, departureTimes, arrivalTimes, status, maxSeats, freeSeats,
+                                                          cities, types, bookingDates, bookingStatus, bookingIds);
+
+
+        } catch (SQLException e) {
+            new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+        ArrayList<String> actualFlightIds = new ArrayList<>();
+
+        bookingController.setSearchBookingResult(new ArrayList<>());
+        bookingController.setSearchBookingResultIds(new ArrayList<>());
+        flightController.setSearchBookingResult(new ArrayList<>());
+
+        for(int i = 0; i < flightIds.size(); i++){
+
+            if(!actualFlightIds.contains(flightIds.get(i))){
+
+                actualFlightIds.add(flightIds.get(i));
+
+                if(types.get(i)){   //alloco Departing
+
+                    flightController.getSearchBookingResult().add(new Departing( flightIds.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                            FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i)));
+
+                }else{              //alloco Arriving
+
+                    flightController.getSearchBookingResult().add(new Arriving( flightIds.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                            FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i)));
+
+
+                }
+            }
+
+            ticketController.setSearchBookingResult(new ArrayList<>());
+            passengerController.setSearchBookingResult(new ArrayList<>());
+
+            ArrayList<String> actualSSNs = new ArrayList<>();
+
+            ArrayList<String> ticketNumbers = new ArrayList<>();
+            ArrayList<Integer> seats = new ArrayList<>();
+            ArrayList<Boolean> checkedIns = new ArrayList<>();
+            ArrayList<String> passengerSSNs = new ArrayList<>();
+            ArrayList<String> firstNames = new ArrayList<>();
+            ArrayList<String> lastNames = new ArrayList<>();
+            ArrayList<Date> birthDates = new ArrayList<>();
+
+            TicketDAO ticketDao = new TicketDAOImpl();
+
+            try{
+
+                ticketDao.getAllTicketBooking(bookingIds.get(i), ticketNumbers, seats, checkedIns, passengerSSNs, firstNames, lastNames, birthDates);
+
+            } catch (SQLException e) {
+
+                new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+            }
+
+            try{
+                if(!ticketNumbers.isEmpty()) {
+
+                    bookingController.getSearchBookingResult().add(new Booking(BookingStatus.valueOf(bookingStatus.get(i)), bookingDates.get(i),
+                            customerController.getLoggedCustomer(), flightController.getSearchBookingResult().getLast(),
+                            ticketNumbers.getFirst(), seats.getFirst(), checkedIns.getFirst(),
+                            firstNames.getFirst(), lastNames.getFirst(), passengerSSNs.getFirst(), birthDates.getFirst()));
+                    bookingController.getSearchBookingResultIds().add(bookingIds.get(i));
+                }else{
+                    throw new InvalidTicket("");
+                }
+
+            }catch (Exception e){
+                new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+            }
+
+            for(int j = 1; j < ticketNumbers.size(); j++){
+                try{
+                    bookingController.getSearchBookingResult().getLast().getTickets().add(new Ticket(ticketNumbers.get(j), seats.get(j), checkedIns.get(j),
+                            flightController.getSearchBookingResult().getLast(), bookingController.getSearchBookingResult().getLast(),
+                            firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
+
+                }catch (Exception e){
+                    new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                }
+            }
+
+            ticketController.getSearchBookingResult().addAll(bookingController.getSearchBookingResult().getLast().getTickets());
+            for(Ticket x: bookingController.getSearchBookingResult().getLast().getTickets()){
+                if(!actualSSNs.contains(x.getPassenger().getSSN())){
+                    actualSSNs.add(x.getPassenger().getSSN());
+                    passengerController.getSearchBookingResult().add(x.getPassenger());
+                }
+
+            }
+
+        }
+
+
+    }
+
+
     public boolean verifyUser(String loggingInfo, String hashedPassword, JButton loginButton){
 
         if(loggingInfo.length() < 4){
@@ -449,4 +599,14 @@ public class Controller {
         }
         return true;
     }
+
+<<<<<<< HEAD
+
+=======
+    public void setBookedSeats (ArrayList<Integer> bookedSeats) {
+        FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+        flightDAO.getBookedSeats(flightController.getId(), bookingController.getId(), bookedSeats);
+    }
+>>>>>>> 24e37cd4186b411b246f0d9885c124944ee4891b
 }

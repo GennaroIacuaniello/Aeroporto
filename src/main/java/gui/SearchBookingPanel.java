@@ -56,7 +56,7 @@ public class SearchBookingPanel extends JPanel {
 
     ArrayList<Date> bookingDates = new ArrayList<>();
     ArrayList<String> bookingStatus = new ArrayList<>();
-    ArrayList<String> ids = new ArrayList<>();
+    ArrayList<String> flightIds = new ArrayList<>();
 
     public SearchBookingPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
@@ -96,7 +96,7 @@ public class SearchBookingPanel extends JPanel {
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
         this.add(resultsScrollPane, constraints.getConstraints());
 
-        controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, ids, searchButton);
+        controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, flightIds, searchButton);
 
         updateResultsPanel(callingObjects, controller, false);
     }
@@ -399,13 +399,10 @@ public class SearchBookingPanel extends JPanel {
 
                 bookingDates = new ArrayList<>();
                 bookingStatus = new ArrayList<>();
-                ids = new ArrayList<>();
-                //controller.getFlightController().searchFlightLoggedCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
-                  //      bookingDates, numPassengers, ids, searchButton);
+                flightIds = new ArrayList<>();
 
-                bookingDates.add(new Date(1));
-                bookingStatus.add("Ciao");
-                ids.add("Ciao");
+                controller.searchBooksLoogedCustomerFilteredFlights(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter, bookingDates, bookingStatus, flightIds, searchButton);
+
                 updateResultsPanel(callingObjects, controller, true);
 
             }
@@ -439,13 +436,13 @@ public class SearchBookingPanel extends JPanel {
 
             bookingDates = new ArrayList<>();
             bookingStatus = new ArrayList<>();
-            ids = new ArrayList<>();
+            flightIds = new ArrayList<>();
             //controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
              //       bookingDates, numPassengers, ids, searchButton);
 
             bookingDates.add(new Date(1));
             bookingStatus.add("Ciao");
-            ids.add("Ciao");
+            flightIds.add("Ciao");
 
             updateResultsPanel(callingObjects, controller, true);
 
@@ -458,7 +455,7 @@ public class SearchBookingPanel extends JPanel {
     private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
 
         SearchBookingResultPanel resultsPanel = new SearchBookingResultPanel(callingObjects, controller,
-                                                                             bookingDates, bookingStatus, ids);
+                                                                             bookingDates, bookingStatus, flightIds);
 
         resultsScrollPane.setViewportView(resultsPanel);
 

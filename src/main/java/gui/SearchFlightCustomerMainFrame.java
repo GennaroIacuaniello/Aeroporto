@@ -42,7 +42,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
 
-        //mainFrame.setMinimumSize(new Dimension(1420, 1080));
+        mainFrame.setMinimumSize(new Dimension(1420, 1080));
 
         mainFrame.getContentPane().setBackground(new Color(240, 242, 245));
 

@@ -10,9 +10,9 @@ public class PassengerPanelAdmin extends PassengerPanel {
 
     private JCheckBox checkinCheckBox;
 
-    public PassengerPanelAdmin(Controller controller, ArrayList<PassengerPanel> passengerPanelsAdmin) {
+    public PassengerPanelAdmin(Controller controller, ArrayList<PassengerPanel> passengerPanelsAdmin, ArrayList<Integer> bookedSeats) {
 
-        super(controller, passengerPanelsAdmin);
+        super(controller, passengerPanelsAdmin, bookedSeats);
     }
 
     public void addCheckinCheckBox (boolean flag) {

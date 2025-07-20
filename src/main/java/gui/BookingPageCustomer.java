@@ -40,7 +40,7 @@ public class BookingPageCustomer extends BookingPage {
 
         for (int i = 0; i < controller.getBookingController().getTicketsSize(); i++) {
 
-            PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels);
+            PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels, bookedSeats);
 
             String string = controller.getBookingController().getPassengerName(i);
             if (string != null) passengerPanel.setPassengerName(string);

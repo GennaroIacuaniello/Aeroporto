@@ -32,6 +32,7 @@ public abstract class BookingPage extends DisposableObject {
 
             protected JPanel passengerPage;
 
+                protected ArrayList<Integer> bookedSeats;
                 protected ArrayList<PassengerPanel> passengerPanels;
 
             protected JPanel modifyPanel;
@@ -288,13 +289,19 @@ public abstract class BookingPage extends DisposableObject {
 
         passengerPage.setOpaque(false);
 
+        bookedSeats = new ArrayList<Integer>();
         passengerPanels = new ArrayList<PassengerPanel> ();
 
+        setBookedSeats(controller);
         insertPassengers(controller);
 
         constraints.setConstraints (0, 2, 1, 1,
                 GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER, 0.9f, 0.9f);
         mainPanel.add (passengerPage, constraints.getConstraints());
+    }
+
+    protected void setBookedSeats (Controller controller) {
+        controller.setBookedSeats(bookedSeats);
     }
 
     abstract protected void insertPassengers (Controller controller);

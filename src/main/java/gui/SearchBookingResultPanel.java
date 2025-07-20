@@ -117,15 +117,6 @@ public class SearchBookingResultPanel extends JPanel {
         private final ArrayList<Date> bookingDates;
         private final ArrayList<String> bookingStatus;
         private final ArrayList<String> ids;
-        //private final ArrayList<String> companyNames;
-        //private final ArrayList<Date> dates;
-        //private final ArrayList<Time> departureTimes;
-        //private final ArrayList<Time> arrivalTimes;
-        //private final ArrayList<Integer> delays;
-        //private final ArrayList<String> status;
-        //private final ArrayList<Integer> maxSeats;
-        //private final ArrayList<Integer> freeSeats;
-        //private final ArrayList<String> cities;
 
         private final String[] colNames = {"Data prenotazione", "Stato prenotazione", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
 
@@ -135,15 +126,6 @@ public class SearchBookingResultPanel extends JPanel {
             this.bookingDates = (ArrayList<Date>) parBookingDates;
             this.bookingStatus = (ArrayList<String>) bookingStatus;
             this.ids = (ArrayList<String>) parIds;
-            //this.companyNames= (ArrayList<String>) parCompanyNames;
-            //this.dates = (ArrayList<Date>) parDates;
-            //this.departureTimes = (ArrayList<Time>) parDepartureTimes;
-            //this.arrivalTimes = (ArrayList<Time>) parArrivalTimes;
-            //this.delays = (ArrayList<Integer>) parDelays;
-            //this.status = (ArrayList<String>) parStatus;
-            //this.maxSeats = (ArrayList<Integer>) parMaxSeats;
-            //this.freeSeats = (ArrayList<Integer>) parFreeSeats;
-            //this.cities = (ArrayList<String>) parCities;
 
         }
 
@@ -172,7 +154,7 @@ public class SearchBookingResultPanel extends JPanel {
                 case 0:
                     return bookingDates.get(row).toString();
                 case 1:
-                    switch (bookingStatus.get(row).toString().toUpperCase()){
+                    switch (bookingStatus.get(row).toUpperCase()){
                         case "CONFIRMED":
                             return "Confermata";
                         case "PENDING":
