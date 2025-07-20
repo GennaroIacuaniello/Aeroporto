@@ -64,7 +64,7 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     public void modifyBooking (Controller controller, String idFlight, int idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
-                               ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException {
+                               ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages, String tmpTicket) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
@@ -73,8 +73,6 @@ public class BookingDAOImpl implements BookingDAO {
             ResultSet resultSet;
 
             //aggiungi ticket temporaneo
-            String tmpTicket = controller.generateTicketNumber();
-
             //prendo un passeggero per aggiungere ticket temporaneo
             query = "SELECT id_passenger FROM Ticket WHERE id_booking = ? LIMIT 1;";
             preparedQuery = connection.prepareStatement(query);
