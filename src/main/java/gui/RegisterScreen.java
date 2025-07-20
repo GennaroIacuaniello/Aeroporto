@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.lang.Math.max;
 
@@ -41,9 +43,9 @@ public class RegisterScreen extends DisposableObject {
     //Bottom options
     private JButton loginButton;
 
-    public RegisterScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public RegisterScreen(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
 
-        this.setMainFrame(callingObjects, controller);
+        this.setMainFrame(callingObjects, startingSize);
         mainFrame.setVisible(true);
 
         registerMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
@@ -55,7 +57,6 @@ public class RegisterScreen extends DisposableObject {
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
                 resizeFrame();
-
             }
         });
 
@@ -99,26 +100,24 @@ public class RegisterScreen extends DisposableObject {
                 PasswordCode pc = passwordField.isValidPassword(passwordField.getPassword());
                 String warningMessage = null;
                 switch (pc){
-                    case tooShort -> warningMessage = "La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri";
-                    case tooLong -> warningMessage = "La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri";
-                    case mustContainLowercase -> warningMessage = "La password deve contenere almeno un carattere minuscolo";
-                    case mustContainUppercase -> warningMessage = "La password deve contenere almeno un carattere maiuscolo";
-                    case mustContainDigit -> warningMessage = "La password deve contenere almeno una cifra";
-                    case mustContainSpecial -> warningMessage = "La password deve contenere almeno uno dei seguenti caratteri: <br>" + PasswordHandler.allowedSpecialCharacters;
-                    case characterNotAllowed -> warningMessage = "La password inserita contiene un carattere non valido. <br>" +
-                            "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet;
+                    case tooShort -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri</html>";
+                    case tooLong -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri</html>";
+                    case mustContainLowercase -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
+                    case mustContainUppercase -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
+                    case mustContainDigit -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
+                    case mustContainSpecial -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
+                            PasswordHandler.allowedSpecialCharacters + "</html>";
+                    case characterNotAllowed -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
+                            "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet + "</html>";
                 }
 
-                System.out.println(passwordField.getHashedPassword());
                 if(pc == PasswordCode.validPassword){
-                    if(usernameTextField.getText().length() < 4 || usernameTextField.getText().length() > 20){
-                        warningMessage = "L'username deve avere tra i 4 e i 20 caratteri";
+                    if(!isValidUsername()){
+                        warningMessage = "<html>L'username deve avere tra i 4 e i 20 caratteri</html>" +
+                                "e può contenere solo lettere, numeri, o i caratteri punto, trattino e underscore</html>";
                         new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
                     } else if(!isValidMail()){
-                        warningMessage = "Mail non valida, accettiamo i domini <br>" +
-                                "@aeroportodinapoli.it (riservata)<br>" +
-                                "@adn.it (riservata)<br>" +
-                                "@gmail.com";
+                        warningMessage = "<html>Mail non valida</html>";
                         new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
                     } else{
                         //TODO: inserisci l'utente nel DAO (se nome utente (e mail) vanno bene)
@@ -146,12 +145,13 @@ public class RegisterScreen extends DisposableObject {
         });
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension startingSize) {
         mainFrame = new JFrame("RegisterScreen");
+        mainFrame.setSize(startingSize);
         callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.add(registerScreen);
-        mainFrame.pack();
+        //mainFrame.pack();
     }
 
     private void resizeFrame() {
@@ -181,9 +181,27 @@ public class RegisterScreen extends DisposableObject {
 
     private boolean isValidMail(){
         //this would be a more robust function in a real world application
-        return mailTextField.getText().isEmpty() || mailTextField.getText().endsWith("@aeroportodinapoli.it") ||
-               mailTextField.getText().endsWith("@adn.it") || mailTextField.getText().endsWith("@gmail.com");
+        //right now, it only checks that it has at least one word character, if it has a dot it needs
+        //at least another word character then you need a @ character, then a word character, a dot and
+        //another word character, so it allows stuff like _@_._
+        if(mailTextField.getText().length() <= 50){
+            Pattern pattern = Pattern.compile("[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*[.][a-zA-Z]+");
+            Matcher matcher = pattern.matcher(mailTextField.getText());
+            return matcher.matches();
+
+        }
+        return false;
     }
+
+    private boolean isValidUsername() {
+        if(usernameTextField.getText().length() >= 4 && usernameTextField.getText().length() <= 20){
+            Pattern pattern = Pattern.compile("[a-zA-Z]+(\\w\\.-)*[a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(usernameTextField.getText());
+            return matcher.matches();
+        }
+        return false;
+    }
+
 
     @Override
     public JFrame getFrame() {

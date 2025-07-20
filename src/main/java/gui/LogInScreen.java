@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.lang.Math.max;
 
@@ -57,7 +59,7 @@ public class LogInScreen extends DisposableObject {
         resizeFrame();
 
 
-        //todo ELIMINA QUESTE DUE RIGHE
+        //todo: ELIMINA QUESTE DUE RIGHE
         usernameTextField.setText("customer_user1");
         passwordField.setText("Customer_User1");
         //usernameTextField.setText("admin_user1");
@@ -105,7 +107,7 @@ public class LogInScreen extends DisposableObject {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.setVisible(false);
-                new RegisterScreen(callingObjects, controller);
+                new RegisterScreen(callingObjects, controller, mainFrame.getSize());
                 doOnDispose(callingObjects, controller);
                 mainFrame.dispose();
             }
@@ -177,22 +179,7 @@ public class LogInScreen extends DisposableObject {
         mainFrame.setVisible(true);
     }
 
-    private boolean isValidUsername(String username) {
-        String validCharaters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
-        for (int i = 0; i < username.length(); i++) {
-            if (validCharaters.indexOf(username.charAt(i)) == -1) { //indexOf returns -1 if string does not contain character
-                return false;
-            }
-        }
-        return true;
-    }
 
-    private boolean validateLogin(String username, PasswordHandler password, Controller controller) {
-
-        controller.verifyUser(username, password.getHashedPassword(), logInButton);
-
-        return true;
-    }
 
     private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
         usernameTextField.setText("");

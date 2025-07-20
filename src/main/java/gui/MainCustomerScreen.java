@@ -134,6 +134,7 @@ public class MainCustomerScreen extends DisposableObject {
         arrivingTable = new ImminentFlightsTable(data, columnTitle);
 
         arrivingTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 showFlightInfoEvent(mouseEvent);
             }
@@ -177,6 +178,7 @@ public class MainCustomerScreen extends DisposableObject {
         departingTable = new ImminentFlightsTable(data, columnTitles);
 
         departingTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 showFlightInfoEvent(mouseEvent);
 
