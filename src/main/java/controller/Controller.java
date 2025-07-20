@@ -553,7 +553,14 @@ public class Controller {
 
     public boolean verifyUser(String loggingInfo, String hashedPassword, JButton loginButton){
 
-        if(loggingInfo.length() < 4){
+        //Avoid opening DB if it is obvious that it won't contain the user
+        if(loggingInfo.contains("@")){
+            if (!userController.isValidMail(loggingInfo)){
+                new FloatingMessage("<html>User o mail non valida</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
+                return false;
+            }
+        } else if(!userController.isValidUsername(loggingInfo)){
+            new FloatingMessage("<html>User o mail non valida</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
             return false;
         }
 

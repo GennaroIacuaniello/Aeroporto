@@ -11,8 +11,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.lang.Math.max;
 
@@ -112,11 +110,11 @@ public class RegisterScreen extends DisposableObject {
                 }
 
                 if(pc == PasswordCode.validPassword){
-                    if(!isValidUsername()){
+                    if(!controller.getUserController().isValidUsername(usernameTextField.getText())){
                         warningMessage = "<html>L'username deve avere tra i 4 e i 20 caratteri</html>" +
                                 "e può contenere solo lettere, numeri, o i caratteri punto, trattino e underscore</html>";
                         new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
-                    } else if(!isValidMail()){
+                    } else if(!controller.getUserController().isValidMail(mailTextField.getText())){
                         warningMessage = "<html>Mail non valida</html>";
                         new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
                     } else{
@@ -178,30 +176,6 @@ public class RegisterScreen extends DisposableObject {
     private void toggleRegisterButton(){
         registerButton.setEnabled(!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0);
     }
-
-    private boolean isValidMail(){
-        //this would be a more robust function in a real world application
-        //right now, it only checks that it has at least one word character, if it has a dot it needs
-        //at least another word character then you need a @ character, then a word character, a dot and
-        //another word character, so it allows stuff like _@_._
-        if(mailTextField.getText().length() <= 50){
-            Pattern pattern = Pattern.compile("[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*[.][a-zA-Z]+");
-            Matcher matcher = pattern.matcher(mailTextField.getText());
-            return matcher.matches();
-
-        }
-        return false;
-    }
-
-    private boolean isValidUsername() {
-        if(usernameTextField.getText().length() >= 4 && usernameTextField.getText().length() <= 20){
-            Pattern pattern = Pattern.compile("[a-zA-Z]+(\\w\\.-)*[a-zA-Z0-9]");
-            Matcher matcher = pattern.matcher(usernameTextField.getText());
-            return matcher.matches();
-        }
-        return false;
-    }
-
 
     @Override
     public JFrame getFrame() {

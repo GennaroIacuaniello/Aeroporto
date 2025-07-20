@@ -9,8 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.lang.Math.max;
 
