@@ -51,10 +51,15 @@ public class SearchBookingResultPanel extends JPanel {
 
                     //TO DO cambiare la pagina che viene aperta
 
-                    controller.getFlightController().setFlight(index);
+                    controller.getFlightController().setBookingResultSelectedFlight(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId());
 
-                    new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                    controller.getBookingController().setBookingResultSelectedBooking(index);
+
+                    new BookingPageCustomer(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+
+                    //new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                    //        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
                     callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 

@@ -3,7 +3,6 @@ package controller;
 import dao.FlightDAO;
 import gui.FloatingMessage;
 import gui.PassengerPanel;
-import implementazioniPostgresDAO.BookingDAOImpl;
 import implementazioniPostgresDAO.FlightDAOImpl;
 import model.*;
 
@@ -14,7 +13,6 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class FlightController {
@@ -90,6 +88,18 @@ public class FlightController {
     public void setFlight(int index) {
 
         this.flight = searchResult.get(index);
+
+    }
+
+    public void setBookingResultSelectedFlight(String flightId) {
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId)){
+                this.flight = value;
+                break;
+            }
+
+        }
 
     }
 

@@ -44,7 +44,7 @@ public class MenuPanelCustomer extends JPanel {
                             if (!callingObjects.getLast().getFrame().getTitle().equals("Le mie prenotazioni")) {
 
                                 new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), true);
 
                                 callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                             }

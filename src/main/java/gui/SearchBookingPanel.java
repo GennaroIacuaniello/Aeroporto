@@ -58,7 +58,7 @@ public class SearchBookingPanel extends JPanel {
     ArrayList<String> bookingStatus = new ArrayList<>();
     ArrayList<String> flightIds = new ArrayList<>();
 
-    public SearchBookingPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public SearchBookingPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         super();
 
@@ -72,10 +72,10 @@ public class SearchBookingPanel extends JPanel {
 
         this.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
 
-        setComponents(callingObjects, controller);
+        setComponents(callingObjects, controller, ifOpenedFromMenu);
     }
 
-    private void setComponents(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setComponents(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         JPanel parametersPanel = createMainFilterPanel();
 
@@ -96,7 +96,9 @@ public class SearchBookingPanel extends JPanel {
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
         this.add(resultsScrollPane, constraints.getConstraints());
 
-        controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, flightIds, searchButton);
+        if(ifOpenedFromMenu){
+            controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, flightIds, searchButton);
+        }
 
         updateResultsPanel(callingObjects, controller, false);
     }
