@@ -41,7 +41,7 @@ public class BookingPageAdmin extends BookingPage {
             if (controller.getFlightController().checkBookingConfirm(j)) {
 
                 for (int i = 0; i < controller.getFlightController().getBookingSize(j); i++) {
-                    PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels);
+                    PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels, bookedSeats);
 
                     String string = controller.getFlightController().getPassengerNameFromBooking(j, i);
                     if (string != null) passengerPanel.setPassengerName(string);

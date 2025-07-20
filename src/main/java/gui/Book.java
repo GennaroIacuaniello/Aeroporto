@@ -39,7 +39,7 @@ public class Book extends BookingModifyPage {
             public void actionPerformed(ActionEvent e) {
 
                 if (controller.getFlightController().getFreeSeats() - passengerPanels.size() > 0)
-                    insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
+                    insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels, bookedSeats));
                 else
                     new FloatingMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton, FloatingMessage.ERROR_MESSAGE);
             }
@@ -126,6 +126,6 @@ public class Book extends BookingModifyPage {
     @Override
     protected void insertPassengers (Controller controller) {
 
-        insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
+        insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels, bookedSeats));
     }
 }

@@ -16,6 +16,7 @@ public class BookingController {
     private Booking booking;
     private ArrayList<Booking> searchBookingResult;
     private ArrayList<Integer> searchBookingResultIds;
+    private int id;
 
     public BookingController() {}
 
@@ -49,6 +50,14 @@ public class BookingController {
         }
 
         return passengers;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getTicketsSize() {
@@ -104,7 +113,16 @@ public class BookingController {
         return this.booking.getStatus();
     }
 
-    public void deleteBooking() {}
+    public void deleteBooking() {
+
+        try {
+            BookingDAOImpl bookingDAO = new BookingDAOImpl();
+
+            bookingDAO.deleteBooking(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Ticket getTicket(int index) {
         return booking.getTickets().get(index);

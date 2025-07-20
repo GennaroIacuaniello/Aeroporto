@@ -16,7 +16,7 @@ public class SeatChooser extends JFrame {
     private int offset;
     private int seat;
 
-    public SeatChooser(Controller controller, PassengerPanel callingPanel, ArrayList<PassengerPanel> passengerPanels) {
+    public SeatChooser(Controller controller, PassengerPanel callingPanel, ArrayList<PassengerPanel> passengerPanels, ArrayList<Integer> bookedSeats) {
 
         super("Seat Chooser");
 
@@ -93,19 +93,17 @@ public class SeatChooser extends JFrame {
             constraints.setConstraints(i % 6 + offset, i / 6, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             this.add(seatButtons.get(i), constraints.getConstraints());
         }
-        /*
-        for (Passenger passenger : controller.getFlightController().getPassengers()) {
-
-            seatButtons.get(passenger.get_Seat()).setEnabled(false);
-        }
-        */
-
+/*
         for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
 
             if (controller.checkBooking(i))
                 for (int j = 0; j < controller.getFlightController().getBookingSize(i); j++) {
                     seatButtons.get(controller.getFlightController().getPassengerSeatFromBooking(i, j)).setEnabled(false);
                 }
+        }
+*/
+        for (Integer bookedSeat : bookedSeats) {
+            seatButtons.get(bookedSeat).setEnabled(false);
         }
 
         for (PassengerPanel passengerPanel : passengerPanels) {
