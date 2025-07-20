@@ -1362,20 +1362,21 @@ BEGIN
 	
 	SELECT * INTO associated_flight 
 	FROM FLIGHT
-	WHERE id_flight = NEW.id_flight;
+	WHERE id_flight = OLD.id_flight;
 
 	SELECT * INTO associated_booking
 	FROM BOOKING B
-	WHERE B.id_booking = NEW.id_booking;
+	WHERE B.id_booking = OLD.id_booking;
 
 	IF associated_booking.booking_status <> 'CANCELLED' THEN
 
 		UPDATE FLIGHT
 		SET free_seats = free_seats + 1
-		WHERE id_flight = NEW.id_flight;
+		WHERE id_flight = OLD.id_flight;
 
 	END IF;
-	RETURN NEW;
+	
+	RETURN OLD;
 
 END;
 $$ LANGUAGE plpgsql;
