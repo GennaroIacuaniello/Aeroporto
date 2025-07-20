@@ -172,52 +172,18 @@ public class SearchBookingResultPanel extends JPanel {
                 case 0:
                     return bookingDates.get(row).toString();
                 case 1:
-                    return bookingStatus.get(row);
+                    switch (bookingStatus.get(row).toString().toUpperCase()){
+                        case "CONFIRMED":
+                            return "Confermata";
+                        case "PENDING":
+                            return "In attesa";
+                        case "CANCELLED":
+                            return "Cancellata";
+                        default:
+                            return null;
+                    }
                 case 2:
-                    return "ciao";//controller.getFlightController().getCompanyName(row);
-                case 3:
-                    /*if (controller.getFlightController().getFlightType(row))
-                        return "Napoli → " + controller.getFlightController().getCity(row);
-                    else
-                        return controller.getFlightController().getCity(row) + " → Napoli";*/
-                    return "ciao";
-                case 4:
-                    return "ciao";//controller.getFlightController().getDate(row).toString();
-                case 5:
-                    /*hours = controller.getFlightController().getDepartureTime(row).getHours();
-                    minutes = controller.getFlightController().getDepartureTime(row).getMinutes();
-
-                    if(hours < 10){
-                        if(minutes < 10)
-                            return  "0" + hours +  ":" + "0" + minutes;
-                        else
-                            return  "0" + hours +  ":" + minutes;
-                    }else{
-                        if(minutes < 10)
-                            return  hours +  ":" + "0" + minutes;
-                        else
-                            return  hours +  ":" + minutes;
-                    }*/
-                    return "ciao";
-
-                case 6:
-                    /*hours = controller.getFlightController().getArrivalTime(row).getHours();
-                    minutes = controller.getFlightController().getArrivalTime(row).getMinutes();
-
-                    if(hours < 10){
-                        if(minutes < 10)
-                            return  "0" + hours +  ":" + "0" + minutes;
-                        else
-                            return  "0" + hours +  ":" + minutes;
-                    }else{
-                        if(minutes < 10)
-                            return  hours +  ":" + "0" + minutes;
-                        else
-                            return  hours +  ":" + minutes;
-                    }*/
-                    return "ciao";
-                case 7:
-                    /*switch (controller.getFlightController().getStatusString(row).toUpperCase()){
+                    switch (controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getStatus().toString().toUpperCase()){
                         case "PROGRAMMED":
                             return "In programma";
                         case "CANCELLED":
@@ -234,8 +200,66 @@ public class SearchBookingResultPanel extends JPanel {
                             return "Atterrato";
                         default:
                             return null;
-                    }*/
-                    return "ciao";
+                    }
+                case 3:
+                    if (controller.getFlightController().getBookingResultSelectedFlightFlightType(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()))
+                        return "Napoli → " + controller.getFlightController().getBookingResultSelectedFlightCity(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId());
+                    else
+                        return controller.getFlightController().getBookingResultSelectedFlightCity(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()) + " → Napoli";
+                case 4:
+                    return controller.getFlightController().getBookingResultSelectedFlightDate(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()).toString();
+                case 5:
+                    hours = controller.getFlightController().getBookingResultSelectedFlightDepartureTime(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()).getHours();
+                    minutes = controller.getFlightController().getBookingResultSelectedFlightDepartureTime(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()).getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }
+
+                case 6:
+                    hours = controller.getFlightController().getBookingResultSelectedFlightArrivalTime(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()).getHours();
+                    minutes = controller.getFlightController().getBookingResultSelectedFlightArrivalTime(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()).getMinutes();
+
+                    if(hours < 10){
+                        if(minutes < 10)
+                            return  "0" + hours +  ":" + "0" + minutes;
+                        else
+                            return  "0" + hours +  ":" + minutes;
+                    }else{
+                        if(minutes < 10)
+                            return  hours +  ":" + "0" + minutes;
+                        else
+                            return  hours +  ":" + minutes;
+                    }
+
+                case 7:
+                    switch (controller.getFlightController().getBookingResultSelectedFlightStatusString(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()).toUpperCase()){
+                        case "PROGRAMMED":
+                            return "In programma";
+                        case "CANCELLED":
+                            return "Cancellato";
+                        case "DELAYED":
+                            return "In ritardo";
+                        case "ABOUT_TO_DEPART":
+                            return "In partenza";
+                        case "DEPARTED":
+                            return "Partito";
+                        case "ABOUT_TO_ARRIVE":
+                            return "In arrivo";
+                        case "LANDED":
+                            return "Atterrato";
+                        default:
+                            return null;
+                    }
+
                 case 8:
                     return "Info";
                 default:

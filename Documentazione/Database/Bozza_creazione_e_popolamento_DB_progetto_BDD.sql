@@ -3308,7 +3308,13 @@ INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, i
 ('0000000000031', 1, false, 13, 'FRNRSS82A01F111A', 'VY1212'),
 -- Booking 14 (PENDING, VY1212 - DELAYED flight) - 2 tickets
 ('0000000000032', NULL, false, 14, 'SFAMNC91B02G222B', 'VY1212'),
-('0000000000033', NULL, false, 14, 'LSSCSC77C03H333C', 'VY1212');
+('0000000000033', NULL, false, 14, 'LSSCSC77C03H333C', 'VY1212'),
+-- Booking 15 (CONFIRMED, AZ1001 - PROGRAMMED flight) - 2 tickets
+('0000000000034', NULL, false, 15, 'SFAMNC91B02G222B', 'AZ1001'),
+('0000000000035', NULL, false, 15, 'LSSCSC77C03H333C', 'AZ1001'),
+-- Booking 16 (CONFIRMED, AZ1001 - PROGRAMMED flight) - 2 tickets
+('0000000000036', NULL, false, 15, 'MRORSS80A15H501F', 'AZ1001'),
+('0000000000037', NULL, false, 15, 'NNABNC92C22G273J', 'AZ1001');
 
 
 -- Dati per la tabella Luggage

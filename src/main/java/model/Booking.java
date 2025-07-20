@@ -147,7 +147,7 @@ public class Booking {
     }
 
     public Booking(BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight,
-                   String parTicketNumber, int parSeat, boolean parCheckedIn,
+                   String parTicketNumber, Integer parSeat, boolean parCheckedIn,
                    String parFirstName, String parLastName, String parSSN, Date parBirthDate) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
 
 
