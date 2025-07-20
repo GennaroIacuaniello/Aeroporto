@@ -113,7 +113,16 @@ public class BookingController {
         return this.booking.getStatus();
     }
 
-    public void deleteBooking() {}
+    public void deleteBooking() {
+
+        try {
+            BookingDAOImpl bookingDAO = new BookingDAOImpl();
+
+            bookingDAO.deleteBooking(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Ticket getTicket(int index) {
         return booking.getTickets().get(index);

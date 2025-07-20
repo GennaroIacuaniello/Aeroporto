@@ -285,12 +285,17 @@ public class BookingDAOImpl implements BookingDAO {
             rs.close();
 
             //connection.close(); non serve perchè la fa in automatico il try-with-resources
-
-
         }
+    }
 
+    public void deleteBooking (int bookingId) throws SQLException {
 
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
-
+            String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";
+            PreparedStatement preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setInt(1, bookingId);
+            preparedQuery.executeUpdate();
+        }
     }
 }
