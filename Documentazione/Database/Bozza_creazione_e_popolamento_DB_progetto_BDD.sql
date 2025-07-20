@@ -2676,7 +2676,7 @@ EXECUTE FUNCTION fun_simulate_connection_when_arriving_departed();
 
 --TRIGGER UN VOLO DEPARTING DEPARTED O LANDED NON HA PRENOTAZIONI PENDING
 
-CREATE OR REPLACE FUNCTION fun_check_on_booking_status_after_departing()
+CREATE OR REPLACE FUNCTION fun_check_on_booking_status_after_departing_dep()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -2702,10 +2702,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_on_booking_status_after_departing
+CREATE OR REPLACE TRIGGER check_on_booking_status_after_departing_dep
 BEFORE INSERT OR UPDATE OF flight_status ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_on_booking_status_after_departing();
+EXECUTE FUNCTION fun_check_on_booking_status_after_departing_dep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -2713,7 +2713,7 @@ EXECUTE FUNCTION fun_check_on_booking_status_after_departing();
 --non serve il controllo su DEPARTED, perchè il trigger simulate_connection_when_arriving_departed le cancella BEFORE UPDATE, 
 --mentre, se viene inserito direttamente un volo come DEPARTED, allora non posso essere inserite prenotazioni PENDING
 
-CREATE OR REPLACE FUNCTION fun_check_on_booking_status_after_departing()
+CREATE OR REPLACE FUNCTION fun_check_on_booking_status_after_departing_arr()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -2738,10 +2738,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER check_on_booking_status_after_departing
+CREATE OR REPLACE TRIGGER check_on_booking_status_after_departing_arr
 BEFORE INSERT OR UPDATE OF flight_status ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_check_on_booking_status_after_departing();
+EXECUTE FUNCTION fun_check_on_booking_status_after_departing_arr();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -3466,7 +3466,7 @@ EXECUTE FUNCTION fun_block_ins_canc_booking();
 
 --TRIGGER NON SI POSSONO INSERIRE TICKET CON CHECKED-IN GIà A TRUE
 
-CREATE OR REPLACE FUNCTION fun_block_ins_canc_booking()
+CREATE OR REPLACE FUNCTION fun_block_ins_checked_in_tickets()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -3482,10 +3482,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_ins_canc_booking
+CREATE OR REPLACE TRIGGER block_ins_checked_in_tickets
 BEFORE INSERT ON TICKET
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_ins_canc_booking();
+EXECUTE FUNCTION fun_block_ins_checked_in_tickets();
 
 -------------------------------------------------------------------------------------------------------------------------
 
