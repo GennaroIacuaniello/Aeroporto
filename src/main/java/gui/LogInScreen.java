@@ -195,7 +195,6 @@ public class LogInScreen extends DisposableObject {
     }
 
     private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        controller.setCustomerNUser(usernameTextField.getText(), "ciao@dinuovo", passwordField.getHashedPassword(), 0);
         usernameTextField.setText("");
         passwordField.setText("");
         logInButton.setEnabled(false);
