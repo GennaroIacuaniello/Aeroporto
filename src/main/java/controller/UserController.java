@@ -3,14 +3,14 @@ package controller;
 import model.User;
 
 public class UserController {
-    private int loggedUserId;
+    private Integer loggedUserId;
     private User loggedUser;
 
-    public int getLoggedUserId() {
+    public Integer getLoggedUserId() {
         return loggedUserId;
     }
 
-    public void setLoggedUserId(int id) {
+    public void setLoggedUserId(Integer id) {
         this.loggedUserId  = id;
     }
 
@@ -27,8 +27,9 @@ public class UserController {
         loggedUser = new User(username, email, hashedPassword);
     }
 
-    public void setLoggedUser(User loggedUser) {
+    public void setLoggedUser(User loggedUser, Integer id) {
         this.loggedUser = loggedUser;
+        this.loggedUserId = id;
     }
 
     public User getLoggedUser() {

@@ -14,6 +14,7 @@ import java.util.List;
 
 public class BookingController {
     private Booking booking;
+    private ArrayList<Booking> searchBookingResult;
 
     public BookingController() {}
 
@@ -110,5 +111,13 @@ public class BookingController {
 
     public Date getPassengerDate(int index) {
         return getPassenger(index).getBirthDate();
+    }
+
+    public List<Booking> getSearchBookingResult() {
+        return searchBookingResult;
+    }
+
+    public void setSearchBookingResult(List<Booking> searchBookingResult) {
+        this.searchBookingResult = (ArrayList<Booking>) searchBookingResult;
     }
 }

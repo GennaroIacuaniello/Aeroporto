@@ -151,7 +151,7 @@ public class Ticket {
 
     }
 
-    public Ticket(String parTicketNumber, int parSeat, boolean parCheckedIn, String parId, String parCompanyName, Date parDate,
+    public Ticket(String parTicketNumber, Integer parSeat, boolean parCheckedIn, String parId, String parCompanyName, Date parDate,
                   Time parDepartureTime, Time parArrivalTime, FlightStatus parFlightStatus, int parMaxSeats, int parFreeSeats,
                   String parOrigin, int parArrivalDelay,
                   BookingStatus parBookingStatus, Customer parBuyer, Date parBookingDate,
@@ -159,6 +159,13 @@ public class Ticket {
 
         if(parTicketNumber != null){
             this.ticketNumber = parTicketNumber;
+
+            if(parSeat == null){
+                this.seat = -1;
+            }else{
+                this.seat = parSeat;
+            }
+
             this.flight = new Arriving(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parFlightStatus, parMaxSeats, parFreeSeats,
                     parOrigin, parArrivalDelay);
             this.booking = new Booking(parBookingStatus, parBuyer, this.flight, parBookingDate, this);
@@ -166,6 +173,42 @@ public class Ticket {
         }else{
             throw new InvalidTicket("Un biglietto deve avere un ticket number!");
         }
+
+    }
+
+    public Ticket(String parTicketNumber, Integer parSeat, boolean parCheckedIn, Flight parFlight, Booking parBooking,
+                  String parFirstName, String parLastName, String parSSN, Date parBirthDate) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
+
+        if(parTicketNumber != null){
+
+            this.ticketNumber = parTicketNumber;
+            if(parSeat == null){
+                this.seat = -1;
+            }else{
+                this.seat = parSeat;
+            }
+            this.checkedIn = parCheckedIn;
+
+            if(parFlight != null){
+                this.flight = parFlight;
+            }else{
+                throw new InvalidFlight("Un biglietto deve essere riferito ad un volo!");
+            }
+
+            if(parBooking != null){
+                this.booking = parBooking;
+            }else{
+                throw new InvalidBooking("Un biglietto deve essere associato ad una prenotazione!");
+            }
+
+            this.passenger = new Passenger(parFirstName, parLastName, parSSN, parBirthDate, this);
+
+        }else{
+            throw new InvalidTicket("Un biglietto deve avere un ticket number!");
+        }
+
+
+
 
     }
 

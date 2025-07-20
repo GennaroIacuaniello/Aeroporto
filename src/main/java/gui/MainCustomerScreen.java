@@ -206,8 +206,8 @@ public class MainCustomerScreen extends DisposableObject {
 
     @Override
     public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        controller.getCustomerController().setLoggedCustomer(null);
-        controller.getUserController().setLoggedUser(null);
+        controller.getCustomerController().setLoggedCustomer(null, null);
+        controller.getUserController().setLoggedUser(null, null);
     }
 
     public JFrame getFrame() {
