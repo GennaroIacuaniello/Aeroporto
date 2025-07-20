@@ -92,6 +92,12 @@ public class FlightController {
 
     }
 
+    public void setBookingResultSelectedFlight(int index) {
+
+        this.flight = searchBookingResult.get(index);
+
+    }
+
     public Flight getFlight() {
         return flight;
     }
@@ -108,6 +114,10 @@ public class FlightController {
         return searchResult.get(index).getCompanyName();
     }
 
+    public String getBookingResultSelectedFlightCompanyName (int index) {
+        return searchBookingResult.get(index).getCompanyName();
+    }
+
     public Date getFlightDate () {
         return flight.getDate();
     }
@@ -120,12 +130,30 @@ public class FlightController {
         return searchResult.get(index).getDepartureTime();
     }
 
+    public Time getBookingResultSelectedFlightDepartureTime (String flightId) {
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId))
+                return value.getDepartureTime();
+        }
+        return null;
+    }
+
     public Time getArrivalTime () {
         return flight.getArrivalTime();
     }
 
     public Time getArrivalTime (int index) {
         return searchResult.get(index).getArrivalTime();
+    }
+
+    public Time getBookingResultSelectedFlightArrivalTime (String flightId) {
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId))
+                return value.getArrivalTime();
+        }
+        return null;
     }
 
     public int getMaxSeats () {
@@ -241,6 +269,15 @@ public class FlightController {
         return searchResult.get(index).getStatus().toString();
     }
 
+    public String getBookingResultSelectedFlightStatusString (String flightId) {
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId))
+                return value.getStatus().toString();
+        }
+        return null;
+    }
+
     public boolean checkBookingConfirm (int index) {
 
         return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED);
@@ -270,8 +307,31 @@ public class FlightController {
             return ((Departing) searchResult.get(index)).getDestination();
     }
 
+    public String getBookingResultSelectedFlightCity (String flightId) {
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId))
+                if (value instanceof Arriving) {
+                    return ((Arriving) value).getOrigin();
+                } else {
+                    return ((Departing) value).getDestination();
+                }
+        }
+        return null;
+    }
+
     public Date getDate (int index){
         return searchResult.get(index).getDate();
+    }
+
+    public Date getBookingResultSelectedFlightDate (String flightId){
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId))
+                return value.getDate();
+        }
+
+        return null;
     }
 
     public void startCheckin () {}
@@ -282,6 +342,16 @@ public class FlightController {
 
         return searchResult.get(index) instanceof Departing;
 
+    }
+
+    public boolean getBookingResultSelectedFlightFlightType(String flightId) {
+
+        for (Flight value : searchBookingResult) {
+            if (value.getId().equals(flightId))
+                return value instanceof Departing;
+        }
+
+        return false;
     }
 
     public List<Flight> getSearchBookingResult() {

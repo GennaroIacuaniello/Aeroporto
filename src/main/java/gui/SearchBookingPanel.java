@@ -72,8 +72,6 @@ public class SearchBookingPanel extends JPanel {
 
         this.setBorder(BorderFactory.createCompoundBorder(lineBorder, emptyBorder));
 
-        //controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, ids);
-
         setComponents(callingObjects, controller);
     }
 
@@ -97,6 +95,8 @@ public class SearchBookingPanel extends JPanel {
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
         this.add(resultsScrollPane, constraints.getConstraints());
+
+        controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, ids, searchButton);
 
         updateResultsPanel(callingObjects, controller, false);
     }

@@ -307,7 +307,6 @@ public class Controller {
                                             cities, types, bookingDates, bookingStatus, bookingIds);
 
 
-
         } catch (SQLException e) {
             new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", searchButton, FloatingMessage.ERROR_MESSAGE);
         }
@@ -315,6 +314,7 @@ public class Controller {
         ArrayList<String> actualIds = new ArrayList<>();
 
         bookingController.setSearchBookingResult(new ArrayList<>());
+        bookingController.setSearchBookingResultIds(new ArrayList<>());
         flightController.setSearchBookingResult(new ArrayList<>());
 
         for(int i = 0; i < flightIds.size(); i++){
@@ -353,17 +353,22 @@ public class Controller {
             TicketDAO ticketDao = new TicketDAOImpl();
 
             try{
+
                 ticketDao.getAllTicketBooking(bookingIds.get(i), ticketNumbers, seats, checkedIns, passengerSSNs, firstNames, lastNames, birthDates);
+
             } catch (SQLException e) {
+
                 new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
             }
 
             try{
                 if(!ticketNumbers.isEmpty()) {
+
                     bookingController.getSearchBookingResult().add(new Booking(BookingStatus.valueOf(bookingStatus.get(i)), bookingDates.get(i),
                                                                                     customerController.getLoggedCustomer(), flightController.getSearchBookingResult().getLast(),
                                                                                     ticketNumbers.getFirst(), seats.getFirst(), checkedIns.getFirst(),
                                                                                     firstNames.getFirst(), lastNames.getFirst(), passengerSSNs.getFirst(), birthDates.getFirst()));
+                    bookingController.getSearchBookingResultIds().add(bookingIds.get(i));
                 }else{
                     throw new InvalidTicket("");
                 }
@@ -377,6 +382,7 @@ public class Controller {
                     bookingController.getSearchBookingResult().getLast().getTickets().add(new Ticket(ticketNumbers.get(j), seats.get(j), checkedIns.get(j),
                                                                                                     flightController.getSearchBookingResult().getLast(), bookingController.getSearchBookingResult().getLast(),
                                                                                                     firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
+
                 }catch (Exception e){
                     new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
                 }
