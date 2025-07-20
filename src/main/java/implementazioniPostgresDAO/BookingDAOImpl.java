@@ -420,6 +420,106 @@ public class BookingDAOImpl implements BookingDAO {
 
     }
 
+    public void searchBooksCustomerFilteredPassengers(String firstName, String lastName, String passengerSSN, String ticketNumber,
+                                               Integer loggedCustomerId, List<String> flightIds, List<String> companyNames, List<Date> flightDates,
+                                               List<Time> departureTimes, List<Time> arrivalTimes, List<String> flightStatus,
+                                               List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types,
+                                               List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException {
+
+        String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, " +
+                       "F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
+                       "FROM FLIGHT F NATURAL JOIN BOOKING B JOIN TICKET T ON B.id_booking  = T.id_booking JOIN PASSENGER P ON T.id_passenger = P.SSN " +
+                       "WHERE B.buyer = ? ";
+
+        ArrayList<Object> searchParam = new ArrayList<>(0);
+
+        if(firstName != null && !firstName.trim().isEmpty()){
+
+            query += "AND (P.first_name ILIKE ?) ";
+            searchParam.add(firstName);
+
+        }
+
+        if(lastName != null && !lastName.trim().isEmpty()){
+
+            query += "AND (P.last_name ILIKE ?) ";
+            searchParam.add(lastName);
+
+        }
+
+        if(passengerSSN != null && !passengerSSN.trim().isEmpty()){
+
+            query += "AND (P.SSN ILIKE ?) ";
+            searchParam.add(passengerSSN);
+
+        }
+
+        if(ticketNumber != null && !ticketNumber.trim().isEmpty()){
+
+            query += "AND (T.ticket_number ILIKE ?) ";
+            searchParam.add(ticketNumber);
+
+        }
+
+        query = query.trim();
+
+        query += " ORDER BY F.departure_time;";
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, loggedCustomerId);
+
+            for(int i = 0; i < searchParam.size(); i++){
+
+                statement.setObject( i + 2, searchParam.get(i));
+
+            }
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+
+                flightIds.add(rs.getString("id_flight"));
+                companyNames.add(rs.getString("company_name"));
+
+                Timestamp tmpTS = rs.getTimestamp("departure_time");
+                flightDates.add(new java.sql.Date(tmpTS.getTime()));
+                departureTimes.add(new java.sql.Time(tmpTS.getTime()));
+
+                tmpTS = rs.getTimestamp("arrival_time");
+                arrivalTimes.add(new java.sql.Time(tmpTS.getTime()));
+
+                flightStatus.add(rs.getString("flight_status"));
+
+                //delays.add(rs.getInt("flight_delay"));
+
+                maxSeats.add(rs.getInt("max_seats"));
+                freeSeats.add(rs.getInt("free_seats"));
+
+                cities.add(rs.getString("destination_or_origin"));
+
+                types.add(rs.getBoolean("flight_type"));
+
+                tmpTS = rs.getTimestamp("booking_time");
+                bookingDates.add(new java.sql.Date(tmpTS.getTime()));
+
+                bookingStatus.add(rs.getString("booking_status"));
+
+                bookingIds.add(rs.getInt("id_booking"));
+
+
+            }
+
+            rs.close();
+
+            //connection.close(); non serve perchè la fa in automatico il try-with-resources
+
+
+        }
+
+    }
+
     public void deleteBooking (int bookingId) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {

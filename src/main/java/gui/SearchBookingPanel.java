@@ -416,38 +416,18 @@ public class SearchBookingPanel extends JPanel {
 
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
-        String ssn = SSNField.getText();
+        String passengerSSN = SSNField.getText();
         String ticketNumber = ticketNumberField.getText();
 
-        /*if (firstName.isEmpty() && lastName.isEmpty() && ssn.isEmpty() && ticketNumber.isEmpty()) {
-
-            new FloatingMessage("Specificare almeno un criterio di ricerca per il passeggero.", searchButton, FloatingMessage.ERROR_MESSAGE);
-
-            updateResultsPanel(callingObjects, controller, true);
-
-            return;
-        }*/
-
         if (controller != null) {
-
-            // TODO: Chiamare il metodo del controller appropriato per la ricerca per passeggero.
-            // Esempio: controller.getBookingController().searchByPassenger(firstName, lastName, ssn, ticketNumber, ...);
-
 
             bookingDates = new ArrayList<>();
             bookingStatus = new ArrayList<>();
             flightIds = new ArrayList<>();
-            //controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
-             //       bookingDates, numPassengers, ids, searchButton);
 
-            bookingDates.add(new Date(1));
-            bookingStatus.add("Ciao");
-            flightIds.add("Ciao");
+            controller.searchBooksLoogedCustomerFilteredPassengers(firstName, lastName, passengerSSN, ticketNumber, bookingDates, bookingStatus, flightIds, searchButton);
 
             updateResultsPanel(callingObjects, controller, true);
-
-            //new FloatingMessage("La ricerca per passeggero non è ancora implementata.", searchButton, FloatingMessage.Er);
-            //updateResultsPanel(callingObjects, controller, true);
         }
     }
 
