@@ -3169,16 +3169,16 @@ EXECUTE FUNCTION fun_canc_future_booking_if_cust_canc();
 -- Dati per la tabella Admin
 
 INSERT INTO Admin (username, mail, hashed_password, is_deleted) VALUES
-('admin_user1', 'admin1@aeroportodinapoli.it', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', false),
-('admin_user2', 'admin2@adn.it', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', false),
-('admin_user3', 'admin3@aeroportodinapoli.it', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
-('admin_user4', 'admin4@adn.it', 'c147773260467885b57f0064379361a45484814c1945a6c4295d53a9926d24f0', false),
-('admin_user5', 'admin5@aeroportodinapoli.it', '1a9e7011d8fb6168e376a9177f525867201c1070e6a392b49de489b0365778a0', false),
-('admin_user6', 'admin6@adn.it', '2a67776a3b7d1591e1d0859550b07c87c093a0b41170cf82a6081c7f4e91a2a4', false),
-('admin_user7', 'admin7@aeroportodinapoli.it', '3a78887b4c8e2602f2e1960661c18d98d1a42b152281df93b7192d805f02b3b5', false),
-('admin_user8', 'admin8@adn.it', '4b89998c5d9f3713g3f2071772d29e09e2b53c263392eg04c8203e916g13c4c6', false),
-('admin_user9', 'admin9@aeroportodinapoli.it', '5c90009d6e0g4824h4g3182883e30f10f3c64d374403fh15d9314f027h24d5d7', false),
-('admin_user10', 'admin10@adn.it', '6d01110e7f1h5935i5h4293994f41g21g4d75e485514gi26e045i136e6e8', false),
+('admin_user1', 'admin1@aeroportodinapoli.it', '8f2628a38596df716bcbe82d945a288a4026fe341102c17a252c5ac9f14f3e21', false),
+('admin_user2', 'admin2@adn.it', '23b0c28a61c460bdd83ddfb822addab10cb80a048a0f09d840d71a0661d0b501', false),
+('admin_user3', 'admin3@aeroportodinapoli.it', '0a0bef93ebf1a4a46d4619ba074c4cd227e5a1894d305cdee59d08563a89fded', false),
+('admin_user4', 'admin4@adn.it', '5dcffc54cb821870689c429090e679f00aa859b982ea85047eb66d7984e955d5', false),
+('admin_user5', 'admin5@aeroportodinapoli.it', '54b1e0c77ed7cc8a559eb45154fb1f7bf2345cad0a2458af052f00d36981a763', false),
+('admin_user6', 'admin6@adn.it', 'd9ac9724249c3989e78fa4052134f8824caaf72a5490910b386ccc9184cb955b', false),
+('admin_user7', 'admin7@aeroportodinapoli.it', '9f71077f7bc3c493ce7e917975736a584dccdd0674dcf1b7b90118ba0f982b20', false),
+('admin_user8', 'admin8@adn.it', '48db1c8577c5fff44803ac59fc3a2b61223f3c0375e0d4388c84a1568068dbb3', false),
+('admin_user9', 'admin9@aeroportodinapoli.it', '2f22a17a1a24523491520b91da6e3196ae088c9e89b4a67e65636cef72f0551e', false),
+('admin_user10', 'admin10@adn.it', '908160ac65d0590d2e45fdc751f18d0e0b39bc4b5af0efd422e2e75bfff6e58f', false),
 ('admin_deleted1', 'deleted1@aeroportodinapoli.it', 'deletedhash1', true),
 ('admin_deleted2', 'deleted2@adn.it', 'deletedhash2', true);
 
@@ -3186,15 +3186,15 @@ INSERT INTO Admin (username, mail, hashed_password, is_deleted) VALUES
 
 INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 ('customer_user1', 'customer1@example.com', '5041ec9f7c95cf125f660ccd5d68ccd65974f4d26dfaed0fa69a45144a0e253e', false),
-('customer_user2', 'customer2@test.org', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', false),
-('customer_user3', 'customer3@mail.net', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', false),
-('customer_user4', 'customer4@service.co', 'c147773260467885b57f0064379361a45484814c1945a6c4295d53a9926d24f0', false),
-('customer_user5', 'customer5@domain.info', '1a9e7011d8fb6168e376a9177f525867201c1070e6a392b49de489b0365778a0', false),
-('customer_user6', 'customer6@web.biz', '2a67776a3b7d1591e1d0859550b07c87c093a0b41170cf82a6081c7f4e91a2a4', false),
-('customer_user7', 'customer7@company.xyz', '3a78887b4c8e2602f2e1960661c18d98d1a42b152281df93b7192d805f02b3b5', false),
-('customer_user8', 'customer8@site.club', '4b89998c5d9f3713g3f2071772d29e09e2b53c263392eg04c8203e916g13c4c6', false),
-('customer_user9', 'customer9@app.space', '5c90009d6e0g4824h4g3182883e30f10f3c64d374403fh15d9314f027h24d5d7', false),
-('customer_user10', 'customer10@data.io', '6d01110e7f1h5935i5h4293994f41g21g4d75e485514gi26e045i136e6e8', false),
+('customer_user2', 'customer2@test.org', '2954dd53b50e1c5560b586852fced6c7fc2bc259cc90b4beb8672783d1527a04', false),
+('customer_user3', 'customer3@mail.net', '09008f8ae8c3c62e11f88a927de8faadbdeca9b0eb111b1e58bd544f25ed6f58', false),
+('customer_user4', 'customer4@service.co', '3c398b9e9564b0034ce3ccd085708018d431ad5891981952ec0a4685d67b6ba3', false),
+('customer_user5', 'customer5@domain.info', '11e02f7b8746863be4c0002b2a1f01e323ce7d91751a6fbd8666d7ab47fd90a7', false),
+('customer_user6', 'customer6@web.biz', '78dd20dde39b896442f013b9b16c253b82f4502c76cc7e9acaa002a1713f046a', false),
+('customer_user7', 'customer7@company.xyz', '64a15085290faed7b6c191fdab8685de7c040d1dce565b029088afbc63dd6f1f', false),
+('customer_user8', 'customer8@site.club', 'a257c5e6d0adc435619d0ea12667c822ed63e2ee3dc0847baa43681b8ed8e8fe', false),
+('customer_user9', 'customer9@app.space', '494acb65c757bf3f4dea14a74eea462670d7fce37f676a0c3bd4fe50161286cb', false),
+('customer_user10', 'customer10@data.io', 'e8cdf30d8bb1d6f0d876b2df319e4e4aea50bf2e7c06c37cd898cbd29db0a736', false),
 ('customer_deleted1', 'deletedcust1@example.com', 'deletedhashcust1', true),
 ('customer_deleted2', 'deletedcust2@test.org', 'deletedhashcust2', true);
 
