@@ -16,6 +16,7 @@ public class BookingController {
     private Booking booking;
     private ArrayList<Booking> searchBookingResult;
     private ArrayList<Integer> searchBookingResultIds;
+    private int id;
 
     public BookingController() {}
 
@@ -49,6 +50,14 @@ public class BookingController {
         }
 
         return passengers;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public int getTicketsSize() {

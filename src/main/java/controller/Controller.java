@@ -8,10 +8,7 @@ import gui.FloatingMessage;
 
 import gui.LuggagePanel;
 import gui.PassengerPanel;
-import implementazioniPostgresDAO.AdminDAOImpl;
-import implementazioniPostgresDAO.BookingDAOImpl;
-import implementazioniPostgresDAO.CustomerDAOImpl;
-import implementazioniPostgresDAO.TicketDAOImpl;
+import implementazioniPostgresDAO.*;
 import model.*;
 
 import javax.swing.*;
@@ -448,5 +445,11 @@ public class Controller {
             return false;
         }
         return true;
+    }
+
+    public void setBookedSeats (ArrayList<Integer> bookedSeats) {
+        FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+        flightDAO.getBookedSeats(flightController.getId(), bookingController.getId(), bookedSeats);
     }
 }

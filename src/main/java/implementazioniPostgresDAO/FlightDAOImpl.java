@@ -186,4 +186,28 @@ public class FlightDAOImpl implements FlightDAO {
         }
 
     }
+
+    public void getBookedSeats(String flightId, Integer bookingId,ArrayList<Integer> bookedSeats) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            String query = "SELECT T.seat FROM Ticket NATURAL JOIN Booking WHERE id_flight LIKE ? AND booking_status <> 'cancelled'";
+
+            if (bookingId != null) query += " AND id_booking <> " + bookingId + ";";
+            else query += ";";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, flightId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+                bookedSeats.add(rs.getInt("seat"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
