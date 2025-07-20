@@ -419,4 +419,15 @@ public class BookingDAOImpl implements BookingDAO {
         }
 
     }
+
+    public void deleteBooking (int bookingId) throws SQLException {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";
+            PreparedStatement preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setInt(1, bookingId);
+            preparedQuery.executeUpdate();
+        }
+    }
 }
