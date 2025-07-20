@@ -79,7 +79,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
                 System.out.println(controller.getFlightController().getFreeSeats() + " " + passengerPanels.size() + " " + controller.getBookingController().getTicketsSize());
                 if (controller.getFlightController().getFreeSeats() - passengerPanels.size() + controller.getBookingController().getTicketsSize() > 0)
-                    insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels));
+                    insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels, bookedSeats));
                 else
                     new FloatingMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton, FloatingMessage.ERROR_MESSAGE);
             }

@@ -47,7 +47,7 @@ public class PassengerPanel extends JPanel {
     private Color displayedTextColor = new Color(128, 128, 128);
     private Color userTextColor = new Color(32, 32, 32);
 
-    public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels)
+    public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels, ArrayList<Integer> bookedSeats)
     {
         super ();
 
@@ -75,7 +75,7 @@ public class PassengerPanel extends JPanel {
                 for (PassengerPanel passengerPanel : passengerPanels) {
                     passengerPanel.getSeatButton().setEnabled(false);
                 }
-                seatChooser = new SeatChooser (controller, thisPanel(), passengerPanels);
+                seatChooser = new SeatChooser (controller, thisPanel(), passengerPanels, bookedSeats);
             }
         });
 
