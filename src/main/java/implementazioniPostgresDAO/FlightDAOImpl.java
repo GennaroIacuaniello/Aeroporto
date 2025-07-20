@@ -137,7 +137,7 @@ public class FlightDAOImpl implements FlightDAO {
                 query = query.trim();
                 query = query.substring( 0, query.length() - ("WHERE".length()) );
             }
-            query += ";";
+            query += " ORDER BY departure_time;";
 
 
         }
