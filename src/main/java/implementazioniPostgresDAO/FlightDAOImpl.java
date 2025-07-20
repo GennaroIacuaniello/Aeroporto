@@ -217,4 +217,15 @@ public class FlightDAOImpl implements FlightDAO {
             e.printStackTrace();
         }
     }
+
+    public void startCheckin(String flightId) throws SQLException {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            String query = "UPDATE Flight SET flight_status = 'ABOUT_TO_DEPART' WHERE id_flight = ?;";
+            PreparedStatement preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setString(1, flightId);
+            preparedQuery.executeUpdate();
+        }
+    }
 }

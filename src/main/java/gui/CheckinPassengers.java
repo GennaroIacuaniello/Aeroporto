@@ -59,7 +59,7 @@ public class CheckinPassengers extends BookingPageAdmin{
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                controller.getFlightController().setCheckins(passengerPanels, confirmButton);
+                controller.getFlightController().setCheckins(passengerPanels);
             }
         });
 
