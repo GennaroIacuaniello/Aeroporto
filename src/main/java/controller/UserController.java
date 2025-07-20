@@ -46,7 +46,7 @@ public class UserController {
 
     public boolean isValidUsername(String username) {
         if(username.length() >= 4 && username.length() <= 20){
-            Pattern pattern = Pattern.compile("[a-zA-Z]+(\\w\\.-)*[a-zA-Z0-9]");
+            Pattern pattern = Pattern.compile("[a-zA-Z]+(\\w|\\.|-)*[a-zA-Z0-9]");
             Matcher matcher = pattern.matcher(username);
             return matcher.matches();
         }
