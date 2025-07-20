@@ -39,56 +39,77 @@ public class BookingDAOImpl implements BookingDAO {
             //eventuale inserimento in passenger
             for (int i = 0; i < SSNs.size(); i++) {
 
-                query = "NOT EXISTS(SELECT SSN FROM Passenger WHERE SSN = '" + SSNs.get(i) + "');";
-
+                query = "NOT EXISTS(SELECT SSN FROM Passenger WHERE SSN = ?);";
                 preparedQuery = connection.prepareStatement(query);
+
+                preparedQuery.setString(1, SSNs.get(i));
+
                 resultSet = preparedQuery.executeQuery();
 
                 if (resultSet.getBoolean(0)) {
 
-                    String firstNameInsert = "first_name, ";
                     String firstNameValue = firstNames.get(i);
-                    if (firstNameValue == null) {
-                        firstNameInsert = "";
-                        firstNameValue = "";
-                    } else firstNameValue += ", ";
-
-                    String lastNameInsert = "last_name, ";
                     String lastNameValue = lastNames.get(i);
-                    if (lastNameValue == null) {
-                        lastNameInsert = "";
-                        lastNameValue = "";
-                    } else lastNameValue += ", ";
+                    Date birthDateValue = birthDates.get(i);
 
-                    String birthDateInsert = "birth_date, ";
-                    String birthDateValue = ", ";
-                    Date birthDate = birthDates.get(i);
-                    if (birthDate == null) {
-                        birthDateInsert = "";
-                        birthDateValue = "";
+
+                    String query1 = "INSERT INTO Passenger (SSN";
+                    String query2 = ") VALUES (?";
+                    String query3 = ");";
+
+                    if (firstNameValue != null) {
+                        query1 += ", first_name";
+                        query2 += ", ?";
                     }
 
-                    query = "INSERT INTO Passenger (" + firstNameInsert + lastNameInsert + birthDateInsert + "SSN) VALUES (" + firstNameValue + lastNameValue + "?" + birthDateValue + SSNs.get(i) + ");";
+                    if (lastNameValue != null) {
+                        query1 += ", last_name";
+                        query2 += ", ?";
+                    }
+
+                    if (birthDateValue != null) {
+                        query1 += ", birth_date";
+                        query2 += ", ?";
+                    }
+
+                    query = query1 + query2 + query3;
                     preparedQuery = connection.prepareStatement(query);
 
-                    if (birthDate == null) preparedQuery.setString(1, "");
-                    else preparedQuery.setDate(1, birthDate);
+                    int index = 1;
 
-                    preparedQuery.executeUpdate();
+                    preparedQuery.setString(index++, SSNs.get(i));
+                    if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
+                    if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
+                    if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
+
+                    preparedQuery.executeQuery();
                 }
             }
 
             //inserisci in ticket
             for (int i = 0; i < ticketNumbers.size(); i++) {
 
-                query = "INSERT INTO Ticket (ticket_number, seat, id_booking, id_passenger, id_flight) VALUES (?, ?, ?, ?, ?);";
+                int seatValue = seats.get(i);
+
+                String query1 = "INSERT INTO Ticket (ticket_number, ";
+                String query2 = "id_booking, id_passenger, id_flight) VALUES (?, ";
+                String query3 = "?, ?, ?);";
+
+                if (seatValue != -1) {
+                    query1 += "seat, ";
+                    query2 += "?, ";
+                }
+
+                query = query1 + query2 + query3;
                 preparedQuery = connection.prepareStatement(query);
 
-                preparedQuery.setString(1, ticketNumbers.get(i));
-                preparedQuery.setInt(2, seats.get(i));
-                preparedQuery.setInt(3, generatedId);
-                preparedQuery.setString(4, SSNs.get(i));
-                preparedQuery.setString(5, idFlight);
+                int index = 1;
+
+                preparedQuery.setString(index++, ticketNumbers.get(i));
+                if (seatValue != -1) preparedQuery.setInt(index++, seatValue);
+                preparedQuery.setInt(index++, generatedId);
+                preparedQuery.setString(index++, SSNs.get(i));
+                preparedQuery.setString(index++, idFlight);
 
                 preparedQuery.executeUpdate();
             }
