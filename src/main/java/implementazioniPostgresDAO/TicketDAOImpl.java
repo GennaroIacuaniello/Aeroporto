@@ -16,7 +16,7 @@ public class TicketDAOImpl implements TicketDAO {
 
         String query = "SELECT T.ticket_number, T.seat, T.checked_in, T.id_passenger, P.first_name, P.last_name, P.birth_date " +
                 "FROM TICKET T JOIN PASSENGER P ON T.id_passenger = P.SSN " +
-                "WHERE T.id_booking = ? ";
+                "WHERE T.id_booking = ?;";
 
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
