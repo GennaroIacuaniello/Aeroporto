@@ -65,9 +65,6 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
-<<<<<<< HEAD
-    public void getAllBooksCustomer(Integer loggedCustomerId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
-=======
     public void modifyBooking (Controller controller, String idFlight, int idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
                                ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages, String tmpTicket) throws SQLException {
 
@@ -233,19 +230,18 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
-    public void getAllBooksCustomer(int loggedUserId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
->>>>>>> 24e37cd4186b411b246f0d9885c124944ee4891b
-                                    List<Time> departureTimes, List<Time> arrivalTimes,
-                                    List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats,
-                                    List<String> cities, List<Boolean> types,
-                                    List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException{
+    public void getAllBooksCustomer(Integer loggedCustomerId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
+                                   List<Time> departureTimes, List<Time> arrivalTimes,
+                                   List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats,
+                                   List<String> cities, List<Boolean> types,
+                                   List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException{
 
 
         String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, " +
-                        "F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
-                        "FROM FLIGHT F NATURAL JOIN BOOKING B " +
-                        "WHERE B.buyer = ? "+
-                        "ORDER BY F.departure_time;";
+                "F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
+                "FROM FLIGHT F NATURAL JOIN BOOKING B " +
+                "WHERE B.buyer = ? "+
+                "ORDER BY F.departure_time;";
 
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
@@ -291,10 +287,10 @@ public class BookingDAOImpl implements BookingDAO {
             rs.close();
 
             //connection.close(); non serve perchè la fa in automatico il try-with-resources
-        }
-    }
 
-<<<<<<< HEAD
+
+        }
+
     }
 
     public void searchBooksCustomerFilteredFlights(String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
@@ -303,9 +299,9 @@ public class BookingDAOImpl implements BookingDAO {
                                                    List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException {
 
         String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, " +
-                       "F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
-                       "FROM FLIGHT F NATURAL JOIN BOOKING B " +
-                       "WHERE B.buyer = ? ";
+                "F.free_seats, F.destination_or_origin, F.flight_type, B.id_booking, B.booking_status, B.booking_time " +
+                "FROM FLIGHT F NATURAL JOIN BOOKING B " +
+                "WHERE B.buyer = ? ";
 
         ArrayList<Object> searchParam = new ArrayList<>(0);
 
@@ -331,13 +327,8 @@ public class BookingDAOImpl implements BookingDAO {
 
                 dInitialDate = java.sql.Date.valueOf(initialDate);
                 dFinalDate = java.sql.Date.valueOf(finalDate);
-=======
-    public void deleteBooking (int bookingId) throws SQLException {
->>>>>>> 24e37cd4186b411b246f0d9885c124944ee4891b
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
-<<<<<<< HEAD
                 query += "AND (F.departure_time::date BETWEEN ? AND ?) ";
 
                 searchParam.add(dInitialDate);
@@ -427,12 +418,5 @@ public class BookingDAOImpl implements BookingDAO {
 
         }
 
-=======
-            String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
-            preparedQuery.setInt(1, bookingId);
-            preparedQuery.executeUpdate();
-        }
->>>>>>> 24e37cd4186b411b246f0d9885c124944ee4891b
     }
 }
