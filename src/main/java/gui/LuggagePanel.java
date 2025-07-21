@@ -40,9 +40,9 @@ public class LuggagePanel extends JPanel {
 
         comboBox = new JComboBox<String>();
 
-        comboBox.addItem("Type");
-        comboBox.addItem("Carry-on");
-        comboBox.addItem("Checked");
+        comboBox.addItem("TYPE");
+        comboBox.addItem("CARRY_ON");
+        comboBox.addItem("CHECKED");
 
         constraints.setConstraints(0, 1, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);

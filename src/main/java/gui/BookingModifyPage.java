@@ -248,7 +248,7 @@ public class BookingModifyPage extends BookingPageCustomer {
                     controller.modifyBooking(passengerPanels, controller.getBookingStatusController().confirmed);
                     controller.goBack(callingObjects);
                 } else
-                    new FloatingMessage("I dati dei passeggeri sono incompleti", confirmButton, FloatingMessage.ERROR_MESSAGE);
+                    new FloatingMessage("I dati dei passeggeri sono incompleti o errati", confirmButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -276,7 +276,7 @@ public class BookingModifyPage extends BookingPageCustomer {
                     controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
                     controller.goBack(callingObjects);
                 } else
-                    new FloatingMessage("I codici fiscali dei passeggeri sono incompleti", savePendingButton, FloatingMessage.ERROR_MESSAGE);
+                    new FloatingMessage("I dati dei passeggeri sono incompleti o errati", savePendingButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -290,7 +290,21 @@ public class BookingModifyPage extends BookingPageCustomer {
 
     protected boolean checkSavePendingButton() {
 
-        for (PassengerPanel passengerPanel : passengerPanels) if (passengerPanel.checkPassengerCF()) return false;
+        for (PassengerPanel passengerPanel : passengerPanels) {
+
+            if (passengerPanel.checkPassengerCF()) return false;
+
+            boolean flag = false;
+
+            for (LuggagePanel  luggagePanel : passengerPanel.getLuggagesPanels()) {
+
+                if (luggagePanel.getComboBox().getSelectedIndex() == 1) {
+
+                    if (flag) return false;
+                    else flag = true;
+                }
+            }
+        }
 
         return true;
     }
@@ -300,9 +314,21 @@ public class BookingModifyPage extends BookingPageCustomer {
 
             if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerDate())
                 return false;
-            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels())
+
+            boolean flag = false;
+
+            for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
+
                 if (luggagePanel.checkLuggage())
                     return false;
+
+                if (luggagePanel.getComboBox().getSelectedIndex() == 1) {
+
+                    if (flag) return false;
+                    else flag = true;
+                }
+            }
+
         }
 
         return true;

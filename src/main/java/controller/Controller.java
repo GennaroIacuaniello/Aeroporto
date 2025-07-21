@@ -5,6 +5,7 @@ import dao.BookingDAO;
 import dao.LuggageDAO;
 import dao.TicketDAO;
 import dao.UserNotFoundException;
+import database.ConnessioneDatabase;
 import gui.DisposableObject;
 import gui.FloatingMessage;
 
@@ -261,6 +262,7 @@ public class Controller {
 
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -282,7 +284,7 @@ public class Controller {
             preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
             bookingDAO.modifyBooking(this, flightController.getId(), getBookingController().getId(), ticketsNumbers,
-                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber());
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -292,9 +294,11 @@ public class Controller {
     private void preparePassengers (ArrayList<PassengerPanel> passengerPanels, ArrayList<String> ticketsNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames, ArrayList<String> lastNames,
                                     ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketsForLuggagesTypes) {
 
+        int i = 0;
+
         for (PassengerPanel passengerPanel : passengerPanels) {
 
-            if(passengerPanel.getTicketNumber() == null) ticketsNumbers.add(generateTicketNumber());
+            if(passengerPanel.getTicketNumber() == null) ticketsNumbers.add(generateTicketNumber(i++));
             else ticketsNumbers.add(passengerPanel.getTicketNumber());
 
             seats.add(passengerPanel.getSeat());
@@ -313,9 +317,11 @@ public class Controller {
         }
     }
 
-    public String generateTicketNumber () {
+    public String generateTicketNumber (int offset) {
 
-        return "ticketsNumber";
+        TicketDAOImpl ticketDAO = new TicketDAOImpl();
+
+        return ticketDAO.generateTicketNumber(offset);
     }
 
     public JButton getErrorButton() {

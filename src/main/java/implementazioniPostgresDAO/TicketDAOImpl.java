@@ -3,6 +3,7 @@ package implementazioniPostgresDAO;
 import dao.TicketDAO;
 import database.ConnessioneDatabase;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,4 +51,46 @@ public class TicketDAOImpl implements TicketDAO {
 
     }
 
+    public String generateTicketNumber(int offset) {
+
+        String result;
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
+
+            String query = "SELECT MAX(ticket_number) AS max_ticket_number FROM Ticket;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                result = rs.getString("max_ticket_number");
+            } else throw new SQLException();
+
+            rs.close();
+
+            for (int i = 0; i < offset; i++) result = increaseTicketNumber(result);
+
+            return increaseTicketNumber(result);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public String increaseTicketNumber(String ticketNumber) {
+
+        try {
+            BigInteger number = new BigInteger(ticketNumber);
+
+            String result = number.add(BigInteger.ONE).toString();
+
+            while (result.length() < 13) result = "0" + result;
+
+            return result;
+
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("La stringa '" + ticketNumber + "' non è un numero valido.");
+        }
+    }
 }
