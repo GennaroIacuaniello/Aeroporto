@@ -219,7 +219,6 @@ public class PassengerPanel extends JPanel {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (passengerDatePicker.getComponentDateTextField().getText().isEmpty()) {
-                    System.out.println("ciao");
                     passengerDatePicker.getComponentDateTextField().setText(displayedDateText);
                     passengerDatePicker.getComponentDateTextField().setForeground(displayedTextColor);
                 }

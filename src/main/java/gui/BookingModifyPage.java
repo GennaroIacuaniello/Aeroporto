@@ -77,7 +77,6 @@ public class BookingModifyPage extends BookingPageCustomer {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println(controller.getFlightController().getFreeSeats() + " " + passengerPanels.size() + " " + controller.getBookingController().getTicketsSize());
                 if (controller.getFlightController().getFreeSeats() - passengerPanels.size() + controller.getBookingController().getTicketsSize() > 0)
                     insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels, bookedSeats));
                 else
@@ -297,12 +296,10 @@ public class BookingModifyPage extends BookingPageCustomer {
     }
 
     protected boolean checkConfirmButton() {
-        System.out.println("check");
         for (PassengerPanel passengerPanel : passengerPanels) {
 
             if (passengerPanel.checkPassengerName() || passengerPanel.checkPassengerSurname() || passengerPanel.checkPassengerCF() || passengerPanel.checkPassengerDate())
                 return false;
-            System.out.println("we");
             for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels())
                 if (luggagePanel.checkLuggage())
                     return false;
