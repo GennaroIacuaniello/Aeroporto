@@ -238,6 +238,15 @@ public class FlightController {
         return tickets;
     }
 
+    public ArrayList<String> getPassengerLuggagesStatusFromBooking(int bookingIndex, int passengerIndex) {
+
+        ArrayList<String> status = new ArrayList<String>();
+
+        for (Luggage luggage : flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getLuggages()) status.add(luggage.getStatus().name());
+
+        return status;
+    }
+
     public int getPassengerSeat (int index) {
         return flight.getTickets().get(index).getSeat();
     }

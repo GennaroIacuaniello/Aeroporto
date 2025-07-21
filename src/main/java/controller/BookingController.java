@@ -114,6 +114,14 @@ public class BookingController {
         return tickets;
     }
 
+    public ArrayList<String> getPassengerLuggagesStatus (int index) {
+        ArrayList<String> status = new ArrayList<String>();
+
+        for (Luggage luggage : getPassengerLuggages(index)) status.add(luggage.getStatus().name());
+
+        return status;
+    }
+
     public boolean checkPendingButton () {
         return this.booking == null || this.booking.getStatus() == BookingStatus.PENDING;
     }

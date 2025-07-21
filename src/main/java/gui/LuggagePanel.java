@@ -94,6 +94,6 @@ public class LuggagePanel extends JPanel {
         }
 
         // Estrae e restituisce la sottostringa che segue il carattere ':'
-        return inputString.substring(colonIndex + 1);
+        return inputString.substring(colonIndex + 2);
     }
 }

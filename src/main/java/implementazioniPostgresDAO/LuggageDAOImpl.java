@@ -160,7 +160,10 @@ public class LuggageDAOImpl implements LuggageDAO {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
-            String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_ticket = ?";
+            System.out.println(ticket);
+            System.out.println(luggageStatus);
+
+            String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_luggage_after_check_in = ?";
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setObject(1, luggageStatus);
