@@ -309,11 +309,22 @@ public class SearchFlightPanel extends JPanel {
 
     private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
 
-        SearchFlightResultPanel resultsPanel = new SearchFlightResultPanel(callingObjects, controller,
-                                                                           ids, companyNames, dates, departureTimes, arrivalTimes,
-                                                                           delays, status, maxSeats, freeSeats, cities, ifSearched);
+        if(controller.isLoggedAdmin()){
 
-        resultsScrollPane.setViewportView(resultsPanel);
+            SearchFlightResultPanelAdmin resultsPanel = new SearchFlightResultPanelAdmin(callingObjects, controller,
+                                                                ids, companyNames, dates, departureTimes, arrivalTimes,
+                                                                delays, status, maxSeats, freeSeats, cities, ifSearched);
+
+            resultsScrollPane.setViewportView(resultsPanel);
+
+        }else{
+            SearchFlightResultPanel resultsPanel = new SearchFlightResultPanel(callingObjects, controller,
+                                                        ids, companyNames, dates, departureTimes, arrivalTimes,
+                                                        delays, status, maxSeats, freeSeats, cities, ifSearched);
+
+            resultsScrollPane.setViewportView(resultsPanel);
+        }
+
 
         resultsScrollPane.setBorder(BorderFactory.createEmptyBorder());
 

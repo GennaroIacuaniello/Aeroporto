@@ -15,12 +15,12 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFlightResultPanel extends JPanel {
+public class SearchFlightResultPanelAdmin extends JPanel {
 
     private JTable resultsTable;
     private FlightTableModel tableModel;
 
-    public SearchFlightResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
+    public SearchFlightResultPanelAdmin(ArrayList<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
 
         super(new BorderLayout());
@@ -28,7 +28,7 @@ public class SearchFlightResultPanel extends JPanel {
 
         //se searchedFlights fosse null, darebbe nullPointerException, quindi gli passo una lista vuota
         tableModel = new FlightTableModel( controller, ids, companyNames, dates, departureTimes, arrivalTimes,
-                                          delays, status, maxSeats, freeSeats, cities);
+                delays, status, maxSeats, freeSeats, cities);
 
         boolean hasResults = (ids != null && !ids.isEmpty());
 
@@ -50,23 +50,22 @@ public class SearchFlightResultPanel extends JPanel {
 
                     int index = table.rowAtPoint(point);   //index of the selectedFlight
 
+                    //TODO cambiare cosa viene aperto qui perchè ora lo clicca un admin
 
-                    if(freeSeats.get(index) > 0 && status.get(index).equalsIgnoreCase("PROGRAMMED")){
+                    /*controller.getFlightController().setFlight(index);
 
-                        controller.getFlightController().setFlight(index);
-
-                        if(controller.loadAndCheckIfOpenMyBookingsOrNewBooking()){
-                            new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), false);
-                        }else{
-                            System.out.println("Ciao");
-                            new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
-                        }
-
-                        callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
-
+                    if(controller.loadAndCheckIfOpenMyBookingsOrNewBooking()){
+                        new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), false);
+                    }else{
+                        System.out.println("Ciao");
+                        new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
                     }
+
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);*/
+
+
 
                 }
             }
@@ -134,10 +133,10 @@ public class SearchFlightResultPanel extends JPanel {
         private final ArrayList<Integer> freeSeats;
         private final ArrayList<String> cities;
 
-        private final String[] colNames = {"Compagnia", "Tratta", "Data", "Partenza", "Ritardo", "Arrivo", "Stato", "Posti", "Prenotazione"};
+        private final String[] colNames = {"Compagnia", "Tratta", "Data", "Partenza", "Ritardo", "Arrivo", "Stato", "Posti", "Gestione"};
 
         public FlightTableModel( Controller controller, List<String> parIds, List<String> parCompanyNames, List<Date> parDates, List<Time> parDepartureTimes, List<Time> parArrivalTimes,
-                                List<Integer> parDelays, List<String> parStatus, List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> parCities) {
+                                 List<Integer> parDelays, List<String> parStatus, List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> parCities) {
 
             this.controller = controller;
             this.ids = (ArrayList<String>) parIds;
@@ -161,7 +160,7 @@ public class SearchFlightResultPanel extends JPanel {
             return status;
         }
         //public List<Flight> getFlights() {
-            //return flights;
+        //return flights;
         //}
 
         @Override
@@ -252,7 +251,7 @@ public class SearchFlightResultPanel extends JPanel {
                 case 7:
                     return freeSeats.get(row) + "/" + maxSeats.get(row);
                 case 8:
-                    return "Prenota";
+                    return "Gestisci";
                 default:
                     return null;
             }
