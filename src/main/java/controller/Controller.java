@@ -1014,9 +1014,7 @@ public class Controller {
     public void setBookingResultSelectedFlightForLostLuaggages(Integer luggageIndex) {
 
         flightController.setFlight(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getFlight());
-
-
-
+        
         flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
 
     }
