@@ -194,6 +194,40 @@ public class BookingDAOImpl implements BookingDAO {
                 if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
 
                 preparedQuery.executeUpdate();
+            } else {
+
+                String firstNameValue = firstNames.get(i);
+                String lastNameValue = lastNames.get(i);
+                Date birthDateValue = birthDates.get(i);
+
+
+                String query1 = "UPDATE Passenger set SSN = ?";
+                String query2 = " WHERE SSN = ?;";
+
+                if (firstNameValue != null) {
+                    query1 += ", first_name = ?";
+                }
+
+                if (lastNameValue != null) {
+                    query1 += ", last_name = ?";
+                }
+
+                if (birthDateValue != null) {
+                    query1 += ", birth_date = ?";
+                }
+
+                query = query1 + query2;
+                preparedQuery = connection.prepareStatement(query);
+
+                int index = 1;
+
+                preparedQuery.setString(index++, SSNs.get(i));
+                if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
+                if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
+                if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
+                preparedQuery.setString(index++, SSNs.get(i));
+
+                preparedQuery.executeUpdate();
             }
 
             resultSet.close();
