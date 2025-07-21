@@ -69,7 +69,7 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
-    public void modifyBooking (Controller controller, String idFlight, int idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
+    public void modifyBooking (Controller controller, String idFlight, Integer idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
                                ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages, String tmpTicket) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
@@ -94,8 +94,12 @@ public class BookingDAOImpl implements BookingDAO {
             preparedQuery = connection.prepareStatement(query);
             preparedQuery.setString(1, tmpTicket);
             preparedQuery.setInt(2, idBooking);
-            preparedQuery.setInt(3, resultSet.getInt("id_passenger"));
+            preparedQuery.setString(3, resultSet.getString("id_passenger"));
             preparedQuery.setString(4, idFlight);
+
+            preparedQuery.executeUpdate();
+
+            System.out.println("Hoy");
 
             resultSet.close();
 
@@ -116,7 +120,7 @@ public class BookingDAOImpl implements BookingDAO {
             insertLuggages(connection, ticketForLuggages,  luggagesTypes);
 
             //cancellazione ticket temporaneo
-            query = "DELETE FROM Ticket WHERE id_ticket = ?;";
+            query = "DELETE FROM Ticket WHERE ticket_number = ?;";
             preparedQuery = connection.prepareStatement(query);
             preparedQuery.setString(1, tmpTicket);
 
