@@ -15,8 +15,9 @@ public class LuggagesView extends JFrame {
     private JPanel luggagesPanel;
     private ArrayList<LuggagePanel> luggagesPanels;
     private ArrayList<RemoveLuggageButton> removeLuggageButtons;
-    private RoundedButton addLuggageButton;
-    private RoundedButton confirmButton;
+    private ArrayList<JButton> lostLuggageButtons;
+    private JButton addLuggageButton;
+    private JButton confirmButton;
 
     private Constraints constraints;
 
@@ -43,11 +44,12 @@ public class LuggagesView extends JFrame {
 
         luggagesPanels = new ArrayList<LuggagePanel>();
         removeLuggageButtons = new ArrayList<RemoveLuggageButton>();
+        lostLuggageButtons = new ArrayList<JButton>();
     }
 
     private void setButtons(Controller controller) {
-        addLuggageButton = new RoundedButton("+");
-        confirmButton = new RoundedButton("Confirm");
+        addLuggageButton = new JButton("+");
+        confirmButton = new JButton("Confirm");
 
         addLuggageButton.addActionListener(new ActionListener() {
 
@@ -115,7 +117,7 @@ public class LuggagesView extends JFrame {
         return luggagesPanels;
     }
 
-    public void setLuggages(ArrayList<Integer> luggagesTypes, ArrayList<String> luggagesTickets, Controller controller) {
+    public void setLuggages(ArrayList<Integer> luggagesTypes, ArrayList<String> luggagesTickets, ArrayList<String> luggagesStatus,Controller controller) {
 
         int i = 0;
 
@@ -123,25 +125,74 @@ public class LuggagesView extends JFrame {
 
             if (!luggagesPanels.isEmpty()) {
                 luggagesPanels.add(new LuggagePanel(controller, luggagesPanels.getLast().getIndex() + 1));
-                if (luggagesTickets.get(i++) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i));
+                if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
             } else {
                 luggagesPanels.add(new LuggagePanel(controller, 0));
-                if (luggagesTickets.get(i++) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i));
+                if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
             }
 
 
             constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
             luggagesPanels.getLast().setVisible(true);
 
             removeLuggageButtons.add(new RemoveLuggageButton(controller, luggagesPanels, removeLuggageButtons, luggagesPanel,
                     scrollPane, removeLuggageButtons.size()));
 
-            constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-            luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
-            luggagesPanels.getLast().setVisible(true);
+            if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed && controller.getCustomerController().getLoggedCustomer() != null) {
+
+                constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
+                        GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+                luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanels.getLast().setVisible(true);
+            } else if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().landed) {
+
+                String name;
+                boolean flag = false;
+
+                if (controller.getCustomerController().getLoggedCustomer() != null) {
+                    name = "SMARRITO?";
+                    if (luggagesStatus.get(luggagesPanels.size() - 1).equals("WITHDRAWABLE")) flag = true;
+                } else {
+                    name = "RITROVATO?";
+                    if (luggagesStatus.get(luggagesPanels.size() - 1).equals("LOST")) flag = true;
+                }
+
+                JButton lostLuggageButton = new JButton(name);
+
+                int finalI = i - 1;
+
+                lostLuggageButton.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        lostLuggageButton.setEnabled(false);
+
+                        String luggageStatus;
+
+                        if (controller.getCustomerController().getLoggedCustomer() != null) luggageStatus = "LOST";
+                        else luggageStatus = "WITHDRAWABLE";
+
+                        controller.getLuggageController().lostLuggage(luggagesPanels.get(finalI).getTicket(), luggageStatus);
+
+                        new FloatingMessage("Segnalazione avvenuta con successo", lostLuggageButton, FloatingMessage.SUCCESS_MESSAGE);
+                    }
+                });
+
+                lostLuggageButton.setFocusPainted(false);
+                lostLuggageButton.setEnabled(flag);
+
+                lostLuggageButtons.add(lostLuggageButton);
+
+                constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
+                        GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+                luggagesPanel.add(lostLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanels.getLast().setVisible(true);
+            }
+
+
 
             luggagesPanels.getLast().setType(luggageType);
 

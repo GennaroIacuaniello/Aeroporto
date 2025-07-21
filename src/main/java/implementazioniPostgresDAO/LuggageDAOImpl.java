@@ -2,6 +2,7 @@ package implementazioniPostgresDAO;
 
 import dao.LuggageDAO;
 import database.ConnessioneDatabase;
+import model.Ticket;
 
 import java.sql.*;
 import java.util.List;
@@ -16,14 +17,14 @@ public class LuggageDAOImpl implements LuggageDAO {
                                    List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds,
                                    List<String> ticketNumbers, List<Integer> seats, List<Boolean> checkedIns,
                                    List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<Date> birthDates,
-                                   List<String> luggageIds, List<String> luggageTypes, List<String> luggageStatus) throws SQLException {
+                                   List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException {
 
         String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, " +
                         "F.free_seats, F.destination_or_origin, F.flight_type, " +
                         "C.id_customer, C.username, C.mail, C.hashed_password, " +
                         "B.id_booking, B.booking_status, B.booking_time, " +
                         "T.ticket_number, T.seat, T.checked_in, P.first_name, P.last_name, P.SSN, P.birth_date, " +
-                        "L.id_luggage_after_check_in, L.luggage_type, L.luggage_status " +
+                        "L.id_luggage, L.id_luggage_after_check_in, L.luggage_type, L.luggage_status " +
                         "FROM FLIGHT F NATURAL JOIN BOOKING B JOIN TICKET T ON B.id_booking = T.id_booking JOIN " +
                         "PASSENGER P ON T.id_passenger = P.SSN JOIN LUGGAGE L ON L.id_ticket = T.ticket_number JOIN CUSTOMER C ON B.buyer = C.id_customer " +
                         "WHERE L.luggage_status = 'LOST' AND C.is_deleted = false " +
@@ -88,7 +89,13 @@ public class LuggageDAOImpl implements LuggageDAO {
 
                 birthDates.add(rs.getDate("birth_date"));
 
-                luggageIds.add(rs.getString("id_luggage_after_check_in"));
+                if(rs.getInt("id_luggage") > 0){
+                    luggageIds.add(rs.getInt("id_luggage"));
+                }else{
+                    luggageIds.add(null);
+                }
+
+                luggageIdsAfterCheckin.add(rs.getString("id_luggage_after_check_in"));
 
                 luggageTypes.add(rs.getString("luggage_type"));
 
@@ -106,4 +113,66 @@ public class LuggageDAOImpl implements LuggageDAO {
 
     }
 
+    public void getAllLuggagesOfBooking(Integer bookingId, List<String> ticketNumbers, List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException {
+
+        String query = "SELECT T.ticket_number, L.id_luggage, L.id_luggage_after_check_in, L.luggage_type, L.luggage_status " +
+                        "FROM BOOKING B JOIN TICKET T ON B.id_booking = T.id_booking JOIN " +
+                        "PASSENGER P ON T.id_passenger = P.SSN LEFT JOIN LUGGAGE L ON L.id_ticket = T.ticket_number JOIN CUSTOMER C ON B.buyer = C.id_customer " +
+                        "WHERE B.id_booking = ? " +
+                        "ORDER BY T.ticket_number;";
+
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, bookingId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+
+                ticketNumbers.add(rs.getString("ticket_number"));
+
+                if(rs.getInt("id_luggage") > 0){
+                    luggageIds.add(rs.getInt("id_luggage"));
+                }else{
+                    luggageIds.add(null);
+                }
+
+                luggageIdsAfterCheckin.add(rs.getString("id_luggage_after_check_in"));
+
+                luggageTypes.add(rs.getString("luggage_type"));
+
+                luggageStatus.add(rs.getString("luggage_status"));
+
+            }
+
+            rs.close();
+
+            //connection.close(); non serve perchè la fa in automatico il try-with-resources
+
+
+        }
+
+    }
+
+    public void lostLuggage(String ticket, String luggageStatus) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            System.out.println(ticket);
+            System.out.println(luggageStatus);
+
+            String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_luggage_after_check_in = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setObject(1, luggageStatus);
+            statement.setString(2, ticket);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

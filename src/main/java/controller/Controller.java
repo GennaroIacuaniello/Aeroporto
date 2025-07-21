@@ -1,10 +1,7 @@
 package controller;
 
-import dao.BookingDAO;
+import dao.*;
 //import dao.LuggageDAO;
-import dao.LuggageDAO;
-import dao.TicketDAO;
-import dao.UserNotFoundException;
 import database.ConnessioneDatabase;
 import gui.DisposableObject;
 import gui.FloatingMessage;
@@ -16,6 +13,7 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -881,7 +879,7 @@ public class Controller {
 
     }
 
-    public void getLostLuggages(List<String> flightIds, List<Date> bookingDates, List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<String> luggageIds) {
+    public void getLostLuggages(List<String> flightIds, List<Date> bookingDates, List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<String> luggageIdsAfterCheckin) {
 
         ArrayList<String> companyNames = new ArrayList<>();
         ArrayList<Date> flightDates = new ArrayList<>();
@@ -908,6 +906,7 @@ public class Controller {
 
         ArrayList<Date> birthDates = new ArrayList<>();
 
+        ArrayList<Integer> luggageIds = new ArrayList<>();
         ArrayList<String> luggageTypes = new ArrayList<>();
         ArrayList<String> luggageStatus = new ArrayList<>();
 
@@ -920,7 +919,7 @@ public class Controller {
                                           bookingDates, bookingStatus, bookingIds,
                                           ticketNumbers, seats, checkedIns,
                                           firstNames, lastNames, passengerSSNs, birthDates,
-                                          luggageIds, luggageTypes, luggageStatus);
+                                          luggageIds, luggageTypes, luggageStatus, luggageIdsAfterCheckin);
 
 
 
@@ -1014,13 +1013,20 @@ public class Controller {
                     }
                 }
 
-                luggageController.getSearchBookingResult().add(new Luggage(luggageIds.get(i), LuggageType.valueOf(luggageTypes.get(i)), LuggageStatus.valueOf(luggageStatus.get(i)),
-                                                                            ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                if(luggageTypes.get(i) != null){
+                    luggageController.getSearchBookingResult().add(new Luggage(luggageIdsAfterCheckin.get(i), LuggageType.valueOf(luggageTypes.get(i)), LuggageStatus.valueOf(luggageStatus.get(i)),
+                            ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                }else{
+                    luggageController.getSearchBookingResult().add(new Luggage(luggageIdsAfterCheckin.get(i), LuggageStatus.valueOf(luggageStatus.get(i)),
+                            ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                }
 
                 ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i)).getLuggages().add(luggageController.getSearchBookingResult().getLast());
 
 
             }
+
+            luggageController.getSearchBookingResultIds().addAll(luggageIds);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -1034,8 +1040,209 @@ public class Controller {
     public void setBookingResultSelectedFlightForLostLuaggages(Integer luggageIndex) {
 
         flightController.setFlight(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getFlight());
-        
+
         flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
+
+    }
+
+    public void getAllForAFlight(Integer index) {
+
+        String flightId = flightController.getSearchResult().get(index).getId();
+
+        flightController.setFlight(flightController.getSearchResult().get(index));
+
+        ArrayList<Integer> flightGates = new ArrayList<>();
+
+        ArrayList<Integer> buyerIds = new ArrayList<>();
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<String> mails = new ArrayList<>();
+        ArrayList<String> hashedPasswords = new ArrayList<>();
+
+        ArrayList<Integer> bookingIds = new ArrayList<>();
+        ArrayList<String> bookingStatus = new ArrayList<>();
+        ArrayList<Date> bookingDates = new ArrayList<>();
+
+        ArrayList<String> ticketNumbers = new ArrayList<>();
+        ArrayList<Integer> seats = new ArrayList<>();
+        ArrayList<Boolean> checkedIns = new ArrayList<>();
+
+        ArrayList<String> firstNames = new ArrayList<>();
+        ArrayList<String> lastNames = new ArrayList<>();
+        ArrayList<String> passengerSSNs = new ArrayList<>();
+        ArrayList<Date> birthDates = new ArrayList<>();
+
+        ArrayList<Integer> luggageIds = new ArrayList<>();
+        ArrayList<String> luggageIdsAfterCheckin = new ArrayList<>();
+        ArrayList<String> luggageTypes = new ArrayList<>();
+        ArrayList<String> luggageStatus = new ArrayList<>();
+
+        try{
+            FlightDAO flightDAO = new FlightDAOImpl();
+
+
+            flightDAO.getAllDataForAFlight(flightId, flightGates, buyerIds, usernames, mails, hashedPasswords,
+                                           bookingDates, bookingStatus, bookingIds,
+                                           ticketNumbers, seats, checkedIns,
+                                           firstNames, lastNames, passengerSSNs, birthDates,
+                                           luggageIds, luggageTypes, luggageStatus, luggageIdsAfterCheckin);
+
+
+
+        } catch (SQLException e) {
+            new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+        customerController.setSearchBookingResultCustomers(new ArrayList<>());
+        customerController.setSearchBookingResultCustomersIds(new ArrayList<>());
+
+        bookingController.setSearchBookingResult(new ArrayList<>());
+        bookingController.setSearchBookingResultIds(new ArrayList<>());
+
+
+        ticketController.setSearchBookingResult(new ArrayList<>());
+        passengerController.setSearchBookingResult(new ArrayList<>());
+
+        luggageController.setSearchBookingResult(new ArrayList<>());
+        luggageController.setSearchBookingResultIds(new ArrayList<>());
+
+
+        ArrayList<Integer> actualBuyersIds = new ArrayList<>();
+        ArrayList<Integer> actualBookingIds = new ArrayList<>();
+        ArrayList<String> actualTicketNumbers = new ArrayList<>();
+        ArrayList<String> actualSSNs = new ArrayList<>();
+
+        try{
+
+            if(flightGates.getFirst() != null){
+                flightController.getFlight().setGate(new Gate(flightGates.getFirst().byteValue()));
+            }
+
+            for(int i = 0; i < luggageIds.size(); i++){
+
+
+                if(!actualBuyersIds.contains(buyerIds.get(i))){
+
+                    actualBuyersIds.add(buyerIds.get(i));
+
+                    customerController.getSearchBookingResultCustomers().add(new Customer(usernames.get(i), mails.get(i), hashedPasswords.get(i)));
+                    customerController.getSearchBookingResultCustomersIds().add(buyerIds.get(i));
+                }
+
+
+                if(!actualBookingIds.contains(bookingIds.get(i))){
+
+                    actualBookingIds.add(bookingIds.get(i));
+
+                    bookingController.getSearchBookingResult().add(new Booking(BookingStatus.valueOf(bookingStatus.get(i)), bookingDates.get(i),
+                            customerController.getSearchBookingResultCustomerById(buyerIds.get(i)), flightController.getFlight(),
+                            ticketNumbers.get(i), seats.get(i), checkedIns.get(i),
+                            firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
+
+                    bookingController.getSearchBookingResultIds().add(bookingIds.get(i));
+
+                    actualTicketNumbers.add(ticketNumbers.get(i));
+                    ticketController.getSearchBookingResult().add(bookingController.getSearchBookingResult().getLast().getTickets().getLast());
+                    Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
+                    if(!actualSSNs.contains(tmp.getSSN())){
+                        actualSSNs.add(tmp.getSSN());
+                        passengerController.getSearchBookingResult().add(tmp);
+                    }
+                }else{
+                    if(!actualTicketNumbers.contains(ticketNumbers.get(i))) {
+                        actualTicketNumbers.add(ticketNumbers.get(i));
+                        ticketController.getSearchBookingResult().add(new Ticket(ticketNumbers.get(i), seats.get(i), checkedIns.get(i), flightController.getFlight(),
+                                bookingController.getSearchBookingResultBooksById(bookingIds.get(i)),
+                                firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
+                        Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
+                        if (!actualSSNs.contains(tmp.getSSN())) {
+                            actualSSNs.add(tmp.getSSN());
+                            passengerController.getSearchBookingResult().add(tmp);
+                        }
+                        bookingController.getSearchBookingResultBooksById(bookingIds.get(i)).getTickets().add(ticketController.getSearchBookingResult().getLast());
+                    }
+                }
+
+                if(luggageIds.get(i) != null){
+                    if(luggageTypes.get(i) != null){
+                        luggageController.getSearchBookingResult().add(new Luggage(luggageIdsAfterCheckin.get(i), LuggageType.valueOf(luggageTypes.get(i)), LuggageStatus.valueOf(luggageStatus.get(i)),
+                                ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                    }else{
+                        luggageController.getSearchBookingResult().add(new Luggage(luggageIdsAfterCheckin.get(i), LuggageStatus.valueOf(luggageStatus.get(i)),
+                                ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                    }
+
+                    ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i)).getLuggages().add(luggageController.getSearchBookingResult().getLast());
+                }
+
+            }
+
+            flightController.getFlight().getBookings().addAll(bookingController.getSearchBookingResult());
+
+            luggageController.getSearchBookingResultIds().addAll(luggageIds);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+
+        }
+
+
+    }
+
+    public void getAllLuggagesForABooking(Integer index) {
+
+
+        flightController.setBookingResultSelectedFlight(bookingController.getSearchBookingResult().get(index).getBookedFlight().getId());
+
+        bookingController.setBookingResultSelectedBooking(index);
+
+        ArrayList<String> ticketNumbers = new ArrayList<>();
+        ArrayList<Integer> luggageIds = new ArrayList<>();
+        ArrayList<String> luggageIdsAfterCheckin = new ArrayList<>();
+        ArrayList<String> luggageTypes = new ArrayList<>();
+        ArrayList<String> luggageStatus = new ArrayList<>();
+
+        try{
+            LuggageDAO luggageDAO = new LuggageDAOImpl();
+
+
+            luggageDAO.getAllLuggagesOfBooking(bookingController.getId(), ticketNumbers, luggageIds, luggageTypes, luggageStatus, luggageIdsAfterCheckin);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+        try{
+
+            luggageController.setSearchBookingResult(new ArrayList<>());
+            luggageController.setSearchBookingResultIds(new ArrayList<>());
+
+            for(int i = 0; i < ticketNumbers.size(); i++){
+
+                if(luggageIds.get(i) != null){
+
+                    if(luggageTypes.get(i) != null){
+                        luggageController.getSearchBookingResult().add(new Luggage(luggageIdsAfterCheckin.get(i), LuggageType.valueOf(luggageTypes.get(i)), LuggageStatus.valueOf(luggageStatus.get(i)),
+                                ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                    }else{
+                        luggageController.getSearchBookingResult().add(new Luggage(luggageIdsAfterCheckin.get(i), LuggageStatus.valueOf(luggageStatus.get(i)),
+                                ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
+                    }
+
+                    ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i)).getLuggages().add(luggageController.getSearchBookingResult().getLast());
+
+                }
+            }
+
+            luggageController.getSearchBookingResultIds().addAll(luggageIds);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+
+        }
 
     }
 }

@@ -118,7 +118,17 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
 
     @Override
     public void doOnRestore (ArrayList<DisposableObject> callingObjects, Controller controller) {
-        //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
+
+        if ( searchBookingPanel.getActiveFilter().equals("FLIGHT")) {
+
+            searchBookingPanel.filteredFlightSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
+
+        } else if (searchBookingPanel.getActiveFilter().equals("PASSENGER")) {
+
+            searchBookingPanel.filteredPassengerSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
+
+        }
+
     }
 
     @Override

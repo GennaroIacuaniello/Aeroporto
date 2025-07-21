@@ -2055,18 +2055,18 @@ EXECUTE FUNCTION fun_lug_status_can_become_loaded_only_if_booked();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED PUò DIVENTARE WITHDRAWABLE
+--TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED O LOST PUò DIVENTARE WITHDRAWABLE
 
-CREATE OR REPLACE FUNCTION fun_lug_status_can_become_withd_only_if_loaded()
+CREATE OR REPLACE FUNCTION fun_lug_status_can_become_withd_only_if_loaded_lost()
 RETURNS TRIGGER
 AS $$
 BEGIN
 
 	IF NEW.luggage_status <> OLD.luggage_status THEN
  
-		IF NEW.luggage_status = 'WITHDRAWABLE' AND OLD.luggage_status <> 'LOADED' THEN
+		IF NEW.luggage_status = 'WITHDRAWABLE' AND (OLD.luggage_status <> 'LOADED' AND OLD.luggage_status <> 'LOST' ) THEN
 			
-			RAISE EXCEPTION 'Il bagaglio % non era in stato ''caricato'', non può diventare ''ritirabile''!', OLD.id_luggage;
+			RAISE EXCEPTION 'Il bagaglio % non era in stato ''caricato'' o ''disperso'', non può diventare ''ritirabile''!', OLD.id_luggage;
 	
 		END IF;
 
@@ -2077,10 +2077,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER lug_status_can_become_withd_only_if_loaded
+CREATE OR REPLACE TRIGGER lug_status_can_become_withd_only_if_loaded_lost
 BEFORE UPDATE OF luggage_status ON Luggage
 FOR EACH ROW
-EXECUTE FUNCTION fun_lug_status_can_become_withd_only_if_loaded();
+EXECUTE FUNCTION fun_lug_status_can_become_withd_only_if_loaded_lost();
 
 ----------------------------------------------------------------------------------------------
 

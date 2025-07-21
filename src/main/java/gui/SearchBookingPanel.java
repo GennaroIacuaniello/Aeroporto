@@ -53,6 +53,7 @@ public class SearchBookingPanel extends JPanel {
     private JButton flightButton;
     private JButton passengerButton;
 
+    private JButton searchButton;
 
     ArrayList<Date> bookingDates = new ArrayList<>();
     ArrayList<String> bookingStatus = new ArrayList<>();
@@ -343,7 +344,7 @@ public class SearchBookingPanel extends JPanel {
 
     private JButton createSearchButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        JButton searchButton = new JButton("Cerca");
+        searchButton = new JButton("Cerca");
         searchButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         searchButton.setBackground(new Color(0, 120, 215));
@@ -371,10 +372,12 @@ public class SearchBookingPanel extends JPanel {
             }
         });
 
+        controller.setErrorButton(searchButton);
+
         return searchButton;
     }
 
-    private void filteredFlightSearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
+    public void filteredFlightSearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String origin = fromField.getText();
         String destination = toField.getText();
@@ -418,7 +421,7 @@ public class SearchBookingPanel extends JPanel {
         updateResultsPanel(callingObjects, controller, true);
     }
 
-    private void filteredPassengerSearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
+    public void filteredPassengerSearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -469,5 +472,21 @@ public class SearchBookingPanel extends JPanel {
 
         label.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
+    }
+
+    public JButton getSearchButton() {
+        return searchButton;
+    }
+
+    public void setSearchButton(JButton searchButton) {
+        this.searchButton = searchButton;
+    }
+
+    public String getActiveFilter() {
+        return activeFilter;
+    }
+
+    public void setActiveFilter(String activeFilter) {
+        this.activeFilter = activeFilter;
     }
 }

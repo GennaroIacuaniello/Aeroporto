@@ -304,8 +304,8 @@ public class PassengerPanel extends JPanel {
         return luggagesView.getLuggagesPanels();
     }
 
-    public void setLuggages (ArrayList<Integer> luggageTypes, ArrayList<String> luggagesTickets, Controller controller){
-        luggagesView.setLuggages (luggageTypes, luggagesTickets, controller);
+    public void setLuggages (ArrayList<Integer> luggageTypes, ArrayList<String> luggagesTickets, ArrayList<String> luggagesStatus, Controller controller){
+        luggagesView.setLuggages (luggageTypes, luggagesTickets, luggagesStatus,controller);
     }
 
     public SeatChooser getSeatChooser() {
@@ -343,7 +343,7 @@ public class PassengerPanel extends JPanel {
         for (int i = 0; i < luggagesView.getLuggagesPanels().size(); i++) {
 
             luggagesView.getLuggagesPanels().get(i).getComboBox().setEnabled(flag);
-            luggagesView.getRemoveLuggageButtons().get(i).setVisible(flag);
+            //luggagesView.getRemoveLuggageButtons().get(i).setVisible(flag);
         }
     }
 
