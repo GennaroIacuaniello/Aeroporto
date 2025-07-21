@@ -2,6 +2,7 @@ package controller;
 
 import implementazioniPostgresDAO.LuggageDAOImpl;
 import model.Luggage;
+import model.LuggageStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,10 @@ public class LuggageController {
         this.searchBookingResultIds = (ArrayList<Integer>) searchBookingResultIds;
     }
 
-    public void lostLuggage (String ticket) {
+    public void lostLuggage (String ticket, String luggageStatus) {
 
         LuggageDAOImpl luggageDAO = new LuggageDAOImpl();
 
-        luggageDAO.lostLuggage(ticket);
+        luggageDAO.lostLuggage(ticket, luggageStatus);
     }
 }

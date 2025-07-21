@@ -148,7 +148,12 @@ public class LuggagesView extends JFrame {
                 luggagesPanels.getLast().setVisible(true);
             } else if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().landed) {
 
-                JButton lostLuggageButton = new JButton("Smarrito?");
+                String name;
+
+                if (controller.getCustomerController().getLoggedCustomer() != null) name = "SMARRITO?";
+                else name = "RITROVATO?";
+
+                JButton lostLuggageButton = new JButton(name);
 
                 int finalI = i - 1;
 
@@ -157,7 +162,12 @@ public class LuggagesView extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        controller.getLuggageController().lostLuggage(luggagesPanels.get(finalI).getTicket());
+                        String luggageStatus;
+
+                        if (controller.getCustomerController().getLoggedCustomer() != null) luggageStatus = "LOST";
+                        else luggageStatus = "WITHDRAWABLE";
+
+                        controller.getLuggageController().lostLuggage(luggagesPanels.get(finalI).getTicket(), luggageStatus);
 
                         new FloatingMessage("Segnalazione avvenuta con successo", lostLuggageButton, FloatingMessage.SUCCESS_MESSAGE);
                     }

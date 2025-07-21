@@ -156,14 +156,14 @@ public class LuggageDAOImpl implements LuggageDAO {
 
     }
 
-    public void lostLuggage(String ticket) {
+    public void lostLuggage(String ticket, String luggageStatus) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
             String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_ticket = ?";
             PreparedStatement statement = connection.prepareStatement(query);
 
-            statement.setObject(1, "LOST");
+            statement.setObject(1, luggageStatus);
             statement.setString(2, ticket);
 
             statement.executeUpdate();
