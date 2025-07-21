@@ -42,11 +42,37 @@ public class Luggage {
 
     }
 
+    public Luggage(LuggageStatus parStatus, Ticket parTicket) throws InvalidTicket {
+
+        if(parTicket != null){
+            this.status = parStatus;
+            this.ticket = parTicket;
+        }else{
+            throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
+        }
+
+
+    }
+
     public Luggage(String parId, LuggageType parType, Ticket parTicket) throws InvalidTicket {
 
         if(parTicket != null){
             this.id = parId;
             this.type = parType;
+            this.status = LuggageStatus.BOOKED;
+            this.ticket = parTicket;
+        }else{
+            throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
+        }
+
+
+    }
+
+    public Luggage(String parId, LuggageStatus parStatus, Ticket parTicket) throws InvalidTicket {
+
+        if(parTicket != null){
+            this.id = parId;
+            this.status = parStatus;
             this.status = LuggageStatus.BOOKED;
             this.ticket = parTicket;
         }else{

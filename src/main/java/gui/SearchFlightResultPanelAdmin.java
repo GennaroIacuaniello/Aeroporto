@@ -50,21 +50,12 @@ public class SearchFlightResultPanelAdmin extends JPanel {
 
                     int index = table.rowAtPoint(point);   //index of the selectedFlight
 
-                    //TODO cambiare cosa viene aperto qui perchè ora lo clicca un admin
+                    controller.getAllForAFlight(index);
 
-                    /*controller.getFlightController().setFlight(index);
+                    new BookingPageAdmin(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
-                    if(controller.loadAndCheckIfOpenMyBookingsOrNewBooking()){
-                        new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), false);
-                    }else{
-                        System.out.println("Ciao");
-                        new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
-                    }
-
-                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);*/
-
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 
 
                 }
@@ -275,7 +266,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
             FlightTableModel model = (FlightTableModel) table.getModel();
             //Flight flight = model.getFlights().get(row);
 
-            setEnabled(model.getFreeSeats().get(row) > 0 && (model.getStatus().get(row)).equalsIgnoreCase("PROGRAMMED"));
+            setEnabled(true);
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
