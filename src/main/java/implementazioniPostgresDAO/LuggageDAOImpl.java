@@ -112,4 +112,81 @@ public class LuggageDAOImpl implements LuggageDAO {
 
     }
 
+    public void getAllLuggagesOfBooking(Integer bookingId, List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException {
+
+        String query = "SELECT L.id_luggage, L.id_luggage_after_check_in, L.luggage_type, L.luggage_status " +
+                        "FROM BOOKING B JOIN TICKET T ON B.id_booking = T.id_booking JOIN " +
+                        "PASSENGER P ON T.id_passenger = P.SSN LEFT JOIN LUGGAGE L ON L.id_ticket = T.ticket_number JOIN CUSTOMER C ON B.buyer = C.id_customer " +
+                        "WHERE B.id_booking = ? " +
+                        "ORDER BY T.ticket_number;";
+
+        /*
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, flightId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+
+                if(rs.getInt("id_gate") > 0){
+                    flightGates.add(rs.getInt("id_gate"));
+                }else{
+                    flightGates.add(null);
+                }
+
+                buyerIds.add(rs.getInt("id_customer"));
+                usernames.add(rs.getString("username"));
+                mails.add(rs.getString("mail"));
+                hashedPasswords.add(rs.getString("hashed_password"));
+
+                Timestamp tmpTS = rs.getTimestamp("booking_time");
+                bookingDates.add(new java.sql.Date(tmpTS.getTime()));
+
+                bookingStatus.add(rs.getString("booking_status"));
+
+                bookingIds.add(rs.getInt("id_booking"));
+
+                ticketNumbers.add(rs.getString("ticket_number"));
+
+                if(rs.getInt("seat") > 0){
+                    seats.add(rs.getInt("seat") - 1);
+                }else{
+                    seats.add(null);
+                }
+
+                checkedIns.add(rs.getBoolean("checked_in"));
+
+                firstNames.add(rs.getString("first_name"));
+
+                lastNames.add(rs.getString("last_name"));
+
+                passengerSSNs.add(rs.getString("SSN"));
+
+                birthDates.add(rs.getDate("birth_date"));
+
+                if(rs.getInt("id_luggage") > 0){
+                    luggageIds.add(rs.getInt("id_luggage"));
+                }else{
+                    luggageIds.add(null);
+                }
+
+                luggageIdsAfterCheckin.add(rs.getString("id_luggage_after_check_in"));
+
+                luggageTypes.add(rs.getString("luggage_type"));
+
+                luggageStatus.add(rs.getString("luggage_status"));
+
+            }
+
+            rs.close();
+
+            //connection.close(); non serve perchè la fa in automatico il try-with-resources
+
+
+        }*/
+
+    }
+
 }

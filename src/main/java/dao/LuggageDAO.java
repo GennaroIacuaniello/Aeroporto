@@ -19,4 +19,5 @@ public interface LuggageDAO {
                             List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<Date> birthDates,
                             List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException;
 
+    void getAllLuggagesOfBooking(Integer bookingId, List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException;
 }
