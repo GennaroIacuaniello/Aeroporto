@@ -29,8 +29,6 @@ public class LuggageDAOImpl implements LuggageDAO {
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, loggedCustomerId);
-
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()){
@@ -54,7 +52,7 @@ public class LuggageDAOImpl implements LuggageDAO {
 
                 cities.add(rs.getString("destination_or_origin"));
 
-                types.add(rs.getBoolean("flight_type"));
+                flightTypes.add(rs.getBoolean("flight_type"));
 
                 tmpTS = rs.getTimestamp("booking_time");
                 bookingDates.add(new java.sql.Date(tmpTS.getTime()));
