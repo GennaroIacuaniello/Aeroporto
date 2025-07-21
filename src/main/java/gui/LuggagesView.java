@@ -15,8 +15,9 @@ public class LuggagesView extends JFrame {
     private JPanel luggagesPanel;
     private ArrayList<LuggagePanel> luggagesPanels;
     private ArrayList<RemoveLuggageButton> removeLuggageButtons;
-    private RoundedButton addLuggageButton;
-    private RoundedButton confirmButton;
+    private ArrayList<JButton> lostLuggageButtons;
+    private JButton addLuggageButton;
+    private JButton confirmButton;
 
     private Constraints constraints;
 
@@ -43,11 +44,12 @@ public class LuggagesView extends JFrame {
 
         luggagesPanels = new ArrayList<LuggagePanel>();
         removeLuggageButtons = new ArrayList<RemoveLuggageButton>();
+        lostLuggageButtons = new ArrayList<JButton>();
     }
 
     private void setButtons(Controller controller) {
-        addLuggageButton = new RoundedButton("+");
-        confirmButton = new RoundedButton("Confirm");
+        addLuggageButton = new JButton("+");
+        confirmButton = new JButton("Confirm");
 
         addLuggageButton.addActionListener(new ActionListener() {
 
@@ -131,17 +133,45 @@ public class LuggagesView extends JFrame {
 
 
             constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
+                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
             luggagesPanels.getLast().setVisible(true);
 
             removeLuggageButtons.add(new RemoveLuggageButton(controller, luggagesPanels, removeLuggageButtons, luggagesPanel,
                     scrollPane, removeLuggageButtons.size()));
 
-            constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
-                    GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-            luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
-            luggagesPanels.getLast().setVisible(true);
+            if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed) {
+
+                constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
+                        GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+                luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanels.getLast().setVisible(true);
+            } else if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().landed) {
+
+                JButton lostLuggageButton = new JButton("Smarrito?");
+
+                int finalI = i - 1;
+
+                lostLuggageButton.addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        controller.getLuggageController().lostLuggage(luggagesPanels.get(finalI).getTicket());
+
+                        new FloatingMessage("Segnalazione avvenuta con successo", lostLuggageButton, FloatingMessage.SUCCESS_MESSAGE);
+                    }
+                });
+
+                lostLuggageButtons.add(lostLuggageButton);
+
+                constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
+                        GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
+                luggagesPanel.add(lostLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanels.getLast().setVisible(true);
+            }
+
+
 
             luggagesPanels.getLast().setType(luggageType);
 
