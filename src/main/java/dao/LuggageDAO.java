@@ -13,6 +13,7 @@ public interface LuggageDAO {
                             List<Time> departureTimes, List<Time> arrivalTimes, List<String> flightStatus,
                             List<Integer> maxSeats, List<Integer> freeSeats,
                             List<String> cities, List<Boolean> flightTypes,
+                            List<Integer> buyerIds, List<String> usernames, List<String> mails, List<String> hashedPasswords,
                             List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds,
                             List<String> ticketNumbers, List<Integer> seats, List<Boolean> checkedIns,
                             List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<Date> birthDates,

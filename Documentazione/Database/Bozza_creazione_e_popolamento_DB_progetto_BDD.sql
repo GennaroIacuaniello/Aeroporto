@@ -947,7 +947,7 @@ EXECUTE FUNCTION fun_check_if_del_pass_and_booking_after_del_ticket();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER POSTI SONO INTERI DA 0 A ASSOCIATED_FLIGHT.MAX_SEATS - 1
+--TRIGGER POSTI SONO INTERI DA 1 A ASSOCIATED_FLIGHT.MAX_SEATS
 
 CREATE OR REPLACE FUNCTION fun_valid_ticket_seat()
 RETURNS TRIGGER
@@ -964,7 +964,7 @@ BEGIN
 
 	IF NEW.seat IS NOT NULL THEN
  
-		IF NOT (NEW.seat BETWEEN 0 AND associated_flight.max_seats - 1) THEN
+		IF NOT (NEW.seat BETWEEN 1 AND associated_flight.max_seats) THEN
 			
 			RAISE EXCEPTION 'Posto non valido per il volo %', NEW.id_flight;
 	
@@ -1085,7 +1085,7 @@ DECLARE
 	
 	associated_flight FLIGHT%ROWTYPE;
 
-	prev_seat TICKET.seat%TYPE := -1; -- (-1) perché i posti iniziano da 0
+	prev_seat TICKET.seat%TYPE := 0; -- (0) perché i posti iniziano da 1
 	
 	selected_seat TICKET.seat%TYPE;
 
@@ -1123,7 +1123,7 @@ BEGIN
 		
 		END IF;
 		
-		IF NEW.seat >= associated_flight.max_seats THEN		--controllo di non aver sforato il posto massimo
+		IF NEW.seat > associated_flight.max_seats THEN		--controllo di non aver sforato il posto massimo
 			
 			RAISE EXCEPTION 'Errore nell''assegnazione del posto per il passeggero con ticket_number: %, per il volo: %', NEW.ticket_number, NEW.id_flight;
 		
@@ -3264,49 +3264,49 @@ INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES
 INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, id_flight) VALUES
 
 -- Booking 1 (CONFIRMED, AZ1001) - 3 tickets
-('0000000000001', 0, false, 1, 'MRORSS80A15H501F', 'AZ1001'),
-('0000000000002', 1, false, 1, 'NNABNC92C22G273J', 'AZ1001'),
-('0000000000003', 2, false, 1, 'GSPVRD75G01L219K', 'AZ1001'),
+('0000000000001', 1, false, 1, 'MRORSS80A15H501F', 'AZ1001'),
+('0000000000002', 2, false, 1, 'NNABNC92C22G273J', 'AZ1001'),
+('0000000000003', 3, false, 1, 'GSPVRD75G01L219K', 'AZ1001'),
 -- Booking 2 (PENDING, BA2002) - 2 tickets
 ('0000000000004', NULL, false, 2, 'MRAGLL98S70F839A', 'BA2002'),
 ('0000000000005', NULL, false, 2, 'PAONRI85E10C351B', 'BA2002'),
 -- Booking 3 (CONFIRMED, LH3003) - 3 tickets, some CHECKED-in
-('0000000000006', 3, false, 3, 'LRAZMZ90P05D612C', 'LH3003'),
-('0000000000007', 4, false, 3, 'LCACLM83B18E089D', 'LH3003'),
-('0000000000008', 5, false, 3, 'SRAFRA95F25H701E', 'LH3003'),
+('0000000000006', 4, false, 3, 'LRAZMZ90P05D612C', 'LH3003'),
+('0000000000007', 5, false, 3, 'LCACLM83B18E089D', 'LH3003'),
+('0000000000008', 6, false, 3, 'SRAFRA95F25H701E', 'LH3003'),
 -- Booking 4 (PENDING, AF4004) - 2 tickets
 ('0000000000009', NULL, false, 4, 'MRCRCC70T03L389G', 'AF4004'),
 ('0000000000010', NULL, false, 4, 'ELNSPT88D08I170H', 'AF4004'),
 -- Booking 5 (CONFIRMED, UA5005) - 3 tickets
-('0000000000011', 0, false, 5, 'FRNRSS82A01F111A', 'UA5005'),
-('0000000000012', 1, false, 5, 'SFAMNC91B02G222B', 'UA5005'),
-('0000000000013', 2, false, 5, 'LSSCSC77C03H333C', 'UA5005'),
+('0000000000011', 1, false, 5, 'FRNRSS82A01F111A', 'UA5005'),
+('0000000000012', 2, false, 5, 'SFAMNC91B02G222B', 'UA5005'),
+('0000000000013', 3, false, 5, 'LSSCSC77C03H333C', 'UA5005'),
 -- Booking 6 (PENDING, EK6006) - 2 tickets
 ('0000000000014', NULL, false, 6, 'CHRRMN93D04I444D', 'EK6006'),
 ('0000000000015', NULL, false, 6, 'SMNGLL86E05J555E', 'EK6006'),
 -- Booking 7 (CONFIRMED, QR7007) - 3 tickets
-('0000000000016', 0, false, 7, 'VLTFNT94F06K666F', 'QR7007'),
-('0000000000017', 1, false, 7, 'NDRCNT79G07L777G', 'QR7007'),
-('0000000000018', 2, false, 7, 'BTBGRC96H08M888H', 'QR7007'),
+('0000000000016', 1, false, 7, 'VLTFNT94F06K666F', 'QR7007'),
+('0000000000017', 2, false, 7, 'NDRCNT79G07L777G', 'QR7007'),
+('0000000000018', 3, false, 7, 'BTBGRC96H08M888H', 'QR7007'),
 -- Booking 8 (PENDING, TK8008) - 2 tickets
 ('0000000000019', NULL, false, 8, 'GVNRIV81I09N999I', 'TK8008'),
 ('0000000000020', NULL, false, 8, 'FRNMRA89R10O000J', 'TK8008'),
 -- Booking 9 (CONFIRMED, DL9009) - 3 tickets
-('0000000000021', 0, false, 9, 'MRORSS80A15H501F', 'DL9009'),
-('0000000000022', 1, false, 9, 'NNABNC92C22G273J', 'DL9009'),
-('0000000000023', 2, false, 9, 'GSPVRD75G01L219K', 'DL9009'),
+('0000000000021', 1, false, 9, 'MRORSS80A15H501F', 'DL9009'),
+('0000000000022', 2, false, 9, 'NNABNC92C22G273J', 'DL9009'),
+('0000000000023', 3, false, 9, 'GSPVRD75G01L219K', 'DL9009'),
 -- Booking 10 (PENDING, LX1010) - 2 tickets
 ('0000000000024', NULL, false, 10, 'MRAGLL98S70F839A', 'LX1010'),
 ('0000000000025', NULL, false, 10, 'PAONRI85E10C351B', 'LX1010'),
 -- Booking 11 (CANCELLED, FR1111) - 2 tickets
-('0000000000026', 0, false, 11, 'LRAZMZ90P05D612C', 'FR1111'),
-('0000000000027', 1, false, 11, 'LCACLM83B18E089D', 'FR1111'),
+('0000000000026', 1, false, 11, 'LRAZMZ90P05D612C', 'FR1111'),
+('0000000000027', 2, false, 11, 'LCACLM83B18E089D', 'FR1111'),
 -- Booking 12 (CONFIRMED for CANCELLED flight, FR1111) - 2 tickets
-('0000000000028', 2, false, 12, 'SRAFRA95F25H701E', 'FR1111'),
-('0000000000029', 3, false, 12, 'MRCRCC70T03L389G', 'FR1111'),
+('0000000000028', 3, false, 12, 'SRAFRA95F25H701E', 'FR1111'),
+('0000000000029', 4, false, 12, 'MRCRCC70T03L389G', 'FR1111'),
 -- Booking 13 (CONFIRMED, VY1212 - DELAYED flight) - 2 tickets
-('0000000000030', 0, false, 13, 'ELNSPT88D08I170H', 'VY1212'),
-('0000000000031', 1, false, 13, 'FRNRSS82A01F111A', 'VY1212'),
+('0000000000030', 1, false, 13, 'ELNSPT88D08I170H', 'VY1212'),
+('0000000000031', 2, false, 13, 'FRNRSS82A01F111A', 'VY1212'),
 -- Booking 14 (PENDING, VY1212 - DELAYED flight) - 2 tickets
 ('0000000000032', NULL, false, 14, 'SFAMNC91B02G222B', 'VY1212'),
 ('0000000000033', NULL, false, 14, 'LSSCSC77C03H333C', 'VY1212'),

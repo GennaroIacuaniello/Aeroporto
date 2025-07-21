@@ -30,7 +30,7 @@ public class TicketDAOImpl implements TicketDAO {
 
                 ticketNumbers.add(rs.getString("ticket_number"));
                 if(rs.getInt("seat") > 0){
-                    seats.add(rs.getInt("seat"));
+                    seats.add(rs.getInt("seat") - 1);
                 }else{
                     seats.add(null);
                 }
