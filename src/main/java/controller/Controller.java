@@ -807,12 +807,12 @@ public class Controller {
             if(loggingInfo.contains("@")){
                 adminDAO.searchUserByMail(userID, username, loggingInfo, hashedPassword);
                 adminController.setLoggedAdmin(new Admin(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
-                userController.setLoggedUser(new User(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
+                userController.setLoggedUser(new Admin(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
 
             }else{
                 adminDAO.searchUserByUsername(userID, loggingInfo, mail, hashedPassword);
                 adminController.setLoggedAdmin(new Admin(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
-                userController.setLoggedUser(new User(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
+                userController.setLoggedUser(new Admin(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
             }
         } catch (UserNotFoundException e){
             try{
@@ -820,12 +820,12 @@ public class Controller {
                 if(loggingInfo.contains("@")){
                     customerDAO.searchUserByMail(userID, username, loggingInfo, hashedPassword);
                     customerController.setLoggedCustomer(new Customer(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
-                    userController.setLoggedUser(new User(username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
+                    userController.setLoggedUser(new Customer (username.getFirst(), loggingInfo, hashedPassword), userID.getFirst());
 
                 }else{
                     customerDAO.searchUserByUsername(userID, loggingInfo, mail, hashedPassword);
                     customerController.setLoggedCustomer(new Customer(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
-                    userController.setLoggedUser(new User(loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
+                    userController.setLoggedUser(new Customer (loggingInfo, mail.getFirst(), hashedPassword), userID.getFirst());
                 }
             } catch (UserNotFoundException ex){
                 new FloatingMessage("<html>User o password errati</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
@@ -847,4 +847,9 @@ public class Controller {
         flightDAO.getBookedSeats(flightController.getId(), bookingController.getId(), bookedSeats);
     }
 
+    public boolean isLoggedAdmin() {
+
+        return userController.getLoggedUser() instanceof Admin;
+
+    }
 }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 import static gui.FloatingMessage.SUCCESS_MESSAGE;
 
-public class MenuPanelCustomer extends JPanel {
+public class MenuPanelAdmin extends JPanel {
 
-    public MenuPanelCustomer(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public MenuPanelAdmin(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -20,6 +20,8 @@ public class MenuPanelCustomer extends JPanel {
         options.add("Home");
         options.add("Cerca voli");
         options.add("Le mie prenotazioni");
+        options.add("Bagagli smarriti");
+
 
         menuButton.addActionListener(e -> {
 
@@ -46,11 +48,16 @@ public class MenuPanelCustomer extends JPanel {
                         case "Le mie prenotazioni":
                             if (!callingObjects.getLast().getFrame().getTitle().equals("Le mie prenotazioni")) {
 
-                                new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), true);
-
-                                callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                                //new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                  //      callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), true);
+                                new FloatingMessage("Non so cosa saranno le mie prenotazioni per gli admin", menuButton, SUCCESS_MESSAGE);
+                                //callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                             }
+                            break;
+                        case "Bagagli smarriti":
+                            Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+                            LostLuggageDialog dialog = new LostLuggageDialog(parent, controller);
+                            dialog.setVisible(true);
                             break;
                     }
                 });
