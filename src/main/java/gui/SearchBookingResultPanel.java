@@ -26,7 +26,6 @@ public class SearchBookingResultPanel extends JPanel {
         super(new BorderLayout());
         this.setBackground(Color.WHITE);
 
-        //se searchedFlights fosse null, darebbe nullPointerException, quindi gli passo una lista vuota
         tableModel = new BookingTableModel( controller, bookingDates, bookingStatus, ids);
 
         boolean hasResults = (ids != null && !ids.isEmpty());
@@ -46,10 +45,8 @@ public class SearchBookingResultPanel extends JPanel {
                 int col = table.columnAtPoint(point);
                 if (table.getSelectedRow() != -1 && row != -1 && col == tableModel.getColumnCount() - 1) {
 
-                    //Flight selectedFlight = searchedFlights.get(table.rowAtPoint(point));
-                    int index = table.rowAtPoint(point);   //index of the selectedFlight
 
-                    //TO DO cambiare la pagina che viene aperta
+                    int index = table.rowAtPoint(point);   //index of the selectedBooking
 
                     controller.getFlightController().setBookingResultSelectedFlight(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId());
 
@@ -58,8 +55,6 @@ public class SearchBookingResultPanel extends JPanel {
                     new BookingPageCustomer(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                                             callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
-                    //new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                    //        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
                     callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 

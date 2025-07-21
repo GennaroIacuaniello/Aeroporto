@@ -98,6 +98,10 @@ public class SearchBookingPanel extends JPanel {
 
         if(ifOpenedFromMenu){
             controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, flightIds, searchButton);
+        }else{
+            this.bookingDates = (ArrayList<Date>) controller.getBookingController().getSearchBookingResultDates();
+            this.bookingStatus = (ArrayList<String>) controller.getBookingController().getSearchBookingResultStatus();
+            this.flightIds = (ArrayList<String>) controller.getFlightController().getSearchBookingResultIds();
         }
 
         updateResultsPanel(callingObjects, controller, false);

@@ -87,6 +87,7 @@ public class SearchFlightPanel extends JPanel {
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
         this.add(resultsScrollPane, constraints.getConstraints());
 
+        controller.setErrorButton(searchButton);
         updateResultsPanel(callingObjects, controller, false);
     }
 
@@ -253,6 +254,8 @@ public class SearchFlightPanel extends JPanel {
                 LocalDate dateAfter = dateTo.getDate();
                 LocalTime timeBefore = timeFrom.getTime();
                 LocalTime timeAfter = timeTo.getTime();
+
+                controller.setErrorButton(searchButton);
 
                 if( (fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())){
 

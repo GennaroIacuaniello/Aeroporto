@@ -230,6 +230,44 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    public void searchBooksCustomerForAFlight(String flightId, Integer loggedCustomerId,
+                                       List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException {
+
+        String query = "SELECT B.id_booking, B.booking_status, B.booking_time " +
+                        "FROM FLIGHT F NATURAL JOIN BOOKING B " +
+                        "WHERE F.id_flight = ? AND B.buyer = ? "+
+                        "ORDER BY F.departure_time;";
+
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, flightId);
+            statement.setInt(2, loggedCustomerId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()){
+
+                Timestamp tmpTS = rs.getTimestamp("booking_time");
+                bookingDates.add(new java.sql.Date(tmpTS.getTime()));
+
+                bookingStatus.add(rs.getString("booking_status"));
+
+                bookingIds.add(rs.getInt("id_booking"));
+
+
+            }
+
+            rs.close();
+
+            //connection.close(); non serve perchè la fa in automatico il try-with-resources
+
+        }
+
+
+    }
+
     public void getAllBooksCustomer(Integer loggedCustomerId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
                                    List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats,
