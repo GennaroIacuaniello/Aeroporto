@@ -191,10 +191,10 @@ public class FlightDAOImpl implements FlightDAO {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
-            String query = "SELECT T.seat FROM Ticket NATURAL JOIN Booking WHERE id_flight LIKE ? AND booking_status <> 'cancelled'";
+            String query = "SELECT T.seat FROM Ticket NATURAL JOIN Booking WHERE id_flight LIKE ? AND booking_status <> 'CANCELLED'";
 
-            if (bookingId != null) query += " AND id_booking <> " + bookingId + ";";
-            else query += ";";
+            if (bookingId != null) query += " AND id_booking <> " + bookingId;
+            query += ";";
 
             PreparedStatement statement = connection.prepareStatement(query);
 
