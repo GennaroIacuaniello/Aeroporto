@@ -48,9 +48,7 @@ public class SearchBookingResultPanel extends JPanel {
 
                     int index = table.rowAtPoint(point);   //index of the selectedBooking
 
-                    controller.getFlightController().setBookingResultSelectedFlight(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId());
-
-                    controller.getBookingController().setBookingResultSelectedBooking(index);
+                    controller.getAllLuggagesForABooking(index);
 
                     new BookingPageCustomer(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                                             callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
