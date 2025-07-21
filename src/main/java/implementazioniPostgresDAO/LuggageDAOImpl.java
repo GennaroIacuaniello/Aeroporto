@@ -58,6 +58,11 @@ public class LuggageDAOImpl implements LuggageDAO {
 
                 flightTypes.add(rs.getBoolean("flight_type"));
 
+                buyerIds.add(rs.getInt("id_customer"));
+                usernames.add(rs.getString("username"));
+                mails.add(rs.getString("mail"));
+                hashedPasswords.add(rs.getString("hashed_password"));
+
                 tmpTS = rs.getTimestamp("booking_time");
                 bookingDates.add(new java.sql.Date(tmpTS.getTime()));
 
