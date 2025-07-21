@@ -16,10 +16,10 @@ import java.util.List;
 
 public class LostLuggageDialog extends JDialog {
 
-    private JTable baggageTable;
+    private JTable luggageTable;
     private LostBaggageTableModel tableModel;
 
-    public LostLuggageDialog(Frame owner, Controller controller) {
+    public LostLuggageDialog(Frame owner, ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super(owner, "Gestione Bagagli Smarriti", true);
 
@@ -33,9 +33,13 @@ public class LostLuggageDialog extends JDialog {
         controller.getLostLuggages(flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
 
         tableModel = new LostBaggageTableModel(controller, flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
-        baggageTable = new JTable(tableModel);
 
-        baggageTable.addMouseListener(new MouseAdapter() {
+        if (luggageIds.isEmpty())
+            luggageTable = new LostLuggageDialog.JTableWithEmptyMessage(tableModel, "Nessun bagaglio smarrito.");
+        else
+            luggageTable = new JTable(tableModel);
+
+        luggageTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent mouseEvent) {
                 JTable table = (JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
@@ -45,17 +49,31 @@ public class LostLuggageDialog extends JDialog {
 
                 if (row != -1 && col == tableModel.getColumnCount() - 1) {
 
-                    // TODO: aprire pagina di gestione del bagaglio smarrito cliccato
+                    int index = table.rowAtPoint(point);   //index of the selectedBooking
+
+                    controller.setBookingResultSelectedFlightForLostLuaggages(index);
+
+                    //controller.getBookingController().setBookingResultSelectedBooking(index);
+
+                    //new BookingPageCustomer(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                    //        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+
+                    new BookingPageAdmin(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                            callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+
+                    dispose();
+                    callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+
                 }
             }
         });
 
         setTableAppearance();
 
-        JScrollPane scrollPane = new JScrollPane(baggageTable);
+        JScrollPane scrollPane = new JScrollPane(luggageTable);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        JTableHeader header = baggageTable.getTableHeader();
+        JTableHeader header = luggageTable.getTableHeader();
         this.add(header, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
 
@@ -70,19 +88,19 @@ public class LostLuggageDialog extends JDialog {
 
     private void setTableAppearance() {
 
-        baggageTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        baggageTable.getTableHeader().setBackground(new Color(230, 230, 230));
+        luggageTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        luggageTable.getTableHeader().setBackground(new Color(230, 230, 230));
 
-        baggageTable.getTableHeader().setReorderingAllowed(false);
+        luggageTable.getTableHeader().setReorderingAllowed(false);
 
-        baggageTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        luggageTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        baggageTable.setRowHeight(35);
-        baggageTable.setRowSelectionAllowed(false);
+        luggageTable.setRowHeight(35);
+        luggageTable.setRowSelectionAllowed(false);
 
-        baggageTable.setFillsViewportHeight(true);
+        luggageTable.setFillsViewportHeight(true);
 
-        baggageTable.setGridColor(new Color(220, 220, 220));
+        luggageTable.setGridColor(new Color(220, 220, 220));
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
             @Override
@@ -96,12 +114,12 @@ public class LostLuggageDialog extends JDialog {
         };
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        for (int i = 0; i < baggageTable.getColumnCount() - 1; i++) {
-            baggageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        for (int i = 0; i < luggageTable.getColumnCount() - 1; i++) {
+            luggageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
         int manageColumnIndex = tableModel.getColumnCount() - 1;
-        baggageTable.getColumnModel().getColumn(manageColumnIndex).setCellRenderer(new ButtonRenderer());
+        luggageTable.getColumnModel().getColumn(manageColumnIndex).setCellRenderer(new ButtonRenderer());
     }
 
     private static class LostBaggageTableModel extends AbstractTableModel {
@@ -192,6 +210,43 @@ public class LostLuggageDialog extends JDialog {
             }
 
             return this;
+        }
+    }
+
+    private static class JTableWithEmptyMessage extends JTable {
+
+        private final String emptyMessage;
+
+        public JTableWithEmptyMessage(AbstractTableModel model, String emptyMessage) {
+
+            super(model);
+            this.emptyMessage = emptyMessage;
+
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+
+            super.paintComponent(g);
+
+            if (getRowCount() == 0) {
+
+                Graphics2D g2d = (Graphics2D) g;
+
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(Color.GRAY);
+
+                g2d.setFont(new Font("Segoe UI", Font.ITALIC, 16));
+
+                FontMetrics fm = g2d.getFontMetrics();
+
+                int stringWidth = fm.stringWidth(emptyMessage);
+                int stringHeight = fm.getAscent();
+                int x = (getWidth() - stringWidth) / 2;
+                int y = (getHeight() - stringHeight) / 2 + fm.getAscent();
+
+                g2d.drawString(emptyMessage, x, y);
+            }
         }
     }
 }

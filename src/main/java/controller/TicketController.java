@@ -68,4 +68,17 @@ public class TicketController {
     public void setSearchBookingResult(List<Ticket> searchBookingResult) {
         this.searchBookingResult = (ArrayList<Ticket>) searchBookingResult;
     }
+
+    public Ticket getSearchBookingResultTicketByTicketNumber(String ticketNumber) {
+
+        for (Ticket value : searchBookingResult) {
+
+            if (value.getTicketNumber().equals(ticketNumber)) {
+                return value;
+            }
+
+        }
+        return null;
+
+    }
 }

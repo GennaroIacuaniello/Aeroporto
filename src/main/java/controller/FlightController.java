@@ -408,4 +408,18 @@ public class FlightController {
     public void setSearchResult(List<Flight> searchResult) {
         this.searchResult = (ArrayList<Flight>) searchResult;
     }
+
+    public Flight getSearchBookingResultFlightById(String id) {
+
+        for (Flight value : searchBookingResult) {
+
+            if (value.getId().equals(id)) {
+                return value;
+            }
+
+        }
+        return null;
+
+    }
+
 }

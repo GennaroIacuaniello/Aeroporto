@@ -345,7 +345,7 @@ CREATE TABLE Flight (
 	CONSTRAINT destination_or_origin_never_Napoli CHECK(destination_or_origin NOT LIKE 'Napoli'),
 	--perché a priori, che sia departing o arriving, memorizziamo sempre l' "altra città", non Napoli
 	CONSTRAINT flight_delay_not_negative CHECK(flight_delay >= 0),
-	CONSTRAINT correctness_of_id_gate CHECK(id_gate IS NULL OR id_gate BETWEEN 0 AND 19) --l'aeroporto di Napoli ha 20 gate
+	CONSTRAINT correctness_of_id_gate CHECK(id_gate IS NULL OR id_gate BETWEEN 1 AND 20) --l'aeroporto di Napoli ha 20 gate
 
 );
 
@@ -377,39 +377,6 @@ CREATE OR REPLACE TRIGGER block_upd_id_flight_aToDep_or_more
 BEFORE UPDATE OF id_flight ON FLIGHT
 FOR EACH ROW
 EXECUTE FUNCTION fun_block_upd_id_flight_aToDep_or_more();
-
--------------------------------------------------------------------------------------------------------------------------
-
---TRIGGER NON SI POSSONO MODIFICARE IL DEPARTURE TIME E I FREE_SEATS PER UN VOLO DEPARTING DEPARTED O LANDED
-
-CREATE OR REPLACE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land()
-RETURNS TRIGGER
-AS $$
-BEGIN
-
-	IF OLD.flight_type = true THEN 
-
-		IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED' THEN
-
-			IF OLD.departure_time <> NEW.departure_time OR OLD.free_seats <> NEW.free_seats THEN
-
-				RAISE EXCEPTION 'Il volo % è già partito, non si possono modificare i suoi: orario di partenza, posti liberi!', OLD.id_flight;
-
-			END IF;
-
-		END IF;
-
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER blocked_upd_departing_dep_time_free_seats_if_dep_land
-BEFORE UPDATE OF departure_time, free_seats ON FLIGHT
-FOR EACH ROW
-EXECUTE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
@@ -3202,7 +3169,7 @@ INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Flight
 
 INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
-('AZ1001', 'Alitalia', '2025-08-01 10:00:00', '2025-08-01 12:00:00', 'PROGRAMMED', 150, 150, 'Rome', 0, true, null),
+('AZ1001', 'Aeroitalia', '2025-08-01 10:00:00', '2025-08-01 11:00:00', 'PROGRAMMED', 150, 150, 'Rome', 0, true, null),
 ('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'PROGRAMMED', 200, 200, 'London', 0, false, null),
 ('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'PROGRAMMED', 180, 180, 'Frankfurt', 0, true, null),
 ('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'PROGRAMMED', 160, 160, 'Paris', 0, false, null),
@@ -3213,7 +3180,8 @@ INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, fligh
 ('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
 ('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurich', 0, false, null),
 ('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublin', 0, true, NULL),
-('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'DELAYED', 120, 120, 'Barcelona', 60, false, 11);
+('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'DELAYED', 120, 120, 'Barcelona', 60, false, 11),
+('GI0015', 'Aeroitalia', '2025-07-01 10:00:00', '2025-07-01 12:00:00', 'LANDED', 150, 150, 'Milano', 0, true, 15);
 
 -- Dati per la tabella Passenger
 
@@ -3237,7 +3205,8 @@ INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES
 ('Andrea', 'Conti', '1979-07-07', 'NDRCNT79G07L777G'),
 ('Beatrice', 'Greco', '1996-08-08', 'BTBGRC96H08M888H'),
 ('Giovanni', 'Riva', '1981-09-09', 'GVNRIV81I09N999I'),
-('Francesca', 'Mariani', '1989-10-10', 'FRNMRA89R10O000J');
+('Francesca', 'Mariani', '1989-10-10', 'FRNMRA89R10O000J'),
+('Virginia Antonia', 'Esposito', '1989-10-10', 'SPSVGN04M61G964D');
 
 -- Dati per la tabella Booking
 
@@ -3257,7 +3226,11 @@ INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES
 ('CONFIRMED', '2025-07-14 11:00:00', 5, 'VY1212'), -- ID Booking 13,
 ('PENDING', '2025-07-15 12:00:00', 7, 'VY1212'), -- ID Booking 14,
 ('CONFIRMED', '2025-07-16 09:30:00', 1, 'AZ1001'), -- ID Booking 15
-('CONFIRMED', '2025-07-16 09:35:00', 2, 'AZ1001'); -- ID Booking 16
+('CONFIRMED', '2025-07-16 09:35:00', 2, 'AZ1001'), -- ID Booking 16
+('CONFIRMED', '2025-06-19 09:35:00', 1, 'GI0015'), -- ID Booking 17
+('CONFIRMED', '2025-06-19 09:40:00', 1, 'GI0015'), -- ID Booking 18
+('CONFIRMED', '2025-06-19 09:50:00', 1, 'GI0015'); -- ID Booking 19
+
 
 -- Dati per la tabella Ticket
 
@@ -3314,8 +3287,17 @@ INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, i
 ('0000000000034', NULL, false, 15, 'SFAMNC91B02G222B', 'AZ1001'),
 ('0000000000035', NULL, false, 15, 'LSSCSC77C03H333C', 'AZ1001'),
 -- Booking 16 (CONFIRMED, AZ1001 - PROGRAMMED flight) - 2 tickets
-('0000000000036', NULL, false, 15, 'MRORSS80A15H501F', 'AZ1001'),
-('0000000000037', NULL, false, 15, 'NNABNC92C22G273J', 'AZ1001');
+('0000000000036', NULL, false, 16, 'MRORSS80A15H501F', 'AZ1001'),
+('0000000000037', NULL, false, 16, 'NNABNC92C22G273J', 'AZ1001'),
+-- Booking 17 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
+('0000000000038', 1, true, 17, 'MRORSS80A15H501F', 'GI0015'),
+('0000000000039', 4, true, 17, 'NNABNC92C22G273J', 'GI0015'),
+-- Booking 18 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
+('0000000000040', 51, true, 18, 'SFAMNC91B02G222B', 'GI0015'),
+('0000000000041', 52, true, 18, 'ELNSPT88D08I170H', 'GI0015'),
+-- Booking 19 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
+('0000000000042', 2, true, 19, 'SPSVGN04M61G964D', 'GI0015'),
+('0000000000043', 3, true, 19, 'SPSVGN04M61G964D', 'GI0015');
 
 
 -- Dati per la tabella Luggage
@@ -3377,6 +3359,15 @@ INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES
 -- Per ticket 0000000000028 (Booking 12)
 ('CHECKED', 'BOOKED', '0000000000028'),
 ('CARRY_ON', 'BOOKED', '0000000000028');
+
+INSERT INTO Luggage (luggage_type, luggage_status, id_ticket, id_luggage_after_check_in) VALUES
+-- Per ticket 0000000000039 (Booking 17)
+('CHECKED', 'LOST', '0000000000039', '00000000000390' ),
+('CARRY_ON', 'LOST', '0000000000039', '00000000000391'),
+-- Per ticket 0000000000042 (Booking 19)
+('CHECKED', 'LOST', '0000000000042', '00000000000420'),
+('CARRY_ON', 'WITHDRAWABLE', '0000000000042', '00000000000421');
+
 
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -3898,6 +3889,38 @@ EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER NON SI POSSONO MODIFICARE IL DEPARTURE TIME E I FREE_SEATS PER UN VOLO DEPARTING DEPARTED O LANDED
+
+CREATE OR REPLACE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.flight_type = true THEN 
+
+		IF NEW.flight_status = 'DEPARTED' OR NEW.flight_status = 'LANDED' THEN
+
+			IF OLD.departure_time <> NEW.departure_time OR OLD.free_seats <> NEW.free_seats THEN
+
+				RAISE EXCEPTION 'Il volo % è già partito, non si possono modificare i suoi: orario di partenza, posti liberi!', OLD.id_flight;
+
+			END IF;
+
+		END IF;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER blocked_upd_departing_dep_time_free_seats_if_dep_land
+BEFORE UPDATE OF departure_time, free_seats ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land();
+
+-------------------------------------------------------------------------------------------------------------------------
 
 
 

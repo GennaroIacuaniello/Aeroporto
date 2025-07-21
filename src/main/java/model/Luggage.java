@@ -15,7 +15,7 @@ package model;
 
 public class Luggage {
 
-    private Integer id = null;
+    private String id = null;
     private LuggageType type = null;
     private LuggageStatus status = LuggageStatus.BOOKED;
     Ticket ticket;
@@ -42,7 +42,7 @@ public class Luggage {
 
     }
 
-    public Luggage(int parId, LuggageType parType, Ticket parTicket) throws InvalidTicket {
+    public Luggage(String parId, LuggageType parType, Ticket parTicket) throws InvalidTicket {
 
         if(parTicket != null){
             this.id = parId;
@@ -56,11 +56,25 @@ public class Luggage {
 
     }
 
-    public Integer getId() {
+    public Luggage(String parId, LuggageType parType, LuggageStatus parStatus, Ticket parTicket) throws InvalidTicket {
+
+        if(parTicket != null){
+            this.id = parId;
+            this.type = parType;
+            this.status = parStatus;
+            this.ticket = parTicket;
+        }else{
+            throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
+        }
+
+
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
