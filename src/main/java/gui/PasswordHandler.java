@@ -104,8 +104,19 @@ public class PasswordHandler extends JPasswordField {
         return true;
     }
 
-    public boolean verifyUserPassword(String username){
-        return true;
-        //TODO: use DAO to verify that the password hash matches
+    public void showInvalidPasswordMessage(JButton button) {
+        String warningMessage = null;
+        switch (this.passwordValidityCode){
+            case tooShort -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri</html>";
+            case tooLong -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri</html>";
+            case mustContainLowercase -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
+            case mustContainUppercase -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
+            case mustContainDigit -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
+            case mustContainSpecial -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
+                    PasswordHandler.allowedSpecialCharacters + "</html>";
+            case characterNotAllowed -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
+                    "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet + "</html>";
+        }
+        new FloatingMessage(warningMessage, button, FloatingMessage.WARNING_MESSAGE);
     }
 }

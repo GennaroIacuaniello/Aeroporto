@@ -28,8 +28,6 @@ public class ImminentFlightsTable extends JTable {
         //setting Table looks
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         this.setShowGrid(false);
-        this.getColumnModel().getColumn(this.getColumnCount()-1).setPreferredWidth(16);
-        this.getColumnModel().getColumn(this.getColumnCount()-1).setMaxWidth(16);
 
         this.setBackground(Color.LIGHT_GRAY);
         this.getTableHeader().setBackground(Color.GRAY);

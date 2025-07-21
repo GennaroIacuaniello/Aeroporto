@@ -37,7 +37,7 @@ public class LogInScreen extends DisposableObject {
     //Bottom options
     private JButton registerButton;
 
-    public LogInScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public LogInScreen(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
 
         if (!callingObjects.isEmpty()) {
             int size = callingObjects.size();
@@ -47,7 +47,7 @@ public class LogInScreen extends DisposableObject {
             }
             callingObjects.clear();
 
-            this.setMainFrame(callingObjects, controller);
+            this.setMainFrame(callingObjects, controller, startingSize);
         }
         callingObjects.addLast(this);
 
@@ -58,19 +58,20 @@ public class LogInScreen extends DisposableObject {
 
 
         //todo: ELIMINA QUESTE DUE RIGHE
-        //usernameTextField.setText("customer_user1");
-        //passwordField.setText("Customer_User1");
-        usernameTextField.setText("admin_user1");
-        passwordField.setText("Admin_User1");
+        usernameTextField.setText("customer_user1");
+        passwordField.setText("Customer_User1");
+        //usernameTextField.setText("admin_user1");
+        //passwordField.setText("Admin_User1");
 
         //Logging in logic
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (passwordField.isValidPassword() && controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
+                if (!passwordField.isValidPassword()) {
+                    passwordField.showInvalidPasswordMessage(logInButton);
+                } else if(controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                     login(callingObjects, controller);
                 }
-
             }
         });
 
@@ -80,7 +81,9 @@ public class LogInScreen extends DisposableObject {
                 super.keyReleased(e);
                 toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (passwordField.isValidPassword() && controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
+                    if (!passwordField.isValidPassword()) {
+                        passwordField.showInvalidPasswordMessage(logInButton);
+                    } else if(controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                         login(callingObjects, controller);
                     }
                 }
@@ -93,7 +96,9 @@ public class LogInScreen extends DisposableObject {
                 super.keyReleased(e);
                 toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (passwordField.isValidPassword() && controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
+                    if (!passwordField.isValidPassword()) {
+                        passwordField.showInvalidPasswordMessage(logInButton);
+                    } else if(controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                         login(callingObjects, controller);
                     }
                 }
@@ -162,18 +167,19 @@ public class LogInScreen extends DisposableObject {
         }
 
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(new ArrayList<DisposableObject>(), controller).loginScreen);
+        mainFrame.setContentPane(new LogInScreen(new ArrayList<DisposableObject>(), controller, mainFrame.getPreferredSize()).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(callingObjects, controller).loginScreen);
+        mainFrame.setSize(startingSize);
+        mainFrame.setContentPane(new LogInScreen(callingObjects, controller, startingSize).loginScreen);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.pack();
+        //mainFrame.pack();
         mainFrame.setVisible(true);
     }
 

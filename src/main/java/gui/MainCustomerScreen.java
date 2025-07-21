@@ -38,7 +38,7 @@ public class MainCustomerScreen extends DisposableObject {
         this.addNavigatorBarPanel(callingObjects, controller);
         this.addHamburgerPanel(callingObjects, controller);
         this.addUserPanel(callingObjects, controller);
-        this.addFooterPanel();
+        //this.addFooterPanel();
 
         this.addArrivingPanel(controller);
         this.addDepartingPanel(controller);
@@ -92,15 +92,16 @@ public class MainCustomerScreen extends DisposableObject {
         userPanel.setVisible(true);
     }
 
+    /*
     private void addFooterPanel() {
 
         footerPanel = new FooterPanel();
-        constraints.setConstraints(0, 5, 2, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 6, 2, 1, GridBagConstraints.BOTH,
                 0, 75, GridBagConstraints.PAGE_END);
         mainFrame.add(footerPanel, constraints.getConstraints());
         footerPanel.setVisible(true);
     }
-
+    */
     private void addArrivingPanel(Controller controller) {
 
         arrivingPanel = new JPanel();
@@ -109,14 +110,15 @@ public class MainCustomerScreen extends DisposableObject {
 
         setArrivingTable(arrivingPanel, controller);
 
-        constraints.setConstraints(0, 4, 1, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 4, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
 
-        arrivingPanel.setBorder(BorderFactory.createEmptyBorder(0, 64, 0, 32));
+        arrivingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
         mainFrame.add(arrivingPanel, constraints.getConstraints());
 
         JLabel arrivingLabel = new JLabel("Aerei in arrivo");
         arrivingLabel.setFont(new Font(null, Font.BOLD, 18));
+        arrivingLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
         arrivingLabel.setLabelFor(arrivingTable);
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
@@ -129,7 +131,7 @@ public class MainCustomerScreen extends DisposableObject {
 
     private void setArrivingTable(JPanel tablePanel, Controller controller) {
 
-        String[] columnTitle = {"Id", "Company", "From", "Day", "Arrival Time", ""};
+        String[] columnTitle = {"Id", "Compagnia", "Data", "Tratta", "Orario di arrivo", "Stato del volo", "Gate"};
         Object[][] data = controller.getImminentArrivingFlights();
         arrivingTable = new ImminentFlightsTable(data, columnTitle);
 
@@ -153,14 +155,15 @@ public class MainCustomerScreen extends DisposableObject {
 
         setDepartingTable(departingPanel, controller);
 
-        constraints.setConstraints(1, 4, 1, 1, GridBagConstraints.BOTH,
+        constraints.setConstraints(0, 5, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
 
-        departingPanel.setBorder(BorderFactory.createEmptyBorder(0, 32, 0, 64));
+        departingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
         mainFrame.add(departingPanel, constraints.getConstraints());
 
         JLabel departingLabel = new JLabel("Aerei in Partenza");
         departingLabel.setFont(new Font(null, Font.BOLD, 18));
+        departingLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
         departingLabel.setLabelFor(departingTable);
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,

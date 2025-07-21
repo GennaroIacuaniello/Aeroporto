@@ -5,14 +5,15 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public interface FlightDAO {
 
-    void getImminentArrivingFlights (ArrayList<String> parId, ArrayList<String> parCompanyName, ArrayList<Date> parDate,
-                                            ArrayList<Time> parDepartureTime, ArrayList<Time> parArrivalTime, ArrayList<String> parStatus,
-                                            ArrayList<Integer> parMaxSeats, ArrayList<Integer> parFreeSeats, ArrayList<Integer> parGate);
+    void getImminentArrivingFlights (List<String> parId, List<String> parCompanyName, List<Date> parDate,
+                                     List<Time> parDepartureTime, List<Time> parArrivalTime, List<String> parStatus,
+                                     List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> origin,
+                                     List<Integer> delay, List<Integer> parGate) throws SQLException;
 
     void searchFlight (String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                               List<String> ids, List<String> companyNames, List<java.sql.Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,

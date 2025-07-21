@@ -32,7 +32,18 @@ public class Arriving extends Flight{
     }
 
     public Arriving(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
-                    Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parOrigin, int parArrivalDelay){
+                    Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parOrigin, int parArrivalDelay, int gate){
+
+        this(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parOrigin, parArrivalDelay);
+        try{
+            super.setGate(new Gate((byte)gate));
+        } catch (InvalidGate e){
+            e.printStackTrace();
+        }
+
+    }
+    public Arriving(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                     Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parOrigin, int parArrivalDelay){
 
         super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats);
         this.origin = parOrigin;

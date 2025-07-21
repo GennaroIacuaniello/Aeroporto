@@ -8,39 +8,51 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class FlightDAOImpl implements FlightDAO {
 
-    public void getImminentArrivingFlights (ArrayList<String> parId, ArrayList<String> parCompanyName, ArrayList<Date> parDate,
-                                            ArrayList<Time> parDepartureTime, ArrayList<Time> parArrivalTime, ArrayList<String> parStatus,
-                                            ArrayList<Integer> parMaxSeats, ArrayList<Integer> parFreeSeats, ArrayList<Integer> parGate) {
+    public void getImminentArrivingFlights (List<String> parId, List<String> parCompanyName, List<Date> parDate,
+                                            List<Time> parDepartureTime, List<Time> parArrivalTime, List<String> parStatus,
+                                            List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> origin,
+                                            List<Integer> delay, List<Integer> parGate) throws SQLException{
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
-            String query = "SELECT id_flight, company_name, flight_date, departure_time, arrival_time, flight_status," +
-                           "max_seats, free_seats, destination_or_origin, flight_delay, id_gate " +
-                           "FROM FLIGHT " +
-                           "WHERE flight_type = false AND flight_status <> 'landed' AND flight_status <> 'cancelled' " +
-                           "ORDER BY flight_date " +
-                           "LIMIT 10;";
+            String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, " +
+                    "max_seats, free_seats, destination_or_origin, flight_delay, id_gate " +
+                    "FROM FLIGHT " +
+                    "WHERE flight_type = false AND flight_status <> 'LANDED' AND flight_status <> 'CANCELLED' " +
+                    "AND arrival_time + (flight_delay * interval '1 minute') > now() AT TIME ZONE current_setting('TimeZone') " +
+                    "ORDER BY arrival_time " +
+                    "LIMIT 6 ";
 
             PreparedStatement preparedQuery = connection.prepareStatement(query);
-
             ResultSet resultSet = preparedQuery.executeQuery();
 
             while (resultSet.next()) {
 
                 parId.add(resultSet.getString("id_flight"));
                 parCompanyName.add(resultSet.getString("company_name"));
-                parDate.add(resultSet.getDate("flight_date"));
-                parDepartureTime.add(resultSet.getTime("departure_time"));
-                parArrivalTime.add(resultSet.getTime("arrival_time"));
+
+                Timestamp tmpTS = resultSet.getTimestamp("departure_time");
+                parDate.add(new Date(tmpTS.getTime()));
+                parDepartureTime.add(new Time(tmpTS.getTime()));
+
+                tmpTS = resultSet.getTimestamp("arrival_time");
+                parArrivalTime.add(new Time(tmpTS.getTime()));
+
                 parStatus.add(resultSet.getString("flight_status"));
+
                 parMaxSeats.add(resultSet.getInt("max_seats"));
                 parFreeSeats.add(resultSet.getInt("free_seats"));
-                parGate.add(resultSet.getInt("gate"));
+
+                origin.add(resultSet.getString("destination_or_origin"));
+
+                delay.add(resultSet.getInt("flight_delay"));
+
+                parGate.add(resultSet.getInt("id_gate"));
             }
 
             resultSet.close();

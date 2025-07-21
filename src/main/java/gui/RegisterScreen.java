@@ -93,19 +93,7 @@ public class RegisterScreen extends DisposableObject {
                         goToLoginPage(callingObjects, controller);
                     }
                 } else {
-                    String warningMessage = null;
-                    switch (passwordField.passwordValidityCode){
-                        case tooShort -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri</html>";
-                        case tooLong -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri</html>";
-                        case mustContainLowercase -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
-                        case mustContainUppercase -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
-                        case mustContainDigit -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
-                        case mustContainSpecial -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
-                                PasswordHandler.allowedSpecialCharacters + "</html>";
-                        case characterNotAllowed -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
-                                "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet + "</html>";
-                    }
-                    new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
+                    passwordField.showInvalidPasswordMessage(registerButton);
                 }
             }
         });
@@ -125,13 +113,6 @@ public class RegisterScreen extends DisposableObject {
                 toggleRegisterButton();
             }
         });
-    }
-
-    private void goToLoginPage(ArrayList<DisposableObject> callingObjects, Controller controller) {
-        mainFrame.setVisible(false);
-        new LogInScreen(callingObjects, controller);
-        doOnDispose(callingObjects, controller);
-        mainFrame.dispose();
     }
 
     private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension startingSize) {
@@ -166,6 +147,13 @@ public class RegisterScreen extends DisposableObject {
 
     private void toggleRegisterButton(){
         registerButton.setEnabled(!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0);
+    }
+
+    private void goToLoginPage(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        mainFrame.setVisible(false);
+        new LogInScreen(callingObjects, controller, mainFrame.getSize());
+        doOnDispose(callingObjects, controller);
+        mainFrame.dispose();
     }
 
     @Override
