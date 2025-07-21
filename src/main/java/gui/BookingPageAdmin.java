@@ -61,7 +61,7 @@ public class BookingPageAdmin extends BookingPage {
                     string = controller.getFlightController().getPassengerTicketNumberFromBooking(j, i);
                     if (string != null) passengerPanel.setTicketNumber(string);
 
-                    passengerPanel.setLuggagesTypes(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i), controller);
+                    passengerPanel.setLuggages(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i), controller.getFlightController().getPassengerLuggagesTicketsFromBooking(j, i),controller);
 
                     insertPassengerPanel(controller, passengerPanel);
 

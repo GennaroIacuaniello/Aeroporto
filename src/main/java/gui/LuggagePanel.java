@@ -25,6 +25,10 @@ public class LuggagePanel extends JPanel {
         setComboBox();
     }
 
+    public void setLabel(String string) {
+        label.setText(string);
+    }
+
     private void setLabel() {
         label = new JLabel("Bagaglio " + (index + 1));
         label.setHorizontalAlignment(SwingConstants.CENTER);

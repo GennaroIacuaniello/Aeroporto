@@ -115,12 +115,18 @@ public class LuggagesView extends JFrame {
         return luggagesPanels;
     }
 
-    public void setLuggagesTypes(ArrayList<Integer> luggagesTypes, Controller controller) {
+    public void setLuggages(ArrayList<Integer> luggagesTypes, ArrayList<String> luggagesTickets, Controller controller) {
+
+        int i = 0;
+
         for (Integer luggageType : luggagesTypes) {
+
             if (!luggagesPanels.isEmpty()) {
                 luggagesPanels.add(new LuggagePanel(controller, luggagesPanels.getLast().getIndex() + 1));
+                if (luggagesTickets.get(i++) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i));
             } else {
                 luggagesPanels.add(new LuggagePanel(controller, 0));
+                if (luggagesTickets.get(i++) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i));
             }
 
 

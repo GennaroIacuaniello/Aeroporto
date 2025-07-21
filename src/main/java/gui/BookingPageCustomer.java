@@ -60,7 +60,7 @@ public class BookingPageCustomer extends BookingPage {
             string = controller.getBookingController().getPassengerTicketNumber(i);
             if (string != null) passengerPanel.setTicketNumber(string);
 
-            passengerPanel.setLuggagesTypes(controller.getBookingController().getPassengerLuggagesTypes(i), controller);
+            passengerPanel.setLuggages(controller.getBookingController().getPassengerLuggagesTypes(i), controller.getBookingController().getPassengerLuggagesTickets(i), controller);
 
             insertPassengerPanel(controller, passengerPanel);
         }

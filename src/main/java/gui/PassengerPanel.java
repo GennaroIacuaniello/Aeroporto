@@ -304,8 +304,8 @@ public class PassengerPanel extends JPanel {
         return luggagesView.getLuggagesPanels();
     }
 
-    public void setLuggagesTypes (ArrayList<Integer> luggageTypes, Controller controller){
-        luggagesView.setLuggagesTypes (luggageTypes, controller);
+    public void setLuggages (ArrayList<Integer> luggageTypes, ArrayList<String> luggagesTickets, Controller controller){
+        luggagesView.setLuggages (luggageTypes, luggagesTickets, controller);
     }
 
     public SeatChooser getSeatChooser() {
