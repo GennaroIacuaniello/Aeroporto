@@ -94,7 +94,12 @@ public class Controller {
             result[i][3] = arrivingFlights.get(i).getOrigin() + " -> Napoli";
             result[i][4] = arrivingFlights.get(i).getArrivalTime().toLocalTime().plusMinutes(arrivingFlights.get(i).getArrivalDelay());
             result[i][5] = arrivingFlights.get(i).getStatus();
-            result[i][6] = arrivingFlights.get(i).getGate();
+            if(arrivingFlights.get(i).getGate() != null){
+                result[i][6] = arrivingFlights.get(i).getGate().getId();
+            }else{
+                result[i][6] = "Non assegnato";
+            }
+
 
         }
 

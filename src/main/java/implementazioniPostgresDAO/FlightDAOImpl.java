@@ -52,7 +52,11 @@ public class FlightDAOImpl implements FlightDAO {
 
                 delay.add(resultSet.getInt("flight_delay"));
 
-                parGate.add(resultSet.getInt("id_gate"));
+                if(resultSet.getInt("id_gate") > 0){
+                    parGate.add(resultSet.getInt("id_gate"));
+                }else{
+                    parGate.add(null);
+                }
             }
 
             resultSet.close();
