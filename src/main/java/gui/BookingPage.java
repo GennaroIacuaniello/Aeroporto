@@ -254,7 +254,6 @@ public abstract class BookingPage extends DisposableObject {
 
             if (passengerPanels.get(i).getTicketNumber().equals(searchField.getText())) {
 
-                System.out.println("trovato");
                 goToPage(i / 3);
                 flag = false;
             }

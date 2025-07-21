@@ -93,7 +93,8 @@ public class BookingPageCustomer extends BookingPage {
 
                         if  (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().setVisible(false);
                     }
-                }
+                } else new FloatingMessage("Lo stato del volo o della prenotazione non permettono di modificare questa prenotazione",
+                        modifyButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
@@ -102,9 +103,13 @@ public class BookingPageCustomer extends BookingPage {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                controller.getBookingController().deleteBooking();
+                if (checkFlightNBookingStatus(controller)) {
 
-                controller.goBack(callingObjects);
+                    controller.getBookingController().deleteBooking();
+
+                    controller.goBack(callingObjects);
+                } else new FloatingMessage("Lo stato del volo o della prenotazione non permettono di cancellare questa prenotazione",
+                        modifyButton, FloatingMessage.ERROR_MESSAGE);
             }
         });
 
