@@ -371,6 +371,8 @@ public class SearchBookingPanel extends JPanel {
             }
         });
 
+        controller.setErrorButton(searchButton);
+
         return searchButton;
     }
 
