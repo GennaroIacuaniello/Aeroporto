@@ -23,37 +23,16 @@ public class LostLuggageDialog extends JDialog {
 
         super(owner, "Gestione Bagagli Smarriti", true);
 
-
         List<String> flightIds = new ArrayList<>();
         List<Date> bookingDates = new ArrayList<>();
-        List<String> names = new ArrayList<>();
-        List<String> surnames = new ArrayList<>();
-        List<String> fiscalCodes = new ArrayList<>();
-        List<String> baggageIds = new ArrayList<>();
+        List<String> firstNames = new ArrayList<>();
+        List<String> lastNames = new ArrayList<>();
+        List<String> passengerSSNs = new ArrayList<>();
+        List<String> luggageIds = new ArrayList<>();
 
-        flightIds.add("AZ-123");
-        bookingDates.add(Date.valueOf("2024-05-20"));
-        names.add("Mario");
-        surnames.add("Rossi");
-        fiscalCodes.add("RSSMRA80A01H501U");
-        baggageIds.add("BG-98765");
+        controller.getLostLuggages(flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
 
-        flightIds.add("FR-456");
-        bookingDates.add(Date.valueOf("2024-05-21"));
-        names.add("Luigi");
-        surnames.add("Verdi");
-        fiscalCodes.add("VRDLGU85B22F839T");
-        baggageIds.add("BG-12345");
-
-        flightIds.add("EK-789");
-        bookingDates.add(Date.valueOf("2024-05-22"));
-        names.add("Anna");
-        surnames.add("Bianchi");
-        fiscalCodes.add("BNCANNA90C63A662Y");
-        baggageIds.add("BG-67890");
-
-
-        tableModel = new LostBaggageTableModel(controller, flightIds, bookingDates, names, surnames, fiscalCodes, baggageIds);
+        tableModel = new LostBaggageTableModel(controller, flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
         baggageTable = new JTable(tableModel);
 
         baggageTable.addMouseListener(new MouseAdapter() {
@@ -211,7 +190,7 @@ public class LostLuggageDialog extends JDialog {
                 setForeground(table.getForeground());
                 setBackground(UIManager.getColor("Button.background"));
             }
-            
+
             return this;
         }
     }
