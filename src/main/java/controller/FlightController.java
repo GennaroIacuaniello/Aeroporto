@@ -360,6 +360,12 @@ public class FlightController {
 
     public void setCheckins (ArrayList<PassengerPanel> passengerPanels) {}
 
+    public boolean getFlightType() {
+
+        return flight instanceof Departing;
+
+    }
+
     public boolean getFlightType(int index) {
 
         return searchResult.get(index) instanceof Departing;
@@ -382,5 +388,24 @@ public class FlightController {
 
     public void setSearchBookingResult( List<Flight> searchBookingResult ) {
         this.searchBookingResult = (ArrayList<Flight>) searchBookingResult;
+    }
+
+    public List<String> getSearchBookingResultIds() {
+
+        ArrayList<String> flightIds = new ArrayList<>();
+
+        for(Flight f: searchBookingResult){
+            flightIds.add(f.getId());
+        }
+
+        return flightIds;
+    }
+
+    public List<Flight> getSearchResult() {
+        return searchResult;
+    }
+
+    public void setSearchResult(List<Flight> searchResult) {
+        this.searchResult = (ArrayList<Flight>) searchResult;
     }
 }

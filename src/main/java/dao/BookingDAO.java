@@ -13,6 +13,10 @@ public interface BookingDAO {
     void addBooking (int idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
                             ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException;
 
+
+    void searchBooksCustomerForAFlight(String flightId, Integer loggedCustomerId,
+                                              List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException;
+
     void getAllBooksCustomer(Integer loggedCustomerId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
                              List<Time> departureTimes, List<Time> arrivalTimes,
                              List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats,

@@ -47,16 +47,22 @@ public class SearchFlightResultPanel extends JPanel {
                 int col = table.columnAtPoint(point);
                 if (table.getSelectedRow() != -1 && row != -1 && col == tableModel.getColumnCount() - 1) {
 
-                    //Flight selectedFlight = searchedFlights.get(table.rowAtPoint(point));
+
                     int index = table.rowAtPoint(point);   //index of the selectedFlight
 
-                    //if (selectedFlight.getFreeSeats() > 0 && (selectedFlight .getStatus().toString()).equals("PROGRAMMED")){
+
                     if(freeSeats.get(index) > 0 && status.get(index).equalsIgnoreCase("PROGRAMMED")){
 
                         controller.getFlightController().setFlight(index);
 
-                        new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                        if(controller.loadAndCheckIfOpenMyBookingsOrNewBooking()){
+                            new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), false);
+                        }else{
+                            System.out.println("Ciao");
+                            new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
+                        }
 
                         callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 

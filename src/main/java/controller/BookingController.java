@@ -14,9 +14,10 @@ import java.util.List;
 
 public class BookingController {
     private Booking booking;
+    private int id;
     private ArrayList<Booking> searchBookingResult;
     private ArrayList<Integer> searchBookingResultIds;
-    private int id;
+
 
     public BookingController() {}
 
@@ -154,4 +155,29 @@ public class BookingController {
         this.id = searchBookingResultIds.get(index);
 
     }
+
+    public List<Date> getSearchBookingResultDates() {
+
+        ArrayList<Date> bookingDates = new ArrayList<>();
+
+        for(Booking b: searchBookingResult){
+            bookingDates.add(b.getBookingDate());
+        }
+
+        return bookingDates;
+
+    }
+
+    public List<String> getSearchBookingResultStatus() {
+
+        ArrayList<String> bookingStatus = new ArrayList<>();
+
+        for(Booking b: searchBookingResult){
+            bookingStatus.add(b.getStatus().toString());
+        }
+
+        return bookingStatus;
+
+    }
+
 }
