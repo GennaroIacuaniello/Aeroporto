@@ -15,6 +15,7 @@ public class PasswordHandler extends JPasswordField {
     public static final String  allowedCharacterSet = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 " + allowedSpecialCharacters;
 
     String hashingAlgorithm = "SHA-256";
+    PasswordCode passwordValidityCode;
 
     public PasswordHandler(){
         super();
@@ -56,18 +57,20 @@ public class PasswordHandler extends JPasswordField {
         return passwordInBytes;
     }
 
-    public PasswordCode isValidPassword(char[] inputPassword){
+    public boolean isValidPassword(){
         boolean upper = false, lower = false, digit = false, special = false;
 
-        if(inputPassword.length < minimumPasswordLength){
-            return PasswordCode.tooShort;
-        } else if (inputPassword.length > maximumPasswordLength) {
-            return PasswordCode.tooLong;
+        if(this.getPassword().length < minimumPasswordLength){
+            this.passwordValidityCode = PasswordCode.tooShort;
+            return false;
+        } else if (this.getPassword().length > maximumPasswordLength) {
+            this.passwordValidityCode = PasswordCode.tooLong;
+            return false;
         }
 
-        for(char c : inputPassword){
+        for(char c : this.getPassword()){
             if(allowedCharacterSet.indexOf(c) == -1 || c == ' '){
-                return PasswordCode.characterNotAllowed;
+                this.passwordValidityCode = PasswordCode.characterNotAllowed;
             }
             if(Character.isUpperCase(c)){
                 upper = true;
@@ -80,12 +83,25 @@ public class PasswordHandler extends JPasswordField {
             }
         }
 
-        if(!upper){ return PasswordCode.mustContainUppercase; }
-        if(!lower){ return PasswordCode.mustContainLowercase; }
-        if(!digit){ return PasswordCode.mustContainDigit; }
-        if(!special){ return PasswordCode.mustContainSpecial; }
+        if(!upper){
+            this.passwordValidityCode = PasswordCode.mustContainUppercase;
+            return false;
+        }
+        if(!lower){
+            this.passwordValidityCode = PasswordCode.mustContainLowercase;
+            return false;
+        }
+        if(!digit){
+            this.passwordValidityCode = PasswordCode.mustContainDigit;
+            return false;
+        }
+        if(!special){
+            this.passwordValidityCode = PasswordCode.mustContainSpecial;
+            return false;
+        }
 
-        return PasswordCode.validPassword;
+        this.passwordValidityCode = PasswordCode.validPassword;
+        return true;
     }
 
     public boolean verifyUserPassword(String username){

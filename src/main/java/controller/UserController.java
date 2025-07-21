@@ -59,34 +59,36 @@ public class UserController {
         return false;
     }
 
-    public void registerUser(String mail, String username, String hashedPassword, JButton registerButton){
-        if(!isValidMail(mail)){
+    //returns true if the user was successfully registered
+    public boolean registerUser(String mail, String username, String hashedPassword, JButton registerButton) {
+        if (!isValidMail(mail)) {
             new FloatingMessage("<html>Mail non valida</html>", registerButton, FloatingMessage.WARNING_MESSAGE);
-            return;
+            return false;
         }
-        if(!isValidUsername(username)){
+        if (!isValidUsername(username)) {
             new FloatingMessage("<html>Username non valido.<br>Il nome utente deve iniziare con una lettera, " +
                     "finire con una lettera o un numero e può contenere solo lettere, numeri, trattini (-), underscore(_) e punti(.)</html>",
                     registerButton, FloatingMessage.WARNING_MESSAGE);
-            return;
+            return false;
         }
 
-        try{
-            if (mail.contains("@aeroportodinapoli.it") || mail.contains("@adn.it")){
+        try {
+            if (mail.contains("@aeroportodinapoli.it") || mail.contains("@adn.it")) {
                 AdminDAOImpl adminDAO = new AdminDAOImpl();
                 adminDAO.insertNewAdmin(mail, username, hashedPassword);
-            } else{
+            } else {
                 CustomerDAOImpl customerDAO = new CustomerDAOImpl();
                 customerDAO.insertNewCustomer(mail, username, hashedPassword);
             }
 
             new FloatingMessage("<html>Sei stato registrato con successo!<br>Procedi a fare il login</html>", registerButton, FloatingMessage.SUCCESS_MESSAGE);
-
-        } catch(UserAlreadyExistsException e){
+            return true;
+        } catch (UserAlreadyExistsException e) {
             new FloatingMessage("<html>" + e.getMessage() + "</html>", registerButton, FloatingMessage.WARNING_MESSAGE);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             new FloatingMessage("<html>Errore nel collegamento al DB(Customer)<br>" + e.getMessage() + "</html>", registerButton, FloatingMessage.ERROR_MESSAGE);
         }
-    }
 
+        return false;
+    }
 }

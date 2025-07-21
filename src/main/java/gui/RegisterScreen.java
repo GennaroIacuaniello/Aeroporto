@@ -4,13 +4,9 @@ import com.formdev.flatlaf.FlatClientProperties;
 import controller.Controller;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import static java.lang.Math.max;
 
@@ -85,33 +81,30 @@ public class RegisterScreen extends DisposableObject {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.setVisible(false);
-                new LogInScreen(callingObjects, controller);
-                doOnDispose(callingObjects, controller);
-                mainFrame.dispose();
+                goToLoginPage(callingObjects, controller);
             }
         });
 
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PasswordCode pc = passwordField.isValidPassword(passwordField.getPassword());
-                String warningMessage = null;
-                switch (pc){
-                    case tooShort -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri</html>";
-                    case tooLong -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri</html>";
-                    case mustContainLowercase -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
-                    case mustContainUppercase -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
-                    case mustContainDigit -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
-                    case mustContainSpecial -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
-                            PasswordHandler.allowedSpecialCharacters + "</html>";
-                    case characterNotAllowed -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
-                            "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet + "</html>";
-                }
-
-                if(pc == PasswordCode.validPassword){
-                        controller.getUserController().registerUser(mailTextField.getText(), usernameTextField.getText(), passwordField.getHashedPassword(), registerButton);
+                if(passwordField.isValidPassword()){
+                    if(controller.getUserController().registerUser(mailTextField.getText(), usernameTextField.getText(), passwordField.getHashedPassword(), registerButton)){
+                        goToLoginPage(callingObjects, controller);
+                    }
                 } else {
+                    String warningMessage = null;
+                    switch (passwordField.passwordValidityCode){
+                        case tooShort -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri</html>";
+                        case tooLong -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri</html>";
+                        case mustContainLowercase -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
+                        case mustContainUppercase -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
+                        case mustContainDigit -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
+                        case mustContainSpecial -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
+                                PasswordHandler.allowedSpecialCharacters + "</html>";
+                        case characterNotAllowed -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
+                                "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet + "</html>";
+                    }
                     new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
                 }
             }
@@ -132,6 +125,13 @@ public class RegisterScreen extends DisposableObject {
                 toggleRegisterButton();
             }
         });
+    }
+
+    private void goToLoginPage(ArrayList<DisposableObject> callingObjects, Controller controller) {
+        mainFrame.setVisible(false);
+        new LogInScreen(callingObjects, controller);
+        doOnDispose(callingObjects, controller);
+        mainFrame.dispose();
     }
 
     private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension startingSize) {

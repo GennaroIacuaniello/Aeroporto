@@ -67,7 +67,7 @@ public class LogInScreen extends DisposableObject {
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
+                if (passwordField.isValidPassword() && controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                     login(callingObjects, controller);
                 }
 
@@ -80,7 +80,7 @@ public class LogInScreen extends DisposableObject {
                 super.keyReleased(e);
                 toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
+                    if (passwordField.isValidPassword() && controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                         login(callingObjects, controller);
                     }
                 }
@@ -93,7 +93,7 @@ public class LogInScreen extends DisposableObject {
                 super.keyReleased(e);
                 toggleLoginButton();
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
+                    if (passwordField.isValidPassword() && controller.verifyUser(usernameTextField.getText(), passwordField.getHashedPassword(), logInButton)) {
                         login(callingObjects, controller);
                     }
                 }
