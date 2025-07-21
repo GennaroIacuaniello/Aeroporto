@@ -70,7 +70,7 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     public void modifyBooking (Controller controller, String idFlight, Integer idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
-                               ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages, String tmpTicket) throws SQLException {
+                               ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
@@ -123,6 +123,14 @@ public class BookingDAOImpl implements BookingDAO {
             query = "DELETE FROM Ticket WHERE ticket_number = ?;";
             preparedQuery = connection.prepareStatement(query);
             preparedQuery.setString(1, tmpTicket);
+
+            preparedQuery.executeUpdate();
+
+            //modifica stato prenotazione
+            query = "UPDATE Booking SET booking_status = ?::BookingStatus WHERE id_booking = ?;";
+            preparedQuery = connection.prepareStatement(query);
+            preparedQuery.setString(1, bookingStatus);
+            preparedQuery.setInt(2, idBooking);
 
             preparedQuery.executeUpdate();
 

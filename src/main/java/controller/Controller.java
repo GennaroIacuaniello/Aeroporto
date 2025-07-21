@@ -284,7 +284,7 @@ public class Controller {
             preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
             bookingDAO.modifyBooking(this, flightController.getId(), getBookingController().getId(), ticketsNumbers,
-                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1));
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1), bookingStatus.name());
 
         } catch (SQLException e) {
             e.printStackTrace();
