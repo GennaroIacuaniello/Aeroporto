@@ -110,17 +110,8 @@ public class RegisterScreen extends DisposableObject {
                 }
 
                 if(pc == PasswordCode.validPassword){
-                    if(!controller.getUserController().isValidUsername(usernameTextField.getText())){
-                        warningMessage = "<html>L'username deve avere tra i 4 e i 20 caratteri</html>" +
-                                "e può contenere solo lettere, numeri, o i caratteri punto, trattino e underscore</html>";
-                        new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
-                    } else if(!controller.getUserController().isValidMail(mailTextField.getText())){
-                        warningMessage = "<html>Mail non valida</html>";
-                        new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
-                    } else{
-                        //TODO: inserisci l'utente nel DAO (se nome utente (e mail) vanno bene)
-                    }
-                }else {
+                        controller.getUserController().registerUser(mailTextField.getText(), usernameTextField.getText(), passwordField.getHashedPassword(), registerButton);
+                } else {
                     new FloatingMessage(warningMessage, registerButton, FloatingMessage.WARNING_MESSAGE);
                 }
             }

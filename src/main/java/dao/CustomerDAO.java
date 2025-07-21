@@ -9,4 +9,6 @@ public interface CustomerDAO {
 
     void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException, UserNotFoundException;
 
+    void insertNewCustomer(String mail, String username, String password) throws SQLException, UserAlreadyExistsException;
+
 }

@@ -1,6 +1,7 @@
 package implementazioniPostgresDAO;
 
 import dao.CustomerDAO;
+import dao.UserAlreadyExistsException;
 import dao.UserNotFoundException;
 import database.ConnessioneDatabase;
 
@@ -61,6 +62,44 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         if(userID.isEmpty()){
             throw new UserNotFoundException("User non esiste nella tabella Customer");
+        }
+    }
+
+    @Override
+    public void insertNewCustomer(String mail, String username, String password) throws SQLException, UserAlreadyExistsException {
+
+        String checkExistenceQuery = "SELECT username, mail " +
+                "FROM Admin " +
+                "WHERE (username = ? OR mail = ?) AND is_deleted = false " +
+                "UNION ALL " +
+                "SELECT username, mail " +
+                "FROM Customer " +
+                "WHERE (username = ? OR mail = ?) AND is_deleted = false";
+
+        String insertCustomer = "INSERT INTO Customer(username, mail, hashed_password) " +
+                "VALUES(?, ?, ?)";
+
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
+            PreparedStatement checkExistenceStatement = connection.prepareStatement(checkExistenceQuery);
+            checkExistenceStatement.setString(1, username);
+            checkExistenceStatement.setString(2, mail);
+            checkExistenceStatement.setString(3, username);
+            checkExistenceStatement.setString(4, mail);
+
+            ResultSet rs = checkExistenceStatement.executeQuery();
+
+            if(!rs.next()){ //if username/mail are not already used there will be nothing in the result set
+                rs.close();
+                PreparedStatement insertStatement = connection.prepareStatement(insertCustomer);
+                insertStatement.setString(1, username);
+                insertStatement.setString(2, mail);
+                insertStatement.setString(3, password);
+
+                insertStatement.execute();
+            }else{
+                rs.close();
+                throw new UserAlreadyExistsException("Mail o Username già in uso");
+            }
         }
     }
 }

@@ -117,7 +117,7 @@
                 <properties>
                   <foreground color="-15461356"/>
                   <labelFor value="fc050"/>
-                  <text value="Nome Utente"/>
+                  <text value="Nome Utente o Mail"/>
                 </properties>
               </component>
               <component id="e7137" class="javax.swing.JButton" binding="registerButton">

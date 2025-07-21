@@ -15,7 +15,6 @@ public class PasswordHandler extends JPasswordField {
     public static final String  allowedCharacterSet = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 " + allowedSpecialCharacters;
 
     String hashingAlgorithm = "SHA-256";
-    String hashedPassword = null;
 
     public PasswordHandler(){
         super();
@@ -34,8 +33,7 @@ public class PasswordHandler extends JPasswordField {
                 }
                 hexString.append(hex);
             }
-            hashedPassword = hexString.toString();
-            return hashedPassword;
+            return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
