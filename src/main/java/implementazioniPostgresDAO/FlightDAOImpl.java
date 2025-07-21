@@ -206,7 +206,7 @@ public class FlightDAOImpl implements FlightDAO {
 
                 int tmpSeat = rs.getInt("seat");
 
-                if (tmpSeat != 0) bookedSeats.add(tmpSeat);
+                if (tmpSeat != 0) bookedSeats.add(tmpSeat - 1);
             }
 
             rs.close();

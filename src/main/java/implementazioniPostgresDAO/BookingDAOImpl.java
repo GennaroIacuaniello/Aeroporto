@@ -203,7 +203,7 @@ public class BookingDAOImpl implements BookingDAO {
             int index = 1;
 
             preparedQuery.setString(index++, ticketNumbers.get(i));
-            if (seatValue != -1) preparedQuery.setInt(index++, seatValue);
+            if (seatValue != -1) preparedQuery.setInt(index++, seatValue + 1);
             preparedQuery.setInt(index++, idBooking);
             preparedQuery.setString(index++, SSNs.get(i));
             preparedQuery.setString(index, idFlight);
