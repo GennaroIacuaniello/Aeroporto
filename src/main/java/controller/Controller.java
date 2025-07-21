@@ -903,16 +903,24 @@ public class Controller {
         }
 
 
+        flightController.setSearchBookingResult(new ArrayList<>());
+
+        customerController.setSearchBookingResultCustomers(new ArrayList<>());
+        customerController.setSearchBookingResultCustomersIds(new ArrayList<>());
 
         bookingController.setSearchBookingResult(new ArrayList<>());
         bookingController.setSearchBookingResultIds(new ArrayList<>());
-        flightController.setSearchBookingResult(new ArrayList<>());
+
 
         ticketController.setSearchBookingResult(new ArrayList<>());
         passengerController.setSearchBookingResult(new ArrayList<>());
 
+        luggageController.setSearchBookingResult(new ArrayList<>());
+        luggageController.setSearchBookingResultIds(new ArrayList<>());
+
 
         ArrayList<String> actualFlightIds = new ArrayList<>();
+        ArrayList<Integer> actualBuyersIds = new ArrayList<>();
         ArrayList<Integer> actualBookingIds = new ArrayList<>();
         ArrayList<String> actualTicketNumbers = new ArrayList<>();
         ArrayList<String> actualSSNs = new ArrayList<>();
@@ -939,60 +947,71 @@ public class Controller {
                     }
                 }
 
+                if(!actualBuyersIds.contains(buyerIds.get(i))){
+
+                    actualBuyersIds.add(buyerIds.get(i));
+
+                    customerController.getSearchBookingResultCustomers().add(new Customer(usernames.get(i), mails.get(i), hashedPasswords.get(i)));
+                    customerController.getSearchBookingResultCustomersIds().add(buyerIds.get(i));
+                }
+
+
                 if(!actualBookingIds.contains(bookingIds.get(i))){
 
                     actualBookingIds.add(bookingIds.get(i));
 
                     bookingController.getSearchBookingResult().add(new Booking(BookingStatus.valueOf(bookingStatus.get(i)), bookingDates.get(i),
-                            customerController.getLoggedCustomer(), flightController.getSearchBookingResult().getLast(),
-                            ticketNumbers.getFirst(), seats.getFirst(), checkedIns.getFirst(),
-                            firstNames.getFirst(), lastNames.getFirst(), passengerSSNs.getFirst(), birthDates.getFirst()));
+                            customerController.getSearchBookingResultCustomerById(buyerIds.get(i)), flightController.getSearchBookingResultFlightById(flightIds.get(i)),
+                            ticketNumbers.get(i), seats.get(i), checkedIns.get(i),
+                            firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
 
-                }
+                    bookingController.getSearchBookingResultIds().add(bookingIds.get(i));
 
-                try{
-                    if(!ticketNumbers.isEmpty()) {
-
-                        bookingController.getSearchBookingResult().add(new Booking(BookingStatus.valueOf(bookingStatus.get(i)), bookingDates.get(i),
-                                customerController.getLoggedCustomer(), flightController.getSearchBookingResult().getLast(),
-                                ticketNumbers.getFirst(), seats.getFirst(), checkedIns.getFirst(),
-                                firstNames.getFirst(), lastNames.getFirst(), passengerSSNs.getFirst(), birthDates.getFirst()));
-                        bookingController.getSearchBookingResultIds().add(bookingIds.get(i));
-                    }else{
-                        throw new InvalidTicket("");
+                    actualTicketNumbers.add(ticketNumbers.get(i));
+                    ticketController.getSearchBookingResult().add(bookingController.getSearchBookingResult().getLast().getTickets().getLast());
+                    Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
+                    if(!actualSSNs.contains(tmp.getSSN())){
+                        actualSSNs.add(tmp.getSSN());
+                        passengerController.getSearchBookingResult().add(tmp);
                     }
-
-                }catch (Exception e){
-                    new FloatingMessage("Errore nella connessione al Database (Biglietti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
-                }
-
-                for(int j = 1; j < ticketNumbers.size(); j++){
-                    try{
-                        bookingController.getSearchBookingResult().getLast().getTickets().add(new Ticket(ticketNumbers.get(j), seats.get(j), checkedIns.get(j),
-                                flightController.getSearchBookingResult().getLast(), bookingController.getSearchBookingResult().getLast(),
-                                firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
-
-                    }catch (Exception e){
-                        new FloatingMessage("Errore nella connessione al Database (Biglietti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+                }else{
+                    if(!actualTicketNumbers.contains(ticketNumbers.get(i))) {
+                        actualTicketNumbers.add(ticketNumbers.get(i));
+                        ticketController.getSearchBookingResult().add(new Ticket(ticketNumbers.get(i), seats.get(i), checkedIns.get(i), flightController.getSearchBookingResultFlightById(flightIds.get(i)),
+                                bookingController.getSearchBookingResultBooksById(bookingIds.get(i)),
+                                firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
+                        Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
+                        if (!actualSSNs.contains(tmp.getSSN())) {
+                            actualSSNs.add(tmp.getSSN());
+                            passengerController.getSearchBookingResult().add(tmp);
+                        }
                     }
                 }
 
-                ticketController.getSearchBookingResult().addAll(bookingController.getSearchBookingResult().getLast().getTickets());
-                for(Ticket x: bookingController.getSearchBookingResult().getLast().getTickets()){
-                    if(!actualSSNs.contains(x.getPassenger().getSSN())){
-                        actualSSNs.add(x.getPassenger().getSSN());
-                        passengerController.getSearchBookingResult().add(x.getPassenger());
-                    }
+                luggageController.getSearchBookingResult().add(new Luggage(luggageIds.get(i), LuggageType.valueOf(luggageTypes.get(i)), LuggageStatus.valueOf(luggageStatus.get(i)),
+                                                                            ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i))));
 
-                }
+                ticketController.getSearchBookingResultTicketByTicketNumber(ticketNumbers.get(i)).getLuggages().add(luggageController.getSearchBookingResult().getLast());
+
 
             }
 
         }catch (Exception e){
+            e.printStackTrace();
             new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
 
         }
 
+
+    }
+
+    public void setBookingResultSelectedFlightForLostLuaggages(Integer luggageIndex) {
+
+        flightController.setFlight(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getFlight());
+
+
+
+        flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
 
     }
 }

@@ -57,7 +57,7 @@ public class MenuPanelAdmin extends JPanel {
                         case "Bagagli smarriti":
                             controller.setErrorButton(menuButton);
                             Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
-                            LostLuggageDialog dialog = new LostLuggageDialog(parent, controller);
+                            LostLuggageDialog dialog = new LostLuggageDialog(parent, callingObjects, controller);
                             dialog.setVisible(true);
                             break;
                     }

@@ -176,7 +176,7 @@ public class Ticket {
 
     }
 
-    public Ticket(String parTicketNumber, Integer parSeat, boolean parCheckedIn, Flight parFlight, Booking parBooking,
+    public  Ticket(String parTicketNumber, Integer parSeat, boolean parCheckedIn, Flight parFlight, Booking parBooking,
                   String parFirstName, String parLastName, String parSSN, Date parBirthDate) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
 
         if(parTicketNumber != null){

@@ -180,4 +180,14 @@ public class BookingController {
 
     }
 
+    public Booking getSearchBookingResultBooksById(Integer id) {
+        for(int i = 0; i < searchBookingResult.size(); i++){
+
+            if(searchBookingResultIds.get(i).equals(id)){
+                return searchBookingResult.get(i);
+            }
+
+        }
+        return null;
+    }
 }
