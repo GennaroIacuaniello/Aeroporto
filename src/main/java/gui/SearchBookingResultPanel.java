@@ -56,8 +56,6 @@ public class SearchBookingResultPanel extends JPanel {
 
                     callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 
-
-
                 }
             }
         });
