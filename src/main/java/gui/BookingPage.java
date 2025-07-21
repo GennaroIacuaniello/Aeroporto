@@ -278,7 +278,7 @@ public abstract class BookingPage extends DisposableObject {
 
         //sistemo attivabilità bottoni
         prevPageButton.setEnabled(currPage > 0);
-        nextPageButton.setEnabled(currPage < (passengerPanels.size() / 3));
+        nextPageButton.setEnabled(currPage < ((passengerPanels.size() - 1) / 3));
     }
 
     protected void addPassengerPage (Controller controller) {

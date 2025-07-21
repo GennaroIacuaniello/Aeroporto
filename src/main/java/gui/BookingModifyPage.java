@@ -113,7 +113,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         //sistemo attivabilità bottoni
         prevPageButton.setEnabled(currPage > 0);
-        nextPageButton.setEnabled(currPage < (passengerPanels.size() / 3));
+        nextPageButton.setEnabled(currPage < ((passengerPanels.size() - 1) / 3));
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BookingController {
     private Booking booking;
-    private int id;
+    private Integer id;
     private ArrayList<Booking> searchBookingResult;
     private ArrayList<Integer> searchBookingResultIds;
 
@@ -53,11 +53,11 @@ public class BookingController {
         return passengers;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 

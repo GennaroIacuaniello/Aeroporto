@@ -1,7 +1,7 @@
 package controller;
 
 import dao.BookingDAO;
-import dao.LuggageDAO;
+//import dao.LuggageDAO;
 import dao.TicketDAO;
 import dao.UserNotFoundException;
 import gui.DisposableObject;
@@ -879,7 +879,7 @@ public class Controller {
         ArrayList<String> luggageTypes = new ArrayList<>();
         ArrayList<String> luggageStatus = new ArrayList<>();
 
-        try{
+        /*try{
             LuggageDAO luggageDAO = new LuggageDAOImpl();
 
             luggageDAO.getAllLostLuggages(flightIds, companyNames, flightDates, departureTimes, arrivalTimes,
@@ -893,7 +893,7 @@ public class Controller {
 
         } catch (SQLException e) {
             new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
-        }
+        }*/
 
         ArrayList<String> actualFlightIds = new ArrayList<>();
 
