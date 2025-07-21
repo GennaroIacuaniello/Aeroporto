@@ -16,14 +16,14 @@ public class LuggageDAOImpl implements LuggageDAO {
                                    List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds,
                                    List<String> ticketNumbers, List<Integer> seats, List<Boolean> checkedIns,
                                    List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<Date> birthDates,
-                                   List<String> luggageIds, List<String> luggageTypes, List<String> luggageStatus) throws SQLException {
+                                   List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException {
 
         String query = "SELECT F.id_flight, F.company_name, F.departure_time, F.arrival_time, F.flight_status, F.max_seats, " +
                         "F.free_seats, F.destination_or_origin, F.flight_type, " +
                         "C.id_customer, C.username, C.mail, C.hashed_password, " +
                         "B.id_booking, B.booking_status, B.booking_time, " +
                         "T.ticket_number, T.seat, T.checked_in, P.first_name, P.last_name, P.SSN, P.birth_date, " +
-                        "L.id_luggage_after_check_in, L.luggage_type, L.luggage_status " +
+                        "L.id_luggage, L.id_luggage_after_check_in, L.luggage_type, L.luggage_status " +
                         "FROM FLIGHT F NATURAL JOIN BOOKING B JOIN TICKET T ON B.id_booking = T.id_booking JOIN " +
                         "PASSENGER P ON T.id_passenger = P.SSN JOIN LUGGAGE L ON L.id_ticket = T.ticket_number JOIN CUSTOMER C ON B.buyer = C.id_customer " +
                         "WHERE L.luggage_status = 'LOST' AND C.is_deleted = false " +
@@ -88,7 +88,13 @@ public class LuggageDAOImpl implements LuggageDAO {
 
                 birthDates.add(rs.getDate("birth_date"));
 
-                luggageIds.add(rs.getString("id_luggage_after_check_in"));
+                if(rs.getInt("id_luggage") > 0){
+                    luggageIds.add(rs.getInt("id_luggage"));
+                }else{
+                    luggageIds.add(null);
+                }
+
+                luggageIdsAfterCheckin.add(rs.getString("id_luggage_after_check_in"));
 
                 luggageTypes.add(rs.getString("luggage_type"));
 
