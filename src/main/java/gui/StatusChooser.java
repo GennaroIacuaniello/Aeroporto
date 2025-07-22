@@ -83,7 +83,7 @@ public class StatusChooser {
             public void actionPerformed (ActionEvent e) {
 
 
-                if (comboBox.getSelectedIndex() == 0) {
+                if (comboBox.getSelectedIndex() != 0) {
 
                     if (controller.getFlightController().setFlightStatus(comboBox.getSelectedItem()) == 1) {
 
@@ -102,6 +102,9 @@ public class StatusChooser {
 
         confirmButton.setFocusable(false);
         mainFrame.add(confirmButton);
+
+        callingButton.setEnabled(false);
+        System.out.println(callingButton.isEnabled());
 
         mainFrame.setSize(500, 200);
         mainFrame.setVisible(true);

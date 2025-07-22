@@ -505,7 +505,9 @@ public class FlightController {
 
     }
 
-    public int addDelay (int delay) {
+    public int addDelay (int delay) throws NumberFormatException {
+
+        if (delay < 0) throw new NumberFormatException();
 
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 

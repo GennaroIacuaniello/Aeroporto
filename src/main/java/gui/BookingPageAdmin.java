@@ -108,7 +108,6 @@ public class BookingPageAdmin extends BookingPage {
             public void actionPerformed(ActionEvent e) {
 
                 statusChooser = new StatusChooser(controller, statusButton, callingObjects);
-                statusButton.setEnabled(false);
             }
         });
 
@@ -174,7 +173,7 @@ public class BookingPageAdmin extends BookingPage {
     protected void setSetDelayButton (Controller controller) {
 
         setDelayButton = new JButton("SET DELAY");
-        JTextField setDelayTextField = new JTextField();
+        delayTextField = new JTextField(15);
 
         setDelayButton.addActionListener(new ActionListener() {
 
@@ -192,7 +191,7 @@ public class BookingPageAdmin extends BookingPage {
         delayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         delayPanel.add(setDelayButton);
-        delayPanel.add(setDelayTextField);
+        delayPanel.add(delayTextField);
 
         constraints.setConstraints(2, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
@@ -203,7 +202,21 @@ public class BookingPageAdmin extends BookingPage {
 
         try {
 
-            if (controller.getFlightController().addDelay(Integer.parseInt(delayTextField.getText())) == 1)
+            //delayTextField.setText("20");
+
+            System.out.println("empty" + delayTextField.getText().isEmpty());
+
+            System.out.println("lenght: " + delayTextField.getText().length());
+
+            System.out.println("delay: " + delayTextField.getText());
+
+            System.out.println("delay: " + delayTextField.getText().trim());
+
+            Integer delay = Integer.parseInt(delayTextField.getText().trim());
+
+            System.out.println("delay: " + delay);
+
+            if (controller.getFlightController().addDelay(delay) == 1)
                 new FloatingMessage("Ritardo settato correttamente", setDelayButton, FloatingMessage.SUCCESS_MESSAGE);
             else new FloatingMessage("Il ritardo non è stato settato correttamente", setDelayButton, FloatingMessage.ERROR_MESSAGE);
 
