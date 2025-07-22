@@ -36,8 +36,6 @@ public class Controller {
     private JButton errorButton;
     private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
 
-
-
     public Controller() {
         adminController = new AdminController();
         arrivingController = new ArrivingController();
@@ -234,6 +232,30 @@ public class Controller {
         return true;
     }
 
+    public void goToLogin(ArrayList<DisposableObject> callingObjects){
+
+        Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
+        Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
+        int sourceExtendedState = callingObjects.getLast().getFrame().getExtendedState();
+
+        for (int i = callingObjects.size() - 1; i > 0; i--) {
+
+            callingObjects.get(i).doOnDispose(callingObjects, this);
+            callingObjects.getLast().getFrame().dispose();
+            callingObjects.removeLast();
+        }
+
+        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+            callingObjects.getLast().getFrame().setSize(sourceDimension);
+            callingObjects.getLast().getFrame().setLocation(sourceLocation);
+        }
+        callingObjects.getLast().getFrame().setExtendedState(sourceExtendedState);
+
+        callingObjects.getLast().doOnRestore(callingObjects, this);
+
+        callingObjects.getLast().getFrame().setVisible(true);
+    }
+
     public void goHome (ArrayList<DisposableObject> callingObjects) {
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
@@ -256,6 +278,7 @@ public class Controller {
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
         callingObjects.getLast().getFrame().setVisible(true);
+        callingObjects.getLast().doOnRestore(callingObjects, this);
     }
 
     public void goBack (ArrayList<DisposableObject> callingObjects) {

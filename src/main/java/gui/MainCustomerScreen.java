@@ -201,6 +201,14 @@ public class MainCustomerScreen extends DisposableObject {
         controller.getUserController().setLoggedUser(null, null);
     }
 
+    public void doOnRestore(ArrayList<DisposableObject> callingObjects, Controller controller){
+        if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
+            userPanel.setVisible(false);
+            mainFrame.remove(userPanel);
+            addUserPanel(callingObjects, controller);
+        }
+    }
+
     public JFrame getFrame() {
         return this.mainFrame;
     }

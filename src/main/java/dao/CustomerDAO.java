@@ -13,4 +13,6 @@ public interface CustomerDAO {
 
     public void updateCustomer(Integer userID, String mail, String username, String password) throws SQLException;
 
+    public void deleteCustomer(Integer userID) throws SQLException;
+
 }

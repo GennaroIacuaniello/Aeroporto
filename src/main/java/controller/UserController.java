@@ -4,6 +4,7 @@ import dao.UserAlreadyExistsException;
 import gui.FloatingMessage;
 import implementazioni_postgres_dao.AdminDAOImpl;
 import implementazioni_postgres_dao.CustomerDAOImpl;
+import model.Admin;
 import model.User;
 
 import javax.swing.*;
@@ -96,4 +97,20 @@ public class UserController {
         return false;
     }
 
+    public boolean deleteAccount(JButton button){
+        try{
+            if(loggedUser instanceof Admin){
+                AdminDAOImpl adminDAO = new AdminDAOImpl();
+                adminDAO.deleteAdmin(loggedUserId);
+            }
+            else{
+                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                customerDAO.deleteCustomer(loggedUserId);
+            }
+        } catch (SQLException e){
+            new FloatingMessage("<html>Problemi nell'accesso al DB(Admin) o DB(Customer)", button, FloatingMessage.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }

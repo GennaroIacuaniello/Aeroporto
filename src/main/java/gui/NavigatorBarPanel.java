@@ -34,8 +34,9 @@ public class NavigatorBarPanel extends JPanel {
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                controller.goHome(callingObjects);
+                if (!callingObjects.getLast().getFrame().getTitle().equals("Home")){
+                    controller.goHome(callingObjects);
+                }
             }
         });
 

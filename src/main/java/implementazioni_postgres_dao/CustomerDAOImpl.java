@@ -151,4 +151,20 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         }
     }
+
+    @Override
+    public void deleteCustomer(Integer userID) throws SQLException {
+
+        String deleteQuery = "UPDATE Customer " +
+                "SET is_deleted = true " +
+                "WHERE id_customer = ?";
+
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)){
+
+            preparedStatement.setInt(1, userID);
+
+            preparedStatement.executeUpdate();
+        }
+    }
 }

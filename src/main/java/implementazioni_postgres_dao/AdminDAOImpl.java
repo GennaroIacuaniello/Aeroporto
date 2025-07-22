@@ -152,4 +152,19 @@ public class AdminDAOImpl implements AdminDAO {
         }
 
     }
+
+    @Override
+    public void deleteAdmin(Integer userID) throws SQLException {
+        String deleteQuery = "UPDATE Admin " +
+                "SET is_deleted = true " +
+                "WHERE id_admin = ?";
+
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)){
+
+            preparedStatement.setInt(1, userID);
+
+            preparedStatement.executeUpdate();
+        }
+    }
 }

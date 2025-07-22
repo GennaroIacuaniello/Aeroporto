@@ -50,7 +50,6 @@ public class LogInScreen extends DisposableObject {
             this.setMainFrame(callingObjects, controller, startingSize);
         }
         callingObjects.addLast(this);
-
         //some additional manual setup
         loginMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
@@ -160,7 +159,7 @@ public class LogInScreen extends DisposableObject {
             int action = JOptionPane.showOptionDialog(null, "<html><center>Il tuo device non supporta FlatLaf,<br>" +
                             "utilizzerai un'altra versione dell'app,<br>" +
                             "tutte le funzioni rimarranno invariate.</center></html>",
-                    "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null);
+                    "Errore nel caricamento grafica", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null);
             if (action == 1 || action == JOptionPane.CLOSED_OPTION) {
                 return;
             }

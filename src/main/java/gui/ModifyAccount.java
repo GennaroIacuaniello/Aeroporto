@@ -19,6 +19,9 @@ public class ModifyAccount extends JDialog {
     private PasswordHandler newPasswordField;
     private PasswordHandler oldPasswordField;
 
+    private JButton confirmButton;
+    private JButton deleteButton;
+
     private final Constraints constraints = new Constraints();
 
     String oldUsername = null;
@@ -37,19 +40,15 @@ public class ModifyAccount extends JDialog {
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
+        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(0, 0, 16, 0));
         mainPanel.add(titleLabel, constraints.getConstraints());
 
         this.addMainForm(controller);
 
-        //Setup for confirm Button
-        JButton confirmButton = setConfirmButton(controller, callingObjects);
+        setConfirmButton(controller, callingObjects);
 
-
-        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.PAGE_END, 1.0f, 0.0f, new Insets(16, 0, 0, 0));
-        mainPanel.add(confirmButton, constraints.getConstraints());
+        setDeleteButton(controller, callingObjects);
 
         this.setContentPane(mainPanel);
         this.pack();
@@ -60,8 +59,49 @@ public class ModifyAccount extends JDialog {
 
     }
 
-    private JButton setConfirmButton(Controller controller, ArrayList<DisposableObject> callingObjects){
-        JButton confirmButton = new JButton("Conferma");
+    private void setDeleteButton(Controller controller, ArrayList<DisposableObject> callingObjects){
+        deleteButton = new JButton("Elimina Account");
+        deleteButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+
+
+        deleteButton.setBackground(new Color(220, 0, 0));
+        deleteButton.setForeground(Color.WHITE);
+        deleteButton.setFocusPainted(false);
+
+        deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        deleteButton.setPreferredSize(new Dimension(200, 40));
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(oldPasswordField.isEmpty()){
+                    new FloatingMessage("<html>Bisogna inserire la password</html>", confirmButton, FloatingMessage.ERROR_MESSAGE);
+                    return;
+                }
+                if (!oldPasswordField.getHashedPassword().equals(controller.getUserController().getHashedPassword())) {
+                    new FloatingMessage("<html>Password errata</html>", confirmButton, FloatingMessage.ERROR_MESSAGE);
+                    return;
+                }
+                else{
+                    String[] options = {"Annulla", "Elimina account"};
+                    int action = JOptionPane.showOptionDialog(mainPanel, "<html>Sei sicuro di voler eliminare il tuo account?<br>" +
+                                    "Questa azione non può è reversibile </html>", "Elimina account", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.WARNING_MESSAGE, null, options, null);
+                    if(action == 1){
+                        controller.getUserController().deleteAccount(deleteButton);
+                        controller.goToLogin(callingObjects);
+                    }
+                }
+            }
+        });
+
+        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.PAGE_END, 1.0f, 0.0f, new Insets(16, 0, 0, 0));
+        mainPanel.add(deleteButton, constraints.getConstraints());
+    }
+
+    private void setConfirmButton(Controller controller, ArrayList<DisposableObject> callingObjects){
+        confirmButton = new JButton("Conferma");
         confirmButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
 
         confirmButton.setBackground(new Color(0, 120, 215));
@@ -69,7 +109,7 @@ public class ModifyAccount extends JDialog {
         confirmButton.setFocusPainted(false);
 
         confirmButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        confirmButton.setPreferredSize(new Dimension(150, 40));
+        confirmButton.setPreferredSize(new Dimension(200, 40));
 
 
         confirmButton.addActionListener(new ActionListener() {
@@ -100,13 +140,15 @@ public class ModifyAccount extends JDialog {
                 }
             }});
 
-        return confirmButton;
+        constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
+                0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(16, 0, 0, 0));
+        mainPanel.add(confirmButton, constraints.getConstraints());
     }
 
     private void addMainForm(Controller controller) {
 
         JPanel mainForm = new JPanel(new GridBagLayout());
-        constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.HORIZONTAL,
+        constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f);
         mainPanel.add(mainForm, constraints.getConstraints());
 

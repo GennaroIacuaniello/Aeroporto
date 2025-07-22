@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class UserPanel extends JPanel {
 
     private JButton userButton;
+    private String userGreeted;
     JPopupMenu popupMenu;
     JMenuItem menuItem;
 
@@ -33,7 +34,6 @@ public class UserPanel extends JPanel {
     private void setPopupMenu (Controller controller, ArrayList<DisposableObject> callingObjects) {
 
         popupMenu = new JPopupMenu();
-
         menuItem = new JMenuItem("Logout");
 
         menuItem.addActionListener(actionEvent -> {
@@ -57,14 +57,19 @@ public class UserPanel extends JPanel {
 
     private void setUserButton (Controller controller) {
 
-        userButton = new JButton("<html>Ciao,<br>" + controller.getUserController().getUsername() + "</html>");
-
+        userGreeted = controller.getUserController().getUsername();
+        userButton = new JButton("<html>Ciao,<br>" + userGreeted + "</html>");
+        System.out.println(userButton.getSize());
         userButton.addActionListener(e -> {
 
             popupMenu.show(userButton, 0, userButton.getHeight());
         });
 
         this.add(userButton);
+    }
+
+    public String getUserGreeted() {
+        return userGreeted;
     }
 
     /*

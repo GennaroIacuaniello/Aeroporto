@@ -12,4 +12,6 @@ public interface AdminDAO {
     void insertNewAdmin(String mail, String username, String password) throws SQLException;
 
     void updateAdmin(Integer userID, String username, String password) throws SQLException;
+
+    void deleteAdmin(Integer userID) throws SQLException;
 }
