@@ -115,16 +115,19 @@ public class BookingPageAdmin extends BookingPage {
 
         if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED")) {
 
-            controller.getFlightController().startCheckin();
+            if (controller.getFlightController().startCheckin() == 1) {
 
-            new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
+                new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
 
-            for (PassengerPanel passengerPanel : passengerPanels) {
+                for (PassengerPanel passengerPanel : passengerPanels) {
 
-                if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().setVisible(false);
-            }
+                    if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().setVisible(false);
+                }
 
-            mainFrame.setVisible(false);
+                mainFrame.setVisible(false);
+
+            } else new FloatingMessage("Lo stato del volo è rimasto invariato (controlla la data di partenza)", checkinButton, FloatingMessage.ERROR_MESSAGE);
+
         } else if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("ABOUT_TO_DEPART")) {
 
             new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);

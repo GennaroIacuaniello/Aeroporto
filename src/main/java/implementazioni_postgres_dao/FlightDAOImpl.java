@@ -324,7 +324,7 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
-    public void startCheckin(String flightId) throws SQLException {
+    public int startCheckin(String flightId) throws SQLException {
 
         String query = "UPDATE Flight SET flight_status = 'ABOUT_TO_DEPART' WHERE id_flight = ?;";
 
@@ -332,7 +332,7 @@ public class FlightDAOImpl implements FlightDAO {
              PreparedStatement preparedQuery = connection.prepareStatement(query)) {
 
             preparedQuery.setString(1, flightId);
-            preparedQuery.executeUpdate();
+            return preparedQuery.executeUpdate();
         }
     }
 

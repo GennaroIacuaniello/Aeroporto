@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class CheckinPassengers extends BookingPageAdmin{
 
+    protected JButton gateButton;
     protected JButton confirmButton;
 
     public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
@@ -38,6 +39,7 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         confirmPanel.setOpaque(false);
 
+        setGateButton(controller);
         setConfirmButton(controller);
 
         constraints.setConstraints(0, 3, 1, 1,
@@ -45,6 +47,26 @@ public class CheckinPassengers extends BookingPageAdmin{
         mainFrame.add(confirmPanel, constraints.getConstraints());
 
         confirmPanel.setVisible(true);
+    }
+
+    protected void setGateButton (Controller controller) {
+
+        gateButton = new JButton("GATE");
+
+        gateButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed (ActionEvent e) {
+
+            }
+        });
+
+        gateButton.setFocusable(false);
+        gateButton.setVisible(true);
+
+        constraints.setConstraints(0, 0, 1, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        confirmPanel.add(gateButton, constraints.getConstraints());
     }
 
     protected void setConfirmButton (Controller controller) {
@@ -63,7 +85,7 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmButton.setFocusable(false);
         confirmButton.setVisible(true);
 
-        constraints.setConstraints(0, 0, 1, 1,
+        constraints.setConstraints(1, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         confirmPanel.add(confirmButton, constraints.getConstraints());
     }

@@ -366,15 +366,16 @@ public class FlightController {
         return null;
     }
 
-    public void startCheckin () {
+    public int startCheckin () {
 
         try {
             FlightDAOImpl flightDAO = new FlightDAOImpl();
 
-            flightDAO.startCheckin(flight.getId());
+            return flightDAO.startCheckin(flight.getId());
 
         } catch (SQLException e) {
-            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
+            //Controller.getLogger().log(Level.SEVERE, e.getSQLState());
+            return -1;
         }
     }
 
