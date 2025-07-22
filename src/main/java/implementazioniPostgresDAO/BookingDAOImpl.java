@@ -453,7 +453,7 @@ public class BookingDAOImpl implements BookingDAO {
 
             query = query.trim();
 
-            query += " ORDER BY F.departure_time;";
+            query += " ORDER BY F.departure_time DESC;";
 
 
         }
@@ -556,7 +556,7 @@ public class BookingDAOImpl implements BookingDAO {
 
         query = query.trim();
 
-        query += " ORDER BY F.departure_time;";
+        query += " ORDER BY F.departure_time DESC;";
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {

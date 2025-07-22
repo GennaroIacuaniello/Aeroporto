@@ -2241,18 +2241,19 @@ EXECUTE FUNCTION fun_luggages_withdrawable_when_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO PUÒ ESSERE ABOUT_TO_DEPART O DEPARTED O ABOUT_TO_ARRIVE O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (ABOUT_TO_DEPART O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
+--TRIGGER UN VOLO PUÒ ESSERE ABOUT_TO_DEPART O DELAYED O DEPARTED O ABOUT_TO_ARRIVE O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (ABOUT_TO_DEPART O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
 
 CREATE OR REPLACE FUNCTION fun_check_date_before_aToDep_or_more()
 RETURNS TRIGGER
 AS $$
 BEGIN
 		
-	IF NEW.flight_status = 'ABOUT_TO_DEPART' THEN
+	IF NEW.flight_status = 'ABOUT_TO_DEPART' OR NEW.flight_status = 'DELAYED' OR THEN
 	
 		IF (NEW.departure_time::date) > CURRENT_DATE + 1 THEN
 		--posso aprire i check-in (e quindi mettere ad ABOUT_TO_DEPART) al più il giorno prima della partenza del volo
 		--e quindi non posso aprirli solo se NEW.departure_time::date non è nè oggi nè domani
+		--(e stessa cosa per il ritardo di un volo)
 
 			RAISE EXCEPTION 'Non possono ancora essere aperti i check-in per il volo %! La sua data di partenza è % con ritardo di % minuti!', NEW.id_flight, NEW.departure_time::date, NEW.flight_delay;
 
@@ -3169,18 +3170,18 @@ INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Flight
 
 INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
-('AZ1001', 'Aeroitalia', '2025-08-01 10:00:00', '2025-08-01 11:00:00', 'PROGRAMMED', 150, 150, 'Rome', 0, true, null),
-('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'PROGRAMMED', 200, 200, 'London', 0, false, null),
-('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'PROGRAMMED', 180, 180, 'Frankfurt', 0, true, null),
-('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'PROGRAMMED', 160, 160, 'Paris', 0, false, null),
+('AZ1001', 'Aeroitalia', '2025-08-01 10:00:00', '2025-08-01 11:00:00', 'PROGRAMMED', 150, 150, 'Roma', 0, true, null),
+('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'PROGRAMMED', 200, 200, 'Londra', 0, false, null),
+('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'PROGRAMMED', 180, 180, 'Francoforte', 0, true, null),
+('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'PROGRAMMED', 160, 160, 'Parigi', 0, false, null),
 ('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'PROGRAMMED', 250, 250, 'New York', 0, true, null),
 ('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'PROGRAMMED', 300, 300, 'Dubai', 0, false, null),
 ('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'PROGRAMMED', 220, 220, 'Doha', 0, true, null),
 ('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'PROGRAMMED', 190, 190, 'Istanbul', 0, false, null),
 ('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
-('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurich', 0, false, null),
-('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublin', 0, true, NULL),
-('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'DELAYED', 120, 120, 'Barcelona', 60, false, 11),
+('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurigo', 0, false, null),
+('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublino', 0, true, null),
+('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'PROGRAMMED', 120, 120, 'Barcellona', 60, false, null),
 ('GI0015', 'Aeroitalia', '2025-07-01 10:00:00', '2025-07-01 12:00:00', 'LANDED', 150, 150, 'Milano', 0, true, 15);
 
 -- Dati per la tabella Passenger

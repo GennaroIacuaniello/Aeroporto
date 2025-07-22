@@ -52,6 +52,21 @@ public class Flight {
     }
 
     public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                  Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, Gate parGate ){
+
+        this.id = parId;
+        this.companyName = parCompanyName;
+        this.date = parDate;
+        this.departureTime = parDepartureTime;
+        this.arrivalTime = parArrivalTime;
+        this.status = parStatus;
+        this.maxSeats = parMaxSeats;
+        this.freeSeats = parFreeSeats;
+        this.gate = parGate;
+
+    }
+
+    public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
                   Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats,
                   List<Booking> parBookings, List<Ticket> parTickets ){
 

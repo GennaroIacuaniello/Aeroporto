@@ -36,6 +36,8 @@ public class SearchFlightPanel extends JPanel {
     private JButton arrivingButton;
     private JButton departingButton;
 
+    private JButton searchButton;
+
     ArrayList<String> ids = new ArrayList<>();
     ArrayList<String> companyNames = new ArrayList<>();
     ArrayList<Date> dates = new ArrayList<>();
@@ -232,7 +234,7 @@ public class SearchFlightPanel extends JPanel {
 
     private JButton createSearchButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        JButton searchButton = new JButton("Cerca");
+        searchButton = new JButton("Cerca");
         searchButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
 
         searchButton.setBackground(new Color(0, 120, 215));
@@ -248,58 +250,7 @@ public class SearchFlightPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String origin = fromField.getText();
-                String destination = toField.getText();
-                LocalDate dateBefore = dateFrom.getDate();
-                LocalDate dateAfter = dateTo.getDate();
-                LocalTime timeBefore = timeFrom.getTime();
-                LocalTime timeAfter = timeTo.getTime();
-
-                controller.setErrorButton(searchButton);
-
-                if( (fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())){
-
-                    new FloatingMessage("Se si specifica una città, vanno specificate entrambe!", searchButton, FloatingMessage.ERROR_MESSAGE);
-                    updateResultsPanel(callingObjects, controller, true);
-
-                }else if( (dateBefore != null && dateAfter == null) || (dateBefore == null && dateAfter != null) ){
-
-                    new FloatingMessage("Errore nel range di date!", searchButton, FloatingMessage.ERROR_MESSAGE);
-                    updateResultsPanel(callingObjects, controller, true);
-
-                } else if (dateBefore != null /*&& dateAfter != null*/ && dateAfter.isBefore(dateBefore)) {
-
-                    new FloatingMessage("La seconda data deve essere successiva alla prima!", searchButton, FloatingMessage.ERROR_MESSAGE);
-                    updateResultsPanel(callingObjects, controller,true);
-
-                } else if ((timeBefore != null && timeAfter == null) || (timeBefore == null && timeAfter != null)) {
-
-                    new FloatingMessage("Errore nella fascia oraria!", searchButton, FloatingMessage.ERROR_MESSAGE);
-                    updateResultsPanel(callingObjects, controller,true);
-                }else{
-
-                    if (controller != null) {
-
-                        ids = new ArrayList<>();
-                        companyNames = new ArrayList<>();
-                        dates = new ArrayList<>();
-                        departureTimes = new ArrayList<>();
-                        arrivalTimes = new ArrayList<>();
-                        delays = new ArrayList<>();
-                        status = new ArrayList<>();
-                        maxSeats = new ArrayList<>();
-                        freeSeats = new ArrayList<>();
-                        cities = new ArrayList<>();
-
-                        controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
-                                                                              ids, companyNames, dates, departureTimes, arrivalTimes, delays, status,
-                                                                              maxSeats, freeSeats, cities, searchButton);
-
-                        //searchPerformed = true;
-                        updateResultsPanel(callingObjects, controller, true);
-                    }
-
-                }
+                executeResearch(callingObjects, controller, searchButton);
 
             }
         });
@@ -350,5 +301,70 @@ public class SearchFlightPanel extends JPanel {
 
         label.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
+    }
+
+    public void executeResearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton){
+
+        String origin = fromField.getText();
+        String destination = toField.getText();
+        LocalDate dateBefore = dateFrom.getDate();
+        LocalDate dateAfter = dateTo.getDate();
+        LocalTime timeBefore = timeFrom.getTime();
+        LocalTime timeAfter = timeTo.getTime();
+
+        controller.setErrorButton(searchButton);
+
+        if( (fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())){
+
+            new FloatingMessage("Se si specifica una città, vanno specificate entrambe!", searchButton, FloatingMessage.ERROR_MESSAGE);
+            updateResultsPanel(callingObjects, controller, true);
+
+        }else if( (dateBefore != null && dateAfter == null) || (dateBefore == null && dateAfter != null) ){
+
+            new FloatingMessage("Errore nel range di date!", searchButton, FloatingMessage.ERROR_MESSAGE);
+            updateResultsPanel(callingObjects, controller, true);
+
+        } else if (dateBefore != null /*&& dateAfter != null*/ && dateAfter.isBefore(dateBefore)) {
+
+            new FloatingMessage("La seconda data deve essere successiva alla prima!", searchButton, FloatingMessage.ERROR_MESSAGE);
+            updateResultsPanel(callingObjects, controller,true);
+
+        } else if ((timeBefore != null && timeAfter == null) || (timeBefore == null && timeAfter != null)) {
+
+            new FloatingMessage("Errore nella fascia oraria!", searchButton, FloatingMessage.ERROR_MESSAGE);
+            updateResultsPanel(callingObjects, controller,true);
+        }else{
+
+            if (controller != null) {
+
+                ids = new ArrayList<>();
+                companyNames = new ArrayList<>();
+                dates = new ArrayList<>();
+                departureTimes = new ArrayList<>();
+                arrivalTimes = new ArrayList<>();
+                delays = new ArrayList<>();
+                status = new ArrayList<>();
+                maxSeats = new ArrayList<>();
+                freeSeats = new ArrayList<>();
+                cities = new ArrayList<>();
+
+                controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
+                        ids, companyNames, dates, departureTimes, arrivalTimes, delays, status,
+                        maxSeats, freeSeats, cities, searchButton);
+
+                //searchPerformed = true;
+                updateResultsPanel(callingObjects, controller, true);
+            }
+
+        }
+
+    }
+
+    public JButton getSearchButton() {
+        return searchButton;
+    }
+
+    public void setSearchButton(JButton searchButton) {
+        this.searchButton = searchButton;
     }
 }

@@ -28,7 +28,7 @@ public class LuggageDAOImpl implements LuggageDAO {
                         "FROM FLIGHT F NATURAL JOIN BOOKING B JOIN TICKET T ON B.id_booking = T.id_booking JOIN " +
                         "PASSENGER P ON T.id_passenger = P.SSN JOIN LUGGAGE L ON L.id_ticket = T.ticket_number JOIN CUSTOMER C ON B.buyer = C.id_customer " +
                         "WHERE L.luggage_status = 'LOST' AND C.is_deleted = false " +
-                        "ORDER BY F.departure_time;";
+                        "ORDER BY F.departure_time DESC;";
 
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();

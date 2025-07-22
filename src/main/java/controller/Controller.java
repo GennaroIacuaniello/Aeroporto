@@ -81,10 +81,22 @@ public class Controller {
             return null;
         }
 
-        for (int i = 0; i < flightId.size(); i++) {
-            arrivingFlights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
-                    arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
-                    origin.get(i), arrivalDelay.get(i), gate.get(i)));
+        try{
+            for (int i = 0; i < flightId.size(); i++) {
+
+                if(gate.get(i) != null){
+                    arrivingFlights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
+                            arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
+                            origin.get(i), arrivalDelay.get(i), new Gate(gate.get(i).byteValue())));
+                }else{
+                    arrivingFlights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
+                            arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
+                            origin.get(i), arrivalDelay.get(i)));
+                }
+
+            }
+        } catch (Exception e){
+            return null;
         }
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
@@ -93,7 +105,7 @@ public class Controller {
             result[i][2] = arrivingFlights.get(i).getDate();
             result[i][3] = arrivingFlights.get(i).getOrigin() + " -> Napoli";
             result[i][4] = arrivingFlights.get(i).getArrivalTime().toLocalTime().plusMinutes(arrivingFlights.get(i).getArrivalDelay());
-            result[i][5] = arrivingFlights.get(i).getStatus();
+            result[i][5] = translateFlightStatus(arrivingFlights.get(i).getStatus());
             if(arrivingFlights.get(i).getGate() != null){
                 result[i][6] = arrivingFlights.get(i).getGate().getId();
             }else{
@@ -104,6 +116,29 @@ public class Controller {
         }
 
         return result;
+    }
+
+    public String translateFlightStatus(FlightStatus status){
+
+        switch (status.toString()){
+            case "PROGRAMMED":
+                return "In programma";
+            case "CANCELLED":
+                return "Cancellato";
+            case "DELAYED":
+                return "In ritardo";
+            case "ABOUT_TO_DEPART":
+                return "In partenza";
+            case "DEPARTED":
+                return "Partito";
+            case "ABOUT_TO_ARRIVE":
+                return "In arrivo";
+            case "LANDED":
+                return "Atterrato";
+            default:
+                return null;
+        }
+
     }
 
     public Object[][] getImminentDepartingFlights(){
