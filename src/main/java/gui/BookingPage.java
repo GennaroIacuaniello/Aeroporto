@@ -44,8 +44,6 @@ public abstract class BookingPage extends DisposableObject {
                     protected JButton nextPageButton;
                     protected JLabel currentPageLabel;
 
-        protected FooterPanel footerPanel;
-
     protected Constraints constraints;
     protected boolean controllerDisposeFlag = true;
 
@@ -66,7 +64,7 @@ public abstract class BookingPage extends DisposableObject {
         addMainPanel(callingObjects, controller);
 
         //this.addFooterPanel();
-        addFooterPanel();
+        //addFooterPanel();
 
         goToPage(0);
 
@@ -427,9 +425,9 @@ public abstract class BookingPage extends DisposableObject {
 
     abstract protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller);
 
-    protected void addFooterPanel () {
+    /*protected void addFooterPanel () {
 
-    }
+    }*/
 
     public void setControllerDisposeFlag (boolean flag) {
 

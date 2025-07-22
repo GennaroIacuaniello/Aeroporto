@@ -31,7 +31,9 @@ public class MenuPanelAdmin extends JPanel {
                 menuItem.addActionListener(actionEvent -> {
                     switch (option) {
                         case "Home":
-                            controller.goHome(callingObjects);
+                            if (!callingObjects.getLast().getFrame().getTitle().equals("Home")){
+                                controller.goHome(callingObjects);
+                            }
                             break;
                         case "Bagagli smarriti":
                             controller.setErrorButton(menuButton);
