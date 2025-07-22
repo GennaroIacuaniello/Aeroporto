@@ -221,6 +221,7 @@ public class BookingPageAdmin extends BookingPage {
             else new FloatingMessage("Il ritardo non è stato settato correttamente", setDelayButton, FloatingMessage.ERROR_MESSAGE);
 
         } catch (NumberFormatException e) {
+            e.printStackTrace();
             new FloatingMessage("Ritardo non valido", setDelayButton, FloatingMessage.ERROR_MESSAGE);
         }
     }

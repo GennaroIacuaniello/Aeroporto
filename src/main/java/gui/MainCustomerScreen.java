@@ -135,13 +135,6 @@ public class MainCustomerScreen extends DisposableObject {
         Object[][] data = controller.getImminentArrivingFlights();
         arrivingTable = new ImminentFlightsTable(data, columnTitle);
 
-        arrivingTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-                showFlightInfoEvent(mouseEvent);
-            }
-        });
-
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
         tablePanel.add(arrivingTable.getScrollContainer(), constraints.getConstraints());
@@ -180,19 +173,12 @@ public class MainCustomerScreen extends DisposableObject {
         Object[][] data = controller.getImminentDepartingFlights();
         departingTable = new ImminentFlightsTable(data, columnTitles);
 
-        departingTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-                showFlightInfoEvent(mouseEvent);
-
-            }
-        });
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
         tablePanel.add(departingTable.getScrollContainer(), constraints.getConstraints());
     }
-
+/*
     private void showFlightInfoEvent(MouseEvent mouseEvent) {
         JTable table = (JTable) mouseEvent.getSource();
         Point point = mouseEvent.getPoint();
@@ -208,7 +194,7 @@ public class MainCustomerScreen extends DisposableObject {
             }
         }
     }
-
+*/
     @Override
     public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
         controller.getCustomerController().setLoggedCustomer(null, null);
