@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.sql.Date;
@@ -25,4 +26,10 @@ public interface FlightDAO {
                               List<String> ticketNumbers, List<Integer> seats, List<Boolean> checkedIns,
                               List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<java.sql.Date> birthDates,
                               List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException;
+
+
+    void InsertAFlight(String flightId, String companyName, Timestamp departureTimestamp, Timestamp arrivalTimestamp,
+                       int maxSeats, String otherCity, boolean flightType) throws SQLException;
+
 }
+
