@@ -1,28 +1,19 @@
 package model;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
-
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-    - rivedere lo status nel costruttore
-
- */
-
-
+import java.util.List;
 
 public class Booking {
 
     private BookingStatus status;
-    private Customer buyer;
-    private Flight bookedFlight;
+    private final Customer buyer;
+    private final Flight bookedFlight;
 
-    private Date bookingDate;
+    private final Date bookingDate;
     private ArrayList<Ticket> tickets;
 
-    public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+    public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, List<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
 
@@ -34,7 +25,7 @@ public class Booking {
                     this.buyer = parBuyer;
                     this.bookedFlight = parBookedFlight;
                     this.bookingDate = parBookingDate;
-                    this.tickets = parTickets;
+                    this.tickets = (ArrayList<Ticket>) parTickets;
 
                 }else{
                     throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
@@ -50,7 +41,7 @@ public class Booking {
 
     }
 
-    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Date parBookingDate, ArrayList<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
+    public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Date parBookingDate, List<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
 
@@ -62,7 +53,7 @@ public class Booking {
                     this.buyer = parBuyer;
                     this.bookedFlight = parBookedFlight;
                     this.bookingDate = parBookingDate;
-                    this.tickets = parTickets;
+                    this.tickets = (ArrayList<Ticket>) parTickets;
 
                 }else{
                     throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
@@ -173,40 +164,22 @@ public class Booking {
         return buyer;
     }
 
-    //non si può modificare l'acquirente
-    /*
-    public void setBuyer(Customer buyer) {
-        this.buyer = buyer;
-    }*/
-
     public Flight getBookedFlight() {
         return bookedFlight;
     }
-
-    //non si può modificare il volo associato
-    /*
-    public void setBookedFlight(Flight bookedFlight) {
-        this.bookedFlight = bookedFlight;
-    }*/
 
     public Date getBookingDate() {
         return bookingDate;
     }
 
-    //non si può modificare il momento della prenotazione
-    /*
-    public void setBookingTime(Time bookingTime) {
-        this.bookingTime = bookingTime;
-    }*/
-
-    public ArrayList<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(ArrayList<Ticket> tickets) throws InvalidPassengerNumber{
+    public void setTickets(List<Ticket> tickets) throws InvalidPassengerNumber{
 
         if(!tickets.isEmpty()){
-            this.tickets = tickets;
+            this.tickets = (ArrayList<Ticket>) tickets;
         }else{
             throw new InvalidPassengerNumber("La prenotazione deve avere almeno un passegero!");
         }

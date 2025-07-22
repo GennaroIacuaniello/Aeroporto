@@ -1,15 +1,12 @@
 package gui;
 
-import controller.BookingStatusController;
+
 import controller.Controller;
-import controller.FlightController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class CheckinPassengers extends BookingPageAdmin{
@@ -41,7 +38,7 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         confirmPanel.setOpaque(false);
 
-        setConfirmButton(callingObjects, controller);
+        setConfirmButton(controller);
 
         constraints.setConstraints(0, 3, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
@@ -50,7 +47,7 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.setVisible(true);
     }
 
-    protected void setConfirmButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void setConfirmButton (Controller controller) {
 
         confirmButton = new JButton("CONFERMA");
 

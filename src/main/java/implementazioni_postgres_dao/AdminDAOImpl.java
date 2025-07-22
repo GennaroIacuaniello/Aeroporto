@@ -1,4 +1,4 @@
-package implementazioniPostgresDAO;
+package implementazioni_postgres_dao;
 
 import dao.AdminDAO;
 import dao.UserAlreadyExistsException;
@@ -15,14 +15,16 @@ public class AdminDAOImpl implements AdminDAO {
 
 
     @Override
-    public void searchUserByUsername(List<Integer> userID, String username, List<String> mail, String password) throws SQLException, UserNotFoundException {
+    public void searchUserByUsername(List<Integer> userID, String username, List<String> mail, String password) throws SQLException {
 
-        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
-            String query = "SELECT id_admin, mail " +
-                            "FROM Admin " +
-                            "WHERE username = ? AND hashed_password = ? AND is_deleted = false";
 
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
+        String query = "SELECT id_admin, mail " +
+                        "FROM Admin " +
+                        "WHERE username = ? AND hashed_password = ? AND is_deleted = false";
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedQuery = connection.prepareStatement(query)){
+
             preparedQuery.setString(1, username);
             preparedQuery.setString(2, password);
 
@@ -42,14 +44,15 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException, UserNotFoundException {
+    public void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException {
 
-        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
-            String query = "SELECT id_admin, username " +
-                            "FROM Admin " +
-                            "WHERE mail = ? AND hashed_password = ? AND is_deleted = false";
+        String query = "SELECT id_admin, username " +
+                        "FROM Admin " +
+                        "WHERE mail = ? AND hashed_password = ? AND is_deleted = false";
 
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement preparedQuery = connection.prepareStatement(query)){
+
             preparedQuery.setString(1, mail);
             preparedQuery.setString(2, password);
 
@@ -69,21 +72,23 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public void insertNewAdmin(String mail, String username, String password) throws SQLException, UserAlreadyExistsException {
+    public void insertNewAdmin(String mail, String username, String password) throws SQLException {
 
         String checkExistenceQuery = "SELECT username, mail " +
-                "FROM Admin " +
-                "WHERE (username = ? OR mail = ?) AND is_deleted = false " +
-                "UNION ALL " +
-                "SELECT username, mail " +
-                "FROM Customer " +
-                "WHERE (username = ? OR mail = ?) AND is_deleted = false";
+                                     "FROM Admin " +
+                                     "WHERE (username = ? OR mail = ?) AND is_deleted = false " +
+                                     "UNION ALL " +
+                                     "SELECT username, mail " +
+                                     "FROM Customer " +
+                                     "WHERE (username = ? OR mail = ?) AND is_deleted = false";
 
         String insertAdmin = "INSERT INTO Admin(username, mail, hashed_password) " +
-                "VALUES(?, ?, ?)";
+                             "VALUES(?, ?, ?)";
 
-        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
             PreparedStatement checkExistenceStatement = connection.prepareStatement(checkExistenceQuery);
+            PreparedStatement insertStatement = connection.prepareStatement(insertAdmin);){
+
             checkExistenceStatement.setString(1, username);
             checkExistenceStatement.setString(2, mail);
             checkExistenceStatement.setString(3, username);
@@ -93,7 +98,7 @@ public class AdminDAOImpl implements AdminDAO {
 
             if(!rs.next()){ //is username/mail are not already used rs.next gives false
                 rs.close();
-                PreparedStatement insertStatement = connection.prepareStatement(insertAdmin);
+
                 insertStatement.setString(1, username);
                 insertStatement.setString(2, mail);
                 insertStatement.setString(3, password);

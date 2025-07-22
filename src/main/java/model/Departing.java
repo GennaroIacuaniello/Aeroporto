@@ -1,11 +1,5 @@
 package model;
 
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-    - rivedere tipo delay //attenzione anche nel costruttore
- */
-
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -19,6 +13,14 @@ public class Departing extends Flight{
                     Time parArrivalTime, int parMaxSeats, String parDestination){
 
         super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parMaxSeats);
+        this.destination = parDestination;
+
+    }
+
+    public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                     Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, String parDestination){
+
+        super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats);
         this.destination = parDestination;
 
     }
@@ -85,9 +87,5 @@ public class Departing extends Flight{
         this.departureDelay = departureDelay;
     }
 
-    /*
-    public void print_departure_delay(){
-        System.out.println("Volo in ritardo di: " + this.departureDelay /60 + " ore e "+ this.departureDelay %60 + " minuti.");
-    }*/
 
 }

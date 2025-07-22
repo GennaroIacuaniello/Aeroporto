@@ -1,19 +1,16 @@
 package controller;
 
 import dao.*;
-//import dao.LuggageDAO;
-import database.ConnessioneDatabase;
 import gui.DisposableObject;
 import gui.FloatingMessage;
 
 import gui.LuggagePanel;
 import gui.PassengerPanel;
-import implementazioniPostgresDAO.*;
+import implementazioni_postgres_dao.*;
 import model.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -21,23 +18,24 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
+import java.util.logging.Logger;
 
 public class Controller {
 
-    private AdminController adminController;
-    private ArrivingController arrivingController;
-    private BookingController bookingController;
-    private CustomerController customerController;
-    private DepartingController departingController;
-    private FlightController flightController;
-    private GateController gateController;
-    private LuggageController luggageController;
-    private PassengerController passengerController;
-    private UserController userController;
-    private FlightStatusController flightStatusController;
-    private BookingStatusController bookingStatusController;
-    private TicketController ticketController;
+    private final AdminController adminController;
+    private final ArrivingController arrivingController;
+    private final BookingController bookingController;
+    private final CustomerController customerController;
+    private final DepartingController departingController;
+    private final FlightController flightController;
+    private final GateController gateController;
+    private final LuggageController luggageController;
+    private final PassengerController passengerController;
+    private final UserController userController;
+    private final TicketController ticketController;
     private JButton errorButton;
+    private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
+
 
 
     public Controller() {
@@ -51,8 +49,6 @@ public class Controller {
         luggageController = new LuggageController();
         passengerController = new PassengerController();
         userController = new UserController();
-        flightStatusController = new FlightStatusController();
-        bookingStatusController = new BookingStatusController();
         ticketController = new TicketController();
     }
 
@@ -212,14 +208,6 @@ public class Controller {
         return userController;
     }
 
-    public FlightStatusController getFlightStatusController() {
-        return flightStatusController;
-    }
-
-    public BookingStatusController getBookingStatusController() {
-        return bookingStatusController;
-    }
-
     public TicketController getTicketController(){
         return ticketController;
     }
@@ -298,7 +286,7 @@ public class Controller {
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
-    public void addBooking(ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
+    public void addBooking(ArrayList<PassengerPanel> passengerPanels, String bookingStatus) {
 
         try {
 
@@ -315,7 +303,7 @@ public class Controller {
 
             preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
-            bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus.name(), ticketsNumbers,
+            bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus, ticketsNumbers,
                     seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
@@ -324,7 +312,7 @@ public class Controller {
         }
     }
 
-    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, BookingStatus bookingStatus) {
+    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, String bookingStatus) {
 
         try {
 
@@ -341,8 +329,8 @@ public class Controller {
 
             preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
 
-            bookingDAO.modifyBooking(this, flightController.getId(), getBookingController().getId(), ticketsNumbers,
-                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1), bookingStatus.name());
+            bookingDAO.modifyBooking(flightController.getId(), getBookingController().getId(), ticketsNumbers,
+                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1), bookingStatus);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -496,8 +484,8 @@ public class Controller {
 
             ticketController.getSearchBookingResult().addAll(bookingController.getSearchBookingResult().getLast().getTickets());
             for(Ticket x: bookingController.getSearchBookingResult().getLast().getTickets()){
-                if(!actualSSNs.contains(x.getPassenger().getSSN())){
-                    actualSSNs.add(x.getPassenger().getSSN());
+                if(!actualSSNs.contains(x.getPassenger().getPassengerSSN())){
+                    actualSSNs.add(x.getPassenger().getPassengerSSN());
                     passengerController.getSearchBookingResult().add(x.getPassenger());
                 }
 
@@ -614,8 +602,8 @@ public class Controller {
 
             ticketController.getSearchBookingResult().addAll(bookingController.getSearchBookingResult().getLast().getTickets());
             for(Ticket x: bookingController.getSearchBookingResult().getLast().getTickets()){
-                if(!actualSSNs.contains(x.getPassenger().getSSN())){
-                    actualSSNs.add(x.getPassenger().getSSN());
+                if(!actualSSNs.contains(x.getPassenger().getPassengerSSN())){
+                    actualSSNs.add(x.getPassenger().getPassengerSSN());
                     passengerController.getSearchBookingResult().add(x.getPassenger());
                 }
 
@@ -733,8 +721,8 @@ public class Controller {
 
             ticketController.getSearchBookingResult().addAll(bookingController.getSearchBookingResult().getLast().getTickets());
             for(Ticket x: bookingController.getSearchBookingResult().getLast().getTickets()){
-                if(!actualSSNs.contains(x.getPassenger().getSSN())){
-                    actualSSNs.add(x.getPassenger().getSSN());
+                if(!actualSSNs.contains(x.getPassenger().getPassengerSSN())){
+                    actualSSNs.add(x.getPassenger().getPassengerSSN());
                     passengerController.getSearchBookingResult().add(x.getPassenger());
                 }
 
@@ -824,8 +812,8 @@ public class Controller {
 
             ticketController.getSearchBookingResult().addAll(bookingController.getSearchBookingResult().getLast().getTickets());
             for(Ticket x: bookingController.getSearchBookingResult().getLast().getTickets()){
-                if(!actualSSNs.contains(x.getPassenger().getSSN())){
-                    actualSSNs.add(x.getPassenger().getSSN());
+                if(!actualSSNs.contains(x.getPassenger().getPassengerSSN())){
+                    actualSSNs.add(x.getPassenger().getPassengerSSN());
                     passengerController.getSearchBookingResult().add(x.getPassenger());
                 }
 
@@ -855,11 +843,11 @@ public class Controller {
 
         //Avoid opening DB if it is obvious that it won't contain the user
         if(loggingInfo.contains("@")){
-            if (!userController.isValidMail(loggingInfo)){
+            if (userController.isValidMail(loggingInfo)){
                 new FloatingMessage("<html>User o mail non valida</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
                 return false;
             }
-        } else if(!userController.isValidUsername(loggingInfo)){
+        } else if(userController.isValidUsername(loggingInfo)){
             new FloatingMessage("<html>User o mail non valida</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
             return false;
         }
@@ -1035,8 +1023,8 @@ public class Controller {
                     actualTicketNumbers.add(ticketNumbers.get(i));
                     ticketController.getSearchBookingResult().add(bookingController.getSearchBookingResult().getLast().getTickets().getLast());
                     Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
-                    if(!actualSSNs.contains(tmp.getSSN())){
-                        actualSSNs.add(tmp.getSSN());
+                    if(!actualSSNs.contains(tmp.getPassengerSSN())){
+                        actualSSNs.add(tmp.getPassengerSSN());
                         passengerController.getSearchBookingResult().add(tmp);
                     }
                 }else{
@@ -1046,8 +1034,8 @@ public class Controller {
                                 bookingController.getSearchBookingResultBooksById(bookingIds.get(i)),
                                 firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
                         Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
-                        if (!actualSSNs.contains(tmp.getSSN())) {
-                            actualSSNs.add(tmp.getSSN());
+                        if (!actualSSNs.contains(tmp.getPassengerSSN())) {
+                            actualSSNs.add(tmp.getPassengerSSN());
                             passengerController.getSearchBookingResult().add(tmp);
                         }
                     }
@@ -1183,8 +1171,8 @@ public class Controller {
                     actualTicketNumbers.add(ticketNumbers.get(i));
                     ticketController.getSearchBookingResult().add(bookingController.getSearchBookingResult().getLast().getTickets().getLast());
                     Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
-                    if(!actualSSNs.contains(tmp.getSSN())){
-                        actualSSNs.add(tmp.getSSN());
+                    if(!actualSSNs.contains(tmp.getPassengerSSN())){
+                        actualSSNs.add(tmp.getPassengerSSN());
                         passengerController.getSearchBookingResult().add(tmp);
                     }
                 }else{
@@ -1194,8 +1182,8 @@ public class Controller {
                                 bookingController.getSearchBookingResultBooksById(bookingIds.get(i)),
                                 firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
                         Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
-                        if (!actualSSNs.contains(tmp.getSSN())) {
-                            actualSSNs.add(tmp.getSSN());
+                        if (!actualSSNs.contains(tmp.getPassengerSSN())) {
+                            actualSSNs.add(tmp.getPassengerSSN());
                             passengerController.getSearchBookingResult().add(tmp);
                         }
                         bookingController.getSearchBookingResultBooksById(bookingIds.get(i)).getTickets().add(ticketController.getSearchBookingResult().getLast());
@@ -1285,4 +1273,6 @@ public class Controller {
         }
 
     }
+
+    public static Logger getLogger(){ return LOGGER;}
 }

@@ -113,7 +113,7 @@ public class BookingPageAdmin extends BookingPage {
 
     protected void checkCheckinButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed) {
+        if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED")) {
 
             controller.getFlightController().startCheckin();
 
@@ -125,7 +125,7 @@ public class BookingPageAdmin extends BookingPage {
             }
 
             mainFrame.setVisible(false);
-        } else if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().aboutToDepart) {
+        } else if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("ABOUT_TO_DEPART")) {
 
             new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
 

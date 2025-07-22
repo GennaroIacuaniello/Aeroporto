@@ -5,6 +5,7 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import java.util.ArrayList;
 
 public class SeatChooser extends JFrame {
@@ -16,7 +17,7 @@ public class SeatChooser extends JFrame {
     private int offset;
     private int seat;
 
-    public SeatChooser(Controller controller, PassengerPanel callingPanel, ArrayList<PassengerPanel> passengerPanels, ArrayList<Integer> bookedSeats) {
+    public SeatChooser(Controller controller, PassengerPanel callingPanel, List<PassengerPanel> passengerPanels, List<Integer> bookedSeats) {
 
         super("Seat Chooser");
 

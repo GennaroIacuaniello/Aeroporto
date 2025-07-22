@@ -1,18 +1,12 @@
 package model;
 
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-
- */
-
 public class Gate {
 
     private byte id;
 
     public Gate(byte parId) throws InvalidGate {
 
-        if(parId < 0 || parId > 19){
+        if(parId < 1 || parId > 20){
             throw new InvalidGate("Gate non valido!");
         }else{
             this.id = parId;
@@ -26,7 +20,7 @@ public class Gate {
 
     public void setId(byte id) throws InvalidGate {
 
-        if(id < 0 || id > 19){
+        if(id < 1 || id > 20){
             throw new InvalidGate("Gate non valido!");
         }else{
             this.id = id;

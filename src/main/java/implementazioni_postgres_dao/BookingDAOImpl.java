@@ -1,9 +1,7 @@
-package implementazioniPostgresDAO;
+package implementazioni_postgres_dao;
 
-import controller.Controller;
 import dao.BookingDAO;
 import database.ConnessioneDatabase;
-import model.BookingStatus;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -11,26 +9,29 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BookingDAOImpl implements BookingDAO {
 
-    public void addBooking (int idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
-                            ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException {
+    private static final Logger LOGGER = Logger.getLogger(BookingDAOImpl.class.getName());
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+    public void addBooking (int idCustomer, String idFlight, String bookingStatus, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
+                            List<String> lastNames, List<Date> birthDates, List<String> SSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException {
+
+        String query = "INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES (?::BookingStatus, ?, ?, ?);";
+
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedQuery = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
 
             connection.setAutoCommit(false);
 
-            String query;
-            PreparedStatement preparedQuery;
             ResultSet resultSet;
 
-            Integer generatedId;
+            int generatedId;
 
             //inserisci in booking
-            query = "INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES (?::BookingStatus, ?, ?, ?);";
-
-            preparedQuery = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             preparedQuery.setObject(1, bookingStatus);
             preparedQuery.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
@@ -64,13 +65,13 @@ public class BookingDAOImpl implements BookingDAO {
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getSQLState());
 
         }
     }
 
-    public void modifyBooking (Controller controller, String idFlight, Integer idBooking, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
-                               ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException {
+    public void modifyBooking (String idFlight, Integer idBooking, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
+                               List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
@@ -99,8 +100,6 @@ public class BookingDAOImpl implements BookingDAO {
 
             preparedQuery.executeUpdate();
 
-            System.out.println("Hoy");
-
             resultSet.close();
 
             //cancellazione vecchi tickets
@@ -111,10 +110,10 @@ public class BookingDAOImpl implements BookingDAO {
             preparedQuery.executeUpdate();
 
             //eventuale inserimento in passenger
-            insertPassengers(connection, firstNames, lastNames, birthDates, SSNs);
+            insertPassengers(connection, firstNames, lastNames, birthDates, passengerSSNs);
 
             //inserisci in ticket
-            insertTickets(connection, idBooking, idFlight, ticketNumbers, SSNs, seats);
+            insertTickets(connection, idBooking, idFlight, ticketNumbers, passengerSSNs, seats);
 
             //inserisci in luggage
             insertLuggages(connection, ticketForLuggages,  luggagesTypes);
@@ -138,22 +137,22 @@ public class BookingDAOImpl implements BookingDAO {
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getSQLState());
         }
     }
 
-    private void insertPassengers (Connection connection, ArrayList<String> firstNames, ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs) throws SQLException {
+    private void insertPassengers (Connection connection, List<String> firstNames, List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs) throws SQLException {
 
         String query;
         PreparedStatement preparedQuery;
         ResultSet resultSet;
 
-        for (int i = 0; i < SSNs.size(); i++) {
+        for (int i = 0; i < passengerSSNs.size(); i++) {
 
             query = "SELECT 1 FROM Passenger WHERE SSN = ?;";
             preparedQuery = connection.prepareStatement(query);
 
-            preparedQuery.setString(1, SSNs.get(i));
+            preparedQuery.setString(1, passengerSSNs.get(i));
 
             resultSet = preparedQuery.executeQuery();
 
@@ -188,10 +187,10 @@ public class BookingDAOImpl implements BookingDAO {
 
                 int index = 1;
 
-                preparedQuery.setString(index++, SSNs.get(i));
+                preparedQuery.setString(index++, passengerSSNs.get(i));
                 if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
                 if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
-                if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
+                if (birthDateValue != null) preparedQuery.setDate(index, birthDateValue);
 
                 preparedQuery.executeUpdate();
             } else {
@@ -221,11 +220,11 @@ public class BookingDAOImpl implements BookingDAO {
 
                 int index = 1;
 
-                preparedQuery.setString(index++, SSNs.get(i));
+                preparedQuery.setString(index++, passengerSSNs.get(i));
                 if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
                 if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
                 if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
-                preparedQuery.setString(index++, SSNs.get(i));
+                preparedQuery.setString(index, passengerSSNs.get(i));
 
                 preparedQuery.executeUpdate();
             }
@@ -234,7 +233,7 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
-    private void insertTickets (Connection connection, int idBooking, String idFlight,ArrayList<String> ticketNumbers, ArrayList<String> SSNs, ArrayList<Integer> seats) throws SQLException {
+    private void insertTickets (Connection connection, int idBooking, String idFlight, List<String> ticketNumbers, List<String> passengerSSNs, List<Integer> seats) throws SQLException {
 
         String query;
         PreparedStatement preparedQuery;
@@ -260,26 +259,26 @@ public class BookingDAOImpl implements BookingDAO {
             preparedQuery.setString(index++, ticketNumbers.get(i));
             if (seatValue != -1) preparedQuery.setInt(index++, seatValue + 1);
             preparedQuery.setInt(index++, idBooking);
-            preparedQuery.setString(index++, SSNs.get(i));
+            preparedQuery.setString(index++, passengerSSNs.get(i));
             preparedQuery.setString(index, idFlight);
 
             preparedQuery.executeUpdate();
         }
     }
 
-    private void insertLuggages (Connection connection, ArrayList<String> ticketForLuggages, ArrayList<String> luggagesTypes) throws SQLException {
+    private void insertLuggages (Connection connection, List<String> ticketForLuggages, List<String> luggagesTypes) throws SQLException {
 
         for (int i = 0; i < ticketForLuggages.size(); i++) {
 
             String query;
             PreparedStatement preparedQuery;
 
-            query = "INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES (?::LuggageType, ?::LuggageStatus, ?);";
+            query = "INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES (?::LuggageType, 'BOOKED'::LuggageStatus, ?);";
             preparedQuery = connection.prepareStatement(query);
 
             preparedQuery.setObject(1, luggagesTypes.get(i));
-            preparedQuery.setObject(2, "BOOKED");
-            preparedQuery.setString(3, ticketForLuggages.get(i));
+            //preparedQuery.setObject(2, "BOOKED");
+            preparedQuery.setString(2, ticketForLuggages.get(i));
 
             preparedQuery.executeUpdate();
         }
@@ -615,10 +614,11 @@ public class BookingDAOImpl implements BookingDAO {
 
     public void deleteBooking (int bookingId) throws SQLException {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";
 
-            String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
             preparedQuery.setInt(1, bookingId);
             preparedQuery.executeUpdate();
         }

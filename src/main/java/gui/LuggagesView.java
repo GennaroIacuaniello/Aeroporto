@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.ArrayList;
 
 import controller.Controller;
@@ -117,7 +118,7 @@ public class LuggagesView extends JFrame {
         return luggagesPanels;
     }
 
-    public void setLuggages(ArrayList<Integer> luggagesTypes, ArrayList<String> luggagesTickets, ArrayList<String> luggagesStatus,Controller controller) {
+    public void setLuggages(List<Integer> luggagesTypes, List<String> luggagesTickets, List<String> luggagesStatus,Controller controller) {
 
         int i = 0;
 
@@ -140,13 +141,13 @@ public class LuggagesView extends JFrame {
             removeLuggageButtons.add(new RemoveLuggageButton(controller, luggagesPanels, removeLuggageButtons, luggagesPanel,
                     scrollPane, removeLuggageButtons.size()));
 
-            if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed && controller.getCustomerController().getLoggedCustomer() != null) {
+            if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED") && controller.getCustomerController().getLoggedCustomer() != null) {
 
                 constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
                         GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
                 luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
                 luggagesPanels.getLast().setVisible(true);
-            } else if (controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().landed) {
+            } else if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("LANDED")) {
 
                 String name;
                 boolean flag = false;

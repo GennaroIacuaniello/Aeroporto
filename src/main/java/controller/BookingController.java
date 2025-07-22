@@ -1,35 +1,31 @@
 package controller;
 
-import dao.BookingDAO;
-import gui.FloatingMessage;
-import implementazioniPostgresDAO.BookingDAOImpl;
+import implementazioni_postgres_dao.BookingDAOImpl;
 import model.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class BookingController {
+
     private Booking booking;
     private Integer id;
     private ArrayList<Booking> searchBookingResult;
     private ArrayList<Integer> searchBookingResultIds;
 
-
-    public BookingController() {}
-
-    public void setBooking(Customer customer, Flight flight, ArrayList<Ticket> tickets) {
+    public void setBooking(Customer customer, Flight flight, List<Ticket> tickets) throws InvalidPassengerNumber, InvalidBuyer, InvalidFlight {
         try {
-            booking = new Booking(customer, flight, new Date(10, 0, 0), tickets);
+            booking = new Booking(customer, flight, new Date(10, 0, 0), (ArrayList<Ticket>) tickets);
         } catch (InvalidPassengerNumber e) {
-            throw new RuntimeException("Invalid passenger number", e);
+            throw new InvalidPassengerNumber("Invalid passenger number");
         } catch (InvalidBuyer e) {
-            throw new RuntimeException("Invalid buyer", e);
+            throw new InvalidBuyer("Invalid buyer");
         } catch (InvalidFlight e) {
-            throw new RuntimeException("Invalid flight", e);
+            throw new InvalidFlight("Invalid flight");
         }
     }
 
@@ -41,9 +37,9 @@ public class BookingController {
         return booking;
     }
 
-    public ArrayList<Passenger> getPassengers() {
+    public List<Passenger> getPassengers() {
 
-        ArrayList<Passenger> passengers = new ArrayList<Passenger>();
+        ArrayList<Passenger> passengers = new ArrayList<>();
 
         for (Ticket ticket : booking.getTickets()) {
 
@@ -78,7 +74,7 @@ public class BookingController {
     }
 
     public String getPassengerSSN(int index) {
-        return getPassenger(index).getSSN();
+        return getPassenger(index).getPassengerSSN();
     }
 
     public String getPassengerTicketNumber(int index) {
@@ -89,33 +85,36 @@ public class BookingController {
         return getTicket(index).getSeat();
     }
 
-    public ArrayList<Luggage> getPassengerLuggages (int index) {
+    public List<Luggage> getPassengerLuggages (int index) {
         return getTicket(index).getLuggages();
     }
 
-    public ArrayList<Integer> getPassengerLuggagesTypes (int index) {
-        ArrayList<Integer> types = new ArrayList<Integer>();
+    public List<Integer> getPassengerLuggagesTypes (int index) {
+
+        ArrayList<Integer> types = new ArrayList<>();
 
         for (Luggage luggage : getPassengerLuggages(index)) {
-            switch (luggage.getType()) {
-                case LuggageType.CARRY_ON -> types.add(0);
-                case LuggageType.CHECKED -> types.add(1);
+            if(luggage.getType().equals(LuggageType.CARRY_ON)){
+                types.add(0);
+            }
+            if(luggage.getType().equals(LuggageType.CHECKED)){
+                types.add(1);
             }
         }
 
         return types;
     }
 
-    public ArrayList<String> getPassengerLuggagesTickets (int index) {
-        ArrayList<String> tickets = new ArrayList<String>();
+    public List<String> getPassengerLuggagesTickets (int index) {
+        ArrayList<String> tickets = new ArrayList<>();
 
         for (Luggage luggage : getPassengerLuggages(index)) tickets.add(luggage.getId());
 
         return tickets;
     }
 
-    public ArrayList<String> getPassengerLuggagesStatus (int index) {
-        ArrayList<String> status = new ArrayList<String>();
+    public List<String> getPassengerLuggagesStatus (int index) {
+        ArrayList<String> status = new ArrayList<>();
 
         for (Luggage luggage : getPassengerLuggages(index)) status.add(luggage.getStatus().name());
 
@@ -137,7 +136,9 @@ public class BookingController {
 
             bookingDAO.deleteBooking(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
+
         }
     }
 

@@ -1,13 +1,14 @@
 package gui;
 
 import controller.Controller;
-import model.LuggageType;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 public class BookingPageCustomer extends BookingPage {
@@ -60,8 +61,8 @@ public class BookingPageCustomer extends BookingPage {
             string = controller.getBookingController().getPassengerTicketNumber(i);
             if (string != null) passengerPanel.setTicketNumber(string);
 
-            passengerPanel.setLuggages(controller.getBookingController().getPassengerLuggagesTypes(i),
-                    controller.getBookingController().getPassengerLuggagesTickets(i), controller.getBookingController().getPassengerLuggagesStatus(i), controller);
+            passengerPanel.setLuggages((ArrayList<Integer>) controller.getBookingController().getPassengerLuggagesTypes(i),
+                    (ArrayList<String>) controller.getBookingController().getPassengerLuggagesTickets(i), (ArrayList<String>) controller.getBookingController().getPassengerLuggagesStatus(i), controller);
 
             insertPassengerPanel(controller, passengerPanel);
         }
@@ -127,8 +128,8 @@ public class BookingPageCustomer extends BookingPage {
 
     protected Boolean checkFlightNBookingStatus (Controller controller) {
 
-        return controller.getFlightController().getFlightStatus() == controller.getFlightStatusController().programmed
-                && (controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().confirmed
-                || controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().pending);
+        return controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED")
+                && (controller.getBookingController().getBookingStatus().toString().equalsIgnoreCase("CONFIRMED")
+                || controller.getBookingController().getBookingStatus().toString().equalsIgnoreCase("PENDING"));
     }
 }

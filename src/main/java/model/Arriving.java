@@ -1,11 +1,5 @@
 package model;
 
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-
- */
-
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -95,14 +89,5 @@ public class Arriving extends Flight{
         this.arrivalDelay = arrivalDelay;
     }
 
-    /*
-    public int setArrivalDelay(int hoursArrivalDelay, int minArrivalDelay) {
-        this.arrivalDelay = 60* hoursArrivalDelay + minArrivalDelay;
-        return 0;
-    }
-
-    public void print_arrival_delay(){
-        System.out.println("Volo in ritardo di: " + this.arrivalDelay /60 + " ore e "+ this.arrivalDelay %60 + " minuti.");
-    }*/
 
 }

@@ -74,7 +74,7 @@ public class Book extends BookingModifyPage {
             public void actionPerformed (ActionEvent e) {
 
                 if (checkConfirmButton()) {
-                    controller.addBooking(passengerPanels, controller.getBookingStatusController().confirmed);
+                    controller.addBooking(passengerPanels, "CONFIRMED");
                     controller.goBack(callingObjects);
                 } else
                     new FloatingMessage("I dati dei passeggeri sono incompleti", confirmButton, FloatingMessage.ERROR_MESSAGE);
@@ -105,7 +105,7 @@ public class Book extends BookingModifyPage {
             public void actionPerformed (ActionEvent e) {
                     if (checkSavePendingButton()) {
 
-                        controller.addBooking(passengerPanels, controller.getBookingStatusController().pending);
+                        controller.addBooking(passengerPanels, "PENDING");
 
                         controller.goBack(callingObjects);
 

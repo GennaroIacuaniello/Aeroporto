@@ -1,4 +1,4 @@
-package implementazioniPostgresDAO;
+package implementazioni_postgres_dao;
 
 import dao.FlightDAO;
 import database.ConnessioneDatabase;
@@ -10,25 +10,29 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FlightDAOImpl implements FlightDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(FlightDAOImpl.class.getName());
 
     public void getImminentArrivingFlights (List<String> parId, List<String> parCompanyName, List<Date> parDate,
                                             List<Time> parDepartureTime, List<Time> parArrivalTime, List<String> parStatus,
                                             List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> origin,
                                             List<Integer> delay, List<Integer> parGate) throws SQLException{
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, " +
+                "max_seats, free_seats, destination_or_origin, flight_delay, id_gate " +
+                "FROM FLIGHT " +
+                "WHERE flight_type = false AND flight_status <> 'LANDED' AND flight_status <> 'CANCELLED' " +
+                "AND arrival_time + (flight_delay * interval '1 minute') > now() AT TIME ZONE current_setting('TimeZone') " +
+                "ORDER BY arrival_time " +
+                "LIMIT 6 ";
 
-            String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, " +
-                    "max_seats, free_seats, destination_or_origin, flight_delay, id_gate " +
-                    "FROM FLIGHT " +
-                    "WHERE flight_type = false AND flight_status <> 'LANDED' AND flight_status <> 'CANCELLED' " +
-                    "AND arrival_time + (flight_delay * interval '1 minute') > now() AT TIME ZONE current_setting('TimeZone') " +
-                    "ORDER BY arrival_time " +
-                    "LIMIT 6 ";
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedQuery = connection.prepareStatement(query)) {
 
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
             ResultSet resultSet = preparedQuery.executeQuery();
 
             while (resultSet.next()) {
@@ -64,7 +68,7 @@ public class FlightDAOImpl implements FlightDAO {
 
         } catch (SQLException sqle) {
 
-            sqle.printStackTrace();
+            LOGGER.log(Level.SEVERE, sqle.getSQLState());
         }
     }
 
@@ -290,16 +294,15 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
 
-    public void getBookedSeats(String flightId, Integer bookingId,ArrayList<Integer> bookedSeats) {
+    public void getBookedSeats(String flightId, Integer bookingId, List<Integer> bookedSeats) {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "SELECT seat FROM Ticket NATURAL JOIN Booking WHERE id_flight LIKE ? AND booking_status <> 'CANCELLED'";
 
-            String query = "SELECT seat FROM Ticket NATURAL JOIN Booking WHERE id_flight LIKE ? AND booking_status <> 'CANCELLED'";
+        if (bookingId != null) query += " AND id_booking <> " + bookingId;
+        query += ";";
 
-            if (bookingId != null) query += " AND id_booking <> " + bookingId;
-            query += ";";
-
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, flightId);
 
@@ -317,16 +320,17 @@ public class FlightDAOImpl implements FlightDAO {
             ConnessioneDatabase.getInstance().closeConnection();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getSQLState());
         }
     }
 
     public void startCheckin(String flightId) throws SQLException {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "UPDATE Flight SET flight_status = 'ABOUT_TO_DEPART' WHERE id_flight = ?;";
 
-            String query = "UPDATE Flight SET flight_status = 'ABOUT_TO_DEPART' WHERE id_flight = ?;";
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
             preparedQuery.setString(1, flightId);
             preparedQuery.executeUpdate();
         }

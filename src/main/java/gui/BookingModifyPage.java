@@ -230,7 +230,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         confirmPanel.setOpaque(false);
 
         addConfirmButton(controller, callingObjects);
-        if (controller.getBookingController().getBookingStatus() == controller.getBookingStatusController().pending)
+        if (controller.getBookingController().getBookingStatus().toString().equalsIgnoreCase("PENDING"))
             addSavePendingButton(controller, callingObjects);
 
         confirmPanel.setVisible (true);
@@ -245,7 +245,7 @@ public class BookingModifyPage extends BookingPageCustomer {
             public void actionPerformed (ActionEvent e) {
 
                 if (checkConfirmButton()) {
-                    controller.modifyBooking(passengerPanels, controller.getBookingStatusController().confirmed);
+                    controller.modifyBooking(passengerPanels, "CONFIRMED");
                     controller.goBack(callingObjects);
                 } else
                     new FloatingMessage("I dati dei passeggeri sono incompleti o errati", confirmButton, FloatingMessage.ERROR_MESSAGE);
@@ -273,7 +273,7 @@ public class BookingModifyPage extends BookingPageCustomer {
             public void actionPerformed (ActionEvent e) {
 
                 if (checkSavePendingButton()) {
-                    controller.modifyBooking(passengerPanels, controller.getBookingStatusController().pending);
+                    controller.modifyBooking(passengerPanels, "PENDING");
                     controller.goBack(callingObjects);
                 } else
                     new FloatingMessage("I dati dei passeggeri sono incompleti o errati", savePendingButton, FloatingMessage.ERROR_MESSAGE);

@@ -11,8 +11,6 @@ public class TicketController {
     private Ticket ticket;
     private ArrayList<Ticket> searchBookingResult;
 
-    public TicketController () {}
-
     public void setTicket (Ticket ticket) {
         this.ticket = ticket;
     }
@@ -41,7 +39,7 @@ public class TicketController {
         return ticket.getBooking();
     }
 
-    public ArrayList<Luggage> getLuggages () {
+    public List<Luggage> getLuggages () {
         return ticket.getLuggages();
     }
 
@@ -54,7 +52,7 @@ public class TicketController {
     }
 
     public String getSSN () {
-        return ticket.getPassenger().getSSN();
+        return ticket.getPassenger().getPassengerSSN();
     }
 
     public Date getBirthDate () {

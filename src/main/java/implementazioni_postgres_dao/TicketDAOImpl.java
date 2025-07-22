@@ -1,17 +1,20 @@
-package implementazioniPostgresDAO;
+package implementazioni_postgres_dao;
 
 import dao.TicketDAO;
 import database.ConnessioneDatabase;
 
 import java.math.BigInteger;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TicketDAOImpl implements TicketDAO {
 
+    private static final Logger LOGGER = Logger.getLogger(TicketDAOImpl.class.getName());
+
     public void getAllTicketBooking(int bookingId, List<String> ticketNumbers, List<Integer> seats, List<Boolean> checkedIns,
-                                    List<String> SSNs, List<String> firstNames,
+                                    List<String> passengerSSNs, List<String> firstNames,
                                     List<String> lastNames, List<Date> birthDates) throws SQLException {
 
 
@@ -36,7 +39,7 @@ public class TicketDAOImpl implements TicketDAO {
                     seats.add(null);
                 }
                 checkedIns.add(rs.getBoolean("checked_in"));
-                SSNs.add(rs.getString("id_passenger"));
+                passengerSSNs.add(rs.getString("id_passenger"));
                 firstNames.add(rs.getString("first_name"));
                 lastNames.add(rs.getString("last_name"));
                 birthDates.add(rs.getDate("birth_date"));
@@ -55,10 +58,11 @@ public class TicketDAOImpl implements TicketDAO {
 
         String result;
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
+        String query = "SELECT MAX(ticket_number) AS max_ticket_number FROM Ticket;";
 
-            String query = "SELECT MAX(ticket_number) AS max_ticket_number FROM Ticket;";
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
@@ -72,7 +76,7 @@ public class TicketDAOImpl implements TicketDAO {
             return increaseTicketNumber(result);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getSQLState());
         }
 
         return "";

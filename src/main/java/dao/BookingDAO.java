@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface BookingDAO {
 
-    void addBooking (int idCustomer, String idFlight, String bookingStatus, ArrayList<String> ticketNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames,
-                     ArrayList<String> lastNames, ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketForLuggages) throws SQLException;
+    void addBooking (int idCustomer, String idFlight, String bookingStatus, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
+                     List<String> lastNames, List<Date> birthDates, List<String> SSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException;
 
 
     void searchBooksCustomerForAFlight(String flightId, Integer loggedCustomerId,

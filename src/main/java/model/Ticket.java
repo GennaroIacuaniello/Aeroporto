@@ -111,7 +111,7 @@ public class Ticket {
 
     }
 
-    public Ticket(String parTicketNumber, int parSeat, boolean parCheckedIn, Flight parFlight, Booking parBooking, Passenger parPassenger, ArrayList<Luggage> parLuggages) throws InvalidTicket, InvalidPassengerNumber, InvalidBooking, InvalidFlight{
+    public Ticket(String parTicketNumber, int parSeat, boolean parCheckedIn, Flight parFlight, Booking parBooking, Passenger parPassenger, List<Luggage> parLuggages) throws InvalidTicket, InvalidPassengerNumber, InvalidBooking, InvalidFlight{
 
         if(parFlight != null){
 
@@ -131,7 +131,7 @@ public class Ticket {
                             luggage.setTicket(this);
                         }
 
-                        this.luggages = parLuggages;
+                        this.luggages = (ArrayList<Luggage>) parLuggages;
 
                     }else{
                         throw new InvalidTicket("Un biglietto deve avere un ticket number!");
@@ -165,6 +165,8 @@ public class Ticket {
             }else{
                 this.seat = parSeat;
             }
+
+            this.checkedIn = parCheckedIn;
 
             this.flight = new Arriving(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parFlightStatus, parMaxSeats, parFreeSeats,
                     parOrigin, parArrivalDelay);
@@ -244,20 +246,20 @@ public class Ticket {
         return passenger;
     }
 
-    public ArrayList<Luggage> getLuggages() {
+    public List<Luggage> getLuggages() {
         return luggages;
     }
 
-    public void setLuggages(ArrayList<Luggage> luggages) {
+    public void setLuggages(List<Luggage> luggages) {
 
         for(Luggage luggage: luggages){
             luggage.setTicket(this);
         }
 
-        this.luggages = luggages;
+        this.luggages = (ArrayList<Luggage>) luggages;
     }
 
-    public String print_seat(){
+    public String printSeat(){
 
         if (this.seat == null || this.seat == -1) return "/";
 

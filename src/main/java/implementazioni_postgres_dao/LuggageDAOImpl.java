@@ -1,13 +1,17 @@
-package implementazioniPostgresDAO;
+package implementazioni_postgres_dao;
 
+import controller.Controller;
 import dao.LuggageDAO;
 import database.ConnessioneDatabase;
-import model.Ticket;
 
 import java.sql.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LuggageDAOImpl implements LuggageDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(LuggageDAOImpl.class.getName());
 
     public void getAllLostLuggages(List<String> flightIds, List<String> companyNames, List<Date> flightDates,
                                    List<Time> departureTimes, List<Time> arrivalTimes, List<String> flightStatus,
@@ -158,13 +162,10 @@ public class LuggageDAOImpl implements LuggageDAO {
 
     public void lostLuggage(String ticket, String luggageStatus) {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_luggage_after_check_in = ?";
 
-            System.out.println(ticket);
-            System.out.println(luggageStatus);
-
-            String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_luggage_after_check_in = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);) {
 
             statement.setObject(1, luggageStatus);
             statement.setString(2, ticket);
@@ -172,7 +173,7 @@ public class LuggageDAOImpl implements LuggageDAO {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getSQLState());
         }
     }
 }

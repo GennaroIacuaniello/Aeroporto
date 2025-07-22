@@ -1,8 +1,7 @@
 package controller;
 
-import implementazioniPostgresDAO.LuggageDAOImpl;
+import implementazioni_postgres_dao.LuggageDAOImpl;
 import model.Luggage;
-import model.LuggageStatus;
 
 import java.util.ArrayList;
 import java.util.List;

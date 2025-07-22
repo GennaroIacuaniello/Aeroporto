@@ -3,16 +3,10 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-    - rivedere add/remove booking e passenger
-    - vedere se tenere luggages anche in Flight o lasciarli solo in Passenger
- */
 
 public class Flight {
 
-    private String id;
+    private final String id;
     private String companyName;
     private Date date;
     private Time departureTime;
@@ -32,6 +26,20 @@ public class Flight {
         this.date = parDate;
         this.departureTime = parDepartureTime;
         this.arrivalTime = parArrivalTime;
+        this.maxSeats = parMaxSeats;
+        this.freeSeats = this.maxSeats;
+
+    }
+
+    public Flight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                  Time parArrivalTime, FlightStatus parStatus, int parMaxSeats){
+
+        this.id = parId;
+        this.companyName = parCompanyName;
+        this.date = parDate;
+        this.departureTime = parDepartureTime;
+        this.arrivalTime = parArrivalTime;
+        this.status = parStatus;
         this.maxSeats = parMaxSeats;
         this.freeSeats = this.maxSeats;
 
@@ -104,12 +112,6 @@ public class Flight {
     public String getId() {
         return id;
     }
-
-    //non si può modificare l'id
-    /*
-    public void setId(String id) {
-        this.id = id;
-    }*/
 
     public String getCompanyName() {
         return companyName;

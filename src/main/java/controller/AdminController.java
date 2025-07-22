@@ -6,8 +6,6 @@ public class AdminController {
     private Integer loggedAdminId = null;
     private Admin loggedAdmin;
 
-    public AdminController() {}
-
     public void setAdmin(String username, String email, String hashedPassword, Integer id) {
         loggedAdmin = new Admin(username, email, hashedPassword);
         loggedAdminId = id;
@@ -21,4 +19,6 @@ public class AdminController {
     public Admin getLoggedAdmin() {
         return this.loggedAdmin;
     }
+
+    public Integer getLoggedAdminId(){ return this.loggedAdminId; }
 }

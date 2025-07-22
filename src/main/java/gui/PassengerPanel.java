@@ -11,6 +11,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.sql.Date;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.ArrayList;
 
 public class PassengerPanel extends JPanel {
@@ -40,14 +41,14 @@ public class PassengerPanel extends JPanel {
     protected Constraints constraints;
 
     //cose utili
-    private String displayedNameText = "~Nome~";
-    private String displayedSurnameText = "~Cognome~";
-    private String displayedCFText = "~Codice Fiscale~";
-    private String displayedDateText = "00/00/00";
-    private Color displayedTextColor = new Color(128, 128, 128);
-    private Color userTextColor = new Color(32, 32, 32);
+    private static final String DISPLAYED_NAME_TEXT = "~Nome~";
+    private static final String DISPLAYED_SURNAME_TEXT = "~Cognome~";
+    private static final String DISPLAYED_CF_TEXT = "~Codice Fiscale~";
+    private static final String DISPLAYED_DATE_TEXT = "00/00/00";
+    private static final Color displayedTextColor = new Color(128, 128, 128);
+    private static final Color userTextColor = new Color(32, 32, 32);
 
-    public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels, ArrayList<Integer> bookedSeats)
+    public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels, List<Integer> bookedSeats)
     {
         super ();
 
@@ -59,11 +60,11 @@ public class PassengerPanel extends JPanel {
         passengerLabel = new JLabel ("Passenger");
 
         //info
-        passengerNameField = new JTextField(displayedNameText, 20);
+        passengerNameField = new JTextField(DISPLAYED_NAME_TEXT, 20);
         passengerNameField.setForeground(displayedTextColor);
-        passengerSurnameField = new JTextField (displayedSurnameText, 20);
+        passengerSurnameField = new JTextField (DISPLAYED_SURNAME_TEXT, 20);
         passengerSurnameField.setForeground(displayedTextColor);
-        passengerCField = new JTextField (displayedCFText, 20);
+        passengerCField = new JTextField (DISPLAYED_CF_TEXT, 20);
         passengerCField.setForeground(displayedTextColor);
 
         //posto
@@ -97,7 +98,7 @@ public class PassengerPanel extends JPanel {
 
         //date
         passengerDatePicker = new DatePicker();
-        passengerDatePicker.getComponentDateTextField().setText(displayedDateText);
+        passengerDatePicker.getComponentDateTextField().setText(DISPLAYED_DATE_TEXT);
         passengerDatePicker.getComponentDateTextField().setForeground(displayedTextColor);
 
         //posizionamento
@@ -149,7 +150,7 @@ public class PassengerPanel extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if(passengerNameField.getText().equals(displayedNameText)){
+                if(passengerNameField.getText().equals(DISPLAYED_NAME_TEXT)){
                     passengerNameField.setText("");
                     passengerNameField.setForeground(userTextColor);
                 }
@@ -159,7 +160,7 @@ public class PassengerPanel extends JPanel {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (passengerNameField.getText().isEmpty()) {
-                    passengerNameField.setText(displayedNameText);
+                    passengerNameField.setText(DISPLAYED_NAME_TEXT);
                     passengerNameField.setForeground(displayedTextColor);
                 }
             }
@@ -169,7 +170,7 @@ public class PassengerPanel extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (passengerSurnameField.getText().equals(displayedSurnameText)) {
+                if (passengerSurnameField.getText().equals(DISPLAYED_SURNAME_TEXT)) {
                     passengerSurnameField.setText("");
                     passengerSurnameField.setForeground(userTextColor);
                 }
@@ -179,7 +180,7 @@ public class PassengerPanel extends JPanel {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (passengerSurnameField.getText().isEmpty()) {
-                    passengerSurnameField.setText(displayedSurnameText);
+                    passengerSurnameField.setText(DISPLAYED_SURNAME_TEXT);
                     passengerSurnameField.setForeground(displayedTextColor);
                 }
             }
@@ -189,7 +190,7 @@ public class PassengerPanel extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (passengerCField.getText().equals(displayedCFText)) {
+                if (passengerCField.getText().equals(DISPLAYED_CF_TEXT)) {
                     passengerCField.setText("");
                     passengerCField.setForeground(userTextColor);
                 }
@@ -199,7 +200,7 @@ public class PassengerPanel extends JPanel {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (passengerCField.getText().isEmpty()) {
-                    passengerCField.setText(displayedCFText);
+                    passengerCField.setText(DISPLAYED_CF_TEXT);
                     passengerCField.setForeground(displayedTextColor);
                 }
             }
@@ -209,7 +210,7 @@ public class PassengerPanel extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                if (passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText)) {
+                if (passengerDatePicker.getComponentDateTextField().getText().equals(DISPLAYED_DATE_TEXT)) {
                     passengerDatePicker.getComponentDateTextField().setText("");
                     passengerDatePicker.getComponentDateTextField().setForeground(userTextColor);
                 }
@@ -219,7 +220,7 @@ public class PassengerPanel extends JPanel {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 if (passengerDatePicker.getComponentDateTextField().getText().isEmpty()) {
-                    passengerDatePicker.getComponentDateTextField().setText(displayedDateText);
+                    passengerDatePicker.getComponentDateTextField().setText(DISPLAYED_DATE_TEXT);
                     passengerDatePicker.getComponentDateTextField().setForeground(displayedTextColor);
                 }
             }
@@ -251,8 +252,8 @@ public class PassengerPanel extends JPanel {
         return seat;
     }
 
-    public void setSeat(int par_seat){
-        seat = par_seat;
+    public void setSeat(int parSeat){
+        seat = parSeat;
         seatButton.setText(printSeat());
     }
 
@@ -261,11 +262,11 @@ public class PassengerPanel extends JPanel {
     }
 
     public String getPassengerName(){
-        return passengerNameField.getText().equals(displayedNameText) ? null : passengerNameField.getText();
+        return passengerNameField.getText().equals(DISPLAYED_NAME_TEXT) ? null : passengerNameField.getText();
     }
 
     public String getPassengerSurname(){
-        return passengerSurnameField.getText().equals(displayedSurnameText) ? null : passengerSurnameField.getText() ;
+        return passengerSurnameField.getText().equals(DISPLAYED_SURNAME_TEXT) ? null : passengerSurnameField.getText() ;
     }
 
     public String getPassengerCF(){
@@ -285,26 +286,26 @@ public class PassengerPanel extends JPanel {
     }
 
     public boolean checkPassengerName (){
-        return passengerNameField.getText().equals(displayedNameText) || passengerNameField.getText().equals("");
+        return passengerNameField.getText().equals(DISPLAYED_NAME_TEXT) || passengerNameField.getText().isEmpty();
     }
 
     public boolean checkPassengerSurname (){
-        return passengerSurnameField.getText().equals(displayedSurnameText) || passengerSurnameField.getText().equals("");
+        return passengerSurnameField.getText().equals(DISPLAYED_SURNAME_TEXT) || passengerSurnameField.getText().isEmpty();
     }
 
     public boolean checkPassengerCF (){
-        return passengerCField.getText().equals(displayedCFText) || passengerCField.getText().equals("");
+        return passengerCField.getText().equals(DISPLAYED_CF_TEXT) || passengerCField.getText().isEmpty();
     }
 
     public boolean checkPassengerSeat (){
         return seat == -1;
     }
 
-    public ArrayList<LuggagePanel> getLuggagesPanels() {
+    public List<LuggagePanel> getLuggagesPanels() {
         return luggagesView.getLuggagesPanels();
     }
 
-    public void setLuggages (ArrayList<Integer> luggageTypes, ArrayList<String> luggagesTickets, ArrayList<String> luggagesStatus, Controller controller){
+    public void setLuggages (List<Integer> luggageTypes, List<String> luggagesTickets, List<String> luggagesStatus, Controller controller){
         luggagesView.setLuggages (luggageTypes, luggagesTickets, luggagesStatus,controller);
     }
 
@@ -361,12 +362,12 @@ public class PassengerPanel extends JPanel {
     }
 
     public Date getPassengerDate () {
-        return passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText) ? null
+        return passengerDatePicker.getComponentDateTextField().getText().equals(DISPLAYED_DATE_TEXT) ? null
                 : new java.sql.Date(passengerDatePicker.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     public boolean checkPassengerDate () {
-        return passengerDatePicker.getComponentDateTextField().getText().equals(displayedDateText) || !passengerDatePicker.isTextFieldValid();
+        return passengerDatePicker.getComponentDateTextField().getText().equals(DISPLAYED_DATE_TEXT) || !passengerDatePicker.isTextFieldValid();
     }
 
     public void setPassengerDate (Date passengerDate) {

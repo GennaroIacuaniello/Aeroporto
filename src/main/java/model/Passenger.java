@@ -1,19 +1,11 @@
 package model;
 import java.sql.Date;
-import java.util.ArrayList;
-
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-    - controllare associazione con Booking
-    - aggiungere una funzione update_flight() dopo l'aggiunta o rimozione di un bagaglio
- */
 
 public class Passenger {
 
     private String firstName = null;
     private String lastName = null;
-    private final String SSN;
+    private final String passengerSSN;
     private Date birthDate = null;
 
     public Passenger(String parFirstName, String parLastName, String parSSN, Date parBirthDate, Ticket parTicket) throws InvalidTicket, InvalidPassengerNumber {
@@ -22,7 +14,7 @@ public class Passenger {
             this.firstName = parFirstName;
             this.lastName = parLastName;
             if(parSSN != null){
-                this.SSN = parSSN;
+                this.passengerSSN = parSSN;
             }else{
                 throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
             }
@@ -39,7 +31,7 @@ public class Passenger {
 
         if(parTicket != null){
             if(parSSN != null){
-                this.SSN = parSSN;
+                this.passengerSSN = parSSN;
             }else{
                 throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
             }
@@ -54,7 +46,7 @@ public class Passenger {
 
         if(parTicket != null){
             if(parSSN != null){
-                this.SSN = parSSN;
+                this.passengerSSN = parSSN;
             }else{
                 throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
             }
@@ -70,7 +62,7 @@ public class Passenger {
 
         if(parTicket != null){
             if(parSSN != null){
-                this.SSN = parSSN;
+                this.passengerSSN = parSSN;
             }else{
                 throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
             }
@@ -87,7 +79,7 @@ public class Passenger {
                      BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
 
         if(parSSN != null){
-            this.SSN = parSSN;
+            this.passengerSSN = parSSN;
         }else{
             throw new InvalidPassengerNumber("Un passeggero non può non avere SSN!");
         }
@@ -115,15 +107,9 @@ public class Passenger {
         this.lastName = lastName;
     }
 
-    public String getSSN() {
-        return SSN;
+    public String getPassengerSSN() {
+        return passengerSSN;
     }
-
-    //non si può modificare l'SSN
-    /*
-    public void setSSN(String SSN) {
-        this.SSN = SSN;
-    }*/
 
     public Date getBirthDate() {
         return birthDate;

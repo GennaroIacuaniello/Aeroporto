@@ -3,7 +3,7 @@ package controller;
 import dao.FlightDAO;
 import gui.FloatingMessage;
 import gui.PassengerPanel;
-import implementazioniPostgresDAO.FlightDAOImpl;
+import implementazioni_postgres_dao.FlightDAOImpl;
 import model.*;
 
 import javax.swing.*;
@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class FlightController {
 
@@ -37,7 +38,7 @@ public class FlightController {
     public void setDepartingFlight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
                                    Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, String parDestination) {
 
-        flight = new Departing(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parMaxSeats, parDestination);
+        flight = new Departing(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parDestination);
 
     }
 
@@ -64,7 +65,9 @@ public class FlightController {
 
         for(int i = 0; i < ids.size(); i++){
 
-            if(types.get(i)){   //alloco Departing
+            boolean type = types.get(i);
+
+            if(type){   //alloco Departing
 
                 searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
                                                 FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
@@ -200,7 +203,7 @@ public class FlightController {
     }
 
     public String getPassengerCFFromBooking (int bookingIndex, int passengerIndex) {
-        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getSSN();
+        return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getPassengerSSN();
     }
 
     public String getPassengerTicketNumberFromBooking (int bookingIndex, int passengerIndex) {
@@ -215,9 +218,9 @@ public class FlightController {
         return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getBirthDate();
     }
 
-    public ArrayList<Integer> getPassengerLuggagesTypesFromBooking(int bookingIndex, int passengerIndex) {
+    public List<Integer> getPassengerLuggagesTypesFromBooking(int bookingIndex, int passengerIndex) {
 
-        ArrayList<Integer> types = new ArrayList<Integer>();
+        ArrayList<Integer> types = new ArrayList<>();
 
         for (Luggage luggage : flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getLuggages()) {
             switch (luggage.getType()) {
@@ -229,18 +232,18 @@ public class FlightController {
         return types;
     }
 
-    public ArrayList<String> getPassengerLuggagesTicketsFromBooking(int bookingIndex, int passengerIndex) {
+    public List<String> getPassengerLuggagesTicketsFromBooking(int bookingIndex, int passengerIndex) {
 
-        ArrayList<String> tickets = new ArrayList<String>();
+        ArrayList<String> tickets = new ArrayList<>();
 
         for (Luggage luggage : flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getLuggages()) tickets.add(luggage.getId());
 
         return tickets;
     }
 
-    public ArrayList<String> getPassengerLuggagesStatusFromBooking(int bookingIndex, int passengerIndex) {
+    public List<String> getPassengerLuggagesStatusFromBooking(int bookingIndex, int passengerIndex) {
 
-        ArrayList<String> status = new ArrayList<String>();
+        ArrayList<String> status = new ArrayList<>();
 
         for (Luggage luggage : flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getLuggages()) status.add(luggage.getStatus().name());
 
@@ -260,16 +263,16 @@ public class FlightController {
     }
 
     public String getPassengerCF (int index) {
-        return flight.getTickets().get(index).getPassenger().getSSN();
+        return flight.getTickets().get(index).getPassenger().getPassengerSSN();
     }
 
     public String getPassengerTicketNumber (int index) {
         return flight.getTickets().get(index).getTicketNumber();
     }
 
-    public ArrayList<Integer> getPassengerLuggagesTypes(int index) {
+    public List<Integer> getPassengerLuggagesTypes(int index) {
 
-        ArrayList<Integer> types = new ArrayList<Integer>();
+        ArrayList<Integer> types = new ArrayList<>();
 
         for (Luggage luggage : getPassengerLuggages(index)) {
             switch (luggage.getType()) {
@@ -281,7 +284,7 @@ public class FlightController {
         return types;
     }
 
-    public ArrayList<Luggage> getPassengerLuggages (int index) {
+    public List<Luggage> getPassengerLuggages (int index) {
 
         return flight.getTickets().get(index).getLuggages();
     }
@@ -371,12 +374,14 @@ public class FlightController {
             flightDAO.startCheckin(flight.getId());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
         }
     }
 
 
-    public void setCheckins (ArrayList<PassengerPanel> passengerPanels) {}
+    public void setCheckins (List<PassengerPanel> passengerPanels) {
+        //TODO
+    }
 
     public boolean getFlightType() {
 

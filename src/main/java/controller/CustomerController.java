@@ -11,9 +11,6 @@ public class CustomerController {
     private ArrayList<Customer> searchBookingResultCustomers;
     private ArrayList<Integer> searchBookingResultCustomersIds;
 
-
-    public CustomerController() {}
-
     public void setLoggedCustomer(String username, String mail, String hashedPassword, Integer id) {
         loggedCustomer = new Customer(username, mail, hashedPassword);
         loggedCustomerId = id;

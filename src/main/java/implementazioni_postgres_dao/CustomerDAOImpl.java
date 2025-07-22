@@ -1,4 +1,4 @@
-package implementazioniPostgresDAO;
+package implementazioni_postgres_dao;
 
 import dao.CustomerDAO;
 import dao.UserAlreadyExistsException;
@@ -13,13 +13,15 @@ import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public void searchUserByUsername(List<Integer> userID, String username, List<String> mail, String password) throws SQLException, UserNotFoundException {
-        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
-            String query = "SELECT id_customer, mail " +
-                            "FROM Customer " +
-                            "WHERE username = ? AND hashed_password = ? AND is_deleted = false";
+    public void searchUserByUsername(List<Integer> userID, String username, List<String> mail, String password) throws SQLException{
 
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
+        String query = "SELECT id_customer, mail " +
+                "FROM Customer " +
+                "WHERE username = ? AND hashed_password = ? AND is_deleted = false";
+
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement preparedQuery = connection.prepareStatement(query)){
+
             preparedQuery.setString(1, username);
             preparedQuery.setString(2, password);
 
@@ -39,14 +41,15 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException, UserNotFoundException {
+    public void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException {
 
-        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
-            String query = "SELECT id_customer, username " +
-                            "FROM Customer " +
-                            "WHERE mail = ? AND hashed_password = ? AND is_deleted = false";
+        String query = "SELECT id_customer, username " +
+                "FROM Customer " +
+                "WHERE mail = ? AND hashed_password = ? AND is_deleted = false";
 
-            PreparedStatement preparedQuery = connection.prepareStatement(query);
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement preparedQuery = connection.prepareStatement(query)){
+
             preparedQuery.setString(1, mail);
             preparedQuery.setString(2, password);
 
@@ -66,7 +69,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void insertNewCustomer(String mail, String username, String password) throws SQLException, UserAlreadyExistsException {
+    public void insertNewCustomer(String mail, String username, String password) throws SQLException {
 
         String checkExistenceQuery = "SELECT username, mail " +
                 "FROM Admin " +
@@ -79,8 +82,11 @@ public class CustomerDAOImpl implements CustomerDAO {
         String insertCustomer = "INSERT INTO Customer(username, mail, hashed_password) " +
                 "VALUES(?, ?, ?)";
 
-        try(Connection connection = ConnessioneDatabase.getInstance().getConnection()){
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+
             PreparedStatement checkExistenceStatement = connection.prepareStatement(checkExistenceQuery);
+            PreparedStatement insertStatement = connection.prepareStatement(insertCustomer)){
+
             checkExistenceStatement.setString(1, username);
             checkExistenceStatement.setString(2, mail);
             checkExistenceStatement.setString(3, username);
@@ -90,7 +96,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 
             if(!rs.next()){ //if username/mail are not already used there will be nothing in the result set
                 rs.close();
-                PreparedStatement insertStatement = connection.prepareStatement(insertCustomer);
                 insertStatement.setString(1, username);
                 insertStatement.setString(2, mail);
                 insertStatement.setString(3, password);

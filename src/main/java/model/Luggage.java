@@ -1,18 +1,5 @@
 package model;
 
-/*TO DO:
-    - rivedere la visibilità di metodi e attributi
-    - rivedere tipi di ritorno metodi
-
- */
-
-/*POSSIBLE
-    inserire attributi e relative gestioni per il peso del bagaglio
-    private int grammi;     //e poi stampiamo grammi/1000 per stampare il peso in kg
-    eventuale nuovo possibile status bagaglio ex. "preso in carico",
-    se si modificare lo status assengato nel costruttore
- */
-
 public class Luggage {
 
     private String id = null;
@@ -59,7 +46,6 @@ public class Luggage {
         if(parTicket != null){
             this.id = parId;
             this.type = parType;
-            this.status = LuggageStatus.BOOKED;
             this.ticket = parTicket;
         }else{
             throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
@@ -73,7 +59,6 @@ public class Luggage {
         if(parTicket != null){
             this.id = parId;
             this.status = parStatus;
-            this.status = LuggageStatus.BOOKED;
             this.ticket = parTicket;
         }else{
             throw new InvalidTicket("Il bagaglio deve essere associato ad un biglietto!");
