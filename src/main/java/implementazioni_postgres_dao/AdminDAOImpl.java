@@ -110,4 +110,46 @@ public class AdminDAOImpl implements AdminDAO {
             }
         }
     }
+
+    @Override
+    public void updateAdmin(Integer userID, String username, String password) throws SQLException {
+
+        String checkExistenceQuery = "SELECT username " +
+                "FROM Admin " +
+                "WHERE username = ? AND is_deleted = false AND id_admin <> ? " +
+                "UNION ALL " +
+                "SELECT username " +
+                "FROM Customer " +
+                "WHERE username = ?  AND is_deleted = false";
+
+        String updateQuery = "UPDATE Admin " +
+                "SET username = ?, hashed_password = ? " +
+                "WHERE id_admin = ?";
+
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement checkExistenceStatement = connection.prepareStatement(checkExistenceQuery);
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);) {
+
+            checkExistenceStatement.setString(1, username);
+            checkExistenceStatement.setInt(2, userID);
+            checkExistenceStatement.setString(3, username);
+
+            ResultSet rs = checkExistenceStatement.executeQuery();
+
+            if(!rs.next()) { //is username/mail are not already used rs.next gives false
+                rs.close();
+
+                updateStatement.setString(1, username);
+                updateStatement.setString(2, password);
+                updateStatement.setInt(3, userID);
+
+                updateStatement.executeUpdate();
+            } else{
+                rs.close();
+                throw new UserAlreadyExistsException("Mail o Username già in uso");
+            }
+
+        }
+
+    }
 }

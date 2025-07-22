@@ -11,4 +11,6 @@ public interface CustomerDAO {
 
     void insertNewCustomer(String mail, String username, String password) throws SQLException;
 
+    public void updateCustomer(Integer userID, String mail, String username, String password) throws SQLException;
+
 }

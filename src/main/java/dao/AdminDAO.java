@@ -10,4 +10,6 @@ public interface AdminDAO {
     void searchUserByMail(List<Integer> userID, List<String> username, String mail, String password) throws SQLException;
 
     void insertNewAdmin(String mail, String username, String password) throws SQLException;
+
+    void updateAdmin(Integer userID, String username, String password) throws SQLException;
 }

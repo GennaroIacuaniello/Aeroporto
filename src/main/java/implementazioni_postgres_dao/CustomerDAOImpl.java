@@ -107,4 +107,48 @@ public class CustomerDAOImpl implements CustomerDAO {
             }
         }
     }
+
+    @Override
+    public void updateCustomer(Integer userID, String mail, String username, String password) throws SQLException {
+
+        String checkExistenceQuery = "SELECT username " +
+                "FROM Admin " +
+                "WHERE (username = ? OR mail = ?) AND is_deleted = false " +
+                "UNION ALL " +
+                "SELECT username " +
+                "FROM Customer " +
+                "WHERE (username = ? OR mail = ?) AND is_deleted = false AND id_customer <> ? ";
+
+        String updateQuery = "UPDATE Customer " +
+                "SET username = ?, mail = ?, hashed_password = ? " +
+                "WHERE id_customer = ?";
+
+        try(Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement checkExistenceStatement = connection.prepareStatement(checkExistenceQuery);
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);) {
+
+            checkExistenceStatement.setString(1, username);
+            checkExistenceStatement.setString(2, mail);
+            checkExistenceStatement.setString(3, username);
+            checkExistenceStatement.setString(4, mail);
+            checkExistenceStatement.setInt(5, userID);
+
+            ResultSet rs = checkExistenceStatement.executeQuery();
+
+            if(!rs.next()) { //is username/mail are not already used rs.next gives false
+                rs.close();
+
+                updateStatement.setString(1, username);
+                updateStatement.setString(2, mail);
+                updateStatement.setString(3, password);
+                updateStatement.setInt(4, userID);
+
+                updateStatement.executeUpdate();
+            } else{
+                rs.close();
+                throw new UserAlreadyExistsException("Mail o Username già in uso");
+            }
+
+        }
+    }
 }

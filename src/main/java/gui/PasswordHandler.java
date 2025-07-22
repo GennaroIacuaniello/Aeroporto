@@ -20,6 +20,13 @@ public class PasswordHandler extends JPasswordField {
     public PasswordHandler(){
         super();
     }
+    public PasswordHandler(int columns){
+        super(columns);
+    }
+
+    public boolean isEmpty(){
+        return this.getPassword().length == 0;
+    }
 
     public String hashPassword(){
         try {

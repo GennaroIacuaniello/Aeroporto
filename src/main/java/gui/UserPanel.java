@@ -47,9 +47,9 @@ public class UserPanel extends JPanel {
 
         menuItem.addActionListener(actionEvent -> {
 
-            new ModifyAccount(controller, callingObjects);
-
-            callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+            Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+            ModifyAccount dialog = new ModifyAccount(parent, callingObjects, controller);
+            dialog.setVisible(true);
         });
 
         popupMenu.add(menuItem);

@@ -848,11 +848,11 @@ public class Controller {
 
         //Avoid opening DB if it is obvious that it won't contain the user
         if(loggingInfo.contains("@")){
-            if (userController.isValidMail(loggingInfo)){
+            if (userController.isInvalidMail(loggingInfo)){
                 new FloatingMessage("<html>User o mail non valida</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
                 return false;
             }
-        } else if(userController.isValidUsername(loggingInfo)){
+        } else if(userController.isInvalidUsername(loggingInfo)){
             new FloatingMessage("<html>User o mail non valida</html>", loginButton, FloatingMessage.WARNING_MESSAGE);
             return false;
         }
@@ -1283,4 +1283,38 @@ public class Controller {
     }
 
     public static Logger getLogger(){ return LOGGER;}
+
+    public boolean updateUser(String mail, String username, String hashedPassword, JButton button){
+        if (userController.isInvalidMail(mail)) {
+            new FloatingMessage("<html>Mail non valida</html>", button, FloatingMessage.WARNING_MESSAGE);
+            return false;
+        }
+        if (userController.isInvalidUsername(username)) {
+            new FloatingMessage("<html>Username non valido.<br>Il nome utente deve iniziare con una lettera, " +
+                    "finire con una lettera o un numero e può contenere solo lettere, numeri, trattini (-), underscore(_) e punti(.)</html>",
+                    button, FloatingMessage.WARNING_MESSAGE);
+            return false;
+        }
+
+        try {
+            if (userController.getLoggedUser() instanceof Admin) {
+                AdminDAOImpl adminDAO = new AdminDAOImpl();
+                adminDAO.updateAdmin(userController.getLoggedUserId(), username, hashedPassword);
+                adminController.setLoggedAdmin(new Admin(username, userController.getLoggedUser().getEmail(), hashedPassword), userController.getLoggedUserId());
+                userController.setLoggedUser(new Admin(username, userController.getLoggedUser().getEmail(), hashedPassword), userController.getLoggedUserId());
+            } else {
+                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                customerDAO.updateCustomer(userController.getLoggedUserId(), mail, username, hashedPassword);
+                customerController.setLoggedCustomer(new Customer(username, userController.getLoggedUser().getEmail(), hashedPassword), userController.getLoggedUserId());
+                userController.setLoggedUser(new Customer(username, userController.getLoggedUser().getEmail(), hashedPassword), userController.getLoggedUserId());
+            }
+
+            new FloatingMessage("<html>Informazioni aggiornate con successo</html>", button, FloatingMessage.SUCCESS_MESSAGE);
+            return true;
+        } catch (SQLException e) {
+            new FloatingMessage("<html>Errore nel collegamento al DB(Customer) o DB(Admin)<br>" + e.getMessage() + "</html>", button, FloatingMessage.ERROR_MESSAGE);
+            return false;
+        }
+
+    }
 }
