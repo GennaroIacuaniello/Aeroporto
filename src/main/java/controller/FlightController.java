@@ -448,13 +448,12 @@ public class FlightController {
     }
 
 
-    public boolean addFlight(String flightId, String companyName, LocalDate flightDate, LocalTime departureTime, LocalTime arrivalTime, int maxSeats, String otherCity, boolean flightType) {
+    public boolean addFlight(String flightId, String companyName, LocalDate flightDate, LocalTime departureTime, LocalTime arrivalTime, int maxSeats, String otherCity, boolean flightType, JButton confirmButton) {
 
 
         Timestamp departureTimestamp;
         Timestamp arrivalTimestamp;
 
-        LocalDate departureDate = flightDate;
         LocalDate arrivalDate;
 
         if (arrivalTime.isBefore(departureTime)) {
@@ -467,7 +466,7 @@ public class FlightController {
 
         }
 
-        departureTimestamp = Timestamp.valueOf(departureDate.atTime(departureTime));
+        departureTimestamp = Timestamp.valueOf(flightDate.atTime(departureTime));
         arrivalTimestamp = Timestamp.valueOf(arrivalDate.atTime(arrivalTime));
 
 
@@ -480,22 +479,14 @@ public class FlightController {
 
 
         } catch (SQLException e) {
-            //new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
-        }
 
-
-
-        try{
-
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-            //new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
+            new FloatingMessage("Errore nella connessione al Database!", confirmButton, FloatingMessage.ERROR_MESSAGE);
+            return false;
 
         }
 
-        return false;
+        return true;
     }
     public int setFlightStatus (Object flightStatus) {
 

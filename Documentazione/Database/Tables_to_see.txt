@@ -52,7 +52,7 @@ CREATE TABLE Flight (
 	max_seats SMALLINT NOT NULL,
 	free_seats SMALLINT NOT NULL,
 	destination_or_origin VARCHAR(64) NOT NULL,
-	flight_delay Minutes NOT NULL,
+	flight_delay Minutes NOT NULL DEFAULT 0,
 	flight_type FlightType NOT NULL,
 	id_gate SMALLINT,
 	
