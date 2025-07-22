@@ -2504,39 +2504,76 @@ EXECUTE FUNCTION fun_block_mod_flight_status_if_landed();
 
 --TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'ABOUT_TO_DEPART', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
 
-CREATE OR REPLACE FUNCTION fun_change_booking_status_when_dep_aToDep()
-RETURNS TRIGGER
+CREATE OR REPLACE FUNCTION proc_change_booking_status_when_dep_aToDep(input_old_id_flight VARCHAR(15), input_old_flight_type BOOLEAN, input_old_flight_status FlightStatus, input_new_flight_type BOOLEAN, input_new_flight_status FlightStatus )
+RETURNS INTEGER
 AS $$
 DECLARE
 
 	selected_booking BOOKING%ROWTYPE;
 
+	n_passenger INTEGER := 0;
+
+	selected_ticket TICKET%ROWTYPE;
+
 BEGIN
 
+	ALTER TABLE Booking DISABLE TRIGGER upd_free_seats_on_canc_booking;
+
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
-	IF OLD.flight_type = true AND NEW.flight_type = true THEN
+	IF input_old_flight_type = true AND input_new_flight_type = true THEN
 		
 		--questo if serve perché solo un volo PROGRAMMED può essere impostato ad ABOUT_TO_DEPART
-		IF OLD.flight_status <> 'PROGRAMMED' THEN
+		IF input_old_flight_status <> 'PROGRAMMED' THEN
 
 			RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
 
 		END IF;
 
-		IF OLD.flight_status <> 'ABOUT_TO_DEPART' AND NEW.flight_status = 'ABOUT_TO_DEPART' THEN
+		IF input_old_flight_status <> 'ABOUT_TO_DEPART' AND input_new_flight_status = 'ABOUT_TO_DEPART' THEN
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-										WHERE B.id_flight = OLD.id_flight AND B.booking_status = 'PENDING') LOOP
+										WHERE B.id_flight = input_old_id_flight AND B.booking_status = 'PENDING') LOOP
 
 				UPDATE BOOKING
 				SET booking_status = 'CANCELLED'
 				WHERE id_booking = selected_booking.id_booking;
+
+				FOR selected_ticket IN (SELECT * FROM TICKET T
+								WHERE T.id_booking = selected_booking.id_booking) LOOP
+
+					n_passenger := n_passenger + 1;
+
+				END LOOP;
 
 			END LOOP;
 		
 		END IF;
 
 	END IF;
+
+	ALTER TABLE Booking ENABLE TRIGGER upd_free_seats_on_canc_booking;
+
+	RETURN n_passenger;
+    
+EXCEPTION
+    WHEN OTHERS THEN
+        ALTER TABLE Booking ENABLE TRIGGER upd_free_seats_on_canc_booking;
+        RAISE;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION fun_change_booking_status_when_dep_aToDep()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	tot_passengers INTEGER := 0;
+
+BEGIN
+
+	SELECT proc_change_booking_status_when_dep_aToDep(OLD.id_flight, OLD.flight_type, OLD.flight_status, NEW.flight_type, NEW.flight_status) INTO tot_passengers;
+
+	NEW.free_seats := NEW.free_seats - tot_passengers;
 
 	RETURN NEW;
 
@@ -2914,7 +2951,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER arriving_check_assign_gate_only_if_aToArr_delayed
-BEFORE INSERT OR UPDATE OF id_gate ON FLIGHT
+BEFORE UPDATE OF id_gate ON FLIGHT
 FOR EACH ROW
 EXECUTE FUNCTION fun_arriving_check_assign_gate_only_if_aToArr_delayed();
 
@@ -3972,6 +4009,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_block_mod_canc_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
+
 
 
 
