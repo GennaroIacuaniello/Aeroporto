@@ -32,7 +32,7 @@ public class LuggagesView extends JFrame {
         thisFrame = this;
         this.setLayout(new GridBagLayout());
         constraints = new Constraints();
-        this.setSize(200, 300);
+        this.setSize(300, 400);
 
         setLuggagesPanel(controller);
         setButtons(controller);
