@@ -1,29 +1,25 @@
 package gui;
 
 import controller.Controller;
-import gui.ImminentFlightsTable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class MainCustomerScreen extends DisposableObject {
+public class HomePageCustomer extends DisposableObject {
 
     private JFrame mainFrame;
     private TitlePanel titlePanel;
     private NavigatorBarPanel navigatorBarPanel;
     private MenuPanelCustomer hamburgerPanel;
     private UserPanel userPanel;
-    private FooterPanel footerPanel;
     private gui.ImminentFlightsTable arrivingTable;
     private ImminentFlightsTable departingTable;
     private JPanel arrivingPanel;
     private JPanel departingPanel;
     Constraints constraints;
 
-    public MainCustomerScreen(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public HomePageCustomer(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -92,16 +88,7 @@ public class MainCustomerScreen extends DisposableObject {
         userPanel.setVisible(true);
     }
 
-    /*
-    private void addFooterPanel() {
 
-        footerPanel = new FooterPanel();
-        constraints.setConstraints(0, 6, 2, 1, GridBagConstraints.BOTH,
-                0, 75, GridBagConstraints.PAGE_END);
-        mainFrame.add(footerPanel, constraints.getConstraints());
-        footerPanel.setVisible(true);
-    }
-    */
     private void addArrivingPanel(Controller controller) {
 
         arrivingPanel = new JPanel();

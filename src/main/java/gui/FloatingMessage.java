@@ -11,7 +11,6 @@ public class FloatingMessage {
     
     private JWindow messageWindow;
     private RoundedPanel messagePanel;
-    private JLabel messageLabel;
 
     public FloatingMessage (String msg, JButton callingButton, int messageType){
 
@@ -54,7 +53,7 @@ public class FloatingMessage {
         messagePanel = new RoundedPanel(new BorderLayout());
         setColor(messageType);
 
-        messageLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
+        JLabel messageLabel = new JLabel("<html><center>" + msg + "</center></html>", SwingConstants.CENTER);
         messageLabel.setForeground(Color.BLACK);
 
         messagePanel.add(messageLabel, BorderLayout.CENTER);

@@ -17,7 +17,7 @@ import static gui.FloatingMessage.SUCCESS_MESSAGE;
 
 public class AddNewFlightDialog extends JDialog {
 
-    private Constraints constraints; // Oggetto per la gestione dei vincoli
+    private final Constraints constraints; // Oggetto per la gestione dei vincoli
 
     private JLabel cityLabel;
     private JTextField flightIdField;
@@ -30,7 +30,7 @@ public class AddNewFlightDialog extends JDialog {
     private JRadioButton arrivingRadio;
     private JRadioButton departingRadio;
 
-    private JButton confirmButton;
+    private final JButton confirmButton;
 
     public AddNewFlightDialog(Frame owner, Controller controller) {
 

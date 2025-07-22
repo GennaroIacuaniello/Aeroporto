@@ -192,7 +192,7 @@ public class LogInScreen extends DisposableObject {
         if(controller.isLoggedAdmin()){
             new HomePageAdmin(callingObjects, controller);
         }else{
-            new MainCustomerScreen(callingObjects, controller);
+            new HomePageCustomer(callingObjects, controller);
         }
 
     }
