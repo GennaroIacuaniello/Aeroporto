@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 
 public class DisposeTimers {
 
-    private Timer decreaseOpacityTimer;
-    private Timer startDecreaseOpacityTimer;
-    private Timer disposeTimer;
+    private final Timer decreaseOpacityTimer;
 
     public DisposeTimers(JWindow window) {
 
@@ -25,18 +23,18 @@ public class DisposeTimers {
         });
         decreaseOpacityTimer.setRepeats(true);
 
-        startDecreaseOpacityTimer = new Timer(1500, new ActionListener() {
+        Timer startDecreaseOpacityTimer = new Timer(1500, new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 ((Timer) e.getSource()).stop();
                 decreaseOpacityTimer.start();
             }
         });
         startDecreaseOpacityTimer.setRepeats(false);
 
-        disposeTimer = new Timer(2500, new ActionListener() {
+        Timer disposeTimer = new Timer(2500, new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 window.dispose();
                 ((Timer) e.getSource()).stop();
                 decreaseOpacityTimer.setRepeats(false);

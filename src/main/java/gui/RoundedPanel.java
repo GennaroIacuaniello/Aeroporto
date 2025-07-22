@@ -7,7 +7,6 @@ import java.awt.*;
 public class RoundedPanel extends JPanel {
 
     private int cornerRadius = 30;
-    private Graphics2D graphics;
     private Color backgroundColor;
     private Color roundBorderColor;
 
@@ -49,7 +48,7 @@ public class RoundedPanel extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        graphics = (Graphics2D) g;
+        Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         graphics.setColor (backgroundColor);

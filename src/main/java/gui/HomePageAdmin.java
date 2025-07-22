@@ -15,7 +15,7 @@ public class HomePageAdmin extends DisposableObject {
     private MenuPanelAdmin menu;
     private UserPanel userPanel;
     private SearchFlightPanel searchFlightPanel;
-    Constraints constraints;
+    private Constraints constraints;
 
     public HomePageAdmin(List<DisposableObject> callingObjects, Controller controller) {
 
