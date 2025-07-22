@@ -3178,7 +3178,7 @@ INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, fligh
 ('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'PROGRAMMED', 300, 300, 'Dubai', 0, false, null),
 ('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'PROGRAMMED', 220, 220, 'Doha', 0, true, null),
 ('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'PROGRAMMED', 190, 190, 'Istanbul', 0, false, null),
-('DL9009', 'Delta Airlines', '2025-08-09 16:00:00', '2025-08-09 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
+('DL9009', 'Delta Airlines', '2025-07-23 16:00:00', '2025-07-23 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
 ('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurigo', 0, false, null),
 ('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublino', 0, true, null),
 ('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'PROGRAMMED', 120, 120, 'Barcellona', 60, false, null),

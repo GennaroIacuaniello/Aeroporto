@@ -2,6 +2,7 @@ package gui;
 
 
 import controller.Controller;
+import controller.GateController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ public class CheckinPassengers extends BookingPageAdmin{
 
     protected JButton gateButton;
     protected JButton confirmButton;
+    protected GateChooser gateChooser;
 
     public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
@@ -58,6 +60,9 @@ public class CheckinPassengers extends BookingPageAdmin{
             @Override
             public void actionPerformed (ActionEvent e) {
 
+                setGate(controller);
+
+                gateButton.setEnabled(false);
             }
         });
 
@@ -67,6 +72,12 @@ public class CheckinPassengers extends BookingPageAdmin{
         constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         confirmPanel.add(gateButton, constraints.getConstraints());
+    }
+
+    protected void setGate (Controller controller) {
+
+        if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(gateButton, controller, this);
+        else gateChooser = new GateChooser(controller, gateButton);
     }
 
     protected void setConfirmButton (Controller controller) {
@@ -94,5 +105,30 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         for (int i = 0; i < passengerPanels.size(); i++)
             passengerPanels.get(i).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(i));
+
+    }
+
+    @Override
+    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+
+        if (controllerDisposeFlag) {
+
+            controller.getFlightController().setFlight(null);
+            controller.getBookingController().setBooking(null);
+        }
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+            if (passengerPanel.getSeatChooser() != null) passengerPanel.getSeatChooser().dispose();
+
+            if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
+        }
+
+        gateButton.setEnabled(true);
+        gateChooser.getMainFrame().dispose();
+    }
+
+    public void setGateChooser(GateChooser gateChooser) {
+
+        this.gateChooser = gateChooser;
     }
 }

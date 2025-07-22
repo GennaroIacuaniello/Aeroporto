@@ -336,7 +336,67 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    public int searchGate(String idFlight) {
 
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
 
+            connection.setAutoCommit(false);
 
+            String query = "SELECT * FROM Flight WHERE id_gate = ? AND flight_status <> 'CANCELLED';";
+
+            for (int i = 1; i <= 20; i++) {
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, i);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (!resultSet.next()) {
+
+                    resultSet.close();
+
+                    query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1, i);
+                    preparedStatement.setString(2, idFlight);
+
+                    preparedStatement.executeUpdate();
+
+                    connection.commit();
+
+                    return i;
+                }
+
+                resultSet.close();
+            }
+
+            return -1;
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getSQLState());
+
+            return -1;
+        }
+    }
+
+    public void setGate(int idGate, String idFlight) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            connection.setAutoCommit(false);
+
+            String query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, idGate);
+            preparedStatement.setString(2, idFlight);
+
+            preparedStatement.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getSQLState());
+        }
+    }
 }
