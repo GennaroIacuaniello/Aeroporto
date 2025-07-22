@@ -16,6 +16,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     private UserPanel userPanel;
     private SearchFlightPanel searchFlightPanel;
     Constraints constraints;
+    private boolean researchDone = false;
 
     public SearchFlightCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
@@ -111,6 +112,14 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         searchFlightPanel.setVisible(true);
     }
 
+    public boolean isResearchDone() {
+        return researchDone;
+    }
+
+    public void setResearchDone(boolean researchDone) {
+        this.researchDone = researchDone;
+    }
+
     @Override
     public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
         //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().dispose();
@@ -120,7 +129,8 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
     @Override
     public void doOnRestore (ArrayList<DisposableObject> callingObjects, Controller controller) {
         //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
-        searchFlightPanel.executeResearch(callingObjects, controller, searchFlightPanel.getSearchButton());
+        if(searchFlightPanel.isSearchPerformed())
+            searchFlightPanel.executeResearch(callingObjects, controller, searchFlightPanel.getSearchButton());
     }
 
     @Override

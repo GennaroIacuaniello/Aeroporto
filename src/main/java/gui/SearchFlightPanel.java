@@ -49,7 +49,7 @@ public class SearchFlightPanel extends JPanel {
     ArrayList<Integer> freeSeats = new ArrayList<>();
     ArrayList<String> cities = new ArrayList<>();
 
-    //private boolean searchPerformed = false;
+    private boolean searchPerformed = false;
 
     public SearchFlightPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
@@ -251,6 +251,7 @@ public class SearchFlightPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 executeResearch(callingObjects, controller, searchButton);
+                searchPerformed = true;
 
             }
         });
@@ -358,6 +359,14 @@ public class SearchFlightPanel extends JPanel {
 
         }
 
+    }
+
+    public boolean isSearchPerformed() {
+        return searchPerformed;
+    }
+
+    public void setSearchPerformed(boolean searchPerformed) {
+        this.searchPerformed = searchPerformed;
     }
 
     public JButton getSearchButton() {

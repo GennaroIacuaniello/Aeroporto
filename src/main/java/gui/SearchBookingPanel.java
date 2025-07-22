@@ -55,6 +55,8 @@ public class SearchBookingPanel extends JPanel {
 
     private JButton searchButton;
 
+    private boolean searchPerformed = false;
+
     ArrayList<Date> bookingDates = new ArrayList<>();
     ArrayList<String> bookingStatus = new ArrayList<>();
     ArrayList<String> flightIds = new ArrayList<>();
@@ -472,6 +474,14 @@ public class SearchBookingPanel extends JPanel {
 
         label.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
+    }
+
+    public boolean isSearchPerformed() {
+        return searchPerformed;
+    }
+
+    public void setSearchPerformed(boolean searchPerformed) {
+        this.searchPerformed = searchPerformed;
     }
 
     public JButton getSearchButton() {
