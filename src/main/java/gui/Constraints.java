@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Constraints {
-    private GridBagConstraints constraints;
+    private final GridBagConstraints constraints;
 
     public Constraints() {
         constraints = new GridBagConstraints();
@@ -31,54 +31,23 @@ public class Constraints {
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
                                int ipadx, int ipady, int anchor, float weightx, float weighty) {
 
-        constraints.gridx = gridx;
-        constraints.gridy = gridy;
-        constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.fill = fill;
-        constraints.ipadx = ipadx;
-        constraints.ipady = ipady;
-        constraints.anchor = anchor;
-        constraints.weightx = weightx;
-        constraints.weighty = weighty;
-        constraints.insets = new Insets(0, 0, 0, 0);
+        this.setConstraints(gridx, gridy, gridwidth, gridheight, fill,
+                ipadx, ipady, anchor, weightx, weighty, new Insets(0, 0, 0, 0));
     }
 
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
                                int ipadx, int ipady, int anchor, Insets insets) {
 
-        constraints.gridx = gridx;
-        constraints.gridy = gridy;
-        constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.fill = fill;
-        constraints.ipadx = ipadx;
-        constraints.ipady = ipady;
-        constraints.anchor = anchor;
-        constraints.weightx = 0.01;
-        constraints.weighty = 0.01;
-        constraints.insets = insets;
+        this.setConstraints(gridx, gridy, gridwidth, gridheight, fill,
+                ipadx, ipady, anchor, 0.01f, 0.01f, insets);
+
     }
 
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
                                int ipadx, int ipady, int anchor) {
 
-        constraints.gridx = gridx;
-        constraints.gridy = gridy;
-        constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.fill = fill;
-        constraints.ipadx = ipadx;
-        constraints.ipady = ipady;
-        constraints.anchor = anchor;
-        constraints.weightx = 0.01;
-        constraints.weighty = 0.01;
-        constraints.insets = new Insets(0, 0, 0, 0);
-    }
-
-    public void resetWeight() {
-        constraints.weightx = 0.01;
-        constraints.weighty = 0.01;
+        this.setConstraints(gridx, gridy, gridwidth, gridheight, fill,
+                ipadx, ipady, anchor, 0.01f, 0.01f, new Insets(0, 0, 0, 0));
     }
 
     public GridBagConstraints getConstraints() {

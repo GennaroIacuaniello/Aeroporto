@@ -10,12 +10,9 @@ import java.util.List;
 public class HomePageAdmin extends DisposableObject {
 
     private JFrame mainFrame;
-    private TitlePanel titlePanel;
-    private NavigatorBarPanel navigatorBarPanel;
-    private MenuPanelAdmin menu;
     private UserPanel userPanel;
     private SearchFlightPanel searchFlightPanel;
-    private Constraints constraints;
+    private final Constraints constraints;
 
     public HomePageAdmin(List<DisposableObject> callingObjects, Controller controller) {
 
@@ -49,7 +46,7 @@ public class HomePageAdmin extends DisposableObject {
 
     private void addTitlePanel(Controller controller) {
 
-        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
 
         titlePanel.setOpaque(false);
 
@@ -62,7 +59,7 @@ public class HomePageAdmin extends DisposableObject {
 
     private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
+        NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
 
         navigatorBarPanel.setOpaque(false);
 
@@ -75,7 +72,7 @@ public class HomePageAdmin extends DisposableObject {
 
     private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        menu = new MenuPanelAdmin(callingObjects, controller);
+        MenuPanelAdmin menu = new MenuPanelAdmin(callingObjects, controller);
 
         menu.setOpaque(false);
 

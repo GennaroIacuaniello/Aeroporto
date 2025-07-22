@@ -182,8 +182,6 @@ public class LogInScreen extends DisposableObject {
         mainFrame.setVisible(true);
     }
 
-
-
     private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
         usernameTextField.setText("");
         passwordField.setText("");
@@ -226,9 +224,5 @@ public class LogInScreen extends DisposableObject {
     public JFrame getFrame() {
         return mainFrame;
     }
-
-    /**
-     * @noinspection ALL
-     */
 
 }

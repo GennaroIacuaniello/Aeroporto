@@ -16,8 +16,8 @@ import java.util.List;
 
 public class LostLuggageDialog extends JDialog {
 
-    private JTable luggageTable;
-    private LostBaggageTableModel tableModel;
+    private final JTable luggageTable;
+    private final LostBaggageTableModel tableModel;
 
     public LostLuggageDialog(Frame owner, ArrayList<DisposableObject> callingObjects, Controller controller) {
 

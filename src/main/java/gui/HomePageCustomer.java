@@ -9,14 +9,9 @@ import java.util.ArrayList;
 public class HomePageCustomer extends DisposableObject {
 
     private JFrame mainFrame;
-    private TitlePanel titlePanel;
-    private NavigatorBarPanel navigatorBarPanel;
-    private MenuPanelCustomer hamburgerPanel;
     private UserPanel userPanel;
-    private gui.ImminentFlightsTable arrivingTable;
+    private ImminentFlightsTable arrivingTable;
     private ImminentFlightsTable departingTable;
-    private JPanel arrivingPanel;
-    private JPanel departingPanel;
     Constraints constraints;
 
     public HomePageCustomer(ArrayList<DisposableObject> callingObjects, Controller controller) {
@@ -30,9 +25,9 @@ public class HomePageCustomer extends DisposableObject {
         //callingFrame.dispose();
 
         //Setting surrounding panels
-        this.addTitlePanel("AEROPORTO DI NAPOLI", controller);
+        this.addTitlePanel(controller);
         this.addNavigatorBarPanel(callingObjects, controller);
-        this.addHamburgerPanel(callingObjects, controller);
+        this.addMenuPanel(callingObjects, controller);
         this.addUserPanel(callingObjects, controller);
         //this.addFooterPanel();
 
@@ -52,9 +47,9 @@ public class HomePageCustomer extends DisposableObject {
         mainFrame.setBackground(Color.BLACK);
     }
 
-    private void addTitlePanel(String title, Controller controller) {
+    private void addTitlePanel(Controller controller) {
 
-        titlePanel = new TitlePanel(title, controller);
+        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH,
                 0, 125, GridBagConstraints.PAGE_START);
         mainFrame.add(titlePanel, constraints.getConstraints());
@@ -63,16 +58,16 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
+        NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START);
         mainFrame.add(navigatorBarPanel, constraints.getConstraints());
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addHamburgerPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
+        MenuPanelCustomer hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
         mainFrame.add(hamburgerPanel, constraints.getConstraints());
@@ -91,7 +86,7 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addArrivingPanel(Controller controller) {
 
-        arrivingPanel = new JPanel();
+        JPanel arrivingPanel = new JPanel();
         arrivingPanel.setLayout(new GridBagLayout());
         arrivingPanel.setBackground(Color.LIGHT_GRAY);
 
@@ -129,7 +124,7 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addDepartingPanel(Controller controller) {
 
-        departingPanel = new JPanel();
+        JPanel departingPanel = new JPanel();
         departingPanel.setLayout(new GridBagLayout());
         departingPanel.setBackground(Color.LIGHT_GRAY);
 
@@ -165,29 +160,14 @@ public class HomePageCustomer extends DisposableObject {
                 0, 0, GridBagConstraints.CENTER);
         tablePanel.add(departingTable.getScrollContainer(), constraints.getConstraints());
     }
-/*
-    private void showFlightInfoEvent(MouseEvent mouseEvent) {
-        JTable table = (JTable) mouseEvent.getSource();
-        Point point = mouseEvent.getPoint();
-        int row = table.rowAtPoint(point);
-        int col = table.columnAtPoint(point);
-        if(table.getSelectedRow() != -1 && row != -1){
-            if (mouseEvent.getClickCount() == 2 || col == table.getColumnCount()-1) {//double click on a row or click on last column
-                // the row number is the visual row number
-                // when filtering or sorting it is not the model's row number
-                // this line takes care of that
-                // int modelRow = table.convertRowIndexToModel(row);
-                JOptionPane.showMessageDialog(mainFrame, "Show info of the flight" + table.getColumnCount());
-            }
-        }
-    }
-*/
+
     @Override
     public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
         controller.getCustomerController().setLoggedCustomer(null, null);
         controller.getUserController().setLoggedUser(null, null);
     }
 
+    @Override
     public void doOnRestore(ArrayList<DisposableObject> callingObjects, Controller controller){
         if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
             userPanel.setVisible(false);
@@ -196,6 +176,7 @@ public class HomePageCustomer extends DisposableObject {
         }
     }
 
+    @Override
     public JFrame getFrame() {
         return this.mainFrame;
     }
