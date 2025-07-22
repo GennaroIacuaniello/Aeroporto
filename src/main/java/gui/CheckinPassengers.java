@@ -98,6 +98,11 @@ public class CheckinPassengers extends BookingPageAdmin{
             public void actionPerformed (ActionEvent e) {
 
                 controller.getFlightController().setCheckins(truePassengerPanels, falsePassengerPanels);
+
+                new FloatingMessage("Checkins effettuati con successo", confirmButton, FloatingMessage.SUCCESS_MESSAGE);
+
+                truePassengerPanels = new ArrayList<PassengerPanel>();
+                falsePassengerPanels = new ArrayList<PassengerPanel>();
             }
         });
 
