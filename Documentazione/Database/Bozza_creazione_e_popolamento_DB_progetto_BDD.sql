@@ -3923,7 +3923,55 @@ EXECUTE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
+--TRIGGER NON SI PUò MODIFICARE UNA PRENOTAZIONE CANCELLATA
 
+CREATE OR REPLACE FUNCTION fun_block_mod_canc_book()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.booking_status = 'CANCELLED' THEN
+
+		RAISE EXCEPTION 'La prenotazione % è stata cancellata, non può essere modificata!', OLD.id_booking;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_mod_canc_book
+BEFORE UPDATE ON BOOKING
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_mod_canc_book();
+
+-------------------------------------------------------------------------------------------------------------------------
+
+--TRIGGER NON SI PUò MODIFICARE UN VOLO CANCELLATO
+
+CREATE OR REPLACE FUNCTION fun_block_mod_canc_flight()
+RETURNS TRIGGER
+AS $$
+BEGIN
+
+	IF OLD.flight_status = 'CANCELLED' THEN
+
+		RAISE EXCEPTION 'Il volo % è stata cancellata, non può essere modificata!', OLD.id_flight;
+
+	END IF;
+
+	RETURN NEW;
+
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER block_mod_canc_flight
+BEFORE UPDATE ON FLIGHT
+FOR EACH ROW
+EXECUTE FUNCTION fun_block_mod_canc_flight();
+
+-------------------------------------------------------------------------------------------------------------------------
 
 
 
