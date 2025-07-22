@@ -452,4 +452,11 @@ public class FlightController {
 
         return flightDAO.setStatus((String) flightStatus, flight.getId());
     }
+
+    public int addDelay (int delay) {
+
+        FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+        return flightDAO.addDelay(delay, flight.getId());
+    }
 }

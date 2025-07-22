@@ -41,8 +41,10 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         confirmPanel.setOpaque(false);
 
+        setChangeStatusButton(controller, callingObjects);
         setGateButton(controller);
         setConfirmButton(controller);
+        setSetDelayButton(controller);
 
         constraints.setConstraints(0, 3, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
@@ -69,7 +71,7 @@ public class CheckinPassengers extends BookingPageAdmin{
         gateButton.setFocusable(false);
         gateButton.setVisible(true);
 
-        constraints.setConstraints(2, 0, 1, 1,
+        constraints.setConstraints(3, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         confirmPanel.add(gateButton, constraints.getConstraints());
     }

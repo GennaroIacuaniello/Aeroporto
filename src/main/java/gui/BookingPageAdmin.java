@@ -18,6 +18,9 @@ public class BookingPageAdmin extends BookingPage {
 
         protected JButton checkinButton;
 
+        protected JButton setDelayButton;
+        protected JTextField delayTextField;
+
     public BookingPageAdmin(ArrayList<DisposableObject> callingObjects, Controller controller,
                             Dimension dimension, Point point, int fullScreen) {
 
@@ -85,8 +88,8 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.setOpaque(false);
 
         setChangeStatusButton(controller, callingObjects);
-
         setCheckinButton(callingObjects, controller);
+        setSetDelayButton(controller);
 
         constraints.setConstraints(0, 3, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
@@ -166,6 +169,47 @@ public class BookingPageAdmin extends BookingPage {
 
             mainFrame.setVisible(false);
         } else new FloatingMessage("Non è possibile effettuare check-in per un volo in sato: " + controller.getFlightController().getFlightStatus(), checkinButton, FloatingMessage.ERROR_MESSAGE);
+    }
+
+    protected void setSetDelayButton (Controller controller) {
+
+        setDelayButton = new JButton("SET DELAY");
+        JTextField setDelayTextField = new JTextField();
+
+        setDelayButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                addDelay(controller);
+            }
+        });
+
+        setDelayButton.setFocusable(false);
+        setDelayButton.setEnabled(true);
+
+        JPanel delayPanel = new JPanel();
+        delayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        delayPanel.add(setDelayButton);
+        delayPanel.add(setDelayTextField);
+
+        constraints.setConstraints(2, 0, 1, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        confirmPanel.add(delayPanel, constraints.getConstraints());
+    }
+
+    protected void addDelay(Controller controller) {
+
+        try {
+
+            if (controller.getFlightController().addDelay(Integer.parseInt(delayTextField.getText())) == 1)
+                new FloatingMessage("Ritardo settato correttamente", setDelayButton, FloatingMessage.SUCCESS_MESSAGE);
+            else new FloatingMessage("Il ritardo non è stato settato correttamente", setDelayButton, FloatingMessage.ERROR_MESSAGE);
+
+        } catch (NumberFormatException e) {
+            new FloatingMessage("Ritardo non valido", setDelayButton, FloatingMessage.ERROR_MESSAGE);
+        }
     }
 
     @Override

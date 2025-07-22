@@ -404,15 +404,45 @@ public class FlightDAOImpl implements FlightDAO {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
 
+            connection.setAutoCommit(false);
+
             String query = "UPDATE Flight SET flight_status = ?::FlightStatus WHERE id_flight = ? ;";
             PreparedStatement preparedStatement =  connection.prepareStatement(query);
 
             preparedStatement.setString(1, status);
             preparedStatement.setString(2, idFlight);
 
-            return preparedStatement.executeUpdate();
+            int result = preparedStatement.executeUpdate();
+
+            connection.commit();
+
+            return result;
 
         } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public int addDelay(int delay, String idFlight) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            connection.setAutoCommit(false);
+
+            String query = "UPDATE Flight SET flight_delay = flight_delay + ? WHERE id_flight = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, delay);
+            preparedStatement.setString(2, idFlight);
+
+            int result = preparedStatement.executeUpdate();
+
+            connection.commit();
+
+            return result;
+
+        } catch (SQLException e) {
+
             return -1;
         }
     }
