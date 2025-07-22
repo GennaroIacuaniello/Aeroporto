@@ -2573,7 +2573,7 @@ BEGIN
 
 	SELECT proc_change_booking_status_when_dep_aToDep(OLD.id_flight, OLD.flight_type, OLD.flight_status, NEW.flight_type, NEW.flight_status) INTO tot_passengers;
 
-	NEW.free_seats := NEW.free_seats - tot_passengers;
+	NEW.free_seats := NEW.free_seats + tot_passengers;
 
 	RETURN NEW;
 
