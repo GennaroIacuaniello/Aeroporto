@@ -252,7 +252,7 @@ public class AddNewFlightDialog extends JDialog {
         LocalTime arrivalTime = arrivalTimePicker.getTime();
         String maxSeatsStr = maxSeatsField.getText();
 
-        boolean flightType = arrivingRadio.isSelected();
+        boolean flightType = departingRadio.isSelected();
 
         if (flightId.isEmpty() || companyName.isEmpty() || flightDate == null || otherCity.isEmpty() ||
                 departureTime == null || arrivalTime == null || maxSeatsStr.isEmpty()) {
@@ -283,7 +283,7 @@ public class AddNewFlightDialog extends JDialog {
             }
 
 
-            if(controller.getFlightController().addFlight(flightId, companyName, flightDate, departureTime, arrivalTime, maxSeats, otherCity, flightType)){
+            if(controller.getFlightController().addFlight(flightId, companyName, flightDate, departureTime, arrivalTime, maxSeats, otherCity, flightType, confirmButton)){
 
                 new FloatingMessage("Volo aggiunto con successo!", confirmButton, SUCCESS_MESSAGE);
                 dispose();
