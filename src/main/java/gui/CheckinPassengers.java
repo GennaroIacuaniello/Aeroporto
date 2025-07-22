@@ -69,7 +69,7 @@ public class CheckinPassengers extends BookingPageAdmin{
         gateButton.setFocusable(false);
         gateButton.setVisible(true);
 
-        constraints.setConstraints(0, 0, 1, 1,
+        constraints.setConstraints(2, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         confirmPanel.add(gateButton, constraints.getConstraints());
     }
@@ -124,7 +124,10 @@ public class CheckinPassengers extends BookingPageAdmin{
         }
 
         gateButton.setEnabled(true);
-        gateChooser.getMainFrame().dispose();
+        if (gateChooser != null) gateChooser.getMainFrame().dispose();
+
+        statusButton.setEnabled(true);
+        if (statusChooser != null) statusChooser.getMainFrame().dispose();
     }
 
     public void setGateChooser(GateChooser gateChooser) {

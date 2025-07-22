@@ -399,4 +399,21 @@ public class FlightDAOImpl implements FlightDAO {
             LOGGER.log(Level.SEVERE, e.getSQLState());
         }
     }
+
+    public int setStatus (String status, String idFlight) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
+
+            String query = "UPDATE Flight SET flight_status = ?::FlightStatus WHERE id_flight = ? ;";
+            PreparedStatement preparedStatement =  connection.prepareStatement(query);
+
+            preparedStatement.setString(1, status);
+            preparedStatement.setString(2, idFlight);
+
+            return preparedStatement.executeUpdate();
+
+        } catch (Exception e) {
+            return -1;
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Gate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,17 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
-public class GateChooser {
+public class StatusChooser {
 
     private JFrame mainFrame;
     private JLabel label;
     private JButton confirmButton;
     private JComboBox comboBox;
 
-    public GateChooser(Controller controller, JButton callingButton) {
+    public StatusChooser(Controller controller, JButton callingButton, ArrayList<DisposableObject> disposableObjects) {
 
-        mainFrame = new JFrame("Gate Chooser");
+        mainFrame = new JFrame("Flight status chooser");
         mainFrame.setLayout(new FlowLayout(FlowLayout.CENTER));
         mainFrame.setAlwaysOnTop(true);
 
@@ -60,17 +60,19 @@ public class GateChooser {
             }
         });
 
-        label = new JLabel("Attualmente non ci sono gate liberi, selezionare un gate tra 1 e 20:");
+        label = new JLabel("Seleziona lo stato:");
         mainFrame.add(label);
 
         comboBox = new JComboBox();
 
-        comboBox.addItem("GATE");
+        comboBox.addItem("STATO");
 
-        for (int i = 1; i <= 20; i++) {
+        comboBox.addItem("PROGRAMMED");
+        comboBox.addItem("CANCELLED");
+        comboBox.addItem("DEPARTED");
+        comboBox.addItem("ABOUT_TO_DEPART");
+        comboBox.addItem("LANDED");
 
-            comboBox.addItem(i);
-        }
         comboBox.setSelectedIndex(0);
         mainFrame.add(comboBox);
 
@@ -80,7 +82,21 @@ public class GateChooser {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                setGate(comboBox.getSelectedIndex(), controller, callingButton);
+
+                if (comboBox.getSelectedIndex() == 0) {
+
+                    if (controller.getFlightController().setFlightStatus(comboBox.getSelectedItem()) == 1) {
+
+                        callingButton.setEnabled(true);
+
+                        if (comboBox.getSelectedIndex() == 2) controller.goHome(disposableObjects);
+
+                        mainFrame.dispose();
+                    } else
+                        new FloatingMessage("Non è stato possibile cambiare lo stato del volo a: " + comboBox.getSelectedItem(),
+                                confirmButton, FloatingMessage.ERROR_MESSAGE);
+                }
+
             }
         });
 
@@ -89,18 +105,6 @@ public class GateChooser {
 
         mainFrame.setSize(500, 200);
         mainFrame.setVisible(true);
-    }
-
-    private void setGate (int id, Controller controller, JButton callingButton) {
-
-        if (id > 0) {
-
-            controller.getGateController().setGate(id, controller);
-
-            callingButton.setEnabled(true);
-
-            mainFrame.dispose();
-        }
     }
 
     public JFrame getMainFrame() {

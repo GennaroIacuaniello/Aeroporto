@@ -446,4 +446,10 @@ public class FlightController {
 
     }
 
+    public int setFlightStatus (Object flightStatus) {
+
+        FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+        return flightDAO.setStatus((String) flightStatus, flight.getId());
+    }
 }
