@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -446,10 +447,61 @@ public class FlightController {
 
     }
 
+
+    public boolean addFlight(String flightId, String companyName, LocalDate flightDate, LocalTime departureTime, LocalTime arrivalTime, int maxSeats, String otherCity, boolean flightType) {
+
+
+        Timestamp departureTimestamp;
+        Timestamp arrivalTimestamp;
+
+        LocalDate departureDate = flightDate;
+        LocalDate arrivalDate;
+
+        if (arrivalTime.isBefore(departureTime)) {
+
+            arrivalDate = flightDate.plusDays(1);
+
+        } else {
+
+            arrivalDate = flightDate;
+
+        }
+
+        departureTimestamp = Timestamp.valueOf(departureDate.atTime(departureTime));
+        arrivalTimestamp = Timestamp.valueOf(arrivalDate.atTime(arrivalTime));
+
+
+        try{
+
+            FlightDAO flightDAO = new FlightDAOImpl();
+
+            flightDAO.InsertAFlight(flightId, companyName, departureTimestamp, arrivalTimestamp, maxSeats, otherCity, flightType);
+
+
+
+        } catch (SQLException e) {
+            //new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+        }
+
+
+
+        try{
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            //new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+
+        }
+
+        return false;
+    }
     public int setFlightStatus (Object flightStatus) {
 
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 
         return flightDAO.setStatus((String) flightStatus, flight.getId());
+
     }
 }

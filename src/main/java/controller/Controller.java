@@ -1210,6 +1210,7 @@ public class Controller {
             }
 
             flightController.getFlight().getBookings().addAll(bookingController.getSearchBookingResult());
+            flightController.getFlight().getTickets().addAll(ticketController.getSearchBookingResult());
 
             luggageController.getSearchBookingResultIds().addAll(luggageIds);
 

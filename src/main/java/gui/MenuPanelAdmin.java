@@ -21,6 +21,7 @@ public class MenuPanelAdmin extends JPanel {
         options.add("Cerca voli");
         options.add("Le mie prenotazioni");
         options.add("Bagagli smarriti");
+        options.add("Aggiungi nuovo volo");
 
 
         menuButton.addActionListener(e -> {
@@ -59,6 +60,11 @@ public class MenuPanelAdmin extends JPanel {
                             Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
                             LostLuggageDialog dialog = new LostLuggageDialog(parent, callingObjects, controller);
                             dialog.setVisible(true);
+                            break;
+                        case "Aggiungi nuovo volo":
+                            Frame ownerFlight = (Frame) SwingUtilities.getWindowAncestor(this);
+                            AddNewFlightDialog addDialog = new AddNewFlightDialog(ownerFlight, controller);
+                            addDialog.setVisible(true);
                             break;
                     }
                 });
