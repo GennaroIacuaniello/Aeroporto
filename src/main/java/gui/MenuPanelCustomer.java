@@ -32,7 +32,9 @@ public class MenuPanelCustomer extends JPanel {
                 menuItem.addActionListener(actionEvent -> {
                     switch (option) {
                         case "Home":
-                            controller.goHome(callingObjects);
+                            if (!callingObjects.getLast().getFrame().getTitle().equals("Home")){
+                                controller.goHome(callingObjects);
+                            }
                             break;
                         case "Cerca voli":
                             if (!callingObjects.getLast().getFrame().getTitle().equals("Cerca voli")) {
