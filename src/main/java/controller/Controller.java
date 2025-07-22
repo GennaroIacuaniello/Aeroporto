@@ -1145,10 +1145,12 @@ public class Controller {
         ArrayList<String> actualSSNs = new ArrayList<>();
 
         try{
-
-            if(flightGates.getFirst() != null){
-                flightController.getFlight().setGate(new Gate(flightGates.getFirst().byteValue()));
+            if(!flightGates.isEmpty()){
+                if(flightGates.getFirst() != null){
+                    flightController.getFlight().setGate(new Gate(flightGates.getFirst().byteValue()));
+                }
             }
+
 
             for(int i = 0; i < luggageIds.size(); i++){
 
@@ -1216,7 +1218,7 @@ public class Controller {
 
         }catch (Exception e){
             e.printStackTrace();
-            new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+            new FloatingMessage("Errore nella connessione al Database!", errorButton, FloatingMessage.ERROR_MESSAGE);
 
         }
 
