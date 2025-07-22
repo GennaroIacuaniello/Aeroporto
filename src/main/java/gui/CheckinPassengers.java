@@ -16,9 +16,15 @@ public class CheckinPassengers extends BookingPageAdmin{
     protected JButton confirmButton;
     protected GateChooser gateChooser;
 
+    protected ArrayList<PassengerPanel> truePassengerPanels;
+    protected ArrayList<PassengerPanel> falsePassengerPanels;
+
     public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
+
+        truePassengerPanels = new ArrayList<PassengerPanel>();
+        falsePassengerPanels = new ArrayList<PassengerPanel>();
 
         setCheckinCheckBoxes(controller);
 
@@ -91,7 +97,7 @@ public class CheckinPassengers extends BookingPageAdmin{
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                controller.getFlightController().setCheckins(passengerPanels);
+                controller.getFlightController().setCheckins(truePassengerPanels, falsePassengerPanels);
             }
         });
 
@@ -105,9 +111,26 @@ public class CheckinPassengers extends BookingPageAdmin{
 
     protected void setCheckinCheckBoxes (Controller controller) {
 
-        for (int i = 0; i < passengerPanels.size(); i++)
+        for (int i = 0; i < passengerPanels.size(); i++) {
             passengerPanels.get(i).addCheckinCheckBox(controller.getFlightController().getPassengerCheckedin(i));
 
+            int finalI = i;
+
+            passengerPanels.get(i).getCheckinCheckBox().addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed (ActionEvent e) {
+
+                    if (passengerPanels.get(finalI).getCheckinCheckBox().isSelected()) {
+                        truePassengerPanels.add(passengerPanels.get(finalI));
+                        falsePassengerPanels.remove(passengerPanels.get(finalI));
+                    } else {
+                        falsePassengerPanels.add(passengerPanels.get(finalI));
+                        truePassengerPanels.remove(passengerPanels.get(finalI));
+                    }
+                }
+            });
+        }
     }
 
     @Override

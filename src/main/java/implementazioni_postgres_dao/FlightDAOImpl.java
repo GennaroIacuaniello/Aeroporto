@@ -477,4 +477,39 @@ public class FlightDAOImpl implements FlightDAO {
             return -1;
         }
     }
+
+    public void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            connection.setAutoCommit(false);
+
+            String query = "UPDATE Ticket SET checked_in = ? WHERE ticket_number = ?;";
+
+            for (String ticket : trueTickets) {
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setBoolean(1, true);
+                preparedStatement.setString(2, ticket);
+
+                preparedStatement.executeUpdate();
+            }
+
+            for (String ticket : falseTickets) {
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setBoolean(1, false);
+                preparedStatement.setString(2, ticket);
+
+                preparedStatement.executeUpdate();
+            }
+
+            connection.commit();
+
+        } catch (SQLException e) {
+
+            LOGGER.log(Level.SEVERE, e.getSQLState());
+        }
+
+    }
 }

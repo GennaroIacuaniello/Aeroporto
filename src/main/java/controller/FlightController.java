@@ -381,8 +381,18 @@ public class FlightController {
     }
 
 
-    public void setCheckins (List<PassengerPanel> passengerPanels) {
-        //TODO
+    public void setCheckins (ArrayList<PassengerPanel> truePassengers, ArrayList<PassengerPanel> falsePassengers) {
+
+        FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+        ArrayList<String> trueTickets = new ArrayList<String>();
+        ArrayList<String> falseTickets = new ArrayList<String>();
+
+        for (PassengerPanel passengerPanel : truePassengers) trueTickets.add(passengerPanel.getTicketNumber());
+        for (PassengerPanel passengerPanel : falsePassengers) falseTickets.add(passengerPanel.getTicketNumber());
+
+
+        flightDAO.setCheckins(trueTickets, falseTickets);
     }
 
     public boolean getFlightType() {
