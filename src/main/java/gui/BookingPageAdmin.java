@@ -13,6 +13,9 @@ public class BookingPageAdmin extends BookingPage {
 
     protected JPanel confirmPanel;
 
+        protected JButton statusButton;
+        protected StatusChooser statusChooser;
+
         protected JButton checkinButton;
 
     public BookingPageAdmin(ArrayList<DisposableObject> callingObjects, Controller controller,
@@ -81,6 +84,8 @@ public class BookingPageAdmin extends BookingPage {
 
         confirmPanel.setOpaque(false);
 
+        setChangeStatusButton(controller, callingObjects);
+
         setCheckinButton(callingObjects, controller);
 
         constraints.setConstraints(0, 3, 1, 1,
@@ -88,6 +93,28 @@ public class BookingPageAdmin extends BookingPage {
         mainFrame.add(confirmPanel, constraints.getConstraints());
 
         confirmPanel.setVisible(true);
+    }
+
+    protected void setChangeStatusButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
+
+        statusButton = new JButton("CAMBIA STATO VOLO");
+
+        statusButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                statusChooser = new StatusChooser(controller, statusButton, callingObjects);
+                statusButton.setEnabled(false);
+            }
+        });
+
+        statusButton.setFocusable(false);
+        statusButton.setVisible(true);
+
+        constraints.setConstraints(0, 0, 1, 1,
+                GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
+        confirmPanel.add(statusButton, constraints.getConstraints());
     }
 
     private void setCheckinButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
@@ -106,7 +133,7 @@ public class BookingPageAdmin extends BookingPage {
         checkinButton.setFocusable(false);
         checkinButton.setVisible(true);
 
-        constraints.setConstraints(0, 0, 1, 1,
+        constraints.setConstraints(1, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         confirmPanel.add(checkinButton, constraints.getConstraints());
     }
@@ -139,5 +166,24 @@ public class BookingPageAdmin extends BookingPage {
 
             mainFrame.setVisible(false);
         } else new FloatingMessage("Non è possibile effettuare check-in per un volo in sato: " + controller.getFlightController().getFlightStatus(), checkinButton, FloatingMessage.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+
+        if (controllerDisposeFlag) {
+
+            controller.getFlightController().setFlight(null);
+            controller.getBookingController().setBooking(null);
+        }
+
+        for (PassengerPanel passengerPanel : passengerPanels) {
+            if (passengerPanel.getSeatChooser() != null) passengerPanel.getSeatChooser().dispose();
+
+            if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
+        }
+
+        statusButton.setEnabled(true);
+        if (statusChooser != null) statusChooser.getMainFrame().dispose();
     }
 }

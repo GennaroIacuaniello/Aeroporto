@@ -447,6 +447,7 @@ public class FlightController {
 
     }
 
+
     public boolean addFlight(String flightId, String companyName, LocalDate flightDate, LocalTime departureTime, LocalTime arrivalTime, int maxSeats, String otherCity, boolean flightType) {
 
 
@@ -495,5 +496,12 @@ public class FlightController {
         }
 
         return false;
+    }
+    public int setFlightStatus (Object flightStatus) {
+
+        FlightDAOImpl flightDAO = new FlightDAOImpl();
+
+        return flightDAO.setStatus((String) flightStatus, flight.getId());
+
     }
 }
