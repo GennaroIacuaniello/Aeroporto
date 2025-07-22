@@ -17,9 +17,6 @@ public class UserPanel extends JPanel {
 
     private Constraints constraints;
 
-    //private JPanel invisiblePanel;
-    //private JButton logoutButton;
-
     public UserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
         super();
@@ -27,9 +24,6 @@ public class UserPanel extends JPanel {
         constraints = new Constraints();
 
         this.setLayout(new GridBagLayout());
-
-        //this.setLogoutButton(callingObjects, controller);
-        //this.setUserButton(controller.getUserController());
 
         setPopupMenu (controller, callingObjects);
 
@@ -45,6 +39,17 @@ public class UserPanel extends JPanel {
         menuItem.addActionListener(actionEvent -> {
 
             controller.logOut(callingObjects);
+        });
+
+        popupMenu.add(menuItem);
+
+        menuItem = new JMenuItem("Modifica account");
+
+        menuItem.addActionListener(actionEvent -> {
+
+            new ModifyAccount(controller, callingObjects);
+
+            callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
         });
 
         popupMenu.add(menuItem);
