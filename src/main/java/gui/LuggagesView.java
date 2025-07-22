@@ -228,4 +228,12 @@ public class LuggagesView extends JFrame {
     public ArrayList<RemoveLuggageButton> getRemoveLuggageButtons () {
         return removeLuggageButtons;
     }
+
+    public void setLuggagesIds (ArrayList<String> luggagesIds) {
+
+        for (int i = 0; i < luggagesIds.size(); i++) {
+
+            luggagesPanels.get(i).setLabel("Bagaglio: " + luggagesIds.get(i));
+        }
+    }
 }

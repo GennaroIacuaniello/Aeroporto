@@ -477,4 +477,72 @@ public class FlightDAOImpl implements FlightDAO {
             return -1;
         }
     }
+
+    public void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            connection.setAutoCommit(false);
+
+            String query = "UPDATE Ticket SET checked_in = ? WHERE ticket_number = ?;";
+
+            for (String ticket : trueTickets) {
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setBoolean(1, true);
+                preparedStatement.setString(2, ticket);
+
+                preparedStatement.executeUpdate();
+            }
+
+            for (String ticket : falseTickets) {
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setBoolean(1, false);
+                preparedStatement.setString(2, ticket);
+
+                preparedStatement.executeUpdate();
+            }
+
+            connection.commit();
+
+        } catch (SQLException e) {
+
+            LOGGER.log(Level.SEVERE, e.getSQLState());
+        }
+
+    }
+
+    public ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            ArrayList<ArrayList<String>> idLuggages = new ArrayList<ArrayList<String>>();
+
+            String query = "SELECT id_luggage_after_check_in FROM Luggage WHERE id_ticket = ?;";
+
+            for (String ticket : tickets) {
+
+                ArrayList<String> tmpArrayList = new ArrayList<String>();
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, ticket);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) tmpArrayList.add(resultSet.getString("id_luggage_after_check_in"));
+
+                idLuggages.add(tmpArrayList);
+
+                resultSet.close();
+            }
+
+            return idLuggages;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
 }
