@@ -139,7 +139,7 @@ public class Controller {
 
     public Object[][] getImminentDepartingFlights(){
 
-        ArrayList<Departing> departingFlights = new ArrayList<Departing>();
+        ArrayList<Departing> departingFlights = new ArrayList<>();
         Object[][] result = new Object[10][5];
 
         departingFlights.add(new Departing("01", "Compagnia", new Date(3),
@@ -151,7 +151,7 @@ public class Controller {
 
         for (int i = 0; i < departingFlights.size(); i++) {
 
-            try {departingFlights.get(i).setGate(new Gate((byte)i));}
+            try {departingFlights.get(i).setGate(new Gate((byte)(i + 1)));}
             catch (InvalidGate e) {
                 e.printStackTrace();
             }
@@ -161,7 +161,12 @@ public class Controller {
             result[i][2] = Integer.valueOf(departingFlights.get(i).getDate().getDate()).toString() +
                     " " + departingFlights.get(i).getMonthName();
             result[i][3] = departingFlights.get(i).getDepartureTime();
-            result[i][4] = Integer.valueOf(departingFlights.get(i).getGate().getId()).toString();
+            if(departingFlights.get(i).getGate() != null){
+                result[i][4] = Integer.valueOf(departingFlights.get(i).getGate().getId()).toString();
+            }else{
+                result[i][4] = "Non assegnato";
+            }
+
         }
 
         return result;
