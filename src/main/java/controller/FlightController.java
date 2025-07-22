@@ -381,7 +381,7 @@ public class FlightController {
     }
 
 
-    public void setCheckins (ArrayList<PassengerPanel> truePassengers, ArrayList<PassengerPanel> falsePassengers) {
+    public ArrayList<ArrayList<String>> setCheckins (ArrayList<PassengerPanel> truePassengers, ArrayList<PassengerPanel> falsePassengers) {
 
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 
@@ -393,6 +393,8 @@ public class FlightController {
 
 
         flightDAO.setCheckins(trueTickets, falseTickets);
+
+        return flightDAO.getLuggagesCheckins(trueTickets);
     }
 
     public boolean getFlightType() {

@@ -97,7 +97,11 @@ public class CheckinPassengers extends BookingPageAdmin{
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                controller.getFlightController().setCheckins(truePassengerPanels, falsePassengerPanels);
+                ArrayList<ArrayList<String>> megaArrayList = controller.getFlightController().setCheckins(truePassengerPanels, falsePassengerPanels);
+
+                for (int i = 0; i < truePassengerPanels.size(); i++)
+                    truePassengerPanels.get(i).getLuggagesView().setLuggagesIds(megaArrayList.get(i));
+
 
                 new FloatingMessage("Checkins effettuati con successo", confirmButton, FloatingMessage.SUCCESS_MESSAGE);
 

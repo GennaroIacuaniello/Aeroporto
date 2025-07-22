@@ -512,4 +512,37 @@ public class FlightDAOImpl implements FlightDAO {
         }
 
     }
+
+    public ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets) {
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+
+            ArrayList<ArrayList<String>> idLuggages = new ArrayList<ArrayList<String>>();
+
+            String query = "SELECT id_luggage_after_check_in FROM Luggage WHERE id_ticket = ?;";
+
+            for (String ticket : tickets) {
+
+                ArrayList<String> tmpArrayList = new ArrayList<String>();
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, ticket);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) tmpArrayList.add(resultSet.getString("id_luggage_after_check_in"));
+
+                idLuggages.add(tmpArrayList);
+
+                resultSet.close();
+            }
+
+            return idLuggages;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
 }
