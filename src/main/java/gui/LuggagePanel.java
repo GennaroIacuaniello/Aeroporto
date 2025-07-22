@@ -13,7 +13,7 @@ public class LuggagePanel extends JPanel {
     private int index;
     private JComboBox comboBox;
 
-    private Constraints constraints;
+    private final Constraints constraints;
 
     public LuggagePanel(Controller controller, int i) {
 
