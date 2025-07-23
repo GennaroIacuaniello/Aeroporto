@@ -3,14 +3,12 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
-
-import static gui.FloatingMessage.SUCCESS_MESSAGE;
 
 public class MenuPanelCustomer extends JPanel {
 
-    public MenuPanelCustomer(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public MenuPanelCustomer(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -53,6 +51,8 @@ public class MenuPanelCustomer extends JPanel {
 
                                 callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
                             }
+                            break;
+                        default:
                             break;
                     }
                 });

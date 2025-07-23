@@ -23,8 +23,8 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         super(callingObjects, controller, dimension, point, fullScreen);
 
-        truePassengerPanels = new ArrayList<PassengerPanel>();
-        falsePassengerPanels = new ArrayList<PassengerPanel>();
+        truePassengerPanels = new ArrayList<>();
+        falsePassengerPanels = new ArrayList<>();
 
         setCheckinCheckBoxes(controller);
 
@@ -54,7 +54,7 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         constraints.setConstraints(0, 3, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
-        mainFrame.add(confirmPanel, constraints.getConstraints());
+        mainFrame.add(confirmPanel, constraints.getGridBagConstraints());
 
         confirmPanel.setVisible(true);
     }
@@ -79,7 +79,7 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         constraints.setConstraints(3, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add(gateButton, constraints.getConstraints());
+        confirmPanel.add(gateButton, constraints.getGridBagConstraints());
     }
 
     protected void setGate (Controller controller) {
@@ -105,8 +105,8 @@ public class CheckinPassengers extends BookingPageAdmin{
 
                 new FloatingMessage("Checkins effettuati con successo", confirmButton, FloatingMessage.SUCCESS_MESSAGE);
 
-                truePassengerPanels = new ArrayList<PassengerPanel>();
-                falsePassengerPanels = new ArrayList<PassengerPanel>();
+                truePassengerPanels = new ArrayList<>();
+                falsePassengerPanels = new ArrayList<>();
             }
         });
 
@@ -115,7 +115,7 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         constraints.setConstraints(1, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add(confirmButton, constraints.getConstraints());
+        confirmPanel.add(confirmButton, constraints.getGridBagConstraints());
     }
 
     protected void setCheckinCheckBoxes (Controller controller) {

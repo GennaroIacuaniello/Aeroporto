@@ -80,15 +80,15 @@ public class SearchFlightPanel extends JPanel {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.NORTH, 1.0f, 0.0f, new Insets(0, 0, 0, 0));
-        this.add(parametersPanel, constraints.getConstraints());
+        this.add(parametersPanel, constraints.getGridBagConstraints());
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(30, 0, 30, 0));
-        this.add(searchButton, constraints.getConstraints());
+        this.add(searchButton, constraints.getGridBagConstraints());
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(0, 0, 0, 0));
-        this.add(resultsScrollPane, constraints.getConstraints());
+        this.add(resultsScrollPane, constraints.getGridBagConstraints());
 
         controller.setErrorButton(searchButton);
         updateResultsPanel(callingObjects, controller, false);
@@ -107,49 +107,49 @@ public class SearchFlightPanel extends JPanel {
 
         constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(0, 0, 35, 0));
-        leftPanel.add(arrivingButton, constraints.getConstraints());
+        leftPanel.add(arrivingButton, constraints.getGridBagConstraints());
 
         fromLabel = new JLabel("Da:");
         setLabelApperance(fromLabel);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        leftPanel.add(fromLabel, constraints.getConstraints());
+        leftPanel.add(fromLabel, constraints.getGridBagConstraints());
 
         fromField = new JTextField(15);
         fromField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         constraints.setConstraints(1, 1, 3, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(0, 0, 30, 0));
-        leftPanel.add(fromField, constraints.getConstraints());
+        leftPanel.add(fromField, constraints.getGridBagConstraints());
 
         dateLabel = new JLabel("Range date:");
         setLabelApperance(dateLabel);
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        leftPanel.add(dateLabel, constraints.getConstraints());
+        leftPanel.add(dateLabel, constraints.getGridBagConstraints());
 
         dateFrom = new DatePicker();
         dateFrom.getComponentDateTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 10));
-        leftPanel.add(dateFrom, constraints.getConstraints());
+        leftPanel.add(dateFrom, constraints.getGridBagConstraints());
 
         dateSep = new JLabel("--");
         setLabelApperance(dateSep);
 
         constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        leftPanel.add(dateSep, constraints.getConstraints());
+        leftPanel.add(dateSep, constraints.getGridBagConstraints());
 
         dateTo = new DatePicker();
         dateTo.getComponentDateTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 0));
-        leftPanel.add(dateTo, constraints.getConstraints());
+        leftPanel.add(dateTo, constraints.getGridBagConstraints());
 
 
         JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -160,49 +160,49 @@ public class SearchFlightPanel extends JPanel {
 
         constraints.setConstraints(0, 0, 4, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(0, 0, 35, 0));
-        rightPanel.add(departingButton, constraints.getConstraints());
+        rightPanel.add(departingButton, constraints.getGridBagConstraints());
 
         toLabel = new JLabel("A:");
         setLabelApperance(toLabel);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        rightPanel.add(toLabel, constraints.getConstraints());
+        rightPanel.add(toLabel, constraints.getGridBagConstraints());
 
         toField = new JTextField(15);
         toField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         constraints.setConstraints(1, 1, 3, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(0, 0, 30, 0));
-        rightPanel.add(toField, constraints.getConstraints());
+        rightPanel.add(toField, constraints.getGridBagConstraints());
 
         timeLabel = new JLabel("Fascia oraria:");
         setLabelApperance(timeLabel);
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        rightPanel.add(timeLabel, constraints.getConstraints());
+        rightPanel.add(timeLabel, constraints.getGridBagConstraints());
 
         timeFrom = new TimePicker();
         timeFrom.getComponentTimeTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 10));
-        rightPanel.add(timeFrom, constraints.getConstraints());
+        rightPanel.add(timeFrom, constraints.getGridBagConstraints());
 
         timeSep = new JLabel("--");
         setLabelApperance(timeSep);
 
         constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        rightPanel.add(timeSep, constraints.getConstraints());
+        rightPanel.add(timeSep, constraints.getGridBagConstraints());
 
         timeTo = new TimePicker();
         timeTo.getComponentTimeTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.CENTER, 0.5f, 0.0f, new Insets(0, 0, 30, 0));
-        rightPanel.add(timeTo, constraints.getConstraints());
+        rightPanel.add(timeTo, constraints.getGridBagConstraints());
 
         container.add(leftPanel);
         container.add(rightPanel);

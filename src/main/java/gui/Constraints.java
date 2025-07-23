@@ -1,31 +1,30 @@
 package gui;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Constraints {
-    private final GridBagConstraints constraints;
+    private final GridBagConstraints gridBagConstraints;
 
     public Constraints() {
-        constraints = new GridBagConstraints();
-        constraints.weightx = 0.01;
-        constraints.weighty = 0.01;
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.weightx = 0.01;
+        gridBagConstraints.weighty = 0.01;
     }
 
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
                                int ipadx, int ipady, int anchor, float weightx, float weighty, Insets insets) {
 
-        constraints.gridx = gridx;
-        constraints.gridy = gridy;
-        constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.fill = fill;
-        constraints.ipadx = ipadx;
-        constraints.ipady = ipady;
-        constraints.anchor = anchor;
-        constraints.weightx = weightx;
-        constraints.weighty = weighty;
-        constraints.insets = insets;
+        gridBagConstraints.gridx = gridx;
+        gridBagConstraints.gridy = gridy;
+        gridBagConstraints.gridwidth = gridwidth;
+        gridBagConstraints.gridheight = gridheight;
+        gridBagConstraints.fill = fill;
+        gridBagConstraints.ipadx = ipadx;
+        gridBagConstraints.ipady = ipady;
+        gridBagConstraints.anchor = anchor;
+        gridBagConstraints.weightx = weightx;
+        gridBagConstraints.weighty = weighty;
+        gridBagConstraints.insets = insets;
     }
 
     public void setConstraints(int gridx, int gridy, int gridwidth, int gridheight, int fill,
@@ -50,7 +49,7 @@ public class Constraints {
                 ipadx, ipady, anchor, 0.01f, 0.01f, new Insets(0, 0, 0, 0));
     }
 
-    public GridBagConstraints getConstraints() {
-        return constraints;
+    public GridBagConstraints getGridBagConstraints() {
+        return gridBagConstraints;
     }
 }

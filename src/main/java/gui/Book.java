@@ -82,14 +82,14 @@ public class Book extends BookingModifyPage {
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add (confirmButton, constraints.getConstraints());
+        confirmPanel.add (confirmButton, constraints.getGridBagConstraints());
 
         confirmButton.setFocusable(false);
         confirmButton.setVisible (true);
 
         constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER);
-        mainFrame.add (confirmPanel, constraints.getConstraints());
+        mainFrame.add (confirmPanel, constraints.getGridBagConstraints());
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Book extends BookingModifyPage {
 
         constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START, 0.5f, 0.5f);
-        modifyPanel.add(savePendingButton, constraints.getConstraints());
+        modifyPanel.add(savePendingButton, constraints.getGridBagConstraints());
 
         savePendingButton.setVisible(true);
     }

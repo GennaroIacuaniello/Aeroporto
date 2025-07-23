@@ -4,7 +4,6 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageCustomer extends DisposableObject {
@@ -15,7 +14,7 @@ public class HomePageCustomer extends DisposableObject {
     private ImminentFlightsTable departingTable;
     Constraints constraints;
 
-    public HomePageCustomer(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public HomePageCustomer(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -23,28 +22,27 @@ public class HomePageCustomer extends DisposableObject {
 
         //makes this the operating frame
         this.setMainFrame(callingObjects);
-        //callingFrame.dispose();
+
 
         //Setting surrounding panels
         this.addTitlePanel(controller);
         this.addNavigatorBarPanel(callingObjects, controller);
         this.addMenuPanel(callingObjects, controller);
         this.addUserPanel(callingObjects, controller);
-        //this.addFooterPanel();
 
         this.addArrivingPanel(controller);
         this.addDepartingPanel(controller);
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects) {
+    private void setMainFrame(List<DisposableObject> callingObjects) {
 
         mainFrame = new JFrame("Home");
         callingObjects.addLast(this);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
-        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
         mainFrame.setBackground(Color.BLACK);
     }
 
@@ -53,25 +51,25 @@ public class HomePageCustomer extends DisposableObject {
         TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH,
                 0, 125, GridBagConstraints.PAGE_START);
-        mainFrame.add(titlePanel, constraints.getConstraints());
+        mainFrame.add(titlePanel, constraints.getGridBagConstraints());
         titlePanel.setVisible(true);
     }
 
-    private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addNavigatorBarPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START);
-        mainFrame.add(navigatorBarPanel, constraints.getConstraints());
+        mainFrame.add(navigatorBarPanel, constraints.getGridBagConstraints());
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addMenuPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         MenuPanelCustomer hamburgerPanel = new MenuPanelCustomer(callingObjects, controller);
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START);
-        mainFrame.add(hamburgerPanel, constraints.getConstraints());
+        mainFrame.add(hamburgerPanel, constraints.getGridBagConstraints());
         hamburgerPanel.setVisible(true);
     }
 
@@ -80,7 +78,7 @@ public class HomePageCustomer extends DisposableObject {
         userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_END);
-        mainFrame.add(userPanel, constraints.getConstraints());
+        mainFrame.add(userPanel, constraints.getGridBagConstraints());
         userPanel.setVisible(true);
     }
 
@@ -97,7 +95,7 @@ public class HomePageCustomer extends DisposableObject {
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
 
         arrivingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
-        mainFrame.add(arrivingPanel, constraints.getConstraints());
+        mainFrame.add(arrivingPanel, constraints.getGridBagConstraints());
 
         JLabel arrivingLabel = new JLabel("Aerei in arrivo");
         arrivingLabel.setFont(new Font(null, Font.BOLD, 18));
@@ -106,7 +104,7 @@ public class HomePageCustomer extends DisposableObject {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.NORTHWEST, 1, 0);
-        arrivingPanel.add(arrivingLabel, constraints.getConstraints());
+        arrivingPanel.add(arrivingLabel, constraints.getGridBagConstraints());
 
         arrivingPanel.setVisible(true);
 
@@ -120,7 +118,7 @@ public class HomePageCustomer extends DisposableObject {
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
-        tablePanel.add(arrivingTable.getScrollContainer(), constraints.getConstraints());
+        tablePanel.add(arrivingTable.getScrollContainer(), constraints.getGridBagConstraints());
     }
 
     private void addDepartingPanel(Controller controller) {
@@ -135,7 +133,7 @@ public class HomePageCustomer extends DisposableObject {
                 0, 0, GridBagConstraints.PAGE_START, 1, 1);
 
         departingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
-        mainFrame.add(departingPanel, constraints.getConstraints());
+        mainFrame.add(departingPanel, constraints.getGridBagConstraints());
 
         JLabel departingLabel = new JLabel("Aerei in Partenza");
         departingLabel.setFont(new Font(null, Font.BOLD, 18));
@@ -144,7 +142,7 @@ public class HomePageCustomer extends DisposableObject {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.NORTHWEST, 1, 0);
-        departingPanel.add(departingLabel, constraints.getConstraints());
+        departingPanel.add(departingLabel, constraints.getGridBagConstraints());
 
         departingPanel.setVisible(true);
 
@@ -159,7 +157,7 @@ public class HomePageCustomer extends DisposableObject {
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
-        tablePanel.add(departingTable.getScrollContainer(), constraints.getConstraints());
+        tablePanel.add(departingTable.getScrollContainer(), constraints.getGridBagConstraints());
     }
 
     @Override

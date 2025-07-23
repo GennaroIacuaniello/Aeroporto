@@ -6,7 +6,7 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.max;
 
@@ -37,7 +37,7 @@ public class RegisterScreen extends DisposableObject {
     //Bottom options
     private JButton loginButton;
 
-    public RegisterScreen(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
+    public RegisterScreen(List<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
 
         this.setMainFrame(callingObjects, startingSize);
         mainFrame.setVisible(true);
@@ -115,13 +115,13 @@ public class RegisterScreen extends DisposableObject {
         });
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension startingSize) {
+    private void setMainFrame(List<DisposableObject> callingObjects, Dimension startingSize) {
         mainFrame = new JFrame("RegisterScreen");
         mainFrame.setSize(startingSize);
         callingObjects.addLast(this);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.add(registerScreen);
-        //mainFrame.pack();
+
     }
 
     private void resizeFrame() {
@@ -149,7 +149,7 @@ public class RegisterScreen extends DisposableObject {
         registerButton.setEnabled(!usernameTextField.getText().isEmpty() && passwordField.getPassword().length != 0);
     }
 
-    private void goToLoginPage(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void goToLoginPage(List<DisposableObject> callingObjects, Controller controller) {
         mainFrame.setVisible(false);
         new LogInScreen(callingObjects, controller, mainFrame.getSize());
         doOnDispose(callingObjects, controller);

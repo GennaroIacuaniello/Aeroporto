@@ -32,7 +32,7 @@ public class LostLuggageDialog extends JDialog {
 
         controller.getLostLuggages(flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
 
-        tableModel = new LostBaggageTableModel(controller, flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
+        tableModel = new LostBaggageTableModel(flightIds, bookingDates, firstNames, lastNames, passengerSSNs, luggageIds);
 
         if (luggageIds.isEmpty())
             luggageTable = new LostLuggageDialog.JTableWithEmptyMessage(tableModel, "Nessun bagaglio smarrito.");
@@ -78,7 +78,7 @@ public class LostLuggageDialog extends JDialog {
 
         this.setLocationRelativeTo(owner);
 
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
     }
 
@@ -108,7 +108,7 @@ public class LostLuggageDialog extends JDialog {
                 return c;
             }
         };
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         for (int i = 0; i < luggageTable.getColumnCount() - 1; i++) {
             luggageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -120,7 +120,6 @@ public class LostLuggageDialog extends JDialog {
 
     private static class LostBaggageTableModel extends AbstractTableModel {
 
-        private final Controller controller;
         private final List<String> flightIds;
         private final List<Date> bookingDates;
         private final List<String> names;
@@ -130,9 +129,8 @@ public class LostLuggageDialog extends JDialog {
 
         private final String[] colNames = {"ID Volo", "Data Prenotazione", "Nome", "Cognome", "Codice Fiscale", "ID Bagaglio", "Azione"};
 
-        public LostBaggageTableModel(Controller controller, List<String> flightIds, List<Date> bookingDates, List<String> names, List<String> surnames, List<String> fiscalCodes, List<String> baggageIds) {
+        public LostBaggageTableModel(List<String> flightIds, List<Date> bookingDates, List<String> names, List<String> surnames, List<String> fiscalCodes, List<String> baggageIds) {
 
-            this.controller = controller;
             this.flightIds = flightIds;
             this.bookingDates = bookingDates;
             this.names = names;

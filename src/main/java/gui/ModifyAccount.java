@@ -8,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ModifyAccount extends JDialog {
@@ -42,7 +41,7 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(0, 0, 16, 0));
-        mainPanel.add(titleLabel, constraints.getConstraints());
+        mainPanel.add(titleLabel, constraints.getGridBagConstraints());
 
         this.addMainForm(controller);
 
@@ -80,7 +79,6 @@ public class ModifyAccount extends JDialog {
                 }
                 if (!oldPasswordField.getHashedPassword().equals(controller.getUserController().getHashedPassword())) {
                     new FloatingMessage("<html>Password errata</html>", confirmButton, FloatingMessage.ERROR_MESSAGE);
-                    return;
                 }
                 else{
                     String[] options = {"Annulla", "Elimina account"};
@@ -97,7 +95,7 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.PAGE_END, 1.0f, 0.0f, new Insets(16, 0, 0, 0));
-        mainPanel.add(deleteButton, constraints.getConstraints());
+        mainPanel.add(deleteButton, constraints.getGridBagConstraints());
     }
 
     private void setConfirmButton(Controller controller, List<DisposableObject> callingObjects){
@@ -142,7 +140,7 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(16, 0, 0, 0));
-        mainPanel.add(confirmButton, constraints.getConstraints());
+        mainPanel.add(confirmButton, constraints.getGridBagConstraints());
     }
 
     private void addMainForm(Controller controller) {
@@ -150,7 +148,7 @@ public class ModifyAccount extends JDialog {
         JPanel mainForm = new JPanel(new GridBagLayout());
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f);
-        mainPanel.add(mainForm, constraints.getConstraints());
+        mainPanel.add(mainForm, constraints.getGridBagConstraints());
 
         //username Label and field
         JLabel usernameLabel = new JLabel("Nome utente");
@@ -159,13 +157,13 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(16, 8, 0, 0));
-        mainForm.add(usernameLabel, constraints.getConstraints());
+        mainForm.add(usernameLabel, constraints.getGridBagConstraints());
 
         oldUsername = controller.getUserController().getUsername();
         usernameTextField = new JTextField(oldUsername, 20);
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(0, 8, 0, 8));
-        mainForm.add(usernameTextField, constraints.getConstraints());
+        mainForm.add(usernameTextField, constraints.getGridBagConstraints());
         setFieldAppearance(usernameTextField);
 
         //mail Label and Field
@@ -175,13 +173,13 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(1, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(16, 8, 0, 0));
-        mainForm.add(mailLabel, constraints.getConstraints());
+        mainForm.add(mailLabel, constraints.getGridBagConstraints());
 
         oldMail = controller.getUserController().getMail();
         mailTextField = new JTextField(oldMail, 20);
         constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(0, 8, 0, 8));
-        mainForm.add(mailTextField, constraints.getConstraints());
+        mainForm.add(mailTextField, constraints.getGridBagConstraints());
         setFieldAppearance(mailTextField);
 
         if (controller.isLoggedAdmin()) {
@@ -197,13 +195,13 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(0, 4, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(16, 8, 0, 0));
-        mainForm.add(newPasswordLabel, constraints.getConstraints());
+        mainForm.add(newPasswordLabel, constraints.getGridBagConstraints());
 
         newPasswordField = new PasswordHandler(20);
         newPasswordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         constraints.setConstraints(0, 5, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(0, 8, 0, 8));
-        mainForm.add(newPasswordField, constraints.getConstraints());
+        mainForm.add(newPasswordField, constraints.getGridBagConstraints());
         setFieldAppearance(newPasswordField);
 
         //oldPassword Label and Field
@@ -213,13 +211,13 @@ public class ModifyAccount extends JDialog {
 
         constraints.setConstraints(1, 4, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(16, 8, 0, 0));
-        mainForm.add(oldPasswordLabel, constraints.getConstraints());
+        mainForm.add(oldPasswordLabel, constraints.getGridBagConstraints());
 
         oldPasswordField = new PasswordHandler(20);
         oldPasswordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
         constraints.setConstraints(1, 5, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 1.0f, new Insets(0, 8, 0, 8));
-        mainForm.add(oldPasswordField, constraints.getConstraints());
+        mainForm.add(oldPasswordField, constraints.getGridBagConstraints());
         setFieldAppearance(oldPasswordField);
 
     }

@@ -4,23 +4,24 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class PassengerPanelAdmin extends PassengerPanel {
 
     private JCheckBox checkinCheckBox;
 
-    public PassengerPanelAdmin(Controller controller, ArrayList<PassengerPanel> passengerPanelsAdmin, ArrayList<Integer> bookedSeats) {
+    public PassengerPanelAdmin(Controller controller, List<PassengerPanel> passengerPanelsAdmin, List<Integer> bookedSeats) {
 
         super(controller, passengerPanelsAdmin, bookedSeats);
     }
 
+    @Override
     public void addCheckinCheckBox (boolean flag) {
         checkinCheckBox = new JCheckBox("Checkin", flag);
 
         constraints.setConstraints(0, 3, 3, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        this.add(checkinCheckBox, constraints.getConstraints());
+        this.add(checkinCheckBox, constraints.getGridBagConstraints());
         checkinCheckBox.setVisible(true);
     }
 

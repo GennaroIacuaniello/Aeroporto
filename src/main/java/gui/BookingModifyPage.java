@@ -34,7 +34,7 @@ public class BookingModifyPage extends BookingPageCustomer {
     }
 
     @Override
-    protected void addModifyPanel (List<DisposableObject> callingObjects, Controller controller) {
+    protected void addModifyPanel (Controller controller) {
 
         modifyPanel = new JPanel();
 
@@ -48,7 +48,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         constraints.setConstraints (1, 0, 1, 1,
                 GridBagConstraints.HORIZONTAL, 0, 0, GridBagConstraints.LINE_END);
-        modifyPanel.add(flowPanel, constraints.getConstraints());
+        modifyPanel.add(flowPanel, constraints.getGridBagConstraints());
 
         flowPanel.setVisible(true);
 
@@ -57,7 +57,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         constraints.setConstraints (0, 3, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
-        mainPanel.add (modifyPanel, constraints.getConstraints());
+        mainPanel.add (modifyPanel, constraints.getGridBagConstraints());
         modifyPanel.setVisible (true);
     }
 
@@ -110,20 +110,19 @@ public class BookingModifyPage extends BookingPageCustomer {
         nextPageButton.setEnabled(currPage < ((passengerPanels.size() - 1) / 3));
     }
 
-    @Override
     protected void insertPassengerPanel (Controller controller, PassengerPanel passengerPanel) {
 
         if (removePassengerButtons == null) removePassengerButtons = new ArrayList<>();
 
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-        passengerPage.add(passengerPanel, constraints.getConstraints());
+        passengerPage.add(passengerPanel, constraints.getGridBagConstraints());
 
         RemovePassengerButton removePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, removePassengerButtons.size());
 
         constraints.setConstraints(1, (passengerPanels.size() % 3), 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-        passengerPage.add(removePassengerButton, constraints.getConstraints());
+        passengerPage.add(removePassengerButton, constraints.getGridBagConstraints());
 
         if (!passengerPanels.isEmpty()) setPassengersVisibility();
         else {
@@ -143,13 +142,6 @@ public class BookingModifyPage extends BookingPageCustomer {
     protected void setPassengersVisibility () {
 
         goToPage(passengerPanels.size() / 3);
-    }
-
-    @Override
-    protected void goNextPage () {
-
-        goToPage(currPage + 1);
-
     }
 
     @Override
@@ -186,14 +178,14 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add (confirmButton, constraints.getConstraints());
+        confirmPanel.add (confirmButton, constraints.getGridBagConstraints());
 
         confirmButton.setFocusable(false);
         confirmButton.setVisible (true);
 
         constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER);
-        mainFrame.add (confirmPanel, constraints.getConstraints());
+        mainFrame.add (confirmPanel, constraints.getGridBagConstraints());
     }
 
     protected void addSavePendingButton (Controller controller, List<DisposableObject> callingObjects) {
@@ -214,7 +206,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         constraints.setConstraints (0, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_START);
-        modifyPanel.add (savePendingButton, constraints.getConstraints());
+        modifyPanel.add (savePendingButton, constraints.getGridBagConstraints());
 
         savePendingButton.setFocusable(false);
         savePendingButton.setVisible (true);

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class BookingPageAdmin extends BookingPage {
 
@@ -71,7 +72,7 @@ public class BookingPageAdmin extends BookingPage {
                     passengerPanel.setLuggages(controller.getFlightController().getPassengerLuggagesTypesFromBooking(j, i),
                             controller.getFlightController().getPassengerLuggagesTicketsFromBooking(j, i), controller.getFlightController().getPassengerLuggagesStatusFromBooking(j, i), controller);
 
-                    insertPassengerPanel(controller, passengerPanel);
+                    insertPassengerPanel(passengerPanel);
 
                     passengerPanel.setPanelEnabled(false);
                 }
@@ -94,7 +95,7 @@ public class BookingPageAdmin extends BookingPage {
 
         constraints.setConstraints(0, 3, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
-        mainFrame.add(confirmPanel, constraints.getConstraints());
+        mainFrame.add(confirmPanel, constraints.getGridBagConstraints());
 
         confirmPanel.setVisible(true);
     }
@@ -117,7 +118,7 @@ public class BookingPageAdmin extends BookingPage {
 
         constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add(statusButton, constraints.getConstraints());
+        confirmPanel.add(statusButton, constraints.getGridBagConstraints());
     }
 
     private void setCheckinButton (List<DisposableObject> callingObjects, Controller controller) {
@@ -138,7 +139,7 @@ public class BookingPageAdmin extends BookingPage {
 
         constraints.setConstraints(1, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add(checkinButton, constraints.getConstraints());
+        confirmPanel.add(checkinButton, constraints.getGridBagConstraints());
     }
 
     protected void checkCheckinButton (List<DisposableObject> callingObjects, Controller controller) {
@@ -196,7 +197,7 @@ public class BookingPageAdmin extends BookingPage {
 
         constraints.setConstraints(2, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        confirmPanel.add(delayPanel, constraints.getConstraints());
+        confirmPanel.add(delayPanel, constraints.getGridBagConstraints());
     }
 
     protected void addDelay(Controller controller) {
@@ -222,7 +223,7 @@ public class BookingPageAdmin extends BookingPage {
             else new FloatingMessage("Il ritardo non è stato settato correttamente", setDelayButton, FloatingMessage.ERROR_MESSAGE);
 
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            Controller.getLogger().log(Level.SEVERE, e.getMessage());
             new FloatingMessage("Ritardo non valido", setDelayButton, FloatingMessage.ERROR_MESSAGE);
         }
     }

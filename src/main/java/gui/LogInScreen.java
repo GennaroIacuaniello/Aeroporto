@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import static java.lang.Math.max;
@@ -22,7 +23,7 @@ public class LogInScreen extends DisposableObject {
 
     //Main scene
     private static JFrame mainFrame;
-    private JPanel loginScreen;
+    private JPanel loginScreenPanel;
     private JScrollPane loginMenuScrollContainer;
     private JPanel loginMenu;
     private JLabel pageTitle;
@@ -37,7 +38,7 @@ public class LogInScreen extends DisposableObject {
     //Bottom options
     private JButton registerButton;
 
-    public LogInScreen(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
+    public LogInScreen(List<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
 
         if (!callingObjects.isEmpty()) {
             int size = callingObjects.size();
@@ -166,23 +167,23 @@ public class LogInScreen extends DisposableObject {
         }
 
         mainFrame = new JFrame("LogIn");
-        mainFrame.setContentPane(new LogInScreen(new ArrayList<DisposableObject>(), controller, mainFrame.getPreferredSize()).loginScreen);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setContentPane(new LogInScreen(new ArrayList<>(), controller, mainFrame.getPreferredSize()).loginScreenPanel);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
+    private void setMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
         mainFrame = new JFrame("LogIn");
         mainFrame.setSize(startingSize);
-        mainFrame.setContentPane(new LogInScreen(callingObjects, controller, startingSize).loginScreen);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //mainFrame.pack();
+        mainFrame.setContentPane(new LogInScreen(callingObjects, controller, startingSize).loginScreenPanel);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         mainFrame.setVisible(true);
     }
 
-    private void login(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void login(List<DisposableObject> callingObjects, Controller controller) {
         usernameTextField.setText("");
         passwordField.setText("");
         logInButton.setEnabled(false);
@@ -200,7 +201,7 @@ public class LogInScreen extends DisposableObject {
          /Dimension - 2paddingDimension = desiredDimension -> paddingDimension = Dimension/2 - desiredDimension/2
          /there are some adjustments because of the border and the decorator
          /the actual dimension of the loginMenufluctuate a little (max 2 in either direction)
-         /(not only because of parity, but i have no idea what is it other than that)
+         /(not only because of parity, but I have no idea what is it other than that)
          */
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int desiredHeight = (int)screenSize.getHeight() * 2 / 3;

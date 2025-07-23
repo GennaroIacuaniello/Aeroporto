@@ -52,12 +52,12 @@ public class RemovePassengerButton extends JButton {
                     //shift passengerPanel
                     book.getPassengerPage().remove(passengerPanels.get(i));
                     constraints.setConstraints(0, i % 3, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-                    book.getPassengerPage().add(passengerPanels.get(i), constraints.getConstraints());
+                    book.getPassengerPage().add(passengerPanels.get(i), constraints.getGridBagConstraints());
 
                     //shift removePassengerButton
                     book.getPassengerPage().remove(removePassengerButtons.get(i));
                     constraints.setConstraints(1, i % 3, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-                    book.getPassengerPage().add(removePassengerButtons.get(i), constraints.getConstraints());
+                    book.getPassengerPage().add(removePassengerButtons.get(i), constraints.getGridBagConstraints());
 
                     //shift indici
                     removePassengerButtons.get(i).index--;

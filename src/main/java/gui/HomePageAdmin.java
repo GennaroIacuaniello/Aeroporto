@@ -4,7 +4,6 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageAdmin extends DisposableObject {
@@ -18,7 +17,7 @@ public class HomePageAdmin extends DisposableObject {
 
         super();
         constraints = new Constraints();
-        this.setMainFrame((ArrayList<DisposableObject>)callingObjects);
+        this.setMainFrame(callingObjects);
 
         this.addTitlePanel(controller);
         this.addNavigatorBarPanel(callingObjects, controller);
@@ -33,9 +32,9 @@ public class HomePageAdmin extends DisposableObject {
 
         mainFrame = new JFrame("Home");
         mainFrame.setSize(1080, 720);
-        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
         callingObjects.addLast(this);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
 
         mainFrame.setMinimumSize(new Dimension(1420, 1080));
@@ -53,7 +52,7 @@ public class HomePageAdmin extends DisposableObject {
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(5, 10, 0, 10));
 
-        mainFrame.add(titlePanel, constraints.getConstraints());
+        mainFrame.add(titlePanel, constraints.getGridBagConstraints());
         titlePanel.setVisible(true);
     }
 
@@ -66,7 +65,7 @@ public class HomePageAdmin extends DisposableObject {
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(0, 10, 10, 10));
 
-        mainFrame.add(navigatorBarPanel, constraints.getConstraints());
+        mainFrame.add(navigatorBarPanel, constraints.getGridBagConstraints());
         navigatorBarPanel.setVisible(true);
     }
 
@@ -79,7 +78,7 @@ public class HomePageAdmin extends DisposableObject {
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START, 0.0f, 0.0f, new Insets(0, 10, 0, 0));
 
-        mainFrame.add(menu, constraints.getConstraints());
+        mainFrame.add(menu, constraints.getGridBagConstraints());
         menu.setVisible(true);
     }
 
@@ -92,7 +91,7 @@ public class HomePageAdmin extends DisposableObject {
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END, 0.0f, 0.0f, new Insets(0, 0, 0, 10));
 
-        mainFrame.add(userPanel, constraints.getConstraints());
+        mainFrame.add(userPanel, constraints.getGridBagConstraints());
         userPanel.setVisible(true);
     }
 
@@ -103,19 +102,17 @@ public class HomePageAdmin extends DisposableObject {
         constraints.setConstraints(0, 3, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 40, 40, 40));
 
-        mainFrame.add(searchFlightPanel, constraints.getConstraints());
+        mainFrame.add(searchFlightPanel, constraints.getGridBagConstraints());
         searchFlightPanel.setVisible(true);
     }
 
     @Override
     public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
-        //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().dispose();
         controller.clearSearchFlightsResultCache();
     }
 
     @Override
     public void doOnRestore (List<DisposableObject> callingObjects, Controller controller) {
-        //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
         if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
             userPanel.setVisible(false);
             mainFrame.remove(userPanel);

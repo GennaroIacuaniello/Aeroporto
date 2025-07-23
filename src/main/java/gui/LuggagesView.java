@@ -11,7 +11,7 @@ import controller.Controller;
 
 public class LuggagesView extends JFrame {
 
-    private JFrame thisFrame;
+    private final JFrame thisFrame;
     private JScrollPane scrollPane;
     private JPanel luggagesPanel;
     private ArrayList<LuggagePanel> luggagesPanels;
@@ -20,7 +20,7 @@ public class LuggagesView extends JFrame {
     private JButton addLuggageButton;
     private JButton confirmButton;
 
-    private Constraints constraints;
+    private final Constraints constraints;
 
     public LuggagesView(Controller controller) {
 
@@ -34,18 +34,18 @@ public class LuggagesView extends JFrame {
         constraints = new Constraints();
         this.setSize(300, 400);
 
-        setLuggagesPanel(controller);
+        setLuggagesPanel();
         setButtons(controller);
-        setScrollPane(controller);
+        setScrollPane();
     }
 
-    private void setLuggagesPanel(Controller controller) {
+    private void setLuggagesPanel() {
         luggagesPanel = new JPanel();
         luggagesPanel.setLayout(new GridBagLayout());
 
-        luggagesPanels = new ArrayList<LuggagePanel>();
-        removeLuggageButtons = new ArrayList<RemoveLuggageButton>();
-        lostLuggageButtons = new ArrayList<JButton>();
+        luggagesPanels = new ArrayList<>();
+        removeLuggageButtons = new ArrayList<>();
+        lostLuggageButtons = new ArrayList<>();
     }
 
     private void setButtons(Controller controller) {
@@ -58,23 +58,23 @@ public class LuggagesView extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 if (!luggagesPanels.isEmpty()) {
-                    luggagesPanels.add(new LuggagePanel(controller, luggagesPanels.getLast().getIndex() + 1));
+                    luggagesPanels.add(new LuggagePanel(luggagesPanels.getLast().getIndex() + 1));
                 } else {
-                    luggagesPanels.add(new LuggagePanel(controller, 0));
+                    luggagesPanels.add(new LuggagePanel(0));
                 }
 
 
                 constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
                         GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-                luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
+                luggagesPanel.add(luggagesPanels.getLast(), constraints.getGridBagConstraints());
                 luggagesPanels.getLast().setVisible(true);
 
-                removeLuggageButtons.add(new RemoveLuggageButton(controller, luggagesPanels, removeLuggageButtons, luggagesPanel,
+                removeLuggageButtons.add(new RemoveLuggageButton(luggagesPanels, removeLuggageButtons, luggagesPanel,
                         scrollPane, removeLuggageButtons.size()));
 
                 constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
                         GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-                luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getGridBagConstraints());
                 luggagesPanels.getLast().setVisible(true);
 
                 scrollPane.setViewportView(luggagesPanel);
@@ -91,11 +91,11 @@ public class LuggagesView extends JFrame {
 
         constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-        this.add(addLuggageButton, constraints.getConstraints());
+        this.add(addLuggageButton, constraints.getGridBagConstraints());
 
         constraints.setConstraints(1, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-        this.add(confirmButton, constraints.getConstraints());
+        this.add(confirmButton, constraints.getGridBagConstraints());
 
         addLuggageButton.setVisible(true);
         addLuggageButton.setFocusable(false);
@@ -103,18 +103,18 @@ public class LuggagesView extends JFrame {
         confirmButton.setFocusable(false);
     }
 
-    private void setScrollPane(Controller controller) {
+    private void setScrollPane() {
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(luggagesPanel);
         scrollPane.setWheelScrollingEnabled(true);
 
         constraints.setConstraints(0, 1, 2, 1,
                 GridBagConstraints.BOTH, 0, 0, GridBagConstraints.CENTER, 0.5f, 0.5f);
-        this.add(scrollPane, constraints.getConstraints());
+        this.add(scrollPane, constraints.getGridBagConstraints());
         scrollPane.setVisible(true);
     }
 
-    public ArrayList<LuggagePanel> getLuggagesPanels() {
+    public List<LuggagePanel> getLuggagesPanels() {
         return luggagesPanels;
     }
 
@@ -125,27 +125,27 @@ public class LuggagesView extends JFrame {
         for (Integer luggageType : luggagesTypes) {
 
             if (!luggagesPanels.isEmpty()) {
-                luggagesPanels.add(new LuggagePanel(controller, luggagesPanels.getLast().getIndex() + 1));
+                luggagesPanels.add(new LuggagePanel(luggagesPanels.getLast().getIndex() + 1));
                 if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
             } else {
-                luggagesPanels.add(new LuggagePanel(controller, 0));
+                luggagesPanels.add(new LuggagePanel(0));
                 if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
             }
 
 
             constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,
                     GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-            luggagesPanel.add(luggagesPanels.getLast(), constraints.getConstraints());
+            luggagesPanel.add(luggagesPanels.getLast(), constraints.getGridBagConstraints());
             luggagesPanels.getLast().setVisible(true);
 
-            removeLuggageButtons.add(new RemoveLuggageButton(controller, luggagesPanels, removeLuggageButtons, luggagesPanel,
+            removeLuggageButtons.add(new RemoveLuggageButton(luggagesPanels, removeLuggageButtons, luggagesPanel,
                     scrollPane, removeLuggageButtons.size()));
 
             if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED") && controller.getCustomerController().getLoggedCustomer() != null) {
 
                 constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
                         GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-                luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanel.add(removeLuggageButtons.getLast(), constraints.getGridBagConstraints());
                 luggagesPanels.getLast().setVisible(true);
             } else if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("LANDED")) {
 
@@ -189,7 +189,7 @@ public class LuggagesView extends JFrame {
 
                 constraints.setConstraints(1, luggagesPanels.size() - 1, 1, 1,
                         GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-                luggagesPanel.add(lostLuggageButtons.getLast(), constraints.getConstraints());
+                luggagesPanel.add(lostLuggageButtons.getLast(), constraints.getGridBagConstraints());
                 luggagesPanels.getLast().setVisible(true);
             }
 

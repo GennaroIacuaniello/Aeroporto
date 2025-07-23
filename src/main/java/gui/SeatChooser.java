@@ -61,12 +61,12 @@ public class SeatChooser extends JFrame {
         constraints.setConstraints(3, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
                 controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
                 GridBagConstraints.LAST_LINE_END);
-        this.add(confirmButton, constraints.getConstraints());
+        this.add(confirmButton, constraints.getGridBagConstraints());
 
         constraints.setConstraints(4, controller.getFlightController().getMaxSeats() / 6 + 1, 1,
                 controller.getFlightController().getMaxSeats() / 6 + 2, GridBagConstraints.NONE, 0, 0,
                 GridBagConstraints.LAST_LINE_START);
-        this.add(deleteButton, constraints.getConstraints());
+        this.add(deleteButton, constraints.getGridBagConstraints());
 
         for (int i = 0; i < controller.getFlightController().getMaxSeats(); i++) {
             int finalI = i;
@@ -92,7 +92,7 @@ public class SeatChooser extends JFrame {
             if (i % 6 > 2) offset = 2;
             else offset = 0;
             constraints.setConstraints(i % 6 + offset, i / 6, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-            this.add(seatButtons.get(i), constraints.getConstraints());
+            this.add(seatButtons.get(i), constraints.getGridBagConstraints());
         }
 /*
         for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {

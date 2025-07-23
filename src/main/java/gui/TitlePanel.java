@@ -32,7 +32,7 @@ public class TitlePanel extends JPanel {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.BOTH, 0, 50, GridBagConstraints.CENTER);
 
-        this.add(titleLabel, constraints.getConstraints());
+        this.add(titleLabel, constraints.getGridBagConstraints());
         titleLabel.setVisible(true);
     }
 }

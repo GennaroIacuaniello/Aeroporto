@@ -12,7 +12,6 @@ import java.awt.event.FocusEvent;
 import java.sql.Date;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.ArrayList;
 
 public class PassengerPanel extends JPanel {
 
@@ -48,7 +47,7 @@ public class PassengerPanel extends JPanel {
     private static final Color displayedTextColor = new Color(128, 128, 128);
     private static final Color userTextColor = new Color(32, 32, 32);
 
-    public PassengerPanel (Controller controller, ArrayList<PassengerPanel> passengerPanels, List<Integer> bookedSeats)
+    public PassengerPanel (Controller controller, List<PassengerPanel> passengerPanels, List<Integer> bookedSeats)
     {
         super ();
 
@@ -105,43 +104,43 @@ public class PassengerPanel extends JPanel {
         //label
         constraints.setConstraints(0, 0, 3, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (passengerLabel, constraints.getConstraints());
+        this.add (passengerLabel, constraints.getGridBagConstraints());
         passengerLabel.setVisible (true);
 
         //name
         constraints.setConstraints (0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (passengerNameField, constraints.getConstraints());
+        this.add (passengerNameField, constraints.getGridBagConstraints());
         passengerNameField.setVisible (true);
 
         //surname
         constraints.setConstraints (1, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (passengerSurnameField, constraints.getConstraints());
+        this.add (passengerSurnameField, constraints.getGridBagConstraints());
         passengerSurnameField.setVisible (true);
 
         //luggages
         constraints.setConstraints (2, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (luggagesViewButton, constraints.getConstraints());
+        this.add (luggagesViewButton, constraints.getGridBagConstraints());
         luggagesViewButton.setVisible (true);
 
         //CF
         constraints.setConstraints (0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (passengerCField, constraints.getConstraints());
+        this.add (passengerCField, constraints.getGridBagConstraints());
         passengerCField.setVisible (true);
 
         //date
         constraints.setConstraints (1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (passengerDatePicker, constraints.getConstraints());
+        this.add (passengerDatePicker, constraints.getGridBagConstraints());
         passengerDatePicker.setVisible (true);
 
         //seat
         constraints.setConstraints (2, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.CENTER, new Insets (5, 5, 5, 5));
-        this.add (seatButton, constraints.getConstraints());
+        this.add (seatButton, constraints.getGridBagConstraints());
         seatButton.setVisible (true);
 
 
@@ -344,7 +343,7 @@ public class PassengerPanel extends JPanel {
         for (int i = 0; i < luggagesView.getLuggagesPanels().size(); i++) {
 
             luggagesView.getLuggagesPanels().get(i).getComboBox().setEnabled(flag);
-            //luggagesView.getRemoveLuggageButtons().get(i).setVisible(flag);
+
         }
     }
 
@@ -353,7 +352,7 @@ public class PassengerPanel extends JPanel {
 
         constraints.setConstraints(0, 3, 3, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        this.add(checkinCheckBox, constraints.getConstraints());
+        this.add(checkinCheckBox, constraints.getGridBagConstraints());
         checkinCheckBox.setVisible(true);
     }
 

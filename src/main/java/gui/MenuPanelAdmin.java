@@ -47,6 +47,8 @@ public class MenuPanelAdmin extends JPanel {
                             AddNewFlightDialog addDialog = new AddNewFlightDialog(ownerFlight, controller);
                             addDialog.setVisible(true);
                             break;
+                        default:
+                            break;
                     }
                 });
                 popupMenu.add(menuItem);

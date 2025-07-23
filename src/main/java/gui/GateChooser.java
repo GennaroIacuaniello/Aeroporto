@@ -1,7 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Gate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +11,8 @@ import java.awt.event.WindowListener;
 
 public class GateChooser {
 
-    private JFrame mainFrame;
-    private JLabel label;
-    private JButton confirmButton;
-    private JComboBox comboBox;
+    private final JFrame mainFrame;
+    private final JComboBox comboBox;
 
     public GateChooser(Controller controller, JButton callingButton) {
 
@@ -60,7 +57,7 @@ public class GateChooser {
             }
         });
 
-        label = new JLabel("Attualmente non ci sono gate liberi, selezionare un gate tra 1 e 20:");
+        JLabel label = new JLabel("Attualmente non ci sono gate liberi, selezionare un gate tra 1 e 20:");
         mainFrame.add(label);
 
         comboBox = new JComboBox();
@@ -74,7 +71,7 @@ public class GateChooser {
         comboBox.setSelectedIndex(0);
         mainFrame.add(comboBox);
 
-        confirmButton = new JButton("CONFERMA");
+        JButton confirmButton = new JButton("CONFERMA");
         confirmButton.addActionListener(new ActionListener() {
 
             @Override

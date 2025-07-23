@@ -10,10 +10,7 @@ import java.util.List;
 public class MyBookingsCustomerMainFrame extends DisposableObject {
 
     private JFrame mainFrame;
-    private TitlePanel titlePanel;
-    private NavigatorBarPanel navigatorBarPanel;
-    private MenuPanelCustomer menu;
-    private UserPanel userPanel;
+
     private SearchBookingPanel searchBookingPanel;
     Constraints constraints;
 
@@ -39,7 +36,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         mainFrame.setLocation(point);
         mainFrame.setExtendedState(fullScreen);
         callingObjects.addLast(this);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
 
         mainFrame.setMinimumSize(new Dimension(1420, 1080));
@@ -49,6 +46,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     }
 
     private void addTitlePanel(Controller controller) {
+        TitlePanel titlePanel;
 
         titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
 
@@ -57,46 +55,46 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(5, 10, 0, 10));
 
-        mainFrame.add(titlePanel, constraints.getConstraints());
+        mainFrame.add(titlePanel, constraints.getGridBagConstraints());
         titlePanel.setVisible(true);
     }
 
     private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
+        NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
 
         navigatorBarPanel.setOpaque(false);
 
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(0, 10, 10, 10));
 
-        mainFrame.add(navigatorBarPanel, constraints.getConstraints());
+        mainFrame.add(navigatorBarPanel, constraints.getGridBagConstraints());
         navigatorBarPanel.setVisible(true);
     }
 
     private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        menu = new MenuPanelCustomer(callingObjects, controller);
+        MenuPanelCustomer menu = new MenuPanelCustomer(callingObjects, controller);
 
         menu.setOpaque(false);
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_START, 0.0f, 0.0f, new Insets(0, 10, 0, 0));
 
-        mainFrame.add(menu, constraints.getConstraints());
+        mainFrame.add(menu, constraints.getGridBagConstraints());
         menu.setVisible(true);
     }
 
     private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        userPanel = new UserPanel(callingObjects, controller);
+        UserPanel userPanel = new UserPanel(callingObjects, controller);
 
         userPanel.setOpaque(false);
 
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.FIRST_LINE_END, 0.0f, 0.0f, new Insets(0, 0, 0, 10));
 
-        mainFrame.add(userPanel, constraints.getConstraints());
+        mainFrame.add(userPanel, constraints.getGridBagConstraints());
         userPanel.setVisible(true);
     }
 
@@ -107,7 +105,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         constraints.setConstraints(0, 3, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 40, 40, 40));
 
-        mainFrame.add(searchBookingPanel, constraints.getConstraints());
+        mainFrame.add(searchBookingPanel, constraints.getGridBagConstraints());
         searchBookingPanel.setVisible(true);
     }
 

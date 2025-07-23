@@ -1,21 +1,17 @@
 package gui;
 
-import controller.Controller;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LuggagePanel extends JPanel {
 
     private JLabel label;
-    private int index;
-    private JComboBox comboBox;
+    private final int index;
+    private JComboBox<String> comboBox;
 
     private final Constraints constraints;
 
-    public LuggagePanel(Controller controller, int i) {
+    public LuggagePanel(int i) {
 
         this.setLayout(new GridBagLayout());
         constraints = new Constraints();
@@ -35,14 +31,14 @@ public class LuggagePanel extends JPanel {
 
         constraints.setConstraints(0, 0, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        this.add(label, constraints.getConstraints());
+        this.add(label, constraints.getGridBagConstraints());
 
         label.setVisible(true);
     }
 
     private void setComboBox() {
 
-        comboBox = new JComboBox<String>();
+        comboBox = new JComboBox<>();
 
         comboBox.addItem("TYPE");
         comboBox.addItem("CARRY_ON");
@@ -50,7 +46,7 @@ public class LuggagePanel extends JPanel {
 
         constraints.setConstraints(0, 1, 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
-        this.add(comboBox, constraints.getConstraints());
+        this.add(comboBox, constraints.getGridBagConstraints());
         comboBox.setVisible(true);
     }
 
@@ -66,7 +62,7 @@ public class LuggagePanel extends JPanel {
         comboBox.setSelectedIndex(type + 1);
     }
 
-    public JComboBox getComboBox() {
+    public JComboBox<String> getComboBox() {
         return comboBox;
     }
 

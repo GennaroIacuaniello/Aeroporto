@@ -48,13 +48,13 @@ public class AddNewFlightDialog extends JDialog {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(0, 0, 20, 0));
-        mainPanel.add(titleLabel, constraints.getConstraints());
+        mainPanel.add(titleLabel, constraints.getGridBagConstraints());
 
 
         JPanel formPanel = createFormPanel();
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 1.0f, new Insets(20, 0, 20, 0));
-        mainPanel.add(formPanel, constraints.getConstraints());
+        mainPanel.add(formPanel, constraints.getGridBagConstraints());
 
 
         confirmButton = new JButton("Conferma");
@@ -76,7 +76,7 @@ public class AddNewFlightDialog extends JDialog {
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.PAGE_END, 1.0f, 0.0f, new Insets(10, 0, 0, 0));
-        mainPanel.add(confirmButton, constraints.getConstraints());
+        mainPanel.add(confirmButton, constraints.getGridBagConstraints());
 
         this.setContentPane(mainPanel);
         this.pack();
@@ -95,87 +95,87 @@ public class AddNewFlightDialog extends JDialog {
 
         constraints.setConstraints(0, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(createLabel("ID volo:"), constraints.getConstraints());
+        panel.add(createLabel("ID volo:"), constraints.getGridBagConstraints());
 
         flightIdField = new JTextField(15);
         setFieldAppearance(flightIdField);
 
         constraints.setConstraints(1, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(flightIdField, constraints.getConstraints());
+        panel.add(flightIdField, constraints.getGridBagConstraints());
 
 
         constraints.setConstraints(2, 0, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(createLabel("Compagnia aerea:"), constraints.getConstraints());
+        panel.add(createLabel("Compagnia aerea:"), constraints.getGridBagConstraints());
 
         companyField = new JTextField(15);
         setFieldAppearance(companyField);
 
         constraints.setConstraints(3, 0, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(companyField, constraints.getConstraints());
+        panel.add(companyField, constraints.getGridBagConstraints());
 
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(createLabel("Data del volo:"), constraints.getConstraints());
+        panel.add(createLabel("Data del volo:"), constraints.getGridBagConstraints());
 
         flightDatePicker = new DatePicker();
         flightDatePicker.getComponentDateTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(flightDatePicker, constraints.getConstraints());
+        panel.add(flightDatePicker, constraints.getGridBagConstraints());
 
 
         cityLabel = createLabel("Città di partenza:");
         constraints.setConstraints(2, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(cityLabel, constraints.getConstraints());
+        panel.add(cityLabel, constraints.getGridBagConstraints());
 
         cityField = new JTextField(15);
         setFieldAppearance(cityField);
 
         constraints.setConstraints(3, 1, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(cityField, constraints.getConstraints());
+        panel.add(cityField, constraints.getGridBagConstraints());
 
 
         constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(createLabel("Orario di partenza:"), constraints.getConstraints());
+        panel.add(createLabel("Orario di partenza:"), constraints.getGridBagConstraints());
 
         departureTimePicker = new TimePicker();
         departureTimePicker.getComponentTimeTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(departureTimePicker, constraints.getConstraints());
+        panel.add(departureTimePicker, constraints.getGridBagConstraints());
 
 
         constraints.setConstraints(2, 2, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(createLabel("Orario di arrivo:"), constraints.getConstraints());
+        panel.add(createLabel("Orario di arrivo:"), constraints.getGridBagConstraints());
 
         arrivalTimePicker = new TimePicker();
         arrivalTimePicker.getComponentTimeTextField().setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         constraints.setConstraints(3, 2, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(arrivalTimePicker, constraints.getConstraints());
+        panel.add(arrivalTimePicker, constraints.getGridBagConstraints());
 
 
         constraints.setConstraints(0, 3, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, labelInsets);
-        panel.add(createLabel("Posti massimi:"), constraints.getConstraints());
+        panel.add(createLabel("Posti massimi:"), constraints.getGridBagConstraints());
 
         maxSeatsField = new JTextField(15);
         setFieldAppearance(maxSeatsField);
 
         constraints.setConstraints(1, 3, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.LINE_START, 1.0f, 0.0f, fieldInsets);
-        panel.add(maxSeatsField, constraints.getConstraints());
+        panel.add(maxSeatsField, constraints.getGridBagConstraints());
 
 
         arrivingRadio = new JRadioButton("Volo per Napoli");
@@ -201,7 +201,7 @@ public class AddNewFlightDialog extends JDialog {
 
         constraints.setConstraints(2, 3, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.CENTER, 1.0f, 0.0f, new Insets(5, 5, 5, 5));
-        panel.add(radioPanel, constraints.getConstraints());
+        panel.add(radioPanel, constraints.getGridBagConstraints());
 
         arrivingRadio.addActionListener(new ActionListener() {
             @Override

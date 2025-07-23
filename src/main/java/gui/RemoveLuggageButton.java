@@ -1,19 +1,17 @@
 package gui;
 
-import controller.Controller;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 public class RemoveLuggageButton extends JButton {
     private int index;
-    private Constraints constraints;
+    private final Constraints constraints;
 
-    public RemoveLuggageButton(Controller controller, ArrayList<LuggagePanel> luggagePanels,
-                               ArrayList<RemoveLuggageButton> removeLuggageButtons, JPanel luggagesPanel, JScrollPane scrollPane, int i) {
+    public RemoveLuggageButton(List<LuggagePanel> luggagePanels,
+                               List<RemoveLuggageButton> removeLuggageButtons, JPanel luggagesPanel, JScrollPane scrollPane, int i) {
         super("Rimuovi ");
         index = i;
         constraints = new Constraints();
@@ -41,13 +39,13 @@ public class RemoveLuggageButton extends JButton {
                     luggagesPanel.remove(luggagePanels.get(i));
                     constraints.setConstraints(0, i, 1, 1,
                             GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
-                    luggagesPanel.add(luggagePanels.get(i), constraints.getConstraints());
+                    luggagesPanel.add(luggagePanels.get(i), constraints.getGridBagConstraints());
                     luggagePanels.get(i).setVisible(true);
 
                     luggagesPanel.remove(removeLuggageButtons.get(i));
                     constraints.setConstraints(1, i, 1, 1,
                             GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);
-                    luggagesPanel.add(removeLuggageButtons.get(i), constraints.getConstraints());
+                    luggagesPanel.add(removeLuggageButtons.get(i), constraints.getGridBagConstraints());
                     removeLuggageButtons.get(i).setVisible(true);
 
                     removeLuggageButtons.get(i).index--;
@@ -57,10 +55,6 @@ public class RemoveLuggageButton extends JButton {
                 scrollPane.setViewportView(luggagesPanel);
             }
         });
-    }
-
-    public void decreaseIndex() {
-        index--;
     }
 
     public int getIndex() {

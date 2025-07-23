@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 public class BookingPageCustomer extends BookingPage {
 
@@ -53,10 +52,10 @@ public class BookingPageCustomer extends BookingPage {
             string = controller.getBookingController().getPassengerTicketNumber(i);
             if (string != null) passengerPanel.setTicketNumber(string);
 
-            passengerPanel.setLuggages((ArrayList<Integer>) controller.getBookingController().getPassengerLuggagesTypes(i),
-                    (ArrayList<String>) controller.getBookingController().getPassengerLuggagesTickets(i), (ArrayList<String>) controller.getBookingController().getPassengerLuggagesStatus(i), controller);
+            passengerPanel.setLuggages(controller.getBookingController().getPassengerLuggagesTypes(i),
+                    controller.getBookingController().getPassengerLuggagesTickets(i), controller.getBookingController().getPassengerLuggagesStatus(i), controller);
 
-            insertPassengerPanel(controller, passengerPanel);
+            insertPassengerPanel(passengerPanel);
         }
     }
 
@@ -77,7 +76,7 @@ public class BookingPageCustomer extends BookingPage {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                if (checkFlightNBookingStatus(controller)) {
+                if (Boolean.TRUE.equals(checkFlightNBookingStatus(controller))) {
 
                     new BookingModifyPage(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
 
@@ -97,7 +96,7 @@ public class BookingPageCustomer extends BookingPage {
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                if (checkFlightNBookingStatus(controller)) {
+                if (Boolean.TRUE.equals(checkFlightNBookingStatus(controller))) {
 
                     controller.getBookingController().deleteBooking();
 
@@ -115,7 +114,7 @@ public class BookingPageCustomer extends BookingPage {
 
         constraints.setConstraints(0, 4, 1, 1,
                 GridBagConstraints.HORIZONTAL,  0, 0, GridBagConstraints.CENTER);
-        mainPanel.add(confirmPanel, constraints.getConstraints());
+        mainPanel.add(confirmPanel, constraints.getGridBagConstraints());
     }
 
     protected Boolean checkFlightNBookingStatus (Controller controller) {
