@@ -19,7 +19,7 @@ public class BookingController {
 
     public void setBooking(Customer customer, Flight flight, List<Ticket> tickets) throws InvalidPassengerNumber, InvalidBuyer, InvalidFlight {
         try {
-            booking = new Booking(customer, flight, new Date(10, 0, 0), (ArrayList<Ticket>) tickets);
+            booking = new Booking(customer, flight, new Date(10, 0, 0), tickets);
         } catch (InvalidPassengerNumber e) {
             throw new InvalidPassengerNumber("Invalid passenger number");
         } catch (InvalidBuyer e) {

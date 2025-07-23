@@ -21,7 +21,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         constraints = new Constraints();
         this.setMainFrame((ArrayList<DisposableObject>)callingObjects, dimension, point, fullScreen);
 
-        this.addTitlePanel(controller);
+        this.addTitlePanel();
         this.addNavigatorBarPanel((ArrayList<DisposableObject>)callingObjects, controller);
         this.addMenuPanel((ArrayList<DisposableObject>)callingObjects, controller);
         this.addUserPanel((ArrayList<DisposableObject>)callingObjects, controller);
@@ -46,7 +46,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     }
 
-    private void addTitlePanel(Controller controller) {
+    private void addTitlePanel() {
 
         TitlePanel titlePanel;
 

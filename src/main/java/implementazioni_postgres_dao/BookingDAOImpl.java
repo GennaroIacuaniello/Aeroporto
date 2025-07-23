@@ -17,7 +17,7 @@ public class BookingDAOImpl implements BookingDAO {
     private static final Logger LOGGER = Logger.getLogger(BookingDAOImpl.class.getName());
 
     public void addBooking (int idCustomer, String idFlight, String bookingStatus, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
-                            List<String> lastNames, List<Date> birthDates, List<String> SSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException {
+                            List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException {
 
         String query = "INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES (?::BookingStatus, ?, ?, ?);";
 
@@ -53,10 +53,10 @@ public class BookingDAOImpl implements BookingDAO {
             } else throw new SQLException();
 
             //eventuale inserimento in passenger
-            insertPassengers(connection, firstNames, lastNames, birthDates, SSNs);
+            insertPassengers(connection, firstNames, lastNames, birthDates, passengerSSNs);
 
             //inserisci in ticket
-            insertTickets(connection, generatedId, idFlight, ticketNumbers, SSNs, seats);
+            insertTickets(connection, generatedId, idFlight, ticketNumbers, passengerSSNs, seats);
 
             //inserisci in luggage
             insertLuggages(connection, ticketForLuggages, luggagesTypes);

@@ -1,7 +1,5 @@
 package dao;
 
-import model.BookingStatus;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -13,7 +11,7 @@ import java.util.List;
 public interface BookingDAO {
 
     void addBooking (int idCustomer, String idFlight, String bookingStatus, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
-                     List<String> lastNames, List<Date> birthDates, List<String> SSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException;
+                     List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException;
 
 
     void searchBooksCustomerForAFlight(String flightId, Integer loggedCustomerId,

@@ -33,14 +33,6 @@ public class BookingPageAdmin extends BookingPage {
         mainFrame.setVisible(true);
     }
 
-    public BookingPageAdmin(ArrayList<DisposableObject> callingObjects, Controller controller,
-                            Dimension dimension, Point point, int fullScreen, boolean flag) {
-
-        this(callingObjects, controller, dimension, point, fullScreen);
-
-        setControllerDisposeFlag(flag);
-    }
-
     @Override
     protected void insertPassengers(Controller controller) {
 

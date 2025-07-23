@@ -34,7 +34,7 @@ public class BookingModifyPage extends BookingPageCustomer {
     }
 
     @Override
-    protected void addModifyPanel (Controller controller) {
+    protected void addModifyPanel () {
 
         modifyPanel = new JPanel();
 
@@ -73,7 +73,7 @@ public class BookingModifyPage extends BookingPageCustomer {
             public void actionPerformed(ActionEvent e) {
 
                 if (controller.getFlightController().getFreeSeats() - passengerPanels.size() + controller.getBookingController().getTicketsSize() > 0)
-                    insertPassengerPanel(controller, new PassengerPanel(controller, passengerPanels, bookedSeats));
+                    insertPassengerPanel(new PassengerPanel(controller, passengerPanels, bookedSeats));
                 else
                     new FloatingMessage("Non ci sono altri posti disponibili per questo volo", addPassengerButton, FloatingMessage.ERROR_MESSAGE);
             }
@@ -110,7 +110,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         nextPageButton.setEnabled(currPage < ((passengerPanels.size() - 1) / 3));
     }
 
-    protected void insertPassengerPanel (Controller controller, PassengerPanel passengerPanel) {
+    protected void insertPassengerPanel (PassengerPanel passengerPanel) {
 
         if (removePassengerButtons == null) removePassengerButtons = new ArrayList<>();
 

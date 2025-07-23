@@ -85,7 +85,7 @@ public class PassengerPanel extends JPanel {
         //bagagli
         luggagesViewButton = new JButton("Luggages");
 
-        luggagesView = new LuggagesView (controller);
+        luggagesView = new LuggagesView ();
 
         luggagesViewButton.addActionListener (new ActionListener () {
            @Override
