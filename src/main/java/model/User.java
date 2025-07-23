@@ -26,7 +26,7 @@ public class User {
      * </p>
      */
     private String username;
-    
+
     /**
      * The email address of the user.
      * <p>
@@ -36,7 +36,7 @@ public class User {
      * </p>
      */
     private String email;
-    
+
     /**
      * The hashed password of the user.
      * <p>
@@ -54,10 +54,10 @@ public class User {
      * used for basic user registration where email is not required.
      * </p>
      *
-     * @param parUsername the username for the new user. Must not be null or empty.
+     * @param parUsername       the username for the new user. Must not be null or empty.
      * @param parHashedPassword the hashed password for the new user. Must not be null or empty.
      */
-    public User(String parUsername, String parHashedPassword){
+    public User(String parUsername, String parHashedPassword) {
         this.username = parUsername;
         this.hashedPassword = parHashedPassword;
     }
@@ -69,11 +69,11 @@ public class User {
      * which is typically used for full user registration.
      * </p>
      *
-     * @param parUsername the username for the new user. Must not be null or empty.
-     * @param parEmail the email address for the new user. Can be null if not provided.
+     * @param parUsername       the username for the new user. Must not be null or empty.
+     * @param parEmail          the email address for the new user. Can be null if not provided.
      * @param parHashedPassword the hashed password for the new user. Must not be null or empty.
      */
-    public User(String parUsername, String parEmail, String parHashedPassword){
+    public User(String parUsername, String parEmail, String parHashedPassword) {
         this.username = parUsername;
         this.email = parEmail;
         this.hashedPassword = parHashedPassword;
@@ -87,7 +87,7 @@ public class User {
      *
      * @return the username of this user, never null
      */
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
@@ -100,7 +100,7 @@ public class User {
      *
      * @param parUsername the new username to set. Should not be null or empty.
      */
-    public void setUsername(String parUsername){
+    public void setUsername(String parUsername) {
         this.username = parUsername;
     }
 
@@ -114,7 +114,7 @@ public class User {
      *
      * @return the hashed password of this user, never null
      */
-    public String getPassword(){
+    public String getPassword() {
 
         return this.hashedPassword;
 
@@ -145,3 +145,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+}
