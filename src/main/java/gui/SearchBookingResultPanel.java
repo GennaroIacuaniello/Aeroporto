@@ -14,11 +14,23 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Search booking result panel.
+ */
 public class SearchBookingResultPanel extends JPanel {
 
     private final JTable resultsTable;
     private final BookingTableModel tableModel;
 
+    /**
+     * Instantiates a new Search booking result panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param bookingDates   the booking dates
+     * @param bookingStatus  the booking status
+     * @param ids            the ids
+     */
     public SearchBookingResultPanel(List<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<String> bookingStatus,
                                     List<String> ids) {
                                     //la lista di id è in parallelo con quella delle prenotazioni, e in base a quelli prendo poi il volo associato dal FlightController
@@ -116,6 +128,13 @@ public class SearchBookingResultPanel extends JPanel {
 
         private final String[] colNames = {"Data prenotazione", "Stato prenotazione", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
 
+        /**
+         * Instantiates a new Booking table model.
+         *
+         * @param controller      the controller
+         * @param parBookingDates the par booking dates
+         * @param bookingStatus   the booking status
+         */
         public BookingTableModel( Controller controller, List<Date> parBookingDates, List<String> bookingStatus) {
 
             this.controller = controller;
@@ -248,6 +267,9 @@ public class SearchBookingResultPanel extends JPanel {
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
 
+        /**
+         * Instantiates a new Button renderer.
+         */
         public ButtonRenderer() {
             setOpaque(true);
             setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -276,6 +298,12 @@ public class SearchBookingResultPanel extends JPanel {
 
         private final String emptyMessage;
 
+        /**
+         * Instantiates a new J table with empty message.
+         *
+         * @param model        the model
+         * @param emptyMessage the empty message
+         */
         public JTableWithEmptyMessage(AbstractTableModel model, String emptyMessage) {
 
             super(model);

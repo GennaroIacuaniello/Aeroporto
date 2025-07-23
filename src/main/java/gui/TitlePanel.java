@@ -3,11 +3,22 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Title panel.
+ */
 public class TitlePanel extends JPanel {
 
+    /**
+     * The Constraints.
+     */
     Constraints constraints;
 
 
+    /**
+     * Instantiates a new Title panel.
+     *
+     * @param title the title
+     */
     public TitlePanel(String title) {
 
         super();

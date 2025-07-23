@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Flight dao.
+ */
 public class FlightDAOImpl implements FlightDAO {
 
     private static final Logger LOGGER = Logger.getLogger(FlightDAOImpl.class.getName());
@@ -380,6 +383,13 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
 
+    /**
+     * Gets booked seats.
+     *
+     * @param flightId    the flight id
+     * @param bookingId   the booking id
+     * @param bookedSeats the booked seats
+     */
     public void getBookedSeats(String flightId, Integer bookingId, List<Integer> bookedSeats) {
 
         String query = "SELECT seat FROM Ticket NATURAL JOIN Booking WHERE id_flight LIKE ? AND booking_status <> 'CANCELLED'";
@@ -410,6 +420,13 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * Start checkin int.
+     *
+     * @param flightId the flight id
+     * @return the int
+     * @throws SQLException the sql exception
+     */
     public int startCheckin(String flightId) throws SQLException {
 
         String query = "UPDATE Flight SET flight_status = 'ABOUT_TO_DEPART' WHERE id_flight = ?;";
@@ -422,6 +439,12 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * Search gate int.
+     *
+     * @param idFlight the id flight
+     * @return the int
+     */
     public int searchGate(String idFlight) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
@@ -465,6 +488,12 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * Sets gate.
+     *
+     * @param idGate   the id gate
+     * @param idFlight the id flight
+     */
     public void setGate(int idGate, String idFlight) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
@@ -486,6 +515,13 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * Sets status.
+     *
+     * @param status   the status
+     * @param idFlight the id flight
+     * @return the status
+     */
     public int setStatus (String status, String idFlight) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
@@ -509,6 +545,13 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * Add delay int.
+     *
+     * @param delay    the delay
+     * @param idFlight the id flight
+     * @return the int
+     */
     public int addDelay(int delay, String idFlight) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
@@ -533,6 +576,12 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * Sets checkins.
+     *
+     * @param trueTickets  the true tickets
+     * @param falseTickets the false tickets
+     */
     public void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
@@ -568,6 +617,12 @@ public class FlightDAOImpl implements FlightDAO {
 
     }
 
+    /**
+     * Gets luggages checkins.
+     *
+     * @param tickets the tickets
+     * @return the luggages checkins
+     */
     public ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets) {
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {

@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Luggage dao.
+ */
 public class LuggageDAOImpl implements LuggageDAO {
 
     private static final Logger LOGGER = Logger.getLogger(LuggageDAOImpl.class.getName());
@@ -160,6 +163,12 @@ public class LuggageDAOImpl implements LuggageDAO {
 
     }
 
+    /**
+     * Lost luggage.
+     *
+     * @param ticket        the ticket
+     * @param luggageStatus the luggage status
+     */
     public void lostLuggage(String ticket, String luggageStatus) {
 
         String query = "UPDATE Luggage SET luggage_status = ?::LuggageStatus WHERE id_luggage_after_check_in = ?";

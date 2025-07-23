@@ -10,6 +10,9 @@ import java.util.List;
 
 import static java.lang.Math.max;
 
+/**
+ * The type Register screen.
+ */
 public class RegisterScreen extends DisposableObject {
 
     //Padding
@@ -37,6 +40,13 @@ public class RegisterScreen extends DisposableObject {
     //Bottom options
     private JButton loginButton;
 
+    /**
+     * Instantiates a new Register screen.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param startingSize   the starting size
+     */
     public RegisterScreen(List<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
 
         this.setMainFrame(callingObjects, startingSize);

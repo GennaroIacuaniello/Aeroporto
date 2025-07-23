@@ -15,6 +15,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Search booking panel.
+ */
 public class SearchBookingPanel extends JPanel {
 
     private JScrollPane resultsScrollPane;
@@ -46,10 +49,26 @@ public class SearchBookingPanel extends JPanel {
 
     private boolean searchPerformed = false;
 
+    /**
+     * The Booking dates.
+     */
     ArrayList<Date> bookingDates = new ArrayList<>();
+    /**
+     * The Booking status.
+     */
     ArrayList<String> bookingStatus = new ArrayList<>();
+    /**
+     * The Flight ids.
+     */
     ArrayList<String> flightIds = new ArrayList<>();
 
+    /**
+     * Instantiates a new Search booking panel.
+     *
+     * @param callingObjects   the calling objects
+     * @param controller       the controller
+     * @param ifOpenedFromMenu the if opened from menu
+     */
     public SearchBookingPanel(List<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         super();
@@ -387,6 +406,13 @@ public class SearchBookingPanel extends JPanel {
         return searchButton;
     }
 
+    /**
+     * Filtered flight search.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param searchButton   the search button
+     */
     public void filteredFlightSearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String origin = fromField.getText();
@@ -431,6 +457,13 @@ public class SearchBookingPanel extends JPanel {
         updateResultsPanel(callingObjects, controller);
     }
 
+    /**
+     * Filtered passenger search.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param searchButton   the search button
+     */
     public void filteredPassengerSearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String firstName = firstNameField.getText();
@@ -484,14 +517,29 @@ public class SearchBookingPanel extends JPanel {
 
     }
 
+    /**
+     * Is search performed boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSearchPerformed() {
         return searchPerformed;
     }
 
+    /**
+     * Gets search button.
+     *
+     * @return the search button
+     */
     public JButton getSearchButton() {
         return searchButton;
     }
 
+    /**
+     * Gets active filter.
+     *
+     * @return the active filter
+     */
     public String getActiveFilter() {
         return activeFilter;
     }

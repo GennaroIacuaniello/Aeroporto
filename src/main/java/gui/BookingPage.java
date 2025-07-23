@@ -11,44 +11,122 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * The type Booking page.
+ */
 public abstract class BookingPage extends DisposableObject {
 
+    /**
+     * The Main frame.
+     */
     protected JFrame mainFrame;
 
-        protected JPanel topPanel;
+    /**
+     * The Top panel.
+     */
+    protected JPanel topPanel;
 
-            protected TitlePanel titlePanel;
-            protected NavigatorBarPanel navigatorBarPanel;
-            protected UserPanel userPanel;
+    /**
+     * The Title panel.
+     */
+    protected TitlePanel titlePanel;
+    /**
+     * The Navigator bar panel.
+     */
+    protected NavigatorBarPanel navigatorBarPanel;
+    /**
+     * The User panel.
+     */
+    protected UserPanel userPanel;
 
-        protected JPanel mainPanel;
+    /**
+     * The Main panel.
+     */
+    protected JPanel mainPanel;
 
-            protected JPanel flightInfoPanel;
+    /**
+     * The Flight info panel.
+     */
+    protected JPanel flightInfoPanel;
 
-                protected JTable flightInfoTable;
+    /**
+     * The Flight info table.
+     */
+    protected JTable flightInfoTable;
 
-            protected JPanel searchPanel;
+    /**
+     * The Search panel.
+     */
+    protected JPanel searchPanel;
 
-                protected JTextField searchField;
-                protected JButton searchButton;
+    /**
+     * The Search field.
+     */
+    protected JTextField searchField;
+    /**
+     * The Search button.
+     */
+    protected JButton searchButton;
 
-            protected JPanel passengerPage;
+    /**
+     * The Passenger page.
+     */
+    protected JPanel passengerPage;
 
-                protected ArrayList<Integer> bookedSeats;
-                protected ArrayList<PassengerPanel> passengerPanels;
+    /**
+     * The Booked seats.
+     */
+    protected ArrayList<Integer> bookedSeats;
+    /**
+     * The Passenger panels.
+     */
+    protected ArrayList<PassengerPanel> passengerPanels;
 
-            protected JPanel modifyPanel;
+    /**
+     * The Modify panel.
+     */
+    protected JPanel modifyPanel;
 
-                protected JPanel flowPanel;
+    /**
+     * The Flow panel.
+     */
+    protected JPanel flowPanel;
 
-                    protected int currPage = 0;
-                    protected JButton prevPageButton;
-                    protected JButton nextPageButton;
-                    protected JLabel currentPageLabel;
+    /**
+     * The Curr page.
+     */
+    protected int currPage = 0;
+    /**
+     * The Prev page button.
+     */
+    protected JButton prevPageButton;
+    /**
+     * The Next page button.
+     */
+    protected JButton nextPageButton;
+    /**
+     * The Current page label.
+     */
+    protected JLabel currentPageLabel;
 
+    /**
+     * The Constraints.
+     */
     protected Constraints constraints;
+    /**
+     * The Controller dispose flag.
+     */
     protected boolean controllerDisposeFlag = true;
 
+    /**
+     * Instantiates a new Booking page.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     */
     protected BookingPage (List<DisposableObject> callingObjects, Controller controller,
                         Dimension dimension, Point point, int fullScreen) {
 
@@ -70,6 +148,14 @@ public abstract class BookingPage extends DisposableObject {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Sets main frame.
+     *
+     * @param callingObjects the calling objects
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     */
     protected void setMainFrame (List<DisposableObject> callingObjects, Dimension dimension, Point point, int fullScreen) {
 
         mainFrame = new JFrame("BookingPage");
@@ -85,6 +171,12 @@ public abstract class BookingPage extends DisposableObject {
         callingObjects.addLast(this);
     }
 
+    /**
+     * Add top panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     protected void addTopPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         topPanel = new JPanel();
@@ -103,6 +195,9 @@ public abstract class BookingPage extends DisposableObject {
         topPanel.setVisible(true);
     }
 
+    /**
+     * Add title panel.
+     */
     protected void addTitlePanel () {
 
         titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
@@ -114,6 +209,12 @@ public abstract class BookingPage extends DisposableObject {
         titlePanel.setVisible(true);
     }
 
+    /**
+     * Add navigator bar panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     protected void addNavigatorBarPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         navigatorBarPanel = new NavigatorBarPanel (callingObjects, controller);
@@ -126,6 +227,12 @@ public abstract class BookingPage extends DisposableObject {
         navigatorBarPanel.setVisible (true);
     }
 
+    /**
+     * Add user panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     protected void addUserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         userPanel = new UserPanel(callingObjects, controller);
@@ -137,6 +244,12 @@ public abstract class BookingPage extends DisposableObject {
         userPanel.setVisible (true);
     }
 
+    /**
+     * Add main panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     protected void addMainPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         mainPanel = new JPanel();
@@ -162,6 +275,11 @@ public abstract class BookingPage extends DisposableObject {
         mainPanel.setVisible (true);
     }
 
+    /**
+     * Add flight info panel.
+     *
+     * @param controller the controller
+     */
     protected void addFlightInfoPanel (Controller controller) {
 
         flightInfoPanel = new JPanel(new BorderLayout());
@@ -195,6 +313,9 @@ public abstract class BookingPage extends DisposableObject {
         mainPanel.add(flightInfoPanel, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Add search panel.
+     */
     protected void addSearchPanel () {
 
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -224,6 +345,9 @@ public abstract class BookingPage extends DisposableObject {
         searchPanel.setVisible (true);
     }
 
+    /**
+     * Search passenger.
+     */
     protected void searchPassenger () {
 
         boolean flag = true;
@@ -240,6 +364,11 @@ public abstract class BookingPage extends DisposableObject {
         if (flag) new FloatingMessage("Nessun passeggero trovato con ticket number: " + searchField.getText(), searchButton, FloatingMessage.ERROR_MESSAGE);
     }
 
+    /**
+     * Go to page.
+     *
+     * @param page the page
+     */
     protected void goToPage (int page) {
 
         //sistemo visibilità
@@ -258,6 +387,11 @@ public abstract class BookingPage extends DisposableObject {
         nextPageButton.setEnabled(currPage < ((passengerPanels.size() - 1) / 3));
     }
 
+    /**
+     * Add passenger page.
+     *
+     * @param controller the controller
+     */
     protected void addPassengerPage (Controller controller) {
 
         passengerPage = new JPanel();
@@ -277,12 +411,27 @@ public abstract class BookingPage extends DisposableObject {
         mainPanel.add (passengerPage, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Sets booked seats.
+     *
+     * @param controller the controller
+     */
     protected void setBookedSeats (Controller controller) {
         controller.setBookedSeats(bookedSeats);
     }
 
+    /**
+     * Insert passengers.
+     *
+     * @param controller the controller
+     */
     protected abstract void insertPassengers (Controller controller);
 
+    /**
+     * Insert passenger panel.
+     *
+     * @param passengerPanel the passenger panel
+     */
     protected void insertPassengerPanel (PassengerPanel passengerPanel) {
 
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1,
@@ -296,6 +445,9 @@ public abstract class BookingPage extends DisposableObject {
         passengerPanel.setPanelEnabled(false);
     }
 
+    /**
+     * Add modify panel.
+     */
     protected void addModifyPanel () {
 
         modifyPanel = new JPanel();
@@ -322,6 +474,9 @@ public abstract class BookingPage extends DisposableObject {
         modifyPanel.setVisible (true);
     }
 
+    /**
+     * Add page change buttons.
+     */
     protected void addPageChangeButtons () {
 
         prevPageButton.setFocusable(false);
@@ -357,13 +512,27 @@ public abstract class BookingPage extends DisposableObject {
         flowPanel.add (nextPageButton);
     }
 
+    /**
+     * Add confirm panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     protected abstract void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller);
 
+    /**
+     * Sets controller dispose flag.
+     *
+     * @param flag the flag
+     */
     public void setControllerDisposeFlag (boolean flag) {
 
         controllerDisposeFlag = flag;
     }
 
+    /**
+     * Decrease curr page.
+     */
     protected void decreaseCurrPage () {
         currPage--;
         currentPageLabel.setText (Integer.toString(currPage + 1));
@@ -371,16 +540,31 @@ public abstract class BookingPage extends DisposableObject {
         if (currPage == 0) prevPageButton.setEnabled (false);
     }
 
+    /**
+     * Gets curr page.
+     *
+     * @return the curr page
+     */
     protected int getCurrPage () {
 
         return currPage;
     }
 
+    /**
+     * Gets next button.
+     *
+     * @return the next button
+     */
     protected JButton getNextButton () {
 
         return nextPageButton;
     }
 
+    /**
+     * Gets passenger page.
+     *
+     * @return the passenger page
+     */
     protected JPanel getPassengerPage () {
 
         return passengerPage;

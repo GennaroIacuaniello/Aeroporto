@@ -6,10 +6,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * The type Remove luggage button.
+ */
 public class RemoveLuggageButton extends JButton {
     private int index;
     private final Constraints constraints;
 
+    /**
+     * Instantiates a new Remove luggage button.
+     *
+     * @param luggagePanels        the luggage panels
+     * @param removeLuggageButtons the remove luggage buttons
+     * @param luggagesPanel        the luggages panel
+     * @param scrollPane           the scroll pane
+     * @param i                    the
+     */
     public RemoveLuggageButton(List<LuggagePanel> luggagePanels,
                                List<RemoveLuggageButton> removeLuggageButtons, JPanel luggagesPanel, JScrollPane scrollPane, int i) {
         super("Rimuovi ");
@@ -57,6 +69,11 @@ public class RemoveLuggageButton extends JButton {
         });
     }
 
+    /**
+     * Gets index.
+     *
+     * @return the index
+     */
     public int getIndex() {
         return index;
     }

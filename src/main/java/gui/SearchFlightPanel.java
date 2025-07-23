@@ -16,6 +16,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Search flight panel.
+ */
 public class SearchFlightPanel extends JPanel {
 
     private JScrollPane resultsScrollPane;
@@ -31,19 +34,55 @@ public class SearchFlightPanel extends JPanel {
 
     private JButton searchButton;
 
+    /**
+     * The Ids.
+     */
     ArrayList<String> ids = new ArrayList<>();
+    /**
+     * The Company names.
+     */
     ArrayList<String> companyNames = new ArrayList<>();
+    /**
+     * The Dates.
+     */
     ArrayList<Date> dates = new ArrayList<>();
+    /**
+     * The Departure times.
+     */
     ArrayList<Time> departureTimes = new ArrayList<>();
+    /**
+     * The Arrival times.
+     */
     ArrayList<Time> arrivalTimes = new ArrayList<>();
+    /**
+     * The Delays.
+     */
     ArrayList<Integer> delays = new ArrayList<>();
+    /**
+     * The Status.
+     */
     ArrayList<String> status = new ArrayList<>();
+    /**
+     * The Max seats.
+     */
     ArrayList<Integer> maxSeats = new ArrayList<>();
+    /**
+     * The Free seats.
+     */
     ArrayList<Integer> freeSeats = new ArrayList<>();
+    /**
+     * The Cities.
+     */
     ArrayList<String> cities = new ArrayList<>();
 
     private boolean searchPerformed = false;
 
+    /**
+     * Instantiates a new Search flight panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     public SearchFlightPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
@@ -306,6 +345,13 @@ public class SearchFlightPanel extends JPanel {
 
     }
 
+    /**
+     * Execute research.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param searchButton   the search button
+     */
     public void executeResearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton){
 
         String origin = fromField.getText();
@@ -361,10 +407,20 @@ public class SearchFlightPanel extends JPanel {
 
     }
 
+    /**
+     * Is search performed boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSearchPerformed() {
         return searchPerformed;
     }
 
+    /**
+     * Gets search button.
+     *
+     * @return the search button
+     */
     public JButton getSearchButton() {
         return searchButton;
     }

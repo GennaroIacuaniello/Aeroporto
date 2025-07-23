@@ -4,10 +4,18 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The type Dispose timers.
+ */
 public class DisposeTimers {
 
     private final Timer decreaseOpacityTimer;
 
+    /**
+     * Instantiates a new Dispose timers.
+     *
+     * @param window the window
+     */
     public DisposeTimers(JWindow window) {
 
         decreaseOpacityTimer = new Timer(10, new ActionListener() {

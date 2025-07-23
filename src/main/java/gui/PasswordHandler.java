@@ -5,29 +5,69 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
+/**
+ * The type Password handler.
+ */
 public class PasswordHandler extends JPasswordField {
 
 
+    /**
+     * The constant MINIMUM_PASSWORD_LENGTH.
+     */
     public static final int MINIMUM_PASSWORD_LENGTH = 8;
+    /**
+     * The constant MAXIMUM_PASSWORD_LENGTH.
+     */
     public static final int MAXIMUM_PASSWORD_LENGTH = 20;
 
+    /**
+     * The constant ALLOWED_SPECIAL_CHARACTERS.
+     */
     public static final String ALLOWED_SPECIAL_CHARACTERS = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+    /**
+     * The constant ALLOWED_CHARACTER_SET.
+     */
     public static final String ALLOWED_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 " + ALLOWED_SPECIAL_CHARACTERS;
 
+    /**
+     * The Hashing algorithm.
+     */
     String hashingAlgorithm = "SHA-256";
+    /**
+     * The Password validity code.
+     */
     PasswordCode passwordValidityCode;
 
+    /**
+     * Instantiates a new Password handler.
+     */
     public PasswordHandler(){
         super();
     }
+
+    /**
+     * Instantiates a new Password handler.
+     *
+     * @param columns the columns
+     */
     public PasswordHandler(int columns){
         super(columns);
     }
 
+    /**
+     * Is empty boolean.
+     *
+     * @return the boolean
+     */
     public boolean isEmpty(){
         return this.getPassword().length == 0;
     }
 
+    /**
+     * Hash password string.
+     *
+     * @return the string
+     */
     public String hashPassword(){
         try {
             MessageDigest digest = MessageDigest.getInstance(hashingAlgorithm);
@@ -48,6 +88,11 @@ public class PasswordHandler extends JPasswordField {
         }
     }
 
+    /**
+     * Get hashed password string.
+     *
+     * @return the string
+     */
     public String getHashedPassword(){
         return hashPassword();
     }
@@ -64,6 +109,11 @@ public class PasswordHandler extends JPasswordField {
         return passwordInBytes;
     }
 
+    /**
+     * Is valid password boolean.
+     *
+     * @return the boolean
+     */
     public boolean isValidPassword(){
         boolean upper = false;
         boolean lower = false;
@@ -114,6 +164,11 @@ public class PasswordHandler extends JPasswordField {
         return true;
     }
 
+    /**
+     * Show invalid password message.
+     *
+     * @param button the button
+     */
     public void showInvalidPasswordMessage(JButton button) {
         String warningMessage = null;
         switch (this.passwordValidityCode){

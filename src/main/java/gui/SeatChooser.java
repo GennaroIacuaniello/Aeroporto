@@ -8,11 +8,22 @@ import java.awt.event.*;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * The type Seat chooser.
+ */
 public class SeatChooser extends JFrame {
 
     private final ArrayList<JButton> seatButtons;
     private int seat;
 
+    /**
+     * Instantiates a new Seat chooser.
+     *
+     * @param controller      the controller
+     * @param callingPanel    the calling panel
+     * @param passengerPanels the passenger panels
+     * @param bookedSeats     the booked seats
+     */
     public SeatChooser(Controller controller, PassengerPanel callingPanel, List<PassengerPanel> passengerPanels, List<Integer> bookedSeats) {
 
         super("Seat Chooser");
@@ -142,6 +153,11 @@ public class SeatChooser extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Sets location.
+     *
+     * @param callingButton the calling button
+     */
     public void setLocation(JButton callingButton) {
         //coordinate punto in alto a sx del bottone
         double x = callingButton.getLocationOnScreen().getX();
@@ -158,6 +174,12 @@ public class SeatChooser extends JFrame {
         this.setLocation((int) x, (int) y);
     }
 
+    /**
+     * Print seat string.
+     *
+     * @param seat the seat
+     * @return the string
+     */
     public String printSeat(int seat) {
 
         if (seat == -1) return "***";

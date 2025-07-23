@@ -10,13 +10,34 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * The type Booking page customer.
+ */
 public class BookingPageCustomer extends BookingPage {
 
+    /**
+     * The Confirm panel.
+     */
     protected JPanel confirmPanel;
 
-        protected JButton modifyButton;
-        protected JButton cancelButton;
+    /**
+     * The Modify button.
+     */
+    protected JButton modifyButton;
+    /**
+     * The Cancel button.
+     */
+    protected JButton cancelButton;
 
+    /**
+     * Instantiates a new Booking page customer.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     */
     public BookingPageCustomer(List<DisposableObject> callingObjects, Controller controller,
                                Dimension dimension, Point point, int fullScreen) {
 
@@ -117,6 +138,12 @@ public class BookingPageCustomer extends BookingPage {
         mainPanel.add(confirmPanel, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Check flight n booking status boolean.
+     *
+     * @param controller the controller
+     * @return the boolean
+     */
     protected Boolean checkFlightNBookingStatus (Controller controller) {
 
         return controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED")

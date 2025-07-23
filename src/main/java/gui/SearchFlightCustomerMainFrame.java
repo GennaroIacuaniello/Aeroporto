@@ -7,14 +7,29 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Search flight customer main frame.
+ */
 public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private JFrame mainFrame;
 
     private SearchFlightPanel searchFlightPanel;
 
+    /**
+     * The Constraints.
+     */
     Constraints constraints;
 
+    /**
+     * Instantiates a new Search flight customer main frame.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     */
     public SearchFlightCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super();

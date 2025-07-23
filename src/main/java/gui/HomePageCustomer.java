@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The type Home page customer.
+ */
 public class HomePageCustomer extends DisposableObject {
 
     private JFrame mainFrame;
@@ -20,6 +23,12 @@ public class HomePageCustomer extends DisposableObject {
     private Constraints constraints;
 
 
+    /**
+     * Instantiates a new Home page customer.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     public HomePageCustomer(List<DisposableObject> callingObjects, Controller controller) {
 
         super();

@@ -13,30 +13,69 @@ import java.sql.Date;
 import java.time.ZoneId;
 import java.util.List;
 
+/**
+ * The type Passenger panel.
+ */
 public class PassengerPanel extends JPanel {
 
-    //label con eventuale ticketNumber
+    /**
+     * The Passenger label.
+     */
+//label con eventuale ticketNumber
     protected JLabel passengerLabel;
+    /**
+     * The Ticket number.
+     */
     protected String ticketNumber;
 
-    //info
+    /**
+     * The Passenger name field.
+     */
+//info
     protected JTextField passengerNameField;
+    /**
+     * The Passenger surname field.
+     */
     protected JTextField passengerSurnameField;
+    /**
+     * The Passenger c field.
+     */
     protected JTextField passengerCField;
+    /**
+     * The Passenger date picker.
+     */
     protected DatePicker passengerDatePicker;
 
-    //posto
+    /**
+     * The Seat button.
+     */
+//posto
     protected JButton seatButton;
+    /**
+     * The Seat chooser.
+     */
     protected SeatChooser seatChooser;
+    /**
+     * The Seat.
+     */
     protected int seat = -1;
 
-    //bagagli
+    /**
+     * The Luggages view button.
+     */
+//bagagli
     protected JButton luggagesViewButton;
+    /**
+     * The Luggages view.
+     */
     protected LuggagesView luggagesView;
 
     //checkin
     private JCheckBox checkinCheckBox;
 
+    /**
+     * The Constraints.
+     */
     protected Constraints constraints;
 
     //cose utili
@@ -47,6 +86,13 @@ public class PassengerPanel extends JPanel {
     private static final Color displayedTextColor = new Color(128, 128, 128);
     private static final Color userTextColor = new Color(32, 32, 32);
 
+    /**
+     * Instantiates a new Passenger panel.
+     *
+     * @param controller      the controller
+     * @param passengerPanels the passenger panels
+     * @param bookedSeats     the booked seats
+     */
     public PassengerPanel (Controller controller, List<PassengerPanel> passengerPanels, List<Integer> bookedSeats)
     {
         super ();
@@ -228,6 +274,11 @@ public class PassengerPanel extends JPanel {
         this.setVisible (true);
     }
 
+    /**
+     * Print seat string.
+     *
+     * @return the string
+     */
     public String printSeat(){
 
         if (seat == -1) return "SCEGLI POSTO";
@@ -247,10 +298,20 @@ public class PassengerPanel extends JPanel {
         return (seat / 6) + 1 + literal;
     }
 
+    /**
+     * Get seat int.
+     *
+     * @return the int
+     */
     public int getSeat(){
         return seat;
     }
 
+    /**
+     * Set seat.
+     *
+     * @param parSeat the par seat
+     */
     public void setSeat(int parSeat){
         seat = parSeat;
         seatButton.setText(printSeat());
@@ -260,76 +321,160 @@ public class PassengerPanel extends JPanel {
         return this;
     }
 
+    /**
+     * Get passenger name string.
+     *
+     * @return the string
+     */
     public String getPassengerName(){
         return passengerNameField.getText().equals(DISPLAYED_NAME_TEXT) ? null : passengerNameField.getText();
     }
 
+    /**
+     * Get passenger surname string.
+     *
+     * @return the string
+     */
     public String getPassengerSurname(){
         return passengerSurnameField.getText().equals(DISPLAYED_SURNAME_TEXT) ? null : passengerSurnameField.getText() ;
     }
 
+    /**
+     * Get passenger cf string.
+     *
+     * @return the string
+     */
     public String getPassengerCF(){
         return passengerCField.getText ();
     }
 
+    /**
+     * Set passenger name.
+     *
+     * @param passengerName the passenger name
+     */
     public void setPassengerName(String passengerName){
         passengerNameField.setText (passengerName);
     }
 
+    /**
+     * Set passenger surname.
+     *
+     * @param passengerSurname the passenger surname
+     */
     public void setPassengerSurname(String passengerSurname){
         passengerSurnameField.setText (passengerSurname);
     }
 
+    /**
+     * Set passenger cf.
+     *
+     * @param passengerCF the passenger cf
+     */
     public void setPassengerCF(String passengerCF){
         passengerCField.setText (passengerCF);
     }
 
+    /**
+     * Check passenger name boolean.
+     *
+     * @return the boolean
+     */
     public boolean checkPassengerName (){
         return passengerNameField.getText().equals(DISPLAYED_NAME_TEXT) || passengerNameField.getText().isEmpty();
     }
 
+    /**
+     * Check passenger surname boolean.
+     *
+     * @return the boolean
+     */
     public boolean checkPassengerSurname (){
         return passengerSurnameField.getText().equals(DISPLAYED_SURNAME_TEXT) || passengerSurnameField.getText().isEmpty();
     }
 
+    /**
+     * Check passenger cf boolean.
+     *
+     * @return the boolean
+     */
     public boolean checkPassengerCF (){
         return passengerCField.getText().equals(DISPLAYED_CF_TEXT) || passengerCField.getText().isEmpty();
     }
 
-    public boolean checkPassengerSeat (){
-        return seat == -1;
-    }
-
+    /**
+     * Gets luggages panels.
+     *
+     * @return the luggages panels
+     */
     public List<LuggagePanel> getLuggagesPanels() {
         return luggagesView.getLuggagesPanels();
     }
 
+    /**
+     * Set luggages.
+     *
+     * @param luggageTypes    the luggage types
+     * @param luggagesTickets the luggages tickets
+     * @param luggagesStatus  the luggages status
+     * @param controller      the controller
+     */
     public void setLuggages (List<Integer> luggageTypes, List<String> luggagesTickets, List<String> luggagesStatus, Controller controller){
         luggagesView.setLuggages (luggageTypes, luggagesTickets, luggagesStatus,controller);
     }
 
+    /**
+     * Gets seat chooser.
+     *
+     * @return the seat chooser
+     */
     public SeatChooser getSeatChooser() {
         return seatChooser;
     }
 
+    /**
+     * Gets luggages view.
+     *
+     * @return the luggages view
+     */
     public LuggagesView getLuggagesView() {
         return luggagesView;
     }
 
+    /**
+     * Gets seat button.
+     *
+     * @return the seat button
+     */
     public JButton getSeatButton() {
         return seatButton;
     }
 
+    /**
+     * Sets ticket number.
+     *
+     * @param ticketNumber the ticket number
+     */
     public void setTicketNumber (String ticketNumber) {
 
         this.ticketNumber = ticketNumber;
         this.passengerLabel.setText("Passenger: " + ticketNumber);
     }
 
+    /**
+     * Gets ticket number.
+     *
+     * @return the ticket number
+     */
     public String getTicketNumber() {
         return ticketNumber;
     }
 
+    /**
+     * Sets panel enabled.
+     *
+     * @param flag the flag
+     */
     public void setPanelEnabled (boolean flag) {
 
         passengerNameField.setEnabled(flag);
@@ -347,6 +492,11 @@ public class PassengerPanel extends JPanel {
         }
     }
 
+    /**
+     * Add checkin check box.
+     *
+     * @param flag the flag
+     */
     public void addCheckinCheckBox (boolean flag) {
         checkinCheckBox = new JCheckBox("Checkin", flag);
 
@@ -356,19 +506,39 @@ public class PassengerPanel extends JPanel {
         checkinCheckBox.setVisible(true);
     }
 
+    /**
+     * Gets checkin check box.
+     *
+     * @return the checkin check box
+     */
     public JCheckBox getCheckinCheckBox () {
         return checkinCheckBox;
     }
 
+    /**
+     * Gets passenger date.
+     *
+     * @return the passenger date
+     */
     public Date getPassengerDate () {
         return passengerDatePicker.getComponentDateTextField().getText().equals(DISPLAYED_DATE_TEXT) ? null
                 : new java.sql.Date(passengerDatePicker.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
+    /**
+     * Check passenger date boolean.
+     *
+     * @return the boolean
+     */
     public boolean checkPassengerDate () {
         return passengerDatePicker.getComponentDateTextField().getText().equals(DISPLAYED_DATE_TEXT) || !passengerDatePicker.isTextFieldValid();
     }
 
+    /**
+     * Sets passenger date.
+     *
+     * @param passengerDate the passenger date
+     */
     public void setPassengerDate (Date passengerDate) {
         passengerDatePicker.setDate(passengerDate.toLocalDate());
     }

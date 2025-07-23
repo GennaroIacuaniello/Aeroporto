@@ -4,10 +4,22 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+/**
+ * The type Imminent flights table.
+ */
 public class ImminentFlightsTable extends JTable {
 
+    /**
+     * The Table scroll container.
+     */
     JScrollPane tableScrollContainer;
 
+    /**
+     * Instantiates a new Imminent flights table.
+     *
+     * @param data        the data
+     * @param columnNames the column names
+     */
     public ImminentFlightsTable(Object[][] data, String[] columnNames){
         super(new DefaultTableModel(data, columnNames){
             @Override
@@ -41,6 +53,11 @@ public class ImminentFlightsTable extends JTable {
         this.setFillsViewportHeight(true);
     }
 
+    /**
+     * Get scroll container j scroll pane.
+     *
+     * @return the j scroll pane
+     */
     public JScrollPane getScrollContainer(){
         return tableScrollContainer;
     }

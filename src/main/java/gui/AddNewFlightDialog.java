@@ -15,6 +15,9 @@ import java.time.LocalTime;
 import static gui.FloatingMessage.ERROR_MESSAGE;
 import static gui.FloatingMessage.SUCCESS_MESSAGE;
 
+/**
+ * The type Add new flight dialog.
+ */
 public class AddNewFlightDialog extends JDialog {
 
     private final Constraints constraints; // Oggetto per la gestione dei vincoli
@@ -32,6 +35,12 @@ public class AddNewFlightDialog extends JDialog {
 
     private final JButton confirmButton;
 
+    /**
+     * Instantiates a new Add new flight dialog.
+     *
+     * @param owner      the owner
+     * @param controller the controller
+     */
     public AddNewFlightDialog(Frame owner, Controller controller) {
 
         super(owner, "Aggiungi Nuovo Volo", true);

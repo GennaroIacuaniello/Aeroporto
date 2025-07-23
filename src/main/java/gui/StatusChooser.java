@@ -10,12 +10,22 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.List;
 
+/**
+ * The type Status chooser.
+ */
 public class StatusChooser {
 
     private final JFrame mainFrame;
     private final JButton confirmButton;
     private final JComboBox comboBox;
 
+    /**
+     * Instantiates a new Status chooser.
+     *
+     * @param controller        the controller
+     * @param callingButton     the calling button
+     * @param disposableObjects the disposable objects
+     */
     public StatusChooser(Controller controller, JButton callingButton, List<DisposableObject> disposableObjects) {
 
         mainFrame = new JFrame("Flight status chooser");
@@ -108,6 +118,11 @@ public class StatusChooser {
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Gets main frame.
+     *
+     * @return the main frame
+     */
     public JFrame getMainFrame() {
         return mainFrame;
     }
