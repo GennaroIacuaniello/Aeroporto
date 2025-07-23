@@ -296,10 +296,6 @@ public class PassengerPanel extends JPanel {
         return passengerCField.getText().equals(DISPLAYED_CF_TEXT) || passengerCField.getText().isEmpty();
     }
 
-    public boolean checkPassengerSeat (){
-        return seat == -1;
-    }
-
     public List<LuggagePanel> getLuggagesPanels() {
         return luggagesView.getLuggagesPanels();
     }

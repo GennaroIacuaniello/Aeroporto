@@ -25,6 +25,7 @@ public class PassengerPanelAdmin extends PassengerPanel {
         checkinCheckBox.setVisible(true);
     }
 
+    @Override
     public JCheckBox getCheckinCheckBox () {
         return checkinCheckBox;
     }

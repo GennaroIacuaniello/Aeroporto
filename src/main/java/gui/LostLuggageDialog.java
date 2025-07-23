@@ -178,9 +178,6 @@ public class LostLuggageDialog extends JDialog {
             }
         }
 
-        public String getBaggageIdAt(int row) {
-            return baggageIds.get(row);
-        }
     }
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {

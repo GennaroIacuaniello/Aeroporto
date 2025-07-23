@@ -20,6 +20,7 @@ public class PasswordHandler extends JPasswordField {
     public PasswordHandler(){
         super();
     }
+
     public PasswordHandler(int columns){
         super(columns);
     }

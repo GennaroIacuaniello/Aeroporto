@@ -17,14 +17,6 @@ public class Book extends BookingModifyPage {
         mainFrame.setVisible(true);
     }
 
-    protected Book(List<DisposableObject> callingObjects, Controller controller,
-                   Dimension dimension, Point point, int fullScreen, boolean flag) {
-
-        this(callingObjects, controller, dimension, point, fullScreen);
-
-        setControllerDisposeFlag(flag);
-    }
-
     @Override
     protected void addAddPassengerButton(Controller controller) {
 

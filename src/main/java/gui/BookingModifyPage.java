@@ -33,8 +33,8 @@ public class BookingModifyPage extends BookingPageCustomer {
         setControllerDisposeFlag(flag);
     }
 
-    @Override
-    protected void addModifyPanel () {
+
+    protected void addModifyPanel (Controller controller) {
 
         modifyPanel = new JPanel();
 
@@ -110,6 +110,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         nextPageButton.setEnabled(currPage < ((passengerPanels.size() - 1) / 3));
     }
 
+    @Override
     protected void insertPassengerPanel (PassengerPanel passengerPanel) {
 
         if (removePassengerButtons == null) removePassengerButtons = new ArrayList<>();

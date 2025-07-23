@@ -22,7 +22,7 @@ public class LuggagesView extends JFrame {
 
     private final Constraints constraints;
 
-    public LuggagesView(Controller controller) {
+    public LuggagesView() {
 
         super("Luggages");
 
@@ -126,11 +126,10 @@ public class LuggagesView extends JFrame {
 
             if (!luggagesPanels.isEmpty()) {
                 luggagesPanels.add(new LuggagePanel(luggagesPanels.getLast().getIndex() + 1));
-                if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
             } else {
                 luggagesPanels.add(new LuggagePanel(0));
-                if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
             }
+            if (luggagesTickets.get(i) != null) luggagesPanels.getLast().setLabel("Bagaglio: " + luggagesTickets.get(i++));
 
 
             constraints.setConstraints(0, luggagesPanels.size() - 1, 1, 1,

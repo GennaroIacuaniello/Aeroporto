@@ -17,7 +17,7 @@ public class HomePageCustomer extends DisposableObject {
     private ImminentFlightsTable arrivingTable;
     private ImminentFlightsTable departingTable;
 
-    private Constraints constraints;
+    private final Constraints constraints;
 
 
     public HomePageCustomer(List<DisposableObject> callingObjects, Controller controller) {
