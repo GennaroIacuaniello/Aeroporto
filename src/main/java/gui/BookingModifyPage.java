@@ -103,7 +103,7 @@ public class BookingModifyPage extends BookingPageCustomer {
 
         //sistemo currPage
         currPage = page;
-        currentPageLabel.setText(Integer.valueOf(currPage + 1).toString());
+        currentPageLabel.setText(Integer.toString(currPage + 1));
 
         //sistemo attivabilità bottoni
         prevPageButton.setEnabled(currPage > 0);
@@ -113,7 +113,7 @@ public class BookingModifyPage extends BookingPageCustomer {
     @Override
     protected void insertPassengerPanel (Controller controller, PassengerPanel passengerPanel) {
 
-        if (removePassengerButtons == null) removePassengerButtons = new ArrayList<RemovePassengerButton>();
+        if (removePassengerButtons == null) removePassengerButtons = new ArrayList<>();
 
         constraints.setConstraints(0, (passengerPanels.size() % 3), 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
@@ -148,35 +148,8 @@ public class BookingModifyPage extends BookingPageCustomer {
     @Override
     protected void goNextPage () {
 
-        /*for (int i = 0; i < 3; i++) {//metto a false la pagina corrente
-
-            passengerPanels.get((currPage * 3) + i).setVisible(false);
-            removePassengerButtons.get((currPage * 3) + i).setVisible(false);
-        }
-
-        if (currPage + 1 == (passengerPanels.size() - 1) / 3) { //sto andando all'ultima pagina quindi non so quanti sono
-
-            for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++) {
-
-                passengerPanels.get(passengerPanels.size() - i - 1).setVisible(true);
-                removePassengerButtons.get(removePassengerButtons.size() - i - 1).setVisible(true);
-            }
-
-            nextPageButton.setEnabled (false);
-        } else { //la prossima pagina ne ha 3
-
-            for (int i = 0; i < 3; i++) {
-
-                passengerPanels.get(((currPage + 1) * 3) + i).setVisible(true);
-                removePassengerButtons.get(((currPage + 1) * 3) + i).setVisible(true);
-            }
-        }
-
-        currPage++;
-        currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
-        prevPageButton.setEnabled (true);*/
-
         goToPage(currPage + 1);
+
     }
 
     @Override

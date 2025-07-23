@@ -5,7 +5,6 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Book extends BookingModifyPage {
@@ -109,7 +108,6 @@ public class Book extends BookingModifyPage {
 
                         controller.goBack(callingObjects);
 
-                        //new GoodMessage("La tua prenotazione è in attesa di conferma", savePendingButton);
                     } else {
                         new FloatingMessage("Impossibile aggiungere una prenotazione vuota", savePendingButton, FloatingMessage.ERROR_MESSAGE);
                     }
