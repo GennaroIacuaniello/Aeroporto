@@ -3,9 +3,8 @@ package model;
 /**
  * Represents a user in the airport management system.
  * <p>
- * This class serves as the base class for different types of users in the system,
- * including administrators and customers. It encapsulates the basic user information
- * such as username, email, and hashed password.
+ * This class serves as the base class for different types of users in the system:
+ * administrators and customers.
  * </p>
  * <p>
  * The password is stored as a final field to ensure immutability after object creation,
@@ -48,29 +47,10 @@ public class User {
     private final String hashedPassword;
 
     /**
-     * Constructs a new User with username and hashed password.
-     * <p>
-     * This constructor creates a user without an email address, which is typically
-     * used for basic user registration where email is not required.
-     * </p>
-     *
-     * @param parUsername       the username for the new user. Must not be null or empty.
-     * @param parHashedPassword the hashed password for the new user. Must not be null or empty.
-     */
-    public User(String parUsername, String parHashedPassword) {
-        this.username = parUsername;
-        this.hashedPassword = parHashedPassword;
-    }
-
-    /**
      * Constructs a new User with username, email, and hashed password.
-     * <p>
-     * This constructor creates a user with complete information including email address,
-     * which is typically used for full user registration.
-     * </p>
      *
      * @param parUsername       the username for the new user. Must not be null or empty.
-     * @param parEmail          the email address for the new user. Can be null if not provided.
+     * @param parEmail          the email address for the new user. Must not be null or empty.
      * @param parHashedPassword the hashed password for the new user. Must not be null or empty.
      */
     public User(String parUsername, String parEmail, String parHashedPassword) {
