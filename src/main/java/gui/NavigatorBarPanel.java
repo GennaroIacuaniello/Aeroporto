@@ -9,12 +9,30 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 
+/**
+ * The type Navigator bar panel.
+ */
 public class NavigatorBarPanel extends JPanel {
+    /**
+     * The Home button.
+     */
     JButton homeButton;
+    /**
+     * The Back button.
+     */
     JButton backButton;
-    //JLabel pathLabel;
+    /**
+     * The Constraints.
+     */
+//JLabel pathLabel;
     Constraints constraints;
 
+    /**
+     * Instantiates a new Navigator bar panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     public NavigatorBarPanel(List<DisposableObject> callingObjects, Controller controller) {
         super();
 

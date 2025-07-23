@@ -6,13 +6,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The type User panel.
+ */
 public class UserPanel extends JPanel {
 
 
     private String userGreeted;
+    /**
+     * The Popup menu.
+     */
     JPopupMenu popupMenu;
+    /**
+     * The Menu item.
+     */
     JMenuItem menuItem;
 
+    /**
+     * Instantiates a new User panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     public UserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
@@ -61,6 +76,11 @@ public class UserPanel extends JPanel {
         this.add(userButton);
     }
 
+    /**
+     * Gets user greeted.
+     *
+     * @return the user greeted
+     */
     public String getUserGreeted() {
         return userGreeted;
     }

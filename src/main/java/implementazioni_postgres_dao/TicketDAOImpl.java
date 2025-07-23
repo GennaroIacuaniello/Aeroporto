@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Ticket dao.
+ */
 public class TicketDAOImpl implements TicketDAO {
 
     private static final Logger LOGGER = Logger.getLogger(TicketDAOImpl.class.getName());
@@ -54,6 +57,12 @@ public class TicketDAOImpl implements TicketDAO {
 
     }
 
+    /**
+     * Generate ticket number string.
+     *
+     * @param offset the offset
+     * @return the string
+     */
     public String generateTicketNumber(int offset) {
 
         String result;
@@ -82,6 +91,12 @@ public class TicketDAOImpl implements TicketDAO {
         return "";
     }
 
+    /**
+     * Increase ticket number string.
+     *
+     * @param ticketNumber the ticket number
+     * @return the string
+     */
     public String increaseTicketNumber(String ticketNumber) {
 
         try {

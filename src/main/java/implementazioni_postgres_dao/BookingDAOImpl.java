@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The type Booking dao.
+ */
 public class BookingDAOImpl implements BookingDAO {
 
     private static final Logger LOGGER = Logger.getLogger(BookingDAOImpl.class.getName());
@@ -70,6 +73,23 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Modify booking.
+     *
+     * @param idFlight          the id flight
+     * @param idBooking         the id booking
+     * @param ticketNumbers     the ticket numbers
+     * @param seats             the seats
+     * @param firstNames        the first names
+     * @param lastNames         the last names
+     * @param birthDates        the birth dates
+     * @param passengerSSNs     the passenger ss ns
+     * @param luggagesTypes     the luggages types
+     * @param ticketForLuggages the ticket for luggages
+     * @param tmpTicket         the tmp ticket
+     * @param bookingStatus     the booking status
+     * @throws SQLException the sql exception
+     */
     public void modifyBooking (String idFlight, Integer idBooking, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
                                List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException {
 
@@ -611,6 +631,12 @@ public class BookingDAOImpl implements BookingDAO {
 
     }
 
+    /**
+     * Delete booking.
+     *
+     * @param bookingId the booking id
+     * @throws SQLException the sql exception
+     */
     public void deleteBooking (int bookingId) throws SQLException {
 
         String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";

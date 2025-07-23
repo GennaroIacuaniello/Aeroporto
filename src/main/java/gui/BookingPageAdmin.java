@@ -10,18 +10,48 @@ import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * The type Booking page admin.
+ */
 public class BookingPageAdmin extends BookingPage {
 
+    /**
+     * The Confirm panel.
+     */
     protected JPanel confirmPanel;
 
-        protected JButton statusButton;
-        protected StatusChooser statusChooser;
+    /**
+     * The Status button.
+     */
+    protected JButton statusButton;
+    /**
+     * The Status chooser.
+     */
+    protected StatusChooser statusChooser;
 
-        protected JButton checkinButton;
+    /**
+     * The Checkin button.
+     */
+    protected JButton checkinButton;
 
-        protected JButton setDelayButton;
-        protected JTextField delayTextField;
+    /**
+     * The Set delay button.
+     */
+    protected JButton setDelayButton;
+    /**
+     * The Delay text field.
+     */
+    protected JTextField delayTextField;
 
+    /**
+     * Instantiates a new Booking page admin.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     */
     public BookingPageAdmin(List<DisposableObject> callingObjects, Controller controller,
                             Dimension dimension, Point point, int fullScreen) {
 
@@ -91,6 +121,12 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.setVisible(true);
     }
 
+    /**
+     * Sets change status button.
+     *
+     * @param controller     the controller
+     * @param callingObjects the calling objects
+     */
     protected void setChangeStatusButton (Controller controller, List<DisposableObject> callingObjects) {
 
         statusButton = new JButton("CAMBIA STATO VOLO");
@@ -133,6 +169,12 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.add(checkinButton, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Check checkin button.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     protected void checkCheckinButton (List<DisposableObject> callingObjects, Controller controller) {
 
         if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED")) {
@@ -163,6 +205,11 @@ public class BookingPageAdmin extends BookingPage {
         } else new FloatingMessage("Non è possibile effettuare check-in per un volo in sato: " + controller.getFlightController().getFlightStatus(), checkinButton, FloatingMessage.ERROR_MESSAGE);
     }
 
+    /**
+     * Sets set delay button.
+     *
+     * @param controller the controller
+     */
     protected void setSetDelayButton (Controller controller) {
 
         setDelayButton = new JButton("SET DELAY");
@@ -191,6 +238,11 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.add(delayPanel, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Add delay.
+     *
+     * @param controller the controller
+     */
     protected void addDelay(Controller controller) {
 
         try {

@@ -15,11 +15,31 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Search flight result panel.
+ */
 public class SearchFlightResultPanel extends JPanel {
 
     private final JTable resultsTable;
     private final FlightTableModel tableModel;
 
+    /**
+     * Instantiates a new Search flight result panel.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param ids            the ids
+     * @param companyNames   the company names
+     * @param dates          the dates
+     * @param departureTimes the departure times
+     * @param arrivalTimes   the arrival times
+     * @param delays         the delays
+     * @param status         the status
+     * @param maxSeats       the max seats
+     * @param freeSeats      the free seats
+     * @param cities         the cities
+     * @param ifSearched     the if searched
+     */
     public SearchFlightResultPanel(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
 
@@ -136,6 +156,21 @@ public class SearchFlightResultPanel extends JPanel {
 
         private final String[] colNames = {"Compagnia", "Tratta", "Data", "Partenza", "Ritardo", "Arrivo", "Stato", "Posti", "Prenotazione"};
 
+        /**
+         * Instantiates a new Flight table model.
+         *
+         * @param controller        the controller
+         * @param parIds            the par ids
+         * @param parCompanyNames   the par company names
+         * @param parDates          the par dates
+         * @param parDepartureTimes the par departure times
+         * @param parArrivalTimes   the par arrival times
+         * @param parDelays         the par delays
+         * @param parStatus         the par status
+         * @param parMaxSeats       the par max seats
+         * @param parFreeSeats      the par free seats
+         * @param parCities         the par cities
+         */
         public FlightTableModel( Controller controller, List<String> parIds, List<String> parCompanyNames, List<Date> parDates, List<Time> parDepartureTimes, List<Time> parArrivalTimes,
                                 List<Integer> parDelays, List<String> parStatus, List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> parCities) {
 
@@ -153,10 +188,20 @@ public class SearchFlightResultPanel extends JPanel {
 
         }
 
+        /**
+         * Get free seats list.
+         *
+         * @return the list
+         */
         public List<Integer> getFreeSeats(){
             return freeSeats;
         }
 
+        /**
+         * Get status list.
+         *
+         * @return the list
+         */
         public List<String> getStatus(){
             return status;
         }
@@ -259,6 +304,9 @@ public class SearchFlightResultPanel extends JPanel {
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
 
+        /**
+         * Instantiates a new Button renderer.
+         */
         public ButtonRenderer() {
             setOpaque(true);
             setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -291,6 +339,12 @@ public class SearchFlightResultPanel extends JPanel {
 
         private final String emptyMessage;
 
+        /**
+         * Instantiates a new J table with empty message.
+         *
+         * @param model        the model
+         * @param emptyMessage the empty message
+         */
         public JTableWithEmptyMessage(AbstractTableModel model, String emptyMessage) {
 
             super(model);

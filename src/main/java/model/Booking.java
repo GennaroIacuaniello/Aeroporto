@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Booking.
+ */
 public class Booking {
 
     private BookingStatus status;
@@ -13,6 +16,17 @@ public class Booking {
     private final Date bookingDate;
     private ArrayList<Ticket> tickets;
 
+    /**
+     * Instantiates a new Booking.
+     *
+     * @param parBuyer        the par buyer
+     * @param parBookedFlight the par booked flight
+     * @param parBookingDate  the par booking date
+     * @param parTickets      the par tickets
+     * @throws InvalidBuyer           the invalid buyer
+     * @throws InvalidFlight          the invalid flight
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, List<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
@@ -41,6 +55,18 @@ public class Booking {
 
     }
 
+    /**
+     * Instantiates a new Booking.
+     *
+     * @param parStatus       the par status
+     * @param parBuyer        the par buyer
+     * @param parBookedFlight the par booked flight
+     * @param parBookingDate  the par booking date
+     * @param parTickets      the par tickets
+     * @throws InvalidBuyer           the invalid buyer
+     * @throws InvalidFlight          the invalid flight
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Date parBookingDate, List<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
@@ -68,6 +94,17 @@ public class Booking {
 
     }
 
+    /**
+     * Instantiates a new Booking.
+     *
+     * @param parBuyer        the par buyer
+     * @param parBookedFlight the par booked flight
+     * @param parBookingDate  the par booking date
+     * @param parTicket       the par ticket
+     * @throws InvalidBuyer           the invalid buyer
+     * @throws InvalidFlight          the invalid flight
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
@@ -96,6 +133,18 @@ public class Booking {
 
     }
 
+    /**
+     * Instantiates a new Booking.
+     *
+     * @param parStatus       the par status
+     * @param parBuyer        the par buyer
+     * @param parBookedFlight the par booked flight
+     * @param parBookingDate  the par booking date
+     * @param parTicket       the par ticket
+     * @throws InvalidBuyer           the invalid buyer
+     * @throws InvalidFlight          the invalid flight
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public Booking(BookingStatus parStatus, Customer parBuyer, Flight parBookedFlight, Date parBookingDate, Ticket parTicket) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
         if(parBuyer != null){
@@ -124,6 +173,22 @@ public class Booking {
 
     }
 
+    /**
+     * Instantiates a new Booking.
+     *
+     * @param parStatus       the par status
+     * @param parBookingDate  the par booking date
+     * @param parBuyer        the par buyer
+     * @param parBookedFlight the par booked flight
+     * @param parTicketNumber the par ticket number
+     * @param parSeat         the par seat
+     * @param parCheckedIn    the par checked in
+     * @param parPassenger    the par passenger
+     * @throws InvalidTicket          the invalid ticket
+     * @throws InvalidFlight          the invalid flight
+     * @throws InvalidBooking         the invalid booking
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public Booking(BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight,
                    String parTicketNumber, int parSeat, boolean parCheckedIn, Passenger parPassenger) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
 
@@ -137,6 +202,25 @@ public class Booking {
 
     }
 
+    /**
+     * Instantiates a new Booking.
+     *
+     * @param parStatus       the par status
+     * @param parBookingDate  the par booking date
+     * @param parBuyer        the par buyer
+     * @param parBookedFlight the par booked flight
+     * @param parTicketNumber the par ticket number
+     * @param parSeat         the par seat
+     * @param parCheckedIn    the par checked in
+     * @param parFirstName    the par first name
+     * @param parLastName     the par last name
+     * @param parSSN          the par ssn
+     * @param parBirthDate    the par birth date
+     * @throws InvalidTicket          the invalid ticket
+     * @throws InvalidFlight          the invalid flight
+     * @throws InvalidBooking         the invalid booking
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public Booking(BookingStatus parStatus, Date parBookingDate, Customer parBuyer, Flight parBookedFlight,
                    String parTicketNumber, Integer parSeat, boolean parCheckedIn,
                    String parFirstName, String parLastName, String parSSN, Date parBirthDate) throws InvalidTicket, InvalidFlight, InvalidBooking, InvalidPassengerNumber {
@@ -152,30 +236,66 @@ public class Booking {
 
     }
 
+    /**
+     * Gets status.
+     *
+     * @return the status
+     */
     public BookingStatus getStatus() {
         return status;
     }
 
+    /**
+     * Sets status.
+     *
+     * @param status the status
+     */
     public void setStatus(BookingStatus status) {
         this.status = status;
     }
 
+    /**
+     * Gets buyer.
+     *
+     * @return the buyer
+     */
     public Customer getBuyer() {
         return buyer;
     }
 
+    /**
+     * Gets booked flight.
+     *
+     * @return the booked flight
+     */
     public Flight getBookedFlight() {
         return bookedFlight;
     }
 
+    /**
+     * Gets booking date.
+     *
+     * @return the booking date
+     */
     public Date getBookingDate() {
         return bookingDate;
     }
 
+    /**
+     * Gets tickets.
+     *
+     * @return the tickets
+     */
     public List<Ticket> getTickets() {
         return tickets;
     }
 
+    /**
+     * Sets tickets.
+     *
+     * @param tickets the tickets
+     * @throws InvalidPassengerNumber the invalid passenger number
+     */
     public void setTickets(List<Ticket> tickets) throws InvalidPassengerNumber{
 
         if(!tickets.isEmpty()){

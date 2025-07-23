@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The type Home page admin.
+ */
 public class HomePageAdmin extends DisposableObject {
 
     private JFrame mainFrame;
@@ -13,6 +16,12 @@ public class HomePageAdmin extends DisposableObject {
     private SearchFlightPanel searchFlightPanel;
     private final Constraints constraints;
 
+    /**
+     * Instantiates a new Home page admin.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     */
     public HomePageAdmin(List<DisposableObject> callingObjects, Controller controller) {
 
         super();

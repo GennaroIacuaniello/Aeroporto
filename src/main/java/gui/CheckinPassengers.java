@@ -10,15 +10,42 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Checkin passengers.
+ */
 public class CheckinPassengers extends BookingPageAdmin{
 
+    /**
+     * The Gate button.
+     */
     protected JButton gateButton;
+    /**
+     * The Confirm button.
+     */
     protected JButton confirmButton;
+    /**
+     * The Gate chooser.
+     */
     protected GateChooser gateChooser;
 
+    /**
+     * The True passenger panels.
+     */
     protected ArrayList<PassengerPanel> truePassengerPanels;
+    /**
+     * The False passenger panels.
+     */
     protected ArrayList<PassengerPanel> falsePassengerPanels;
 
+    /**
+     * Instantiates a new Checkin passengers.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     */
     public CheckinPassengers (List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
@@ -31,6 +58,16 @@ public class CheckinPassengers extends BookingPageAdmin{
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Instantiates a new Checkin passengers.
+     *
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param dimension      the dimension
+     * @param point          the point
+     * @param fullScreen     the full screen
+     * @param flag           the flag
+     */
     public CheckinPassengers (List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, boolean flag) {
 
         this(callingObjects, controller, dimension, point, fullScreen);
@@ -59,6 +96,11 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.setVisible(true);
     }
 
+    /**
+     * Sets gate button.
+     *
+     * @param controller the controller
+     */
     protected void setGateButton (Controller controller) {
 
         gateButton = new JButton("GATE");
@@ -82,12 +124,22 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.add(gateButton, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Sets gate.
+     *
+     * @param controller the controller
+     */
     protected void setGate (Controller controller) {
 
         if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(gateButton, controller, this);
         else gateChooser = new GateChooser(controller, gateButton);
     }
 
+    /**
+     * Sets confirm button.
+     *
+     * @param controller the controller
+     */
     protected void setConfirmButton (Controller controller) {
 
         confirmButton = new JButton("CONFERMA");
@@ -118,6 +170,11 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.add(confirmButton, constraints.getGridBagConstraints());
     }
 
+    /**
+     * Sets checkin check boxes.
+     *
+     * @param controller the controller
+     */
     protected void setCheckinCheckBoxes (Controller controller) {
 
         for (int i = 0; i < passengerPanels.size(); i++) {
@@ -164,6 +221,11 @@ public class CheckinPassengers extends BookingPageAdmin{
         if (statusChooser != null) statusChooser.getMainFrame().dispose();
     }
 
+    /**
+     * Sets gate chooser.
+     *
+     * @param gateChooser the gate chooser
+     */
     public void setGateChooser(GateChooser gateChooser) {
 
         this.gateChooser = gateChooser;
