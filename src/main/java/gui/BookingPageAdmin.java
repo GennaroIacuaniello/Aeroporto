@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 public class BookingPageAdmin extends BookingPage {
@@ -21,7 +22,7 @@ public class BookingPageAdmin extends BookingPage {
         protected JButton setDelayButton;
         protected JTextField delayTextField;
 
-    public BookingPageAdmin(ArrayList<DisposableObject> callingObjects, Controller controller,
+    public BookingPageAdmin(List<DisposableObject> callingObjects, Controller controller,
                             Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
@@ -79,7 +80,7 @@ public class BookingPageAdmin extends BookingPage {
     }
 
     @Override
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         confirmPanel = new JPanel();
 
@@ -98,7 +99,7 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.setVisible(true);
     }
 
-    protected void setChangeStatusButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
+    protected void setChangeStatusButton (Controller controller, List<DisposableObject> callingObjects) {
 
         statusButton = new JButton("CAMBIA STATO VOLO");
 
@@ -119,7 +120,7 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.add(statusButton, constraints.getConstraints());
     }
 
-    private void setCheckinButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setCheckinButton (List<DisposableObject> callingObjects, Controller controller) {
 
         checkinButton = new JButton("CHECKIN");
 
@@ -140,7 +141,7 @@ public class BookingPageAdmin extends BookingPage {
         confirmPanel.add(checkinButton, constraints.getConstraints());
     }
 
-    protected void checkCheckinButton (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void checkCheckinButton (List<DisposableObject> callingObjects, Controller controller) {
 
         if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("PROGRAMMED")) {
 
@@ -227,7 +228,7 @@ public class BookingPageAdmin extends BookingPage {
     }
 
     @Override
-    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
 
         if (controllerDisposeFlag) {
 

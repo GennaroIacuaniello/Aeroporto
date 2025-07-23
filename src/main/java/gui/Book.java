@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 public class Book extends BookingModifyPage {
 
-    public Book(ArrayList<DisposableObject> callingObjects, Controller controller,
+    public Book(List<DisposableObject> callingObjects, Controller controller,
                 Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
@@ -18,7 +18,7 @@ public class Book extends BookingModifyPage {
         mainFrame.setVisible(true);
     }
 
-    protected Book(ArrayList<DisposableObject> callingObjects, Controller controller,
+    protected Book(List<DisposableObject> callingObjects, Controller controller,
                    Dimension dimension, Point point, int fullScreen, boolean flag) {
 
         this(callingObjects, controller, dimension, point, fullScreen);
@@ -49,7 +49,7 @@ public class Book extends BookingModifyPage {
     }
 
     @Override
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         confirmPanel = new JPanel();
 
@@ -64,7 +64,7 @@ public class Book extends BookingModifyPage {
     }
 
     @Override
-    protected void addConfirmButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
+    protected void addConfirmButton (Controller controller, List<DisposableObject> callingObjects) {
 
         confirmButton = new JButton("CONFERMA PRENOTAZIONE");
 
@@ -94,7 +94,7 @@ public class Book extends BookingModifyPage {
     }
 
     @Override
-    protected void addSavePendingButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
+    protected void addSavePendingButton (Controller controller, List<DisposableObject> callingObjects) {
 
         savePendingButton = new JButton("SALVA IN ATTESA");
 

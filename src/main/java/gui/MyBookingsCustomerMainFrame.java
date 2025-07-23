@@ -112,12 +112,12 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     }
 
     @Override
-    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
         controller.clearSearchBookingResultCache();
     }
 
     @Override
-    public void doOnRestore (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnRestore (List<DisposableObject> callingObjects, Controller controller) {
 
         if(searchBookingPanel.isSearchPerformed()){
             if ( searchBookingPanel.getActiveFilter().equals("FLIGHT")) {

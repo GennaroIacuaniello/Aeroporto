@@ -18,7 +18,7 @@ public class BookingPageCustomer extends BookingPage {
         protected JButton modifyButton;
         protected JButton cancelButton;
 
-    public BookingPageCustomer(ArrayList<DisposableObject> callingObjects, Controller controller,
+    public BookingPageCustomer(List<DisposableObject> callingObjects, Controller controller,
                                Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
@@ -26,14 +26,6 @@ public class BookingPageCustomer extends BookingPage {
         addConfirmPanel(callingObjects, controller);
 
         mainFrame.setVisible(true);
-    }
-
-    public BookingPageCustomer(ArrayList<DisposableObject> callingObjects, Controller controller,
-                               Dimension dimension, Point point, int fullScreen, boolean flag) {
-
-        this(callingObjects, controller, dimension, point, fullScreen);
-
-        setControllerDisposeFlag(flag);
     }
 
     @Override
@@ -69,7 +61,7 @@ public class BookingPageCustomer extends BookingPage {
     }
 
     @Override
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         confirmPanel = new JPanel();
 

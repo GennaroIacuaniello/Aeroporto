@@ -14,6 +14,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFlightPanel extends JPanel {
 
@@ -51,7 +52,7 @@ public class SearchFlightPanel extends JPanel {
 
     private boolean searchPerformed = false;
 
-    public SearchFlightPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public SearchFlightPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -68,7 +69,7 @@ public class SearchFlightPanel extends JPanel {
         setComponents(callingObjects, controller);
     }
 
-    private void setComponents(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setComponents(List<DisposableObject> callingObjects, Controller controller) {
 
         JPanel parametersPanel = createSymmetricFormPanel(controller);
 
@@ -232,7 +233,7 @@ public class SearchFlightPanel extends JPanel {
         return container;
     }
 
-    private JButton createSearchButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private JButton createSearchButton(List<DisposableObject> callingObjects, Controller controller) {
 
         searchButton = new JButton("Cerca");
         searchButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -259,7 +260,7 @@ public class SearchFlightPanel extends JPanel {
         return searchButton;
     }
 
-    private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
+    private void updateResultsPanel(List<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
 
         if(controller.isLoggedAdmin()){
 
@@ -304,7 +305,7 @@ public class SearchFlightPanel extends JPanel {
 
     }
 
-    public void executeResearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton){
+    public void executeResearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton){
 
         String origin = fromField.getText();
         String destination = toField.getText();

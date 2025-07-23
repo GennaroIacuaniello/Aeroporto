@@ -20,7 +20,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
     private JTable resultsTable;
     private FlightTableModel tableModel;
 
-    public SearchFlightResultPanelAdmin(ArrayList<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
+    public SearchFlightResultPanelAdmin(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
 
         super(new BorderLayout());
@@ -74,7 +74,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
 
     }
 
-    private void setTableApperance(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setTableApperance(List<DisposableObject> callingObjects, Controller controller) {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));

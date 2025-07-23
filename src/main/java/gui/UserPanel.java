@@ -5,9 +5,8 @@ import controller.UserController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserPanel extends JPanel {
 
@@ -18,7 +17,7 @@ public class UserPanel extends JPanel {
 
     private Constraints constraints;
 
-    public UserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public UserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
 
@@ -31,7 +30,7 @@ public class UserPanel extends JPanel {
         setUserButton(controller);
     }
 
-    private void setPopupMenu (Controller controller, ArrayList<DisposableObject> callingObjects) {
+    private void setPopupMenu (Controller controller, List<DisposableObject> callingObjects) {
 
         popupMenu = new JPopupMenu();
         menuItem = new JMenuItem("Logout");

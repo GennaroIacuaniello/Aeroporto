@@ -6,25 +6,8 @@ import java.awt.*;
 
 public class RoundedPanel extends JPanel {
 
-    private int cornerRadius = 30;
     private Color backgroundColor;
     private Color roundBorderColor;
-
-    public RoundedPanel(LayoutManager layout, int cornerRadius) {
-        super (layout);
-        this.cornerRadius = cornerRadius;
-        setOpaque(false);
-        this.backgroundColor = getBackground();
-        this.roundBorderColor = getForeground();
-    }
-
-    public RoundedPanel(int cornerRadius) {
-        super ();
-        this.cornerRadius = cornerRadius;
-        setOpaque(false);
-        this.backgroundColor = getBackground();
-        this.roundBorderColor = getForeground();
-    }
 
     public RoundedPanel(LayoutManager   layout) {
         super (layout);
@@ -33,16 +16,10 @@ public class RoundedPanel extends JPanel {
         this.roundBorderColor = getForeground();
     }
 
-    public RoundedPanel() {
-        super ();
-        setOpaque(false);
-        this.backgroundColor = getBackground();
-        this.roundBorderColor = getForeground();
-    }
-
     @Override
     protected void paintComponent (Graphics g) {
 
+        int cornerRadius = 30;
         Dimension arcs = new Dimension(cornerRadius, cornerRadius);
 
         int width = getWidth();
@@ -78,12 +55,4 @@ public class RoundedPanel extends JPanel {
         return backgroundColor;
     }
 
-    public void setCornerRadius (int cornerRadius) {
-        this.cornerRadius = cornerRadius;
-        repaint();
-    }
-
-    public int getCornerRadius() {
-        return cornerRadius;
-    }
 }

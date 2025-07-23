@@ -2,12 +2,12 @@ package gui;
 
 public enum PasswordCode {
 
-    validPassword,
-    tooShort,
-    tooLong,
-    mustContainLowercase,
-    mustContainUppercase,
-    mustContainDigit,
-    mustContainSpecial,
-    characterNotAllowed
+    VALID_PASSWORD,
+    TOO_SHORT,
+    TOO_LONG,
+    MUST_CONTAIN_LOWERCASE,
+    MUST_CONTAIN_UPPERCASE,
+    MUST_CONTAIN_DIGIT,
+    MUST_CONTAIN_SPECIAL,
+    CHARACTER_NOT_ALLOWED
 }

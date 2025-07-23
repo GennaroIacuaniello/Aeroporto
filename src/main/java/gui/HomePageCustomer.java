@@ -5,6 +5,7 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomePageCustomer extends DisposableObject {
 
@@ -74,7 +75,7 @@ public class HomePageCustomer extends DisposableObject {
         hamburgerPanel.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addUserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         userPanel = new UserPanel(callingObjects, controller);
         constraints.setConstraints(1, 2, 1, 1, GridBagConstraints.VERTICAL,
@@ -162,13 +163,13 @@ public class HomePageCustomer extends DisposableObject {
     }
 
     @Override
-    public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose(List<DisposableObject> callingObjects, Controller controller) {
         controller.getCustomerController().setLoggedCustomer(null, null);
         controller.getUserController().setLoggedUser(null, null);
     }
 
     @Override
-    public void doOnRestore(ArrayList<DisposableObject> callingObjects, Controller controller){
+    public void doOnRestore(java.util.List<DisposableObject> callingObjects, Controller controller){
         if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
             userPanel.setVisible(false);
             mainFrame.remove(userPanel);

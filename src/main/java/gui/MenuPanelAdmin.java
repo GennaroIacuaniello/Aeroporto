@@ -4,11 +4,12 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 
 public class MenuPanelAdmin extends JPanel {
 
-    public MenuPanelAdmin(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public MenuPanelAdmin(List<DisposableObject> callingObjects, Controller controller) {
 
         super();
 

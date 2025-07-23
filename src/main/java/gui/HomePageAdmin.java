@@ -21,15 +21,15 @@ public class HomePageAdmin extends DisposableObject {
         this.setMainFrame((ArrayList<DisposableObject>)callingObjects);
 
         this.addTitlePanel(controller);
-        this.addNavigatorBarPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addMenuPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addUserPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addSearchPanel((ArrayList<DisposableObject>)callingObjects, controller);
+        this.addNavigatorBarPanel(callingObjects, controller);
+        this.addMenuPanel(callingObjects, controller);
+        this.addUserPanel(callingObjects, controller);
+        this.addSearchPanel(callingObjects, controller);
 
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects) {
+    private void setMainFrame(List<DisposableObject> callingObjects) {
 
         mainFrame = new JFrame("Home");
         mainFrame.setSize(1080, 720);
@@ -57,7 +57,7 @@ public class HomePageAdmin extends DisposableObject {
         titlePanel.setVisible(true);
     }
 
-    private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addNavigatorBarPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
 
@@ -70,7 +70,7 @@ public class HomePageAdmin extends DisposableObject {
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addMenuPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         MenuPanelAdmin menu = new MenuPanelAdmin(callingObjects, controller);
 
@@ -83,7 +83,7 @@ public class HomePageAdmin extends DisposableObject {
         menu.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addUserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         userPanel = new UserPanel(callingObjects, controller);
 
@@ -96,7 +96,7 @@ public class HomePageAdmin extends DisposableObject {
         userPanel.setVisible(true);
     }
 
-    private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addSearchPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         searchFlightPanel = new SearchFlightPanel(callingObjects, controller);
 
@@ -108,13 +108,13 @@ public class HomePageAdmin extends DisposableObject {
     }
 
     @Override
-    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
         //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().dispose();
         controller.clearSearchFlightsResultCache();
     }
 
     @Override
-    public void doOnRestore (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnRestore (List<DisposableObject> callingObjects, Controller controller) {
         //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
         if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
             userPanel.setVisible(false);

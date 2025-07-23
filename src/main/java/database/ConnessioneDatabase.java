@@ -3,35 +3,35 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnessioneDatabase {
 
+	private static final Logger LOGGER = Logger.getLogger(ConnessioneDatabase.class.getName());
 	// ATTRIBUTI
 	private static ConnessioneDatabase instance;
 	private Connection connection = null;
-	private String nome = "postgres";
-	private String password = "ciao9999";
-	private String url = "jdbc:postgresql://localhost:5432/Aeroporto";
-	private String driver = "org.postgresql.Driver";
 
-	// COSTRUTTORE
+    // COSTRUTTORE
 	private ConnessioneDatabase() throws SQLException {
 		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, nome, password);
+            String driver = "org.postgresql.Driver";
+            Class.forName(driver);
+            String nome = "postgres";
+            String password = "ciao9999";
+            String url = "jdbc:postgresql://localhost:5432/Aeroporto";
+            connection = DriverManager.getConnection(url, nome, password);
 
 		} catch (ClassNotFoundException ex) {
-			System.out.println("Database Connection Creation Failed : " + ex.getMessage());
-			ex.printStackTrace();
+			LOGGER.log(Level.SEVERE, ex.getMessage());
 		}
 
 	}
 
 
 	public static ConnessioneDatabase getInstance() throws SQLException {
-		if (instance == null) {
-			instance = new ConnessioneDatabase();
-		} else if (instance.connection.isClosed()) {
+		if (instance == null || instance.connection.isClosed()) {
 			instance = new ConnessioneDatabase();
 		}
 		return instance;
@@ -48,8 +48,7 @@ public class ConnessioneDatabase {
 			connection.close();
 		} catch (SQLException ex) {
 
-			System.out.println("Database Connection Close Failed : " + ex.getMessage());
-			ex.printStackTrace();
+			LOGGER.log(Level.SEVERE, ex.getMessage());
 		}
 	}
 }

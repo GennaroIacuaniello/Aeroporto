@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchBookingPanel extends JPanel {
 
@@ -379,7 +380,7 @@ public class SearchBookingPanel extends JPanel {
         return searchButton;
     }
 
-    public void filteredFlightSearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
+    public void filteredFlightSearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String origin = fromField.getText();
         String destination = toField.getText();
@@ -423,7 +424,7 @@ public class SearchBookingPanel extends JPanel {
         updateResultsPanel(callingObjects, controller, true);
     }
 
-    public void filteredPassengerSearch(ArrayList<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
+    public void filteredPassengerSearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -443,7 +444,7 @@ public class SearchBookingPanel extends JPanel {
     }
 
 
-    private void updateResultsPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
+    private void updateResultsPanel(List<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
 
         SearchBookingResultPanel resultsPanel = new SearchBookingResultPanel(callingObjects, controller,
                                                                              bookingDates, bookingStatus, flightIds);

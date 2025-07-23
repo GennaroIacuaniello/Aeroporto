@@ -19,7 +19,7 @@ public class LostLuggageDialog extends JDialog {
     private final JTable luggageTable;
     private final LostBaggageTableModel tableModel;
 
-    public LostLuggageDialog(Frame owner, ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public LostLuggageDialog(Frame owner, List<DisposableObject> callingObjects, Controller controller) {
 
         super(owner, "Gestione Bagagli Smarriti", true);
 
@@ -40,6 +40,7 @@ public class LostLuggageDialog extends JDialog {
             luggageTable = new JTable(tableModel);
 
         luggageTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 JTable table = (JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
@@ -52,11 +53,6 @@ public class LostLuggageDialog extends JDialog {
                     int index = table.rowAtPoint(point);   //index of the selectedBooking
 
                     controller.setBookingResultSelectedFlightForLostLuaggages(index);
-
-                    //controller.getBookingController().setBookingResultSelectedBooking(index);
-
-                    //new BookingPageCustomer(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                    //        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
                     new BookingPageAdmin(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                             callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());

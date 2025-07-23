@@ -19,7 +19,7 @@ public class SearchBookingResultPanel extends JPanel {
     private JTable resultsTable;
     private BookingTableModel tableModel;
 
-    public SearchBookingResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<String> bookingStatus,
+    public SearchBookingResultPanel(List<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<String> bookingStatus,
                                     List<String> ids) {
                                     //la lista di id è in parallelo con quella delle prenotazioni, e in base a quelli prendo poi il volo associato dal FlightController
 
@@ -71,7 +71,7 @@ public class SearchBookingResultPanel extends JPanel {
 
     }
 
-    private void setTableApperance(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setTableApperance(List<DisposableObject> callingObjects, Controller controller) {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));

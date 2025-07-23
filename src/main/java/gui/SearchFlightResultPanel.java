@@ -20,7 +20,7 @@ public class SearchFlightResultPanel extends JPanel {
     private JTable resultsTable;
     private FlightTableModel tableModel;
 
-    public SearchFlightResultPanel(ArrayList<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
+    public SearchFlightResultPanel(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
 
         super(new BorderLayout());
@@ -84,7 +84,7 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
-    private void setTableApperance(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setTableApperance(List<DisposableObject> callingObjects, Controller controller) {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));
@@ -160,9 +160,6 @@ public class SearchFlightResultPanel extends JPanel {
         public ArrayList<String> getStatus(){
             return status;
         }
-        //public List<Flight> getFlights() {
-            //return flights;
-        //}
 
         @Override
         public int getRowCount() {
@@ -274,7 +271,6 @@ public class SearchFlightResultPanel extends JPanel {
             setText((value == null) ? "" : value.toString());
 
             FlightTableModel model = (FlightTableModel) table.getModel();
-            //Flight flight = model.getFlights().get(row);
 
             setEnabled(model.getFreeSeats().get(row) > 0 && (model.getStatus().get(row)).equalsIgnoreCase("PROGRAMMED"));
 

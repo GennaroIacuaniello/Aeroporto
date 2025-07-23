@@ -8,11 +8,11 @@ import java.security.NoSuchAlgorithmException;
 public class PasswordHandler extends JPasswordField {
 
 
-    public static final int  minimumPasswordLength = 8;
-    public static final int  maximumPasswordLength = 20;
+    public static final int MINIMUM_PASSWORD_LENGTH = 8;
+    public static final int MAXIMUM_PASSWORD_LENGTH = 20;
 
-    public static final String allowedSpecialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-    public static final String  allowedCharacterSet = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 " + allowedSpecialCharacters;
+    public static final String ALLOWED_SPECIAL_CHARACTERS = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+    public static final String ALLOWED_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789 " + ALLOWED_SPECIAL_CHARACTERS;
 
     String hashingAlgorithm = "SHA-256";
     PasswordCode passwordValidityCode;
@@ -44,7 +44,7 @@ public class PasswordHandler extends JPasswordField {
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new PasswordException(e.getMessage());
         }
     }
 
@@ -65,19 +65,22 @@ public class PasswordHandler extends JPasswordField {
     }
 
     public boolean isValidPassword(){
-        boolean upper = false, lower = false, digit = false, special = false;
+        boolean upper = false;
+        boolean lower = false;
+        boolean digit = false;
+        boolean special = false;
 
-        if(this.getPassword().length < minimumPasswordLength){
-            this.passwordValidityCode = PasswordCode.tooShort;
+        if(this.getPassword().length < MINIMUM_PASSWORD_LENGTH){
+            this.passwordValidityCode = PasswordCode.TOO_SHORT;
             return false;
-        } else if (this.getPassword().length > maximumPasswordLength) {
-            this.passwordValidityCode = PasswordCode.tooLong;
+        } else if (this.getPassword().length > MAXIMUM_PASSWORD_LENGTH) {
+            this.passwordValidityCode = PasswordCode.TOO_LONG;
             return false;
         }
 
         for(char c : this.getPassword()){
-            if(allowedCharacterSet.indexOf(c) == -1 || c == ' '){
-                this.passwordValidityCode = PasswordCode.characterNotAllowed;
+            if(ALLOWED_CHARACTER_SET.indexOf(c) == -1 || c == ' '){
+                this.passwordValidityCode = PasswordCode.CHARACTER_NOT_ALLOWED;
             }
             if(Character.isUpperCase(c)){
                 upper = true;
@@ -85,44 +88,45 @@ public class PasswordHandler extends JPasswordField {
                 lower = true;
             } else if (Character.isDigit(c)) {
                 digit = true;
-            } else if (allowedSpecialCharacters.indexOf(c) != -1) {
+            } else if (ALLOWED_SPECIAL_CHARACTERS.indexOf(c) != -1) {
                 special = true;
             }
         }
 
         if(!upper){
-            this.passwordValidityCode = PasswordCode.mustContainUppercase;
+            this.passwordValidityCode = PasswordCode.MUST_CONTAIN_UPPERCASE;
             return false;
         }
         if(!lower){
-            this.passwordValidityCode = PasswordCode.mustContainLowercase;
+            this.passwordValidityCode = PasswordCode.MUST_CONTAIN_LOWERCASE;
             return false;
         }
         if(!digit){
-            this.passwordValidityCode = PasswordCode.mustContainDigit;
+            this.passwordValidityCode = PasswordCode.MUST_CONTAIN_DIGIT;
             return false;
         }
         if(!special){
-            this.passwordValidityCode = PasswordCode.mustContainSpecial;
+            this.passwordValidityCode = PasswordCode.MUST_CONTAIN_SPECIAL;
             return false;
         }
 
-        this.passwordValidityCode = PasswordCode.validPassword;
+        this.passwordValidityCode = PasswordCode.VALID_PASSWORD;
         return true;
     }
 
     public void showInvalidPasswordMessage(JButton button) {
         String warningMessage = null;
         switch (this.passwordValidityCode){
-            case tooShort -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.minimumPasswordLength + " caratteri</html>";
-            case tooLong -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.maximumPasswordLength + " caratteri</html>";
-            case mustContainLowercase -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
-            case mustContainUppercase -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
-            case mustContainDigit -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
-            case mustContainSpecial -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
-                    PasswordHandler.allowedSpecialCharacters + "</html>";
-            case characterNotAllowed -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
-                    "I caratteri validi sono: <br>" + PasswordHandler.allowedCharacterSet + "</html>";
+            case TOO_SHORT -> warningMessage = "<html>La password deve contenere almeno " + PasswordHandler.MINIMUM_PASSWORD_LENGTH + " caratteri</html>";
+            case TOO_LONG -> warningMessage = "<html>La password può contenere al più " + PasswordHandler.MAXIMUM_PASSWORD_LENGTH + " caratteri</html>";
+            case MUST_CONTAIN_LOWERCASE -> warningMessage = "<html>La password deve contenere almeno un carattere minuscolo</html>";
+            case MUST_CONTAIN_UPPERCASE -> warningMessage = "<html>La password deve contenere almeno un carattere maiuscolo</html>";
+            case MUST_CONTAIN_DIGIT -> warningMessage = "<html>La password deve contenere almeno una cifra</html>";
+            case MUST_CONTAIN_SPECIAL -> warningMessage = "<html>La password deve contenere almeno uno dei seguenti caratteri: <br>" +
+                    PasswordHandler.ALLOWED_SPECIAL_CHARACTERS + "</html>";
+            case CHARACTER_NOT_ALLOWED -> warningMessage = "<html>La password inserita contiene un carattere non valido. <br>" +
+                    "I caratteri validi sono: <br>" + PasswordHandler.ALLOWED_CHARACTER_SET + "</html>";
+            case VALID_PASSWORD -> warningMessage = "";
         }
         new FloatingMessage(warningMessage, button, FloatingMessage.WARNING_MESSAGE);
     }

@@ -18,15 +18,14 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Controller {
 
     private final AdminController adminController;
-    private final ArrivingController arrivingController;
     private final BookingController bookingController;
     private final CustomerController customerController;
-    private final DepartingController departingController;
     private final FlightController flightController;
     private final GateController gateController;
     private final LuggageController luggageController;
@@ -38,10 +37,8 @@ public class Controller {
 
     public Controller() {
         adminController = new AdminController();
-        arrivingController = new ArrivingController();
         bookingController = new BookingController();
         customerController = new CustomerController();
-        departingController = new DepartingController();
         flightController = new FlightController();
         gateController = new GateController();
         luggageController = new LuggageController();
@@ -72,7 +69,7 @@ public class Controller {
             arrivingDao.getImminentArrivingFlights(flightId, companyName, flightDate, departureTime, arrivalTime, status,
                     maxSeats, freeSeats, origin, arrivalDelay, gate);
         } catch (SQLException e){
-            return null;
+            return new Object[0][0];
         }
 
         try{
@@ -90,7 +87,7 @@ public class Controller {
 
             }
         } catch (Exception e){
-            return null;
+            return new Object[0][0];
         }
 
         for (int i = 0; i < arrivingFlights.size(); i++) {
@@ -151,16 +148,16 @@ public class Controller {
 
             try {departingFlights.get(i).setGate(new Gate((byte)(i + 1)));}
             catch (InvalidGate e) {
-                e.printStackTrace();
+                Controller.getLogger().log(Level.SEVERE, e.getMessage());
             }
 
             result[i][0] = departingFlights.get(i).getCompanyName();
             result[i][1] = departingFlights.get(i).getDestination();
-            result[i][2] = Integer.valueOf(departingFlights.get(i).getDate().getDate()).toString() +
+            result[i][2] = departingFlights.get(i).getDate().getDate() +
                     " " + departingFlights.get(i).getMonthName();
             result[i][3] = departingFlights.get(i).getDepartureTime();
             if(departingFlights.get(i).getGate() != null){
-                result[i][4] = Integer.valueOf(departingFlights.get(i).getGate().getId()).toString();
+                result[i][4] = Integer.toString(departingFlights.get(i).getGate().getId());
             }else{
                 result[i][4] = "Non assegnato";
             }
@@ -170,25 +167,12 @@ public class Controller {
         return result;
     }
 
-
-    public AdminController getAdminController() {
-        return adminController;
-    }
-
-    public ArrivingController getArrivingController() {
-        return arrivingController;
-    }
-
     public BookingController getBookingController() {
         return bookingController;
     }
 
     public CustomerController getCustomerController() {
         return customerController;
-    }
-
-    public DepartingController getDepartingController() {
-        return departingController;
     }
 
     public FlightController getFlightController() {
@@ -203,36 +187,11 @@ public class Controller {
         return luggageController;
     }
 
-    public PassengerController getPassengerController() {
-        return passengerController;
-    }
-
     public UserController getUserController() {
         return userController;
     }
 
-    public TicketController getTicketController(){
-        return ticketController;
-    }
-
-    public void setAdminNUser (String username, String email, String hashedPassword) {
-        adminController.setAdmin (username, email, hashedPassword, 0);
-        userController.setLoggedUser (new Admin( username, email, hashedPassword), 0);
-    }
-
-    public void setCustomerNUser (String username, String mail, String hashedPassword, Integer id) {
-        customerController.setLoggedCustomer(username, mail, hashedPassword, id);
-        userController.setLoggedUser (new Customer(username, mail, hashedPassword), id);
-    }
-
-    public boolean checkBooking (int index) {
-        if (getBookingController().getBooking() != null && getBookingController().getBooking() == getFlightController().getFlight().getBookings().get(index)) return false;
-        if (getFlightController().getFlight().getBookings().get(index).getStatus() == BookingStatus.CANCELLED) return false;
-
-        return true;
-    }
-
-    public void goToLogin(ArrayList<DisposableObject> callingObjects){
+    public void goToLogin(List<DisposableObject> callingObjects){
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
         Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
@@ -245,7 +204,7 @@ public class Controller {
             callingObjects.removeLast();
         }
 
-        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+        if(sourceExtendedState != Frame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
             callingObjects.getLast().getFrame().setSize(sourceDimension);
             callingObjects.getLast().getFrame().setLocation(sourceLocation);
         }
@@ -256,7 +215,7 @@ public class Controller {
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
-    public void goHome (ArrayList<DisposableObject> callingObjects) {
+    public void goHome (List<DisposableObject> callingObjects) {
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
         Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
@@ -269,7 +228,7 @@ public class Controller {
             callingObjects.removeLast();
         }
 
-        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+        if(sourceExtendedState != Frame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
             callingObjects.getLast().getFrame().setSize(sourceDimension);
             callingObjects.getLast().getFrame().setLocation(sourceLocation);
         }
@@ -281,7 +240,7 @@ public class Controller {
         callingObjects.getLast().doOnRestore(callingObjects, this);
     }
 
-    public void goBack (ArrayList<DisposableObject> callingObjects) {
+    public void goBack (List<DisposableObject> callingObjects) {
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
         Point sourceLocation = callingObjects.getLast().getFrame().getLocation();
@@ -291,7 +250,7 @@ public class Controller {
         callingObjects.getLast().getFrame().dispose();
         callingObjects.removeLast();
 
-        if(sourceExtendedState != JFrame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
+        if(sourceExtendedState != Frame.MAXIMIZED_BOTH){ //if frame is maximized size and location are automatic
             callingObjects.getLast().getFrame().setSize(sourceDimension);
             callingObjects.getLast().getFrame().setLocation(sourceLocation);
         }
@@ -302,7 +261,7 @@ public class Controller {
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
-    public void logOut (ArrayList<DisposableObject> callingObjects) {
+    public void logOut (List<DisposableObject> callingObjects) {
 
         for (int i = callingObjects.size() - 1; i > 0; i--) {
             callingObjects.getLast().doOnDispose(callingObjects, this);
@@ -314,59 +273,58 @@ public class Controller {
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
-    public void addBooking(ArrayList<PassengerPanel> passengerPanels, String bookingStatus) {
+    public void addBooking(List<PassengerPanel> passengerPanels, String bookingStatus) {
 
         try {
 
             BookingDAOImpl bookingDAO = new BookingDAOImpl();
 
-            ArrayList<String> ticketsNumbers = new ArrayList<String>();
-            ArrayList<Integer> seats = new ArrayList<Integer>();
-            ArrayList<String> firstNames = new ArrayList<String>();
-            ArrayList<String> lastNames = new ArrayList<String>();
-            ArrayList<Date> birthDates = new ArrayList<Date>();
-            ArrayList<String> SSNs = new ArrayList<String>();
-            ArrayList<String> luggagesTypes = new ArrayList<String>();
-            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
+            ArrayList<String> ticketsNumbers = new ArrayList<>();
+            ArrayList<Integer> seats = new ArrayList<>();
+            ArrayList<String> firstNames = new ArrayList<>();
+            ArrayList<String> lastNames = new ArrayList<>();
+            ArrayList<Date> birthDates = new ArrayList<>();
+            ArrayList<String> passengerSSNs = new ArrayList<>();
+            ArrayList<String> luggagesTypes = new ArrayList<>();
+            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<>();
 
-            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, passengerSSNs, luggagesTypes, ticketsForLuggagesTypes);
 
             bookingDAO.addBooking(getUserController().getLoggedUserId(), flightController.getId(), bookingStatus, ticketsNumbers,
-                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+                    seats, firstNames, lastNames, birthDates, passengerSSNs, luggagesTypes, ticketsForLuggagesTypes);
 
         } catch (SQLException e) {
-            e.printStackTrace();
-
+            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
         }
     }
 
-    public void modifyBooking (ArrayList<PassengerPanel> passengerPanels, String bookingStatus) {
+    public void modifyBooking (List<PassengerPanel> passengerPanels, String bookingStatus) {
 
         try {
 
             BookingDAOImpl bookingDAO = new BookingDAOImpl();
 
-            ArrayList<String> ticketsNumbers = new ArrayList<String>();
-            ArrayList<Integer> seats = new ArrayList<Integer>();
-            ArrayList<String> firstNames = new ArrayList<String>();
-            ArrayList<String> lastNames = new ArrayList<String>();
-            ArrayList<Date> birthDates = new ArrayList<Date>();
-            ArrayList<String> SSNs = new ArrayList<String>();
-            ArrayList<String> luggagesTypes = new ArrayList<String>();
-            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<String>();
+            ArrayList<String> ticketsNumbers = new ArrayList<>();
+            ArrayList<Integer> seats = new ArrayList<>();
+            ArrayList<String> firstNames = new ArrayList<>();
+            ArrayList<String> lastNames = new ArrayList<>();
+            ArrayList<Date> birthDates = new ArrayList<>();
+            ArrayList<String> passengerSSNs = new ArrayList<>();
+            ArrayList<String> luggagesTypes = new ArrayList<>();
+            ArrayList<String> ticketsForLuggagesTypes = new ArrayList<>();
 
-            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes);
+            preparePassengers(passengerPanels, ticketsNumbers, seats, firstNames, lastNames, birthDates, passengerSSNs, luggagesTypes, ticketsForLuggagesTypes);
 
             bookingDAO.modifyBooking(flightController.getId(), getBookingController().getId(), ticketsNumbers,
-                    seats, firstNames, lastNames, birthDates, SSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1), bookingStatus);
+                    seats, firstNames, lastNames, birthDates, passengerSSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1), bookingStatus);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
         }
     }
 
-    private void preparePassengers (ArrayList<PassengerPanel> passengerPanels, ArrayList<String> ticketsNumbers, ArrayList<Integer> seats, ArrayList<String> firstNames, ArrayList<String> lastNames,
-                                    ArrayList<Date> birthDates, ArrayList<String> SSNs, ArrayList<String> luggagesTypes, ArrayList<String> ticketsForLuggagesTypes) {
+    private void preparePassengers (List<PassengerPanel> passengerPanels, List<String> ticketsNumbers, List<Integer> seats, List<String> firstNames, List<String> lastNames,
+                                    List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketsForLuggagesTypes) {
 
         int i = 0;
 
@@ -379,14 +337,16 @@ public class Controller {
             firstNames.add(passengerPanel.getPassengerName());
             lastNames.add(passengerPanel.getPassengerSurname());
             birthDates.add(passengerPanel.getPassengerDate());
-            SSNs.add(passengerPanel.getPassengerCF());
+            passengerSSNs.add(passengerPanel.getPassengerCF());
 
             for (LuggagePanel luggagePanel : passengerPanel.getLuggagesPanels()) {
 
-                if (luggagePanel.getComboBox().getSelectedIndex() != 0) {
-                    luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
-                    ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
-                }
+                if (luggagePanel.getComboBox().getSelectedIndex() != 0 && luggagePanel.getComboBox().getSelectedItem() != null){
+                        luggagesTypes.add(luggagePanel.getComboBox().getSelectedItem().toString());
+                        ticketsForLuggagesTypes.add(ticketsNumbers.getLast());
+                    }
+
+
             }
         }
     }
@@ -396,10 +356,6 @@ public class Controller {
         TicketDAOImpl ticketDAO = new TicketDAOImpl();
 
         return ticketDAO.generateTicketNumber(offset);
-    }
-
-    public JButton getErrorButton() {
-        return errorButton;
     }
 
     public void setErrorButton(JButton errorButton) {
@@ -450,7 +406,7 @@ public class Controller {
 
                 actualFlightIds.add(flightIds.get(i));
 
-                if(types.get(i)){   //alloco Departing
+                if(Boolean.TRUE.equals(types.get(i))){   //alloco Departing
 
                     flightController.getSearchBookingResult().add(new Departing( flightIds.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
                             FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i)));
@@ -506,7 +462,7 @@ public class Controller {
                             firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
 
                 }catch (Exception e){
-                    new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
                 }
             }
 
@@ -568,7 +524,7 @@ public class Controller {
 
                 actualFlightIds.add(flightIds.get(i));
 
-                if(types.get(i)){   //alloco Departing
+                if(Boolean.TRUE.equals(types.get(i))){   //alloco Departing
 
                     flightController.getSearchBookingResult().add(new Departing( flightIds.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
                             FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i)));
@@ -614,7 +570,7 @@ public class Controller {
                 }
 
             }catch (Exception e){
-                new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
             }
 
             for(int j = 1; j < ticketNumbers.size(); j++){
@@ -624,7 +580,7 @@ public class Controller {
                             firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
 
                 }catch (Exception e){
-                    new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
                 }
             }
 
@@ -687,7 +643,7 @@ public class Controller {
 
                 actualFlightIds.add(flightIds.get(i));
 
-                if(types.get(i)){   //alloco Departing
+                if(Boolean.TRUE.equals(types.get(i))){   //alloco Departing
 
                     flightController.getSearchBookingResult().add(new Departing( flightIds.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
                             FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i)));
@@ -743,7 +699,7 @@ public class Controller {
                             firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
 
                 }catch (Exception e){
-                    new FloatingMessage("Errore nella connessione al Database (Biglietti)!", searchButton, FloatingMessage.ERROR_MESSAGE);
+                    new FloatingMessage("Errore nella connessione al Database!", searchButton, FloatingMessage.ERROR_MESSAGE);
                 }
             }
 
@@ -834,7 +790,7 @@ public class Controller {
                             firstNames.get(j), lastNames.get(j), passengerSSNs.get(j), birthDates.get(j)));
 
                 }catch (Exception e){
-                    new FloatingMessage("Errore nella connessione al Database (Biglietti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+                    new FloatingMessage("Errore nella connessione al Database!", errorButton, FloatingMessage.ERROR_MESSAGE);
                 }
             }
 
@@ -923,7 +879,7 @@ public class Controller {
         return true;
     }
 
-    public void setBookedSeats (ArrayList<Integer> bookedSeats) {
+    public void setBookedSeats (List<Integer> bookedSeats) {
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 
         flightDAO.getBookedSeats(flightController.getId(), bookingController.getId(), bookedSeats);
@@ -980,7 +936,7 @@ public class Controller {
 
 
         } catch (SQLException e) {
-            new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+            new FloatingMessage("Errore nella connessione al Database (Bagagli)!", errorButton, FloatingMessage.ERROR_MESSAGE);
         }
 
 
@@ -1014,7 +970,7 @@ public class Controller {
 
                     actualFlightIds.add(flightIds.get(i));
 
-                    if(flightTypes.get(i)){   //alloco Departing
+                    if(Boolean.TRUE.equals(flightTypes.get(i))){   //alloco Departing
 
                         flightController.getSearchBookingResult().add(new Departing( flightIds.get(i), companyNames.get(i), flightDates.get(i), departureTimes.get(i), arrivalTimes.get(i),
                                 FlightStatus.valueOf(flightStatus.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i)));
@@ -1085,7 +1041,7 @@ public class Controller {
             luggageController.getSearchBookingResultIds().addAll(luggageIds);
 
         }catch (Exception e){
-            e.printStackTrace();
+            Controller.getLogger().log(Level.SEVERE, e.getMessage());
             new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
 
         }
@@ -1145,7 +1101,7 @@ public class Controller {
 
 
         } catch (SQLException e) {
-            new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+            new FloatingMessage("Errore nella connessione al Database (Voli)!", errorButton, FloatingMessage.ERROR_MESSAGE);
         }
 
         customerController.setSearchBookingResultCustomers(new ArrayList<>());
@@ -1240,7 +1196,7 @@ public class Controller {
             luggageController.getSearchBookingResultIds().addAll(luggageIds);
 
         }catch (Exception e){
-            e.printStackTrace();
+            Controller.getLogger().log(Level.SEVERE, e.getMessage());
             new FloatingMessage("Errore nella connessione al Database!", errorButton, FloatingMessage.ERROR_MESSAGE);
 
         }
@@ -1269,8 +1225,8 @@ public class Controller {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            new FloatingMessage("Errore nella connessione al Database (Prenotazioni)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+            Controller.getLogger().log(Level.SEVERE, e.getSQLState());
+            new FloatingMessage("Errore nella connessione al Database (Bagagli)!", errorButton, FloatingMessage.ERROR_MESSAGE);
         }
 
         try{
@@ -1298,8 +1254,8 @@ public class Controller {
             luggageController.getSearchBookingResultIds().addAll(luggageIds);
 
         }catch (Exception e){
-            e.printStackTrace();
-            new FloatingMessage("Errore nella connessione al Database (Bagagli smmarriti)!", errorButton, FloatingMessage.ERROR_MESSAGE);
+            Controller.getLogger().log(Level.SEVERE, e.getMessage());
+            new FloatingMessage("Errore nella connessione al Database (Bagagli)!", errorButton, FloatingMessage.ERROR_MESSAGE);
 
         }
 

@@ -27,7 +27,7 @@ public class ModifyAccount extends JDialog {
     String oldUsername = null;
     String oldMail = null;
 
-    public ModifyAccount(Frame owner, ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public ModifyAccount(Frame owner, List<DisposableObject> callingObjects, Controller controller) {
 
         super(owner, "Modifica Account", true);
 
@@ -59,7 +59,7 @@ public class ModifyAccount extends JDialog {
 
     }
 
-    private void setDeleteButton(Controller controller, ArrayList<DisposableObject> callingObjects){
+    private void setDeleteButton(Controller controller, List<DisposableObject> callingObjects){
         deleteButton = new JButton("Elimina Account");
         deleteButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
 
@@ -100,7 +100,7 @@ public class ModifyAccount extends JDialog {
         mainPanel.add(deleteButton, constraints.getConstraints());
     }
 
-    private void setConfirmButton(Controller controller, ArrayList<DisposableObject> callingObjects){
+    private void setConfirmButton(Controller controller, List<DisposableObject> callingObjects){
         confirmButton = new JButton("Conferma");
         confirmButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
 

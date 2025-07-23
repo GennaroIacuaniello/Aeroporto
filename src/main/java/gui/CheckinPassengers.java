@@ -2,13 +2,13 @@ package gui;
 
 
 import controller.Controller;
-import controller.GateController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CheckinPassengers extends BookingPageAdmin{
 
@@ -19,7 +19,7 @@ public class CheckinPassengers extends BookingPageAdmin{
     protected ArrayList<PassengerPanel> truePassengerPanels;
     protected ArrayList<PassengerPanel> falsePassengerPanels;
 
-    public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
+    public CheckinPassengers (List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
 
@@ -31,7 +31,7 @@ public class CheckinPassengers extends BookingPageAdmin{
         mainFrame.setVisible(true);
     }
 
-    public CheckinPassengers (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, boolean flag) {
+    public CheckinPassengers (List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, boolean flag) {
 
         this(callingObjects, controller, dimension, point, fullScreen);
 
@@ -39,7 +39,7 @@ public class CheckinPassengers extends BookingPageAdmin{
     }
 
     @Override
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         confirmPanel = new JPanel();
 
@@ -143,7 +143,7 @@ public class CheckinPassengers extends BookingPageAdmin{
     }
 
     @Override
-    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
 
         if (controllerDisposeFlag) {
 

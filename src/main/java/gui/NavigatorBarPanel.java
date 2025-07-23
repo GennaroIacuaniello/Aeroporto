@@ -6,7 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
+
 
 public class NavigatorBarPanel extends JPanel {
     JButton homeButton;
@@ -14,7 +15,7 @@ public class NavigatorBarPanel extends JPanel {
     JLabel pathLabel;
     Constraints constraints;
 
-    public NavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public NavigatorBarPanel(List<DisposableObject> callingObjects, Controller controller) {
         super();
 
         constraints = new Constraints();
@@ -26,9 +27,9 @@ public class NavigatorBarPanel extends JPanel {
         this.setPath(callingObjects);
     }
 
-    private void setHomeButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setHomeButton(List<DisposableObject> callingObjects, Controller controller) {
         homeButton = new JButton("Home");
-        //homeButton.setLayout (new FlowLayout ());
+
         homeButton.setFocusable(false);
 
         homeButton.addActionListener(new ActionListener() {
@@ -46,9 +47,9 @@ public class NavigatorBarPanel extends JPanel {
         homeButton.setVisible(true);
     }
 
-    private void setBackButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void setBackButton(List<DisposableObject> callingObjects, Controller controller) {
         backButton = new JButton("Back");
-        //backButton.setLayout (new GridBagLayout ());
+
         backButton.setFocusable(false);
 
         backButton.addActionListener(new ActionListener() {
@@ -62,12 +63,12 @@ public class NavigatorBarPanel extends JPanel {
         constraints.setConstraints(1, 0, 1, 1, GridBagConstraints.VERTICAL,
                 0, 0, GridBagConstraints.LINE_START);
         this.add(backButton, constraints.getConstraints());
-        //constraints.setConstraints (1, 0, 1, 1, GridBagConstraints.VERTICAL, 0, 0, GridBagConstraints.LINE_START);
+
         this.add(backButton);
         backButton.setVisible(true);
     }
 
-    private void setPath(ArrayList<DisposableObject> callingObjects) {
+    private void setPath(List<DisposableObject> callingObjects) {
         String path = "Posizione:\"";
         for (int i = 1; i < callingObjects.size(); i++) {
             path += callingObjects.get(i).getFrame().getTitle() + "/";
@@ -75,9 +76,6 @@ public class NavigatorBarPanel extends JPanel {
         path += "\"";
         pathLabel = new JLabel(path);
 
-        //pathLabel.setLayout (new GridBagLayout ());
-
-        //constraints.setConstraints (2, 0, 17, 1, GridBagConstraints.BOTH, 0, 0, GridBagConstraints.LINE_START);
         this.add(pathLabel);
         pathLabel.setVisible(true);
     }

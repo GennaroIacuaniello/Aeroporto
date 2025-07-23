@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StatusChooser {
 
@@ -17,7 +18,7 @@ public class StatusChooser {
     private JButton confirmButton;
     private JComboBox comboBox;
 
-    public StatusChooser(Controller controller, JButton callingButton, ArrayList<DisposableObject> disposableObjects) {
+    public StatusChooser(Controller controller, JButton callingButton, List<DisposableObject> disposableObjects) {
 
         mainFrame = new JFrame("Flight status chooser");
         mainFrame.setLayout(new FlowLayout(FlowLayout.CENTER));

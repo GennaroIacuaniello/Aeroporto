@@ -3,12 +3,12 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class DisposableObject {
 
-    public void doOnDispose(ArrayList<DisposableObject> callingObjects, Controller controller) {}
-    public void doOnRestore(ArrayList<DisposableObject> callingObjects, Controller controller) {}
+    public void doOnDispose(List<DisposableObject> callingObjects, Controller controller) {}
+    public void doOnRestore(List<DisposableObject> callingObjects, Controller controller) {}
 
-    abstract public JFrame getFrame();
+    public abstract JFrame getFrame();
 }

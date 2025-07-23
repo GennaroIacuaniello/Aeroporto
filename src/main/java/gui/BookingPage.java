@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.ArrayList;
 
 public abstract class BookingPage extends DisposableObject {
@@ -47,7 +50,7 @@ public abstract class BookingPage extends DisposableObject {
     protected Constraints constraints;
     protected boolean controllerDisposeFlag = true;
 
-    public BookingPage (ArrayList<DisposableObject> callingObjects, Controller controller,
+    public BookingPage (List<DisposableObject> callingObjects, Controller controller,
                         Dimension dimension, Point point, int fullScreen) {
 
         super();
@@ -79,9 +82,7 @@ public abstract class BookingPage extends DisposableObject {
         setControllerDisposeFlag(flag);
     }
 
-    public BookingPage () {}
-
-    protected void setMainFrame (ArrayList<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, String title) {
+    protected void setMainFrame (List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, String title) {
 
         mainFrame = new JFrame(title);
 
@@ -96,7 +97,7 @@ public abstract class BookingPage extends DisposableObject {
         callingObjects.addLast(this);
     }
 
-    protected void addTopPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addTopPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         topPanel = new JPanel();
 
@@ -125,7 +126,7 @@ public abstract class BookingPage extends DisposableObject {
         titlePanel.setVisible(true);
     }
 
-    protected void addNavigatorBarPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addNavigatorBarPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         navigatorBarPanel = new NavigatorBarPanel (callingObjects, controller);
 
@@ -137,18 +138,7 @@ public abstract class BookingPage extends DisposableObject {
         navigatorBarPanel.setVisible (true);
     }
 
-    protected void addMenuPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
-
-         menuPanel = new MenuPanelCustomer(callingObjects, controller);
-
-        constraints.setConstraints(0, 2, 1, 1, GridBagConstraints.NONE,
-                0, 0, GridBagConstraints.FIRST_LINE_START);
-        topPanel.add(menuPanel, constraints.getConstraints());
-
-        menuPanel.setVisible (true);
-    }
-
-    protected void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addUserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         userPanel = new UserPanel(callingObjects, controller);
 
@@ -159,7 +149,7 @@ public abstract class BookingPage extends DisposableObject {
         userPanel.setVisible (true);
     }
 
-    protected void addMainPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addMainPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         mainPanel = new JPanel();
 
@@ -199,7 +189,9 @@ public abstract class BookingPage extends DisposableObject {
         data[0][2] = controller.getFlightController().getDateString();
         data[0][3] = controller.getFlightController().getDepartureTime();
         data[0][4] = controller.getFlightController().getArrivalTime();
-        data[0][5] = "da implementare";
+        LocalTime departureTime = controller.getFlightController().getDepartureTime().toLocalTime();
+        LocalTime arrivalTime = controller.getFlightController().getArrivalTime().toLocalTime();
+        data[0][5] = Duration.between(departureTime, arrivalTime);
         data[0][6] = controller.getFlightController().getFlightStatus();
         data[0][7] = controller.getFlightController().getFreeSeats();
 
@@ -316,7 +308,7 @@ public abstract class BookingPage extends DisposableObject {
         passengerPanel.setPanelEnabled(false);
     }
 
-    protected void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addModifyPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         modifyPanel = new JPanel();
 
@@ -423,7 +415,7 @@ public abstract class BookingPage extends DisposableObject {
         prevPageButton.setEnabled (true);
     }
 
-    abstract protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller);
+    abstract protected void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller);
 
     /*protected void addFooterPanel () {
 
@@ -462,7 +454,7 @@ public abstract class BookingPage extends DisposableObject {
     }
 
     @Override
-    public void doOnDispose (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
 
         if (controllerDisposeFlag) {
 

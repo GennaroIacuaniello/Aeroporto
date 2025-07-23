@@ -36,16 +36,21 @@ public class FloatingMessage {
         messageWindow.setSize(300, 100);
 
         Point callingButtonLocation = new Point(callingButton.getLocationOnScreen());
-        Point messageLocation = new Point((int)callingButtonLocation.getX() + (callingButton.getWidth() - messageWindow.getWidth()) / 2,
-                (int)callingButtonLocation.getY() - messageWindow.getHeight() - 10);
+        Point messageLocation = getPoint(callingButton, callingButtonLocation);
+
+        messageWindow.setLocation(messageLocation);
+    }
+
+    private Point getPoint(JButton callingButton, Point callingButtonLocation) {
+        Point messageLocation = new Point((int) callingButtonLocation.getX() + (callingButton.getWidth() - messageWindow.getWidth()) / 2,
+                (int) callingButtonLocation.getY() - messageWindow.getHeight() - 10);
 
         if (messageLocation.getX() < 0)
             messageLocation.setLocation(5, (int) messageLocation.getY());
         else if (messageLocation.getX() + 300 > Toolkit.getDefaultToolkit().getScreenSize().getWidth())
             messageLocation.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() - 305),
                     (int) messageWindow.getLocationOnScreen().getY());
-
-        messageWindow.setLocation(messageLocation);
+        return messageLocation;
     }
 
     private void setPanel (String msg, int messageType) {
@@ -63,19 +68,23 @@ public class FloatingMessage {
     
     private void setColor(int messageType){
 
-        if(messageType == ERROR_MESSAGE){
-            messagePanel.setBackground(new Color(200, 60, 60));
-            messagePanel.setRoundBorderColor (new Color(120, 0, 10));
-        } else if (messageType == WARNING_MESSAGE) {
-            messagePanel.setBackground(new Color(240, 220, 50));
-            messagePanel.setRoundBorderColor (new Color(160, 140, 10));
-        } else if (messageType == SUCCESS_MESSAGE) {
-            messagePanel.setBackground(new Color(139, 255, 104));
-            messagePanel.setRoundBorderColor (new Color(55, 142, 5));
-        }
-        else{
-            throw new RuntimeException("FloatingMessage: messageType must be one of" +
-                    "FloatingMessage.ERROR_MESSAGE, FloatingMessage.WARNING_MESSAGE, FloatingMessage.SUCCESS_MESSAGE");
+        switch (messageType) {
+            case ERROR_MESSAGE -> {
+                messagePanel.setBackground(new Color(200, 60, 60));
+                messagePanel.setRoundBorderColor(new Color(120, 0, 10));
+            }
+            case WARNING_MESSAGE -> {
+                messagePanel.setBackground(new Color(240, 220, 50));
+                messagePanel.setRoundBorderColor(new Color(160, 140, 10));
+            }
+            case SUCCESS_MESSAGE -> {
+                messagePanel.setBackground(new Color(139, 255, 104));
+                messagePanel.setRoundBorderColor(new Color(55, 142, 5));
+            }
+            default ->
+                throw new FloatingMessageException("FloatingMessage: messageType must be one of" +
+                        "FloatingMessage.ERROR_MESSAGE, FloatingMessage.WARNING_MESSAGE, FloatingMessage.SUCCESS_MESSAGE");
+
         }
     }
 }

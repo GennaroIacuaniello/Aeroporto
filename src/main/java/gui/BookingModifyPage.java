@@ -1,16 +1,13 @@
 package gui;
 
 import controller.Controller;
-import model.Passenger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 public class BookingModifyPage extends BookingPageCustomer {
 
@@ -20,17 +17,15 @@ public class BookingModifyPage extends BookingPageCustomer {
     protected JButton confirmButton;
     protected JButton savePendingButton;
 
-    public BookingModifyPage(ArrayList<DisposableObject> callingObjects, Controller controller,
+    public BookingModifyPage(List<DisposableObject> callingObjects, Controller controller,
                              Dimension dimension, Point point, int fullScreen) {
 
         super(callingObjects, controller, dimension, point, fullScreen);
 
-        //addAddPassengerButton(controller);
-
         mainFrame.setVisible(true);
     }
 
-    public BookingModifyPage(ArrayList<DisposableObject> callingObjects, Controller controller,
+    public BookingModifyPage(List<DisposableObject> callingObjects, Controller controller,
                              Dimension dimension, Point point, int fullScreen, boolean flag) {
 
         this(callingObjects, controller, dimension, point, fullScreen);
@@ -39,7 +34,7 @@ public class BookingModifyPage extends BookingPageCustomer {
     }
 
     @Override
-    protected void addModifyPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addModifyPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         modifyPanel = new JPanel();
 
@@ -185,43 +180,7 @@ public class BookingModifyPage extends BookingPageCustomer {
     }
 
     @Override
-    protected void goPreviousPage () {
-
-        /*if (currPage != (passengerPanels.size() - 1) / 3) { //non sto all'ultima pagina quindi sono 3
-
-            for (int i = 0; i < 3; i++) {
-
-                passengerPanels.get((currPage * 3) + i).setVisible(false);
-                removePassengerButtons.get((currPage * 3) + i).setVisible(false);
-            }
-
-        } else { //sto all'ultima pagina quindi non so quanti sono
-
-            for (int i = 0; i <= (passengerPanels.size() - 1) % 3; i++) {
-
-                passengerPanels.get((passengerPanels.size() - i - 1)).setVisible(false);
-                removePassengerButtons.get(passengerPanels.size() - i - 1).setVisible(false);
-            }
-        }
-
-        currPage--;
-        currentPageLabel.setText (Integer.valueOf(currPage + 1).toString());
-
-        for (int i = 0; i < 3; i++) {//vado indietro quindi sono 3
-
-            passengerPanels.get((currPage * 3) + i).setVisible(true);
-            removePassengerButtons.get((currPage * 3) + i).setVisible(true);
-        }
-
-        nextPageButton.setEnabled (true);
-
-        if (currPage == 0) prevPageButton.setEnabled (false);*/
-
-        goToPage(currPage - 1);
-    }
-
-    @Override
-    protected void addConfirmPanel (ArrayList<DisposableObject> callingObjects, Controller controller) {
+    protected void addConfirmPanel (List<DisposableObject> callingObjects, Controller controller) {
 
         confirmPanel = new JPanel();
 
@@ -236,7 +195,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         confirmPanel.setVisible (true);
     }
 
-    protected void addConfirmButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
+    protected void addConfirmButton (Controller controller, List<DisposableObject> callingObjects) {
 
         confirmButton = new JButton("CONFERMA PRENOTAZIONE");
 
@@ -264,7 +223,7 @@ public class BookingModifyPage extends BookingPageCustomer {
         mainFrame.add (confirmPanel, constraints.getConstraints());
     }
 
-    protected void addSavePendingButton (Controller controller, ArrayList<DisposableObject> callingObjects) {
+    protected void addSavePendingButton (Controller controller, List<DisposableObject> callingObjects) {
 
         savePendingButton = new JButton("SALVA IN ATTESA");
 
