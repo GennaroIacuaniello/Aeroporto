@@ -20,22 +20,14 @@ public class SearchFlightPanel extends JPanel {
 
     private JScrollPane resultsScrollPane;
 
-    private Constraints constraints;
+    private final Constraints constraints;
 
-    private JLabel fromLabel;
     private JTextField fromField;
-    private JLabel toLabel;
     private JTextField toField;
-    private JLabel dateLabel;
     private DatePicker dateFrom;
-    private JLabel dateSep;
     private DatePicker dateTo;
-    private JLabel timeLabel;
     private TimePicker timeFrom;
-    private JLabel timeSep;
     private TimePicker timeTo;
-    private JButton arrivingButton;
-    private JButton departingButton;
 
     private JButton searchButton;
 
@@ -71,9 +63,9 @@ public class SearchFlightPanel extends JPanel {
 
     private void setComponents(List<DisposableObject> callingObjects, Controller controller) {
 
-        JPanel parametersPanel = createSymmetricFormPanel(controller);
+        JPanel parametersPanel = createSymmetricFormPanel();
 
-        JButton searchButton = createSearchButton(callingObjects, controller);
+        searchButton = createSearchButton(callingObjects, controller);
 
         resultsScrollPane = new JScrollPane();
 
@@ -94,7 +86,16 @@ public class SearchFlightPanel extends JPanel {
         updateResultsPanel(callingObjects, controller, false);
     }
 
-    private JPanel createSymmetricFormPanel(Controller controller) {
+    private JPanel createSymmetricFormPanel() {
+
+        JButton departingButton;
+        JButton arrivingButton;
+        JLabel timeSep;
+        JLabel timeLabel;
+        JLabel dateSep;
+        JLabel dateLabel;
+        JLabel toLabel;
+        JLabel fromLabel;
 
         JPanel container = new JPanel(new GridLayout(1, 2, 40, 0));
         container.setOpaque(false);
@@ -211,22 +212,22 @@ public class SearchFlightPanel extends JPanel {
         arrivingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 toField.setText("Napoli");
-                //toField.setEnabled(false);
                 fromField.setText("");
-                //fromField.setEnabled(true);
                 fromField.requestFocusInWindow();
+
             }
         });
 
         departingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 fromField.setText("Napoli");
-                //fromField.setEnabled(false);
                 toField.setText("");
-                //toField.setEnabled(true);
                 toField.requestFocusInWindow();
+
             }
         });
 
@@ -281,8 +282,8 @@ public class SearchFlightPanel extends JPanel {
 
         resultsScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        resultsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        resultsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        resultsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        resultsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         resultsScrollPane.getVerticalScrollBar().setUnitIncrement(30);
 
@@ -337,26 +338,24 @@ public class SearchFlightPanel extends JPanel {
             updateResultsPanel(callingObjects, controller,true);
         }else{
 
-            if (controller != null) {
+            ids = new ArrayList<>();
+            companyNames = new ArrayList<>();
+            dates = new ArrayList<>();
+            departureTimes = new ArrayList<>();
+            arrivalTimes = new ArrayList<>();
+            delays = new ArrayList<>();
+            status = new ArrayList<>();
+            maxSeats = new ArrayList<>();
+            freeSeats = new ArrayList<>();
+            cities = new ArrayList<>();
 
-                ids = new ArrayList<>();
-                companyNames = new ArrayList<>();
-                dates = new ArrayList<>();
-                departureTimes = new ArrayList<>();
-                arrivalTimes = new ArrayList<>();
-                delays = new ArrayList<>();
-                status = new ArrayList<>();
-                maxSeats = new ArrayList<>();
-                freeSeats = new ArrayList<>();
-                cities = new ArrayList<>();
+            controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
+                    ids, companyNames, dates, departureTimes, arrivalTimes, delays, status,
+                    maxSeats, freeSeats, cities, searchButton);
 
-                controller.getFlightController().searchFlightCustomer(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter,
-                        ids, companyNames, dates, departureTimes, arrivalTimes, delays, status,
-                        maxSeats, freeSeats, cities, searchButton);
 
-                //searchPerformed = true;
-                updateResultsPanel(callingObjects, controller, true);
-            }
+            updateResultsPanel(callingObjects, controller, true);
+
 
         }
 
@@ -366,15 +365,8 @@ public class SearchFlightPanel extends JPanel {
         return searchPerformed;
     }
 
-    public void setSearchPerformed(boolean searchPerformed) {
-        this.searchPerformed = searchPerformed;
-    }
-
     public JButton getSearchButton() {
         return searchButton;
     }
 
-    public void setSearchButton(JButton searchButton) {
-        this.searchButton = searchButton;
-    }
 }

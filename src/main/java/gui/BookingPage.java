@@ -114,7 +114,7 @@ public abstract class BookingPage extends DisposableObject {
 
     protected void addTitlePanel (Controller controller) {
 
-        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
 
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START);

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class SearchFlightResultPanel extends JPanel {
 
-    private JTable resultsTable;
-    private FlightTableModel tableModel;
+    private final JTable resultsTable;
+    private final FlightTableModel tableModel;
 
     public SearchFlightResultPanel(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
@@ -39,6 +39,7 @@ public class SearchFlightResultPanel extends JPanel {
 
         resultsTable.addMouseListener(new MouseAdapter() {
 
+            @Override
             public void mousePressed(MouseEvent mouseEvent) {
 
                 JTable table = (JTable) mouseEvent.getSource();
@@ -59,7 +60,6 @@ public class SearchFlightResultPanel extends JPanel {
                             new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                                     callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), false);
                         }else{
-                            System.out.println("Ciao");
                             new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                                     callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
                         }
@@ -72,7 +72,7 @@ public class SearchFlightResultPanel extends JPanel {
             }
         });
 
-        setTableApperance(callingObjects, controller);
+        setTableApperance();
 
         JTableHeader header = resultsTable.getTableHeader();
 
@@ -84,7 +84,7 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
-    private void setTableApperance(List<DisposableObject> callingObjects, Controller controller) {
+    private void setTableApperance() {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));
@@ -109,7 +109,7 @@ public class SearchFlightResultPanel extends JPanel {
                 return c;
             }
         };
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         for (int i = 0; i < resultsTable.getColumnCount() - 1; i++) {
             resultsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -122,7 +122,7 @@ public class SearchFlightResultPanel extends JPanel {
 
     private static class FlightTableModel extends AbstractTableModel {
 
-        private Controller controller;
+        private final Controller controller;
         private final ArrayList<String> ids;
         private final ArrayList<String> companyNames;
         private final ArrayList<Date> dates;
@@ -153,11 +153,11 @@ public class SearchFlightResultPanel extends JPanel {
 
         }
 
-        public ArrayList<Integer> getFreeSeats(){
+        public List<Integer> getFreeSeats(){
             return freeSeats;
         }
 
-        public ArrayList<String> getStatus(){
+        public List<String> getStatus(){
             return status;
         }
 

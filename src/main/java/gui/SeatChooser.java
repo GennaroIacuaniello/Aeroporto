@@ -10,28 +10,24 @@ import java.util.ArrayList;
 
 public class SeatChooser extends JFrame {
 
-    private Constraints constraints;
-    private ArrayList<JButton> seatButtons;
-    private JButton confirmButton;
-    private JButton deleteButton;
-    private int offset;
+    private final ArrayList<JButton> seatButtons;
     private int seat;
 
     public SeatChooser(Controller controller, PassengerPanel callingPanel, List<PassengerPanel> passengerPanels, List<Integer> bookedSeats) {
 
         super("Seat Chooser");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        constraints = new Constraints();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        Constraints constraints = new Constraints();
         setLayout(new GridBagLayout());
         setSize(450, 800);
         setLocation(callingPanel.getSeatButton());
         setAlwaysOnTop(true);
 
         seat = -1;
-        seatButtons = new ArrayList<JButton>();
-        confirmButton = new JButton("CONFERMA");
-        deleteButton = new JButton("ELIMINA");
+        seatButtons = new ArrayList<>();
+        JButton confirmButton = new JButton("CONFERMA");
+        JButton deleteButton = new JButton("ELIMINA");
 
         confirmButton.addActionListener(new ActionListener() {
             @Override
@@ -89,20 +85,13 @@ public class SeatChooser extends JFrame {
             seatButtons.get(i).setEnabled(true);
             seatButtons.get(i).setFocusable(false);
 
+            int offset;
             if (i % 6 > 2) offset = 2;
             else offset = 0;
             constraints.setConstraints(i % 6 + offset, i / 6, 1, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
             this.add(seatButtons.get(i), constraints.getGridBagConstraints());
         }
-/*
-        for (int i = 0; i < controller.getFlightController().getBookingsSize(); i++) {
 
-            if (controller.checkBooking(i))
-                for (int j = 0; j < controller.getFlightController().getBookingSize(i); j++) {
-                    seatButtons.get(controller.getFlightController().getPassengerSeatFromBooking(i, j)).setEnabled(false);
-                }
-        }
-*/
         for (Integer bookedSeat : bookedSeats) {
             seatButtons.get(bookedSeat).setEnabled(false);
         }
@@ -114,7 +103,7 @@ public class SeatChooser extends JFrame {
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-
+                //
             }
 
             @Override
@@ -126,27 +115,27 @@ public class SeatChooser extends JFrame {
 
             @Override
             public void windowClosed(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowIconified(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-
+                //
             }
         });
 
@@ -198,6 +187,6 @@ public class SeatChooser extends JFrame {
                 literal = "";
         }
 
-        return Integer.toString((seat / 6) + 1) + literal;
+        return (seat / 6) + 1 + literal;
     }
 }

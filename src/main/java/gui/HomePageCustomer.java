@@ -54,7 +54,7 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addTitlePanel(Controller controller) {
 
-        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH,
                 0, 125, GridBagConstraints.PAGE_START);
         mainFrame.add(titlePanel, constraints.getGridBagConstraints());

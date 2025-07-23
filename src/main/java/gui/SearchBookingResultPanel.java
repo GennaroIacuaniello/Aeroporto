@@ -26,7 +26,7 @@ public class SearchBookingResultPanel extends JPanel {
         super(new BorderLayout());
         this.setBackground(Color.WHITE);
 
-        tableModel = new BookingTableModel( controller, bookingDates, bookingStatus, ids);
+        tableModel = new BookingTableModel( controller, bookingDates, bookingStatus);
 
         boolean hasResults = (ids != null && !ids.isEmpty());
 
@@ -37,6 +37,7 @@ public class SearchBookingResultPanel extends JPanel {
 
         resultsTable.addMouseListener(new MouseAdapter() {
 
+            @Override
             public void mousePressed(MouseEvent mouseEvent) {
 
                 JTable table = (JTable) mouseEvent.getSource();
@@ -112,16 +113,14 @@ public class SearchBookingResultPanel extends JPanel {
         private final Controller controller;
         private final ArrayList<Date> bookingDates;
         private final ArrayList<String> bookingStatus;
-        private final ArrayList<String> ids;
 
         private final String[] colNames = {"Data prenotazione", "Stato prenotazione", "Compagnia", "Tratta", "Data volo", "Partenza", "Arrivo", "Stato del volo", "Info"};
 
-        public BookingTableModel( Controller controller, List<Date> parBookingDates, List<String> bookingStatus, List<String> parIds) {
+        public BookingTableModel( Controller controller, List<Date> parBookingDates, List<String> bookingStatus) {
 
             this.controller = controller;
             this.bookingDates = (ArrayList<Date>) parBookingDates;
             this.bookingStatus = (ArrayList<String>) bookingStatus;
-            this.ids = (ArrayList<String>) parIds;
 
         }
 

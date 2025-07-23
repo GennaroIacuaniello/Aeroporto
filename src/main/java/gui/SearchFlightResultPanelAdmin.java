@@ -17,8 +17,8 @@ import java.util.List;
 
 public class SearchFlightResultPanelAdmin extends JPanel {
 
-    private JTable resultsTable;
-    private FlightTableModel tableModel;
+    private final JTable resultsTable;
+    private final FlightTableModel tableModel;
 
     public SearchFlightResultPanelAdmin(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
@@ -39,6 +39,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
 
         resultsTable.addMouseListener(new MouseAdapter() {
 
+            @Override
             public void mousePressed(MouseEvent mouseEvent) {
 
                 JTable table = (JTable) mouseEvent.getSource();
@@ -62,7 +63,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
             }
         });
 
-        setTableApperance(callingObjects, controller);
+        setTableApperance();
 
         JTableHeader header = resultsTable.getTableHeader();
 
@@ -74,7 +75,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
 
     }
 
-    private void setTableApperance(List<DisposableObject> callingObjects, Controller controller) {
+    private void setTableApperance() {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));
@@ -99,7 +100,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
                 return c;
             }
         };
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         for (int i = 0; i < resultsTable.getColumnCount() - 1; i++) {
             resultsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -112,7 +113,7 @@ public class SearchFlightResultPanelAdmin extends JPanel {
 
     private static class FlightTableModel extends AbstractTableModel {
 
-        private Controller controller;
+        private final Controller controller;
         private final ArrayList<String> ids;
         private final ArrayList<String> companyNames;
         private final ArrayList<Date> dates;
@@ -142,17 +143,6 @@ public class SearchFlightResultPanelAdmin extends JPanel {
             this.cities = (ArrayList<String>) parCities;
 
         }
-
-        public ArrayList<Integer> getFreeSeats(){
-            return freeSeats;
-        }
-
-        public ArrayList<String> getStatus(){
-            return status;
-        }
-        //public List<Flight> getFlights() {
-        //return flights;
-        //}
 
         @Override
         public int getRowCount() {
@@ -262,9 +252,6 @@ public class SearchFlightResultPanelAdmin extends JPanel {
 
 
             setText((value == null) ? "" : value.toString());
-
-            FlightTableModel model = (FlightTableModel) table.getModel();
-            //Flight flight = model.getFlights().get(row);
 
             setEnabled(true);
 

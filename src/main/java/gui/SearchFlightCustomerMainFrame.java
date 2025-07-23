@@ -10,13 +10,10 @@ import java.util.List;
 public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private JFrame mainFrame;
-    private TitlePanel titlePanel;
-    private NavigatorBarPanel navigatorBarPanel;
-    private MenuPanelCustomer menu;
-    private UserPanel userPanel;
+
     private SearchFlightPanel searchFlightPanel;
+
     Constraints constraints;
-    private boolean researchDone = false;
 
     public SearchFlightCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen) {
 
@@ -40,7 +37,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
         mainFrame.setLocation(point);
         mainFrame.setExtendedState(fullScreen);
         callingObjects.addLast(this);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
 
         mainFrame.setMinimumSize(new Dimension(1420, 1080));
@@ -51,7 +48,9 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private void addTitlePanel(Controller controller) {
 
-        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        TitlePanel titlePanel;
+
+        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
 
         titlePanel.setOpaque(false);
 
@@ -64,7 +63,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
+        NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
 
         navigatorBarPanel.setOpaque(false);
 
@@ -77,7 +76,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        menu = new MenuPanelCustomer(callingObjects, controller);
+        MenuPanelCustomer menu = new MenuPanelCustomer(callingObjects, controller);
 
         menu.setOpaque(false);
 
@@ -90,7 +89,7 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
 
-        userPanel = new UserPanel(callingObjects, controller);
+        UserPanel userPanel = new UserPanel(callingObjects, controller);
 
         userPanel.setOpaque(false);
 
@@ -110,14 +109,6 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
         mainFrame.add(searchFlightPanel, constraints.getGridBagConstraints());
         searchFlightPanel.setVisible(true);
-    }
-
-    public boolean isResearchDone() {
-        return researchDone;
-    }
-
-    public void setResearchDone(boolean researchDone) {
-        this.researchDone = researchDone;
     }
 
     @Override

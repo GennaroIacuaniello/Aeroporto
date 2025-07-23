@@ -8,15 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StatusChooser {
 
-    private JFrame mainFrame;
-    private JLabel label;
-    private JButton confirmButton;
-    private JComboBox comboBox;
+    private final JFrame mainFrame;
+    private final JButton confirmButton;
+    private final JComboBox comboBox;
 
     public StatusChooser(Controller controller, JButton callingButton, List<DisposableObject> disposableObjects) {
 
@@ -27,7 +25,7 @@ public class StatusChooser {
         mainFrame.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-
+                //
             }
 
             @Override
@@ -37,31 +35,31 @@ public class StatusChooser {
 
             @Override
             public void windowClosed(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowIconified(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-
+                //
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-
+                //
             }
         });
 
-        label = new JLabel("Seleziona lo stato:");
+        JLabel label = new JLabel("Seleziona lo stato:");
         mainFrame.add(label);
 
         comboBox = new JComboBox();
@@ -105,7 +103,6 @@ public class StatusChooser {
         mainFrame.add(confirmButton);
 
         callingButton.setEnabled(false);
-        System.out.println(callingButton.isEnabled());
 
         mainFrame.setSize(500, 200);
         mainFrame.setVisible(true);

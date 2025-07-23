@@ -48,7 +48,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     private void addTitlePanel(Controller controller) {
         TitlePanel titlePanel;
 
-        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
 
         titlePanel.setOpaque(false);
 

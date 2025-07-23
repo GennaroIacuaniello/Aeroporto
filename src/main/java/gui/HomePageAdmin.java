@@ -45,7 +45,7 @@ public class HomePageAdmin extends DisposableObject {
 
     private void addTitlePanel(Controller controller) {
 
-        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
 
         titlePanel.setOpaque(false);
 

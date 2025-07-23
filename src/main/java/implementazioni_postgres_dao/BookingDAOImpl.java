@@ -277,7 +277,6 @@ public class BookingDAOImpl implements BookingDAO {
             preparedQuery = connection.prepareStatement(query);
 
             preparedQuery.setObject(1, luggagesTypes.get(i));
-            //preparedQuery.setObject(2, "BOOKED");
             preparedQuery.setString(2, ticketForLuggages.get(i));
 
             preparedQuery.executeUpdate();
