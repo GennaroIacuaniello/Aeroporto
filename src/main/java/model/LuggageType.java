@@ -39,7 +39,7 @@ package model;
  * @see Luggage
  * @see LuggageStatus
  * @see Ticket
- * @see LuggageController
+ * @see controller.LuggageController
  */
 public enum LuggageType {
 

@@ -51,8 +51,8 @@ import javax.swing.*;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see Gate
- * @see Flight
+ * @see model.Gate
+ * @see model.Flight
  * @see GateChooser
  * @see CheckinPassengers
  * @see FlightDAOImpl

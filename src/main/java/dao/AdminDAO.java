@@ -40,8 +40,8 @@ import java.util.List;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see Admin
- * @see AdminDAOImpl
+ * @see model.Admin
+ * @see implementazioni_postgres_dao.AdminDAOImpl
  * @see UserAlreadyExistsException
  * @see UserNotFoundException
  * @see SQLException

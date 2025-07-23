@@ -93,7 +93,7 @@ import java.util.List;
  * @see Controller
  * @see BookingPageAdmin
  * @see DisposableObject
- * @see LuggageController
+ * @see controller.LuggageController
  * @see AbstractTableModel
  */
 public class LostLuggageDialog extends JDialog {

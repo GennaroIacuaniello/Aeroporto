@@ -186,9 +186,9 @@ public class SeatChooser extends JFrame {
      * </p>
      * <p>
      * Seat map generation creates dynamic seat buttons based on flight maximum capacity
-     * retrieved through {@link Controller#getFlightController()#getMaxSeats()}. Each button
-     * includes standard airline designation formatting, interactive selection capabilities,
-     * and visual state management for optimal passenger seat selection experience.
+     * retrieved through <code>controller.{@link Controller#getFlightController()}.{@link controller.FlightController#getMaxSeats()}</code>.
+     * Each button includes standard airline designation formatting, interactive selection
+     * capabilities, and visual state management for optimal passenger seat selection experience.
      * </p>
      * <p>
      * Seat button positioning utilizes sophisticated grid calculations with aisle offset

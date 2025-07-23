@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * </ul>
  * <p>
  * The class follows a polymorphic approach using the {@link User} base class to handle both
- * {@link Admin} and {@link Customer} user types uniformly. This design enables consistent user
+ * {@link model.Admin} and {@link model.Customer} user types uniformly. This design enables consistent user
  * management operations while maintaining type-specific functionality through proper inheritance.
  * </p>
  * <p>
@@ -73,7 +73,7 @@ import java.util.regex.Pattern;
  * @since 1.0
  * @see User
  * @see Admin
- * @see Customer
+ * @see model.Customer
  * @see AdminDAOImpl
  * @see CustomerDAOImpl
  * @see FloatingMessage
@@ -92,7 +92,7 @@ public class UserController {
      * The {@link User} object representing the currently logged-in user.
      * Contains the user's profile information including username, email,
      * and hashed password. This field is null when no user is logged in.
-     * The actual type is either {@link Admin} or {@link Customer}.
+     * The actual type is either {@link Admin} or {@link model.Customer}.
      */
     private User loggedUser;
 
@@ -222,7 +222,7 @@ public class UserController {
      * Retrieves the currently logged-in user object.
      * <p>
      * This method returns the {@link User} object representing the current user
-     * session. The actual object type will be either {@link Admin} or {@link Customer}
+     * session. The actual object type will be either {@link Admin} or {@link model.Customer}
      * depending on the user type, enabling polymorphic operations while maintaining
      * type-specific functionality.
      * </p>

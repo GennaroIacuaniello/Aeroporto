@@ -54,7 +54,7 @@ import java.awt.event.WindowListener;
  * that calling buttons are properly re-enabled regardless of dismissal method.
  * </p>
  * <p>
- * Integration with the {@link GateController} ensures that gate assignments are immediately
+ * Integration with the {@link controller.GateController} ensures that gate assignments are immediately
  * persisted to the database and available across all system components for operational
  * coordination and passenger information systems.
  * </p>
@@ -72,7 +72,7 @@ import java.awt.event.WindowListener;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see GateController
+ * @see controller.GateController
  * @see CheckinPassengers
  * @see Controller
  * @see JFrame

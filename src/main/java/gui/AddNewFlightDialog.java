@@ -48,7 +48,7 @@ import static gui.FloatingMessage.SUCCESS_MESSAGE;
  * displayed through {@link FloatingMessage} components for consistent user feedback.
  * </p>
  * <p>
- * The dialog integrates with the {@link Controller} and {@link FlightController}
+ * The dialog integrates with the {@link Controller} and {@link controller.FlightController}
  * to persist flight information to the database. Successful flight creation is
  * confirmed with user feedback before closing the dialog.
  * </p>
@@ -69,7 +69,7 @@ import static gui.FloatingMessage.SUCCESS_MESSAGE;
  * @version 1.0
  * @since 1.0
  * @see Controller
- * @see FlightController
+ * @see controller.FlightController
  * @see FloatingMessage
  * @see Constraints
  * @see DatePicker

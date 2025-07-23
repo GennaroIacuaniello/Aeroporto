@@ -59,7 +59,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  * @see CustomerDAO
- * @see Customer
+ * @see model.Customer
  * @see UserAlreadyExistsException
  * @see UserNotFoundException
  * @see ConnessioneDatabase

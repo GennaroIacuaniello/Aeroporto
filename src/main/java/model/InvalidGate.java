@@ -39,7 +39,7 @@ import java.io.IOException;
  * @since 1.0
  * @see Gate
  * @see Flight
- * @see GateController
+ * @see controller.GateController
  * @see IOException
  */
 public class InvalidGate extends IOException {

@@ -49,13 +49,13 @@ import java.util.List;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see Luggage
- * @see LuggageDAOImpl
- * @see LuggageType
- * @see LuggageStatus
- * @see Ticket
- * @see Booking
- * @see LuggageController
+ * @see model.Luggage
+ * @see implementazioni_postgres_dao.LuggageDAOImpl
+ * @see model.LuggageType
+ * @see model.LuggageStatus
+ * @see model.Ticket
+ * @see model.Booking
+ * @see controller.LuggageController
  */
 public interface LuggageDAO {
 

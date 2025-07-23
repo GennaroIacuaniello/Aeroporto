@@ -70,7 +70,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 1.0
  * @see LuggageDAO
- * @see Luggage
+ * @see model.Luggage
  * @see ConnessioneDatabase
  * @see SQLException
  */
@@ -95,7 +95,7 @@ public class LuggageDAOImpl implements LuggageDAO {
      * <ul>
      *   <li>Timestamps: converted from database timestamps to separate Date and Time objects</li>
      *   <li>Seat assignments: converted from 1-based database storage to 0-based application indexing</li>
-     *   <li>Luggage IDs: handled with null values when id_luggage <= 0 (not assigned)</li>
+     *   <li>Luggage IDs: handled with null values when id_luggage <span>&#8804;</span> 0 (not assigned)</li>
      *   <li>Flight types: boolean values indicating departing (true) or arriving (false) flights</li>
      * </ul>
      * <p>
@@ -257,7 +257,7 @@ public class LuggageDAOImpl implements LuggageDAO {
      * The method handles nullable luggage data appropriately:
      * </p>
      * <ul>
-     *   <li>Luggage IDs: null values when id_luggage <= 0 (no luggage assigned to ticket)</li>
+     *   <li>Luggage IDs: null values when id_luggage <span>&#8804;</span> 0 (no luggage assigned to ticket)</li>
      *   <li>Post-checkin IDs: string values for physical luggage tracking after check-in</li>
      *   <li>Luggage types and status: retrieved directly from database enum values</li>
      * </ul>

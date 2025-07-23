@@ -49,7 +49,7 @@ package model;
  * @see Flight
  * @see Arriving
  * @see Departing
- * @see FlightController
+ * @see controller.FlightController
  */
 public enum FlightStatus {
 

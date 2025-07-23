@@ -55,8 +55,8 @@ import java.sql.SQLException;
  * @see SQLException
  * @see CustomerDAO
  * @see AdminDAO
- * @see CustomerDAOImpl
- * @see AdminDAOImpl
+ * @see implementazioni_postgres_dao.CustomerDAOImpl
+ * @see implementazioni_postgres_dao.AdminDAOImpl
  * @see UserAlreadyExistsException
  */
 public class UserNotFoundException extends SQLException {

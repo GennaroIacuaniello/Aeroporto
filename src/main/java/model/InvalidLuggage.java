@@ -42,7 +42,7 @@ import java.io.IOException;
  * @see LuggageType
  * @see LuggageStatus
  * @see Ticket
- * @see LuggageController
+ * @see controller.LuggageController
  * @see IOException
  */
 public class InvalidLuggage extends IOException {

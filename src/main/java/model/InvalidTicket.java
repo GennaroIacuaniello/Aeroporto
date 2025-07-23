@@ -44,7 +44,7 @@ import java.io.IOException;
  * @see Flight
  * @see Booking
  * @see Luggage
- * @see TicketController
+ * @see controller.TicketController
  * @see IOException
  */
 public class InvalidTicket extends IOException {

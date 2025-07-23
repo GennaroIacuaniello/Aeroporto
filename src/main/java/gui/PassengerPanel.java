@@ -1064,7 +1064,7 @@ public class PassengerPanel extends JPanel {
      *   <li><strong>Date Picker:</strong> Controls date selection functionality</li>
      *   <li><strong>Luggage Controls:</strong> Manages luggage addition and modification capabilities</li>
      *   <li><strong>Luggage Components:</strong> Controls individual luggage item editability</li>
-     * </p>
+     * </ul>
      * <p>
      * Read-only mode (flag = false) disables all interactive components while maintaining
      * visual display of passenger information, supporting administrative oversight and

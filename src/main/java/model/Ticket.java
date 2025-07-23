@@ -44,7 +44,7 @@ import java.util.List;
  * @see Booking
  * @see Passenger
  * @see Luggage
- * @see TicketController
+ * @see controller.TicketController
  */
 public class Ticket {
 

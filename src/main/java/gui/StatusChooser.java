@@ -212,7 +212,7 @@ public class StatusChooser {
      * safety throughout administrative flight status management workflows.
      * </p>
      * <p>
-     * Controller integration utilizes {@link Controller#getFlightController()#setFlightStatus(Object)}
+     * Controller integration utilizes <code>controller.{@link Controller#getFlightController()}.{@link controller.FlightController#setFlightStatus(Object)}</code>
      * for direct flight status updates with immediate database persistence and system-wide
      * status coordination. The integration ensures real-time operational status updates and
      * maintains consistency across all airport management system components.

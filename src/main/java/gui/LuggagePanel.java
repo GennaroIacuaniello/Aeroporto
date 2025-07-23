@@ -41,7 +41,7 @@ import java.awt.*;
  * <p>
  * Type selection integration provides a standardized dropdown interface with three options:
  * a "TYPE" placeholder indicating unselected state, "CARRY_ON" for cabin baggage, and "CHECKED"
- * for cargo hold luggage. This selection directly maps to the {@link LuggageType} enumeration
+ * for cargo hold luggage. This selection directly maps to the {@link model.LuggageType} enumeration
  * used throughout the luggage management system.
  * </p>
  * <p>
@@ -91,7 +91,7 @@ import java.awt.*;
  * @see LuggagesView
  * @see RemoveLuggageButton
  * @see PassengerPanel
- * @see LuggageType
+ * @see model.LuggageType
  * @see GridBagLayout
  */
 public class LuggagePanel extends JPanel {

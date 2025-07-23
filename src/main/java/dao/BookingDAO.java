@@ -47,12 +47,12 @@ import java.util.List;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see Booking
- * @see BookingDAOImpl
- * @see Ticket
- * @see Passenger
- * @see Flight
- * @see Customer
+ * @see model.Booking
+ * @see implementazioni_postgres_dao.BookingDAOImpl
+ * @see model.Ticket
+ * @see model.Passenger
+ * @see model.Flight
+ * @see model.Customer
  * @see SQLException
  */
 public interface BookingDAO {

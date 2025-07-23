@@ -90,7 +90,7 @@ import java.awt.*;
  * @see DefaultTableModel
  * @see JScrollPane
  * @see HomePageCustomer
- * @see FlightController
+ * @see controller.FlightController
  */
 public class ImminentFlightsTable extends JTable {
 

@@ -42,7 +42,7 @@ package model;
  * @see Ticket
  * @see Passenger
  * @see InvalidTicket
- * @see LuggageController
+ * @see controller.LuggageController
  */
 public class Luggage {
 

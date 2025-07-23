@@ -68,7 +68,7 @@ import controller.Controller;
  * <p>
  * The interface integrates seamlessly with the broader luggage management ecosystem including
  * {@link LuggagePanel} components for individual luggage configuration, {@link RemoveLuggageButton}
- * functionality for luggage removal operations, and {@link LuggageController} integration for
+ * functionality for luggage removal operations, and {@link controller.LuggageController} integration for
  * real-time status updates and database synchronization.
  * </p>
  * <p>
@@ -94,7 +94,7 @@ import controller.Controller;
  * @see JFrame
  * @see LuggagePanel
  * @see RemoveLuggageButton  
- * @see LuggageController
+ * @see controller.LuggageController
  * @see Controller
  * @see FloatingMessage
  * @see GridBagLayout

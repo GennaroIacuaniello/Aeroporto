@@ -52,14 +52,14 @@ import java.util.List;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see Flight
- * @see FlightDAOImpl
- * @see Arriving
- * @see Departing
- * @see Booking
- * @see Ticket
- * @see Passenger
- * @see FlightController
+ * @see model.Flight
+ * @see implementazioni_postgres_dao.FlightDAOImpl
+ * @see model.Arriving
+ * @see model.Departing
+ * @see model.Booking
+ * @see model.Ticket
+ * @see model.Passenger
+ * @see controller.FlightController
  */
 public interface FlightDAO {
 

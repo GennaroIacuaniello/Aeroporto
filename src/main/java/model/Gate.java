@@ -34,7 +34,7 @@ package model;
  * @since 1.0
  * @see Flight
  * @see InvalidGate
- * @see GateController
+ * @see controller.GateController
  */
 public class Gate {
 

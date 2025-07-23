@@ -61,7 +61,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 1.0
  * @see BookingDAO
- * @see Booking
+ * @see model.Booking
  * @see ConnessioneDatabase
  * @see SQLException
  */

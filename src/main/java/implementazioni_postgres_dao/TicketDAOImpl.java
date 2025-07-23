@@ -60,7 +60,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 1.0
  * @see TicketDAO
- * @see Ticket
+ * @see model.Ticket
  * @see ConnessioneDatabase
  * @see SQLException
  */

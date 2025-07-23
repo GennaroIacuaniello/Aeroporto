@@ -55,8 +55,8 @@ import java.util.List;
  * @since 1.0
  * @see Luggage
  * @see LuggageDAOImpl
- * @see LuggageType
- * @see LuggageStatus
+ * @see model.LuggageType
+ * @see model.LuggageStatus
  * @see Controller
  */
 public class LuggageController {

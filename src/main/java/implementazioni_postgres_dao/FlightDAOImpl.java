@@ -63,7 +63,7 @@ import java.util.logging.Logger;
  * @version 1.0
  * @since 1.0
  * @see FlightDAO
- * @see Flight
+ * @see model.Flight
  * @see ConnessioneDatabase
  * @see SQLException
  */
@@ -454,9 +454,9 @@ public class FlightDAOImpl implements FlightDAO {
      * The method handles various data types and nullable fields appropriately:
      * </p>
      * <ul>
-     *   <li>Gate assignments: null when id_gate <= 0, otherwise the gate number</li>
+     *   <li>Gate assignments: null when id_gate <span>&#8804;</span> 0, otherwise the gate number</li>
      *   <li>Seat assignments: converted from 1-based database storage to 0-based application indexing</li>
-     *   <li>Luggage information: null when id_luggage <= 0, otherwise the luggage ID</li>
+     *   <li>Luggage information: null when id_luggage <span>&#8804;</span> 0, otherwise the luggage ID</li>
      *   <li>Timestamps: properly converted to Date objects for consistent handling</li>
      * </ul>
      * <p>

@@ -43,8 +43,8 @@ import java.util.List;
  * @author Aeroporto Di Napoli
  * @version 1.0
  * @since 1.0
- * @see Customer
- * @see CustomerDAOImpl
+ * @see model.Customer
+ * @see implementazioni_postgres_dao.CustomerDAOImpl
  * @see UserAlreadyExistsException
  * @see UserNotFoundException
  * @see SQLException

@@ -39,7 +39,7 @@ import java.io.IOException;
  * @since 1.0
  * @see Booking
  * @see Customer
- * @see BookingController
+ * @see controller.BookingController
  * @see IOException
  */
 public class InvalidBuyer extends IOException {
