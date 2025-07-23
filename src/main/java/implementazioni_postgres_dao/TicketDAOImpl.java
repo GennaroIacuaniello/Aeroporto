@@ -9,10 +9,113 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * PostgreSQL implementation of the TicketDAO interface for managing ticket operations in the airport management system.
+ * <p>
+ * This class provides concrete implementations for all ticket-related database operations
+ * defined in the {@link TicketDAO} interface. It handles comprehensive ticket management
+ * functions including ticket data retrieval, ticket number generation, and ticket identification
+ * operations using PostgreSQL database connectivity.
+ * </p>
+ * <p>
+ * The implementation provides comprehensive ticket management capabilities including:
+ * </p>
+ * <ul>
+ *   <li>Complete ticket information retrieval for specific bookings with passenger data</li>
+ *   <li>Automatic ticket number generation with sequential numbering system</li>
+ *   <li>Ticket number manipulation and increment operations for system management</li>
+ *   <li>Integration with booking, passenger, and seat management systems</li>
+ *   <li>Comprehensive seat assignment handling with proper indexing conversion</li>
+ * </ul>
+ * <p>
+ * All database operations use prepared statements to prevent SQL injection attacks and ensure
+ * data security. The class implements proper connection management using the singleton
+ * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
+ * statements.
+ * </p>
+ * <p>
+ * The class handles complex data processing and conversion operations:
+ * </p>
+ * <ul>
+ *   <li>Seat number conversion from 1-based database storage to 0-based application indexing</li>
+ *   <li>Ticket number generation using BigInteger for large number handling</li>
+ *   <li>Proper null handling for optional seat assignments</li>
+ *   <li>Passenger data association with ticket information</li>
+ *   <li>Check-in status management and reporting</li>
+ * </ul>
+ * <p>
+ * The ticket numbering system uses a 13-digit format with zero-padding to ensure consistent
+ * ticket identification across the system. The generation process is atomic and thread-safe
+ * through database-level operations that retrieve the maximum existing ticket number and
+ * increment it appropriately.
+ * </p>
+ * <p>
+ * All methods follow the contract defined by the {@link TicketDAO} interface and maintain
+ * data consistency through proper transaction handling, error logging, and validation mechanisms.
+ * The class provides essential functionality for booking management, check-in operations,
+ * and passenger service systems.
+ * </p>
+ *
+ * @author Aeroporto Di Napoli
+ * @version 1.0
+ * @since 1.0
+ * @see TicketDAO
+ * @see Ticket
+ * @see ConnessioneDatabase
+ * @see SQLException
+ */
 public class TicketDAOImpl implements TicketDAO {
 
+    /**
+     * Logger instance for recording database operation events and errors.
+     */
     private static final Logger LOGGER = Logger.getLogger(TicketDAOImpl.class.getName());
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation executes a SQL query that joins the TICKET and PASSENGER tables
+     * to retrieve comprehensive ticket information for all tickets associated with a specific
+     * booking. The query provides complete ticket details including passenger information
+     * and seat assignments.
+     * </p>
+     * <p>
+     * The method handles seat number conversion from 1-based database storage to 0-based
+     * application indexing for consistency with the application's seat management system.
+     * Seats with value 0 or negative in the database are returned as null to indicate
+     * no seat assignment.
+     * </p>
+     * <p>
+     * Data processing includes:
+     * </p>
+     * <ul>
+     *   <li>Ticket numbers retrieved directly from database</li>
+     *   <li>Seat assignments converted to 0-based indexing (null if not assigned)</li>
+     *   <li>Check-in status indicators for boarding eligibility</li>
+     *   <li>Passenger SSN identifiers for passenger association</li>
+     *   <li>Passenger personal information including names and birth dates</li>
+     * </ul>
+     * <p>
+     * The method uses prepared statements for secure parameter binding and proper resource
+     * management through try-with-resources. All related data is populated in corresponding
+     * list positions to maintain data correlation across different information types.
+     * </p>
+     * <p>
+     * This method is particularly useful for booking management operations, check-in
+     * procedures, passenger manifest generation, and customer service inquiries where
+     * complete ticket information for a booking is required.
+     * </p>
+     *
+     * @param bookingId the unique identifier of the booking to retrieve tickets for
+     * @param ticketNumbers list to be populated with ticket numbers
+     * @param seats list to be populated with seat assignments (0-based indexing, null if not assigned)
+     * @param checkedIns list to be populated with check-in status indicators
+     * @param passengerSSNs list to be populated with passenger SSN identifiers
+     * @param firstNames list to be populated with passenger first names
+     * @param lastNames list to be populated with passenger last names
+     * @param birthDates list to be populated with passenger birth dates
+     * @throws SQLException if a database access error occurs during the data retrieval operation
+     */
     public void getAllTicketBooking(int bookingId, List<String> ticketNumbers, List<Integer> seats, List<Boolean> checkedIns,
                                     List<String> passengerSSNs, List<String> firstNames,
                                     List<String> lastNames, List<Date> birthDates) throws SQLException {
@@ -54,6 +157,42 @@ public class TicketDAOImpl implements TicketDAO {
 
     }
 
+    /**
+     * Generates a new unique ticket number by incrementing the maximum existing ticket number.
+     * <p>
+     * This method implements an atomic ticket number generation system that retrieves the
+     * highest ticket number currently in the database and generates a new unique number
+     * by applying the specified offset plus one additional increment. This ensures that
+     * generated ticket numbers are always unique and sequential.
+     * </p>
+     * <p>
+     * The generation process follows these steps:
+     * </p>
+     * <ol>
+     *   <li>Queries the database for the maximum existing ticket number</li>
+     *   <li>Applies the specified offset using the increment function</li>
+     *   <li>Adds one final increment to generate the new ticket number</li>
+     *   <li>Returns the formatted 13-digit ticket number with zero-padding</li>
+     * </ol>
+     * <p>
+     * The offset parameter allows for bulk ticket number generation scenarios where
+     * multiple consecutive ticket numbers need to be reserved. For single ticket
+     * generation, an offset of 0 should be used.
+     * </p>
+     * <p>
+     * The method uses database-level maximum value retrieval to ensure thread-safety
+     * and prevent duplicate ticket number generation in concurrent environments.
+     * Error handling includes comprehensive logging for operational monitoring.
+     * </p>
+     * <p>
+     * Generated ticket numbers follow a 13-digit format with leading zero padding
+     * to ensure consistent formatting and proper sorting in database operations
+     * and user interfaces.
+     * </p>
+     *
+     * @param offset the number of additional increments to apply before generating the final ticket number
+     * @return a new unique 13-digit ticket number, or empty string if generation fails
+     */
     public String generateTicketNumber(int offset) {
 
         String result;
@@ -82,6 +221,38 @@ public class TicketDAOImpl implements TicketDAO {
         return "";
     }
 
+    /**
+     * Increments a ticket number by one and ensures proper 13-digit formatting.
+     * <p>
+     * This utility method handles ticket number arithmetic using BigInteger to support
+     * large numbers and prevent overflow issues. It converts the input ticket number
+     * string to a BigInteger, adds one, and formats the result back to a 13-digit
+     * string with leading zero padding.
+     * </p>
+     * <p>
+     * The method ensures consistent ticket number formatting across the system by:
+     * </p>
+     * <ul>
+     *   <li>Using BigInteger for reliable large number arithmetic</li>
+     *   <li>Maintaining 13-digit format with leading zero padding</li>
+     *   <li>Providing proper error handling for invalid input formats</li>
+     *   <li>Ensuring sequential ticket number generation</li>
+     * </ul>
+     * <p>
+     * The 13-digit format provides sufficient capacity for ticket numbering while
+     * maintaining consistent string length for database storage and display purposes.
+     * The method is used internally by the ticket generation system and can be used
+     * for manual ticket number manipulation when needed.
+     * </p>
+     * <p>
+     * Input validation ensures that only valid numeric strings are processed,
+     * with appropriate error messages for debugging and system monitoring.
+     * </p>
+     *
+     * @param ticketNumber the current ticket number as a string to be incremented
+     * @return the incremented ticket number formatted as a 13-digit string with leading zeros
+     * @throws NumberFormatException if the input ticket number is not a valid numeric string
+     */
     public String increaseTicketNumber(String ticketNumber) {
 
         try {

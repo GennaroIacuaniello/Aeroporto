@@ -12,10 +12,108 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * PostgreSQL implementation of the BookingDAO interface for managing booking operations in the airport management system.
+ * <p>
+ * This class provides concrete implementations for all booking-related database operations
+ * defined in the {@link BookingDAO} interface. It handles comprehensive booking management
+ * functions including booking creation, modification, searching, and deletion operations
+ * using PostgreSQL database connectivity.
+ * </p>
+ * <p>
+ * The implementation provides comprehensive booking management capabilities including:
+ * </p>
+ * <ul>
+ *   <li>Atomic booking creation with passenger, ticket, and luggage associations</li>
+ *   <li>Complex booking modification operations with transactional integrity</li>
+ *   <li>Advanced booking search functionality with multiple filtering criteria</li>
+ *   <li>Customer-specific booking retrieval and management operations</li>
+ *   <li>Integration with flight, passenger, ticket, and luggage management systems</li>
+ * </ul>
+ * <p>
+ * All database operations use prepared statements to prevent SQL injection attacks and ensure
+ * data security. The class implements proper connection management using the singleton
+ * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
+ * statements.
+ * </p>
+ * <p>
+ * The class handles complex multi-table operations atomically using database transactions:
+ * </p>
+ * <ul>
+ *   <li>Booking creation involves insertions into Booking, Passenger, Ticket, and Luggage tables</li>
+ *   <li>Booking modifications use temporary tickets to maintain data consistency during updates</li>
+ *   <li>Search operations join multiple tables to provide comprehensive booking information</li>
+ *   <li>All operations maintain referential integrity through proper transaction handling</li>
+ * </ul>
+ * <p>
+ * The implementation supports flexible search capabilities including flight-based filtering
+ * (departure/arrival cities, dates, times) and passenger-based filtering (names, SSN, ticket numbers).
+ * City filtering includes special handling for "Napoli" as the airport's base location.
+ * </p>
+ * <p>
+ * All methods follow the contract defined by the {@link BookingDAO} interface and maintain
+ * data consistency through proper transaction handling, error logging, and validation mechanisms.
+ * The class uses soft deletion for booking cancellation to preserve audit trails and maintain
+ * referential integrity.
+ * </p>
+ *
+ * @author Aeroporto Di Napoli
+ * @version 1.0
+ * @since 1.0
+ * @see BookingDAO
+ * @see Booking
+ * @see ConnessioneDatabase
+ * @see SQLException
+ */
 public class BookingDAOImpl implements BookingDAO {
 
+    /**
+     * Logger instance for recording database operation events and errors.
+     */
     private static final Logger LOGGER = Logger.getLogger(BookingDAOImpl.class.getName());
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation performs a comprehensive atomic booking creation operation that
+     * includes creating the booking record, managing passenger information, generating
+     * tickets with seat assignments, and creating associated luggage records.
+     * </p>
+     * <p>
+     * The operation follows this sequence:
+     * </p>
+     * <ol>
+     *   <li>Creates the booking record with generated timestamp and specified status</li>
+     *   <li>Retrieves the generated booking ID for subsequent operations</li>
+     *   <li>Inserts or updates passenger information as needed</li>
+     *   <li>Creates tickets with seat assignments for each passenger</li>
+     *   <li>Creates luggage records associated with specific tickets</li>
+     * </ol>
+     * <p>
+     * The method uses database transactions to ensure atomicity - if any step fails,
+     * all changes are rolled back to maintain data consistency. Seat values of -1
+     * indicate no seat assignment, while positive values are converted to 1-based
+     * database storage format.
+     * </p>
+     * <p>
+     * Passenger information is handled intelligently - if a passenger with the given
+     * SSN already exists, their information is updated; otherwise, a new passenger
+     * record is created. This allows for flexible passenger data management.
+     * </p>
+     *
+     * @param idCustomer the unique identifier of the customer making the booking
+     * @param idFlight the unique identifier of the flight being booked
+     * @param bookingStatus the initial status of the booking (e.g., "PENDING", "CONFIRMED")
+     * @param ticketNumbers list of unique ticket numbers for each passenger
+     * @param seats list of seat assignments for each ticket (can contain -1 for no assignment)
+     * @param firstNames list of passenger first names (can contain null values)
+     * @param lastNames list of passenger last names (can contain null values)
+     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param passengerSSNs list of passenger SSN identifiers (required, cannot be null)
+     * @param luggagesTypes list of luggage types for each luggage item
+     * @param ticketForLuggages list of ticket numbers associated with each luggage item
+     * @throws SQLException if a database access error occurs during the booking creation process
+     */
     public void addBooking (int idCustomer, String idFlight, String bookingStatus, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
                             List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages) throws SQLException {
 
@@ -70,6 +168,47 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Modifies an existing booking with new passenger, ticket, and luggage information.
+     * <p>
+     * This method performs a complex booking modification operation that maintains data
+     * consistency through the use of temporary tickets and transactional operations.
+     * The modification process completely replaces existing tickets and luggage while
+     * preserving the original booking record.
+     * </p>
+     * <p>
+     * The operation follows this sequence:
+     * </p>
+     * <ol>
+     *   <li>Creates a temporary ticket to maintain foreign key relationships</li>
+     *   <li>Deletes all existing tickets except the temporary one</li>
+     *   <li>Updates or inserts passenger information as needed</li>
+     *   <li>Creates new tickets with updated seat assignments</li>
+     *   <li>Creates new luggage records for the updated tickets</li>
+     *   <li>Removes the temporary ticket</li>
+     *   <li>Updates the booking status</li>
+     * </ol>
+     * <p>
+     * The temporary ticket mechanism ensures that the booking always has at least one
+     * associated ticket during the modification process, preventing foreign key violations
+     * and maintaining referential integrity. All operations are performed within a
+     * single transaction to ensure atomicity.
+     * </p>
+     *
+     * @param idFlight the flight identifier for the booking
+     * @param idBooking the unique identifier of the booking to modify
+     * @param ticketNumbers list of new ticket numbers for the booking
+     * @param seats list of new seat assignments (can contain -1 for no assignment)
+     * @param firstNames list of passenger first names (can contain null values)
+     * @param lastNames list of passenger last names (can contain null values)
+     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param passengerSSNs list of passenger SSN identifiers (required)
+     * @param luggagesTypes list of luggage types for new luggage items
+     * @param ticketForLuggages list of ticket numbers associated with each luggage item
+     * @param tmpTicket temporary ticket number used during the modification process
+     * @param bookingStatus new status for the booking after modification
+     * @throws SQLException if a database access error occurs during the modification process
+     */
     public void modifyBooking (String idFlight, Integer idBooking, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
                                List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException {
 
@@ -141,6 +280,30 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Inserts or updates passenger information in the database.
+     * <p>
+     * This private helper method manages passenger data by either creating new passenger
+     * records or updating existing ones based on SSN. It handles optional passenger
+     * information fields (first name, last name, birth date) by including them in the
+     * SQL query only when non-null values are provided.
+     * </p>
+     * <p>
+     * The method constructs dynamic SQL queries based on available data:
+     * </p>
+     * <ul>
+     *   <li>For new passengers: INSERT with only non-null fields</li>
+     *   <li>For existing passengers: UPDATE with only non-null fields</li>
+     *   <li>SSN is always required and used as the primary identifier</li>
+     * </ul>
+     *
+     * @param connection the database connection to use for the operation
+     * @param firstNames list of passenger first names (can contain null values)
+     * @param lastNames list of passenger last names (can contain null values)
+     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param passengerSSNs list of passenger SSN identifiers (required)
+     * @throws SQLException if a database access error occurs during passenger insertion/update
+     */
     private void insertPassengers (Connection connection, List<String> firstNames, List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs) throws SQLException {
 
         String query;
@@ -233,6 +396,30 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Inserts ticket records into the database with optional seat assignments.
+     * <p>
+     * This private helper method creates ticket records for a booking, handling both
+     * seated and unseated tickets. It constructs dynamic SQL queries based on whether
+     * seat assignments are provided, and converts application seat numbering (0-based)
+     * to database storage format (1-based).
+     * </p>
+     * <p>
+     * Seat handling logic:
+     * </p>
+     * <ul>
+     *   <li>Seat value -1: No seat assignment, seat column excluded from INSERT</li>
+     *   <li>Seat value >= 0: Seat assignment, converted to 1-based for database storage</li>
+     * </ul>
+     *
+     * @param connection the database connection to use for the operation
+     * @param idBooking the booking identifier to associate tickets with
+     * @param idFlight the flight identifier for the tickets
+     * @param ticketNumbers list of unique ticket numbers
+     * @param passengerSSNs list of passenger SSN identifiers
+     * @param seats list of seat assignments (-1 for no assignment, 0+ for seat number)
+     * @throws SQLException if a database access error occurs during ticket insertion
+     */
     private void insertTickets (Connection connection, int idBooking, String idFlight, List<String> ticketNumbers, List<String> passengerSSNs, List<Integer> seats) throws SQLException {
 
         String query;
@@ -266,6 +453,27 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Inserts luggage records associated with specific tickets.
+     * <p>
+     * This private helper method creates luggage records with the initial status of
+     * 'BOOKED' for each luggage item. Each luggage item is associated with a specific
+     * ticket through the ticket number.
+     * </p>
+     * <p>
+     * All luggage items are created with:
+     * </p>
+     * <ul>
+     *   <li>Specified luggage type (CARRY_ON or CHECKED)</li>
+     *   <li>Initial status of 'BOOKED'</li>
+     *   <li>Association with the corresponding ticket</li>
+     * </ul>
+     *
+     * @param connection the database connection to use for the operation
+     * @param ticketForLuggages list of ticket numbers to associate luggage with
+     * @param luggagesTypes list of luggage types for each luggage item
+     * @throws SQLException if a database access error occurs during luggage insertion
+     */
     private void insertLuggages (Connection connection, List<String> ticketForLuggages, List<String> luggagesTypes) throws SQLException {
 
         for (int i = 0; i < ticketForLuggages.size(); i++) {
@@ -283,6 +491,34 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation executes a SQL query that joins the FLIGHT and BOOKING tables
+     * to retrieve bookings for a specific customer and flight combination. The results
+     * are ordered by flight departure time to provide chronological organization.
+     * </p>
+     * <p>
+     * The method populates the provided lists with booking information including:
+     * </p>
+     * <ul>
+     *   <li>Booking creation timestamps converted to Date objects</li>
+     *   <li>Current booking status values</li>
+     *   <li>Unique booking identifiers for further operations</li>
+     * </ul>
+     * <p>
+     * This method is particularly useful for customer service operations where
+     * representatives need to view all bookings a customer has made for a specific
+     * flight, enabling booking modifications and customer support functions.
+     * </p>
+     *
+     * @param flightId the unique identifier of the flight to search for
+     * @param loggedCustomerId the unique identifier of the customer whose bookings to retrieve
+     * @param bookingDates list to be populated with booking creation dates
+     * @param bookingStatus list to be populated with current booking status values
+     * @param bookingIds list to be populated with unique booking identifiers
+     * @throws SQLException if a database access error occurs during the search operation
+     */
     public void searchBooksCustomerForAFlight(String flightId, Integer loggedCustomerId,
                                        List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException {
 
@@ -321,6 +557,42 @@ public class BookingDAOImpl implements BookingDAO {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation executes a comprehensive SQL query that joins the FLIGHT and
+     * BOOKING tables to retrieve all bookings associated with a specific customer. The
+     * query extracts both flight details and booking information, providing a complete
+     * view of the customer's travel history.
+     * </p>
+     * <p>
+     * The method processes timestamp data by extracting both date and time components
+     * from departure and arrival timestamps, and converts booking timestamps to Date
+     * objects for consistent data handling. Results are ordered by flight departure
+     * time to provide chronological organization.
+     * </p>
+     * <p>
+     * Retrieved data includes comprehensive flight information (schedules, capacity,
+     * destinations) and booking details (status, creation time, identifiers) to
+     * support customer service and self-service booking management operations.
+     * </p>
+     *
+     * @param loggedCustomerId the unique identifier of the customer whose bookings to retrieve
+     * @param flightIds list to be populated with flight identifiers
+     * @param companyNames list to be populated with airline company names
+     * @param flightDates list to be populated with flight dates
+     * @param departureTimes list to be populated with flight departure times
+     * @param arrivalTimes list to be populated with flight arrival times
+     * @param flightStatus list to be populated with current flight status values
+     * @param maxSeats list to be populated with flight maximum seat capacity
+     * @param freeSeats list to be populated with available seats count
+     * @param cities list to be populated with destination or origin city names
+     * @param types list to be populated with flight type indicators (true for arriving, false for departing)
+     * @param bookingDates list to be populated with booking creation dates
+     * @param bookingStatus list to be populated with current booking status values
+     * @param bookingIds list to be populated with unique booking identifiers
+     * @throws SQLException if a database access error occurs during the retrieval operation
+     */
     public void getAllBooksCustomer(Integer loggedCustomerId, List<String> flightIds, ArrayList<String> companyNames, List<Date> flightDates,
                                    List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats,
@@ -384,6 +656,55 @@ public class BookingDAOImpl implements BookingDAO {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation constructs a dynamic SQL query based on the provided flight
+     * filtering criteria. It handles special logic for "Napoli" as the airport's base
+     * city and supports flexible filtering across multiple flight characteristics.
+     * </p>
+     * <p>
+     * The filtering logic includes:
+     * </p>
+     * <ul>
+     *   <li>City filtering with special handling for "Napoli" (airport base city)</li>
+     *   <li>Date range filtering using inclusive BETWEEN operations</li>
+     *   <li>Time range filtering supporting both same-day and overnight spans</li>
+     *   <li>Dynamic query construction based on provided parameters</li>
+     * </ul>
+     * <p>
+     * Time filtering handles overnight time ranges by using OR logic when the initial
+     * time is after the final time, searching for flights departing after the initial
+     * time OR before the final time.
+     * </p>
+     * <p>
+     * Results are ordered by flight departure time in descending order to show the
+     * most recent bookings first, which is typically most relevant for customer
+     * service and booking management operations.
+     * </p>
+     *
+     * @param departingCity the departure city name for filtering (can be null or empty)
+     * @param arrivingCity the arrival city name for filtering (can be null or empty)
+     * @param initialDate the start date for date range filtering (can be null)
+     * @param finalDate the end date for date range filtering (can be null)
+     * @param initialTime the start time for time range filtering (can be null)
+     * @param finalTime the end time for time range filtering (can be null)
+     * @param loggedCustomerId the unique identifier of the customer whose bookings to search
+     * @param flightIds list to be populated with matching flight identifiers
+     * @param companyNames list to be populated with airline company names
+     * @param flightDates list to be populated with flight dates
+     * @param departureTimes list to be populated with flight departure times
+     * @param arrivalTimes list to be populated with flight arrival times
+     * @param flightStatus list to be populated with current flight status values
+     * @param maxSeats list to be populated with flight maximum seat capacity
+     * @param freeSeats list to be populated with available seats count
+     * @param cities list to be populated with destination or origin city names
+     * @param types list to be populated with flight type indicators (true for departing, false for arriving)
+     * @param bookingDates list to be populated with booking creation dates
+     * @param bookingStatus list to be populated with current booking status values
+     * @param bookingIds list to be populated with unique booking identifiers
+     * @throws SQLException if a database access error occurs during the search operation
+     */
     public void searchBooksCustomerFilteredFlights(String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                                                    Integer loggedCustomerId, List<String> flightIds, List<String> companyNames, List<Date> flightDates, List<Time> departureTimes, List<Time> arrivalTimes,
                                                    List<String> flightStatus, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types,
@@ -511,6 +832,56 @@ public class BookingDAOImpl implements BookingDAO {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation constructs a complex SQL query that joins FLIGHT, BOOKING,
+     * TICKET, and PASSENGER tables to enable searching based on passenger information.
+     * It uses DISTINCT to avoid duplicate results when multiple passengers in the same
+     * booking match the search criteria.
+     * </p>
+     * <p>
+     * The search supports flexible filtering with the following criteria:
+     * </p>
+     * <ul>
+     *   <li>First name matching with case-insensitive partial matching (ILIKE)</li>
+     *   <li>Last name matching with case-insensitive partial matching (ILIKE)</li>
+     *   <li>SSN matching with case-insensitive partial matching (ILIKE)</li>
+     *   <li>Ticket number matching with case-insensitive partial matching (ILIKE)</li>
+     * </ul>
+     * <p>
+     * All filter parameters are optional and use SQL ILIKE for flexible matching.
+     * The method returns distinct results to avoid duplicates when multiple passengers
+     * in the same booking match the criteria. Results are ordered by flight departure
+     * time in descending order to show the most recent bookings first.
+     * </p>
+     * <p>
+     * This search method is particularly useful for customer service operations where
+     * representatives need to find bookings based on passenger information rather than
+     * flight details, enabling support for customers who may not remember exact flight
+     * information but can provide passenger details.
+     * </p>
+     *
+     * @param firstName the passenger first name for filtering (can be null or empty)
+     * @param lastName the passenger last name for filtering (can be null or empty)
+     * @param passengerSSN the passenger SSN for filtering (can be null or empty)
+     * @param ticketNumber the ticket number for filtering (can be null or empty)
+     * @param loggedCustomerId the unique identifier of the customer whose bookings to search
+     * @param flightIds list to be populated with matching flight identifiers
+     * @param companyNames list to be populated with airline company names
+     * @param flightDates list to be populated with flight dates
+     * @param departureTimes list to be populated with flight departure times
+     * @param arrivalTimes list to be populated with flight arrival times
+     * @param flightStatus list to be populated with current flight status values
+     * @param maxSeats list to be populated with flight maximum seat capacity
+     * @param freeSeats list to be populated with available seats count
+     * @param cities list to be populated with destination or origin city names
+     * @param types list to be populated with flight type indicators
+     * @param bookingDates list to be populated with booking creation dates
+     * @param bookingStatus list to be populated with current booking status values
+     * @param bookingIds list to be populated with unique booking identifiers
+     * @throws SQLException if a database access error occurs during the search operation
+     */
     public void searchBooksCustomerFilteredPassengers(String firstName, String lastName, String passengerSSN, String ticketNumber,
                                                Integer loggedCustomerId, List<String> flightIds, List<String> companyNames, List<Date> flightDates,
                                                List<Time> departureTimes, List<Time> arrivalTimes, List<String> flightStatus,
@@ -611,6 +982,33 @@ public class BookingDAOImpl implements BookingDAO {
 
     }
 
+    /**
+     * Performs a soft deletion of a booking by changing its status to 'CANCELLED'.
+     * <p>
+     * This method implements soft deletion by updating the booking status rather than
+     * physically removing the booking record from the database. This approach preserves
+     * data integrity and maintains audit trails for administrative and compliance purposes
+     * while effectively removing the booking from active operations.
+     * </p>
+     * <p>
+     * The soft deletion process:
+     * </p>
+     * <ul>
+     *   <li>Updates the booking_status to 'CANCELLED' for the specified booking</li>
+     *   <li>Preserves all booking data for audit and historical purposes</li>
+     *   <li>Maintains referential integrity with related tickets, passengers, and luggage</li>
+     *   <li>Allows the booking to be excluded from active booking queries when needed</li>
+     * </ul>
+     * <p>
+     * Cancelled bookings are typically filtered out of customer-facing queries but
+     * remain accessible for administrative reporting and audit purposes. This approach
+     * ensures compliance with data retention requirements while providing clear booking
+     * lifecycle management.
+     * </p>
+     *
+     * @param bookingId the unique identifier of the booking to delete/cancel
+     * @throws SQLException if a database access error occurs during the deletion operation
+     */
     public void deleteBooking (int bookingId) throws SQLException {
 
         String query = "UPDATE Booking SET booking_status = 'CANCELLED' WHERE id_booking = ?;";
