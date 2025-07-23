@@ -58,7 +58,6 @@ public class UserPanel extends JPanel {
 
         userGreeted = controller.getUserController().getUsername();
         userButton = new JButton("<html>Ciao,<br>" + userGreeted + "</html>");
-        System.out.println(userButton.getSize());
         userButton.addActionListener(e -> {
 
             popupMenu.show(userButton, 0, userButton.getHeight());

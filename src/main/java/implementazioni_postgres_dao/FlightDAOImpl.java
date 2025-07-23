@@ -72,6 +72,61 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    public void getImminentDepartingFlights (List<String> parId, List<String> parCompanyName, List<Date> parDate,
+                                             List<Time> parDepartureTime, List<Time> parArrivalTime, List<String> parStatus,
+                                             List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> origin,
+                                             List<Integer> delay, List<Integer> parGate) throws SQLException{
+        String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, " +
+                "max_seats, free_seats, destination_or_origin, flight_delay, id_gate " +
+                "FROM FLIGHT " +
+                "WHERE flight_type = true AND (flight_status = 'PROGRAMMED' OR flight_status = 'ABOUT_TO_DEPART' " +
+                "OR flight_status = 'DELAYED') " +
+                "AND departure_time + (flight_delay * interval '1 minute') > now() AT TIME ZONE current_setting('TimeZone') " +
+                "ORDER BY arrival_time " +
+                "LIMIT 6 ";
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+                                 PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = preparedQuery.executeQuery();
+
+            while (resultSet.next()) {
+
+                parId.add(resultSet.getString("id_flight"));
+                parCompanyName.add(resultSet.getString("company_name"));
+
+                Timestamp tmpTS = resultSet.getTimestamp("departure_time");
+                parDate.add(new Date(tmpTS.getTime()));
+                parDepartureTime.add(new Time(tmpTS.getTime()));
+
+                tmpTS = resultSet.getTimestamp("arrival_time");
+                parArrivalTime.add(new Time(tmpTS.getTime()));
+
+                parStatus.add(resultSet.getString("flight_status"));
+
+                parMaxSeats.add(resultSet.getInt("max_seats"));
+                parFreeSeats.add(resultSet.getInt("free_seats"));
+
+                origin.add(resultSet.getString("destination_or_origin"));
+
+                delay.add(resultSet.getInt("flight_delay"));
+
+                if(resultSet.getInt("id_gate") > 0){
+                    parGate.add(resultSet.getInt("id_gate"));
+                }else{
+                    parGate.add(null);
+                }
+            }
+
+            resultSet.close();
+            //connection.close(); non serve perchè la fa in automatico il try-with-resources
+
+        } catch (SQLException sqle) {
+
+            LOGGER.log(Level.SEVERE, sqle.getSQLState());
+        }
+    }
+
     public void searchFlight (String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                               List<String> ids, List<String> companyNames, List<java.sql.Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                               List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types) throws SQLException{

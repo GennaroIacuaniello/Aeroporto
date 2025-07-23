@@ -516,4 +516,121 @@ public class FlightController {
 
         return flightDAO.addDelay(delay, flight.getId());
     }
+
+
+    public Object[][] getImminentArrivingFlights(){
+
+        ArrayList<Arriving> arrivingFlights = new ArrayList<>();
+        Object[][] result = new Object[6][7];
+
+        ArrayList<String> flightId = new ArrayList<>();
+        ArrayList<String> companyName = new ArrayList<>();
+        ArrayList<Date> flightDate = new ArrayList<>();
+        ArrayList<Time> departureTime = new ArrayList<>();
+        ArrayList<Time> arrivalTime = new ArrayList<>();
+        ArrayList<String> status = new ArrayList<>();
+        ArrayList<Integer> maxSeats = new ArrayList<>();
+        ArrayList<Integer> freeSeats = new ArrayList<>();
+        ArrayList<String> origin = new ArrayList<>();
+        ArrayList<Integer> arrivalDelay = new ArrayList<>();
+        ArrayList<Integer> gate = new ArrayList<>();
+
+        try{
+            FlightDAOImpl arrivingDao = new FlightDAOImpl();
+            arrivingDao.getImminentArrivingFlights(flightId, companyName, flightDate, departureTime, arrivalTime, status,
+                    maxSeats, freeSeats, origin, arrivalDelay, gate);
+        } catch (SQLException e){
+            return new Object[0][0];
+        }
+
+        if (!setFlightArray(arrivingFlights, flightId, companyName, flightDate, departureTime, arrivalTime, status,
+                maxSeats, freeSeats, origin, arrivalDelay, gate))
+            return new Object[0][0];
+
+        for (int i = 0; i < arrivingFlights.size(); i++) {
+            result[i][0] = arrivingFlights.get(i).getId();
+            result[i][1] = arrivingFlights.get(i).getCompanyName();
+            result[i][2] = arrivingFlights.get(i).getDate();
+            result[i][3] = arrivingFlights.get(i).getOrigin() + " -> Napoli";
+            result[i][4] = arrivingFlights.get(i).getArrivalTime().toLocalTime().plusMinutes(arrivingFlights.get(i).getArrivalDelay());
+            result[i][5] = Controller.translateFlightStatus(arrivingFlights.get(i).getStatus());
+            if(arrivingFlights.get(i).getGate() != null){
+                result[i][6] = arrivingFlights.get(i).getGate().getId();
+            }else{
+                result[i][6] = "N/A";
+            }
+        }
+
+        return result;
+    }
+
+    public Object[][] getImminentDepartingFlights(){
+
+        ArrayList<Arriving> departingFlights = new ArrayList<>();
+        Object[][] result = new Object[6][7];
+
+        ArrayList<String> flightId = new ArrayList<>();
+        ArrayList<String> companyName = new ArrayList<>();
+        ArrayList<Date> flightDate = new ArrayList<>();
+        ArrayList<Time> departureTime = new ArrayList<>();
+        ArrayList<Time> arrivalTime = new ArrayList<>();
+        ArrayList<String> status = new ArrayList<>();
+        ArrayList<Integer> maxSeats = new ArrayList<>();
+        ArrayList<Integer> freeSeats = new ArrayList<>();
+        ArrayList<String> origin = new ArrayList<>();
+        ArrayList<Integer> departingDelay = new ArrayList<>();
+        ArrayList<Integer> gate = new ArrayList<>();
+
+        try{
+            FlightDAOImpl departingDao = new FlightDAOImpl();
+            departingDao.getImminentDepartingFlights(flightId, companyName, flightDate, departureTime, arrivalTime, status,
+                    maxSeats, freeSeats, origin, departingDelay, gate);
+        } catch (SQLException e){
+            return new Object[0][0];
+        }
+
+        if (!setFlightArray(departingFlights, flightId, companyName, flightDate, departureTime, arrivalTime, status,
+                maxSeats,freeSeats, origin, departingDelay, gate))
+            return new Object[0][0];
+
+        for (int i = 0; i < departingFlights.size(); i++) {
+            result[i][0] = departingFlights.get(i).getId();
+            result[i][1] = departingFlights.get(i).getCompanyName();
+            result[i][2] = departingFlights.get(i).getDate();
+            result[i][3] = "Napoli -> " + departingFlights.get(i).getOrigin();
+            result[i][4] = departingFlights.get(i).getDepartureTime().toLocalTime().plusMinutes(departingFlights.get(i).getArrivalDelay());
+            result[i][5] = Controller.translateFlightStatus(departingFlights.get(i).getStatus());
+            if(departingFlights.get(i).getGate() != null){
+                result[i][6] = departingFlights.get(i).getGate().getId();
+            }else{
+                result[i][6] = "N/A";
+            }
+        }
+
+        return result;
+    }
+
+    private boolean setFlightArray(List<Arriving> flights, List<String> flightId, List<String> companyName,
+                                   List<Date> flightDate, List<Time> departureTime, List<Time> arrivalTime,
+                                   List<String> status, List<Integer> maxSeats, List<Integer> freeSeats,
+                                   List<String> origin, List<Integer> delay, List<Integer> gate) {
+        try{
+            for (int i = 0; i < flightId.size(); i++) {
+
+                if(gate.get(i) != null){
+                    flights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
+                            arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
+                            origin.get(i), delay.get(i), new Gate(gate.get(i).byteValue())));
+                }else{
+                    flights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
+                            arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
+                            origin.get(i), delay.get(i)));
+                }
+
+            }
+        } catch (Exception e){
+            return false;
+        }
+        return true;
+    }
 }

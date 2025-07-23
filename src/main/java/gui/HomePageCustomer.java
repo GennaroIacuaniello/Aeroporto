@@ -10,9 +10,15 @@ public class HomePageCustomer extends DisposableObject {
 
     private JFrame mainFrame;
     private UserPanel userPanel;
+
+    private JPanel arrivingPanel;
+    private JPanel departingPanel;
+
     private ImminentFlightsTable arrivingTable;
     private ImminentFlightsTable departingTable;
+
     Constraints constraints;
+
 
     public HomePageCustomer(List<DisposableObject> callingObjects, Controller controller) {
 
@@ -85,7 +91,7 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addArrivingPanel(Controller controller) {
 
-        JPanel arrivingPanel = new JPanel();
+        arrivingPanel = new JPanel();
         arrivingPanel.setLayout(new GridBagLayout());
         arrivingPanel.setBackground(Color.LIGHT_GRAY);
 
@@ -113,7 +119,7 @@ public class HomePageCustomer extends DisposableObject {
     private void setArrivingTable(JPanel tablePanel, Controller controller) {
 
         String[] columnTitle = {"Id", "Compagnia", "Data", "Tratta", "Orario di arrivo", "Stato del volo", "Gate"};
-        Object[][] data = controller.getImminentArrivingFlights();
+        Object[][] data = controller.getFlightController().getImminentArrivingFlights();
         arrivingTable = new ImminentFlightsTable(data, columnTitle);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
@@ -123,7 +129,7 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addDepartingPanel(Controller controller) {
 
-        JPanel departingPanel = new JPanel();
+        departingPanel = new JPanel();
         departingPanel.setLayout(new GridBagLayout());
         departingPanel.setBackground(Color.LIGHT_GRAY);
 
@@ -150,8 +156,8 @@ public class HomePageCustomer extends DisposableObject {
 
     private void setDepartingTable(JPanel tablePanel, Controller controller) {
 
-        String[] columnTitles = {"Company", "Going to", "Day", "Departing Time", "Gate"};
-        Object[][] data = controller.getImminentDepartingFlights();
+        String[] columnTitles = {"id", "Compagnia", "Data", "Tratta", "Orario di partenza", "Stato del volo", "Gate"};
+        Object[][] data = controller.getFlightController().getImminentDepartingFlights();
         departingTable = new ImminentFlightsTable(data, columnTitles);
 
 
@@ -173,6 +179,13 @@ public class HomePageCustomer extends DisposableObject {
             mainFrame.remove(userPanel);
             addUserPanel(callingObjects, controller);
         }
+
+        arrivingPanel.setVisible(false);
+        departingPanel.setVisible(false);
+        mainFrame.remove(arrivingPanel);
+        mainFrame.remove(departingPanel);
+        addArrivingPanel(controller);
+        addDepartingPanel(controller);
     }
 
     @Override

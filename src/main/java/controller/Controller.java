@@ -47,126 +47,6 @@ public class Controller {
         ticketController = new TicketController();
     }
 
-    public Object[][] getImminentArrivingFlights(){
-
-        ArrayList<Arriving> arrivingFlights = new ArrayList<>();
-        Object[][] result = new Object[6][7];
-
-        ArrayList<String> flightId = new ArrayList<>();
-        ArrayList<String> companyName = new ArrayList<>();
-        ArrayList<Date> flightDate = new ArrayList<>();
-        ArrayList<Time> departureTime = new ArrayList<>();
-        ArrayList<Time> arrivalTime = new ArrayList<>();
-        ArrayList<String> status = new ArrayList<>();
-        ArrayList<Integer> maxSeats = new ArrayList<>();
-        ArrayList<Integer> freeSeats = new ArrayList<>();
-        ArrayList<String> origin = new ArrayList<>();
-        ArrayList<Integer> arrivalDelay = new ArrayList<>();
-        ArrayList<Integer> gate = new ArrayList<>();
-
-        try{
-            FlightDAOImpl arrivingDao = new FlightDAOImpl();
-            arrivingDao.getImminentArrivingFlights(flightId, companyName, flightDate, departureTime, arrivalTime, status,
-                    maxSeats, freeSeats, origin, arrivalDelay, gate);
-        } catch (SQLException e){
-            return new Object[0][0];
-        }
-
-        try{
-            for (int i = 0; i < flightId.size(); i++) {
-
-                if(gate.get(i) != null){
-                    arrivingFlights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
-                            arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
-                            origin.get(i), arrivalDelay.get(i), new Gate(gate.get(i).byteValue())));
-                }else{
-                    arrivingFlights.add(new Arriving(flightId.get(i), companyName.get(i), flightDate.get(i), departureTime.get(i),
-                            arrivalTime.get(i), FlightStatus.valueOf(status.get(i)), maxSeats.get(i), freeSeats.get(i),
-                            origin.get(i), arrivalDelay.get(i)));
-                }
-
-            }
-        } catch (Exception e){
-            return new Object[0][0];
-        }
-
-        for (int i = 0; i < arrivingFlights.size(); i++) {
-            result[i][0] = arrivingFlights.get(i).getId();
-            result[i][1] = arrivingFlights.get(i).getCompanyName();
-            result[i][2] = arrivingFlights.get(i).getDate();
-            result[i][3] = arrivingFlights.get(i).getOrigin() + " -> Napoli";
-            result[i][4] = arrivingFlights.get(i).getArrivalTime().toLocalTime().plusMinutes(arrivingFlights.get(i).getArrivalDelay());
-            result[i][5] = translateFlightStatus(arrivingFlights.get(i).getStatus());
-            if(arrivingFlights.get(i).getGate() != null){
-                result[i][6] = arrivingFlights.get(i).getGate().getId();
-            }else{
-                result[i][6] = "Non assegnato";
-            }
-
-
-        }
-
-        return result;
-    }
-
-    public String translateFlightStatus(FlightStatus status){
-
-        switch (status.toString()){
-            case "PROGRAMMED":
-                return "In programma";
-            case "CANCELLED":
-                return "Cancellato";
-            case "DELAYED":
-                return "In ritardo";
-            case "ABOUT_TO_DEPART":
-                return "In partenza";
-            case "DEPARTED":
-                return "Partito";
-            case "ABOUT_TO_ARRIVE":
-                return "In arrivo";
-            case "LANDED":
-                return "Atterrato";
-            default:
-                return null;
-        }
-
-    }
-
-    public Object[][] getImminentDepartingFlights(){
-
-        ArrayList<Departing> departingFlights = new ArrayList<>();
-        Object[][] result = new Object[10][5];
-
-        departingFlights.add(new Departing("01", "Compagnia", new Date(3),
-                new Time(1), new Time(1), 100, "Dubai"));
-        departingFlights.add(new Departing("02", "Compagnia", new Date(4),
-                new Time(1), new Time(1), 100, "Dubai"));
-        departingFlights.add(new Departing("03", "Compagnia", new Date(5),
-                new Time(1), new Time(1), 100, "Dubai"));
-
-        for (int i = 0; i < departingFlights.size(); i++) {
-
-            try {departingFlights.get(i).setGate(new Gate((byte)(i + 1)));}
-            catch (InvalidGate e) {
-                Controller.getLogger().log(Level.SEVERE, e.getMessage());
-            }
-
-            result[i][0] = departingFlights.get(i).getCompanyName();
-            result[i][1] = departingFlights.get(i).getDestination();
-            result[i][2] = departingFlights.get(i).getDate().getDate() +
-                    " " + departingFlights.get(i).getMonthName();
-            result[i][3] = departingFlights.get(i).getDepartureTime();
-            if(departingFlights.get(i).getGate() != null){
-                result[i][4] = Integer.toString(departingFlights.get(i).getGate().getId());
-            }else{
-                result[i][4] = "Non assegnato";
-            }
-
-        }
-
-        return result;
-    }
-
     public BookingController getBookingController() {
         return bookingController;
     }
@@ -237,7 +117,7 @@ public class Controller {
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
         callingObjects.getLast().getFrame().setVisible(true);
-        callingObjects.getLast().doOnRestore(callingObjects, this);
+
     }
 
     public void goBack (List<DisposableObject> callingObjects) {
@@ -259,6 +139,7 @@ public class Controller {
         callingObjects.getLast().doOnRestore(callingObjects, this);
 
         callingObjects.getLast().getFrame().setVisible(true);
+
     }
 
     public void logOut (List<DisposableObject> callingObjects) {
@@ -295,6 +176,28 @@ public class Controller {
 
         } catch (SQLException e) {
             Controller.getLogger().log(Level.SEVERE, e.getSQLState());
+        }
+    }
+
+    public static String translateFlightStatus(FlightStatus status){
+
+        switch (status.toString()){
+            case "PROGRAMMED":
+                return "In programma";
+            case "CANCELLED":
+                return "Cancellato";
+            case "DELAYED":
+                return "In ritardo";
+            case "ABOUT_TO_DEPART":
+                return "In partenza";
+            case "DEPARTED":
+                return "Partito";
+            case "ABOUT_TO_ARRIVE":
+                return "In arrivo";
+            case "LANDED":
+                return "Atterrato";
+            default:
+                return null;
         }
     }
 
