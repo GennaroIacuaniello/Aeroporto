@@ -49,7 +49,7 @@ public class HomePageCustomer extends DisposableObject {
         mainFrame.setLayout(new GridBagLayout());
         mainFrame.setSize(1080, 720);
         mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        mainFrame.setBackground(Color.BLACK);
+        mainFrame.getContentPane().setBackground(new Color(240, 242, 245));
     }
 
     private void addTitlePanel(Controller controller) {
@@ -67,6 +67,7 @@ public class HomePageCustomer extends DisposableObject {
         constraints.setConstraints(0, 1, 2, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.PAGE_START);
         mainFrame.add(navigatorBarPanel, constraints.getGridBagConstraints());
+        navigatorBarPanel.setBackground(new Color(240, 242, 245));
         navigatorBarPanel.setVisible(true);
     }
 
@@ -93,7 +94,7 @@ public class HomePageCustomer extends DisposableObject {
 
         arrivingPanel = new JPanel();
         arrivingPanel.setLayout(new GridBagLayout());
-        arrivingPanel.setBackground(Color.LIGHT_GRAY);
+        arrivingPanel.setBackground(new Color(240, 242, 245));
 
         setArrivingTable(arrivingPanel, controller);
 
@@ -131,7 +132,7 @@ public class HomePageCustomer extends DisposableObject {
 
         departingPanel = new JPanel();
         departingPanel.setLayout(new GridBagLayout());
-        departingPanel.setBackground(Color.LIGHT_GRAY);
+        departingPanel.setBackground(new Color(240, 242, 245));
 
         setDepartingTable(departingPanel, controller);
 
@@ -159,7 +160,6 @@ public class HomePageCustomer extends DisposableObject {
         String[] columnTitles = {"id", "Compagnia", "Data", "Tratta", "Orario di partenza", "Stato del volo", "Gate"};
         Object[][] data = controller.getFlightController().getImminentDepartingFlights();
         departingTable = new ImminentFlightsTable(data, columnTitles);
-
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
                 0, 0, GridBagConstraints.CENTER);
