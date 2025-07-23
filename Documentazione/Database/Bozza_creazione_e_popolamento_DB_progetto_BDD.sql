@@ -2504,7 +2504,7 @@ EXECUTE FUNCTION fun_block_mod_flight_status_if_landed();
 
 --TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'ABOUT_TO_DEPART', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
 
-CREATE OR REPLACE FUNCTION proc_change_booking_status_when_dep_aToDep(input_old_id_flight VARCHAR(15), input_old_flight_type BOOLEAN, input_old_flight_status FlightStatus, input_new_flight_type BOOLEAN, input_new_flight_status FlightStatus )
+CREATE OR REPLACE FUNCTION actual_func_change_booking_status_when_dep_aToDep(input_old_id_flight VARCHAR(15), input_old_flight_type BOOLEAN, input_old_flight_status FlightStatus, input_new_flight_type BOOLEAN, input_new_flight_status FlightStatus )
 RETURNS INTEGER
 AS $$
 DECLARE
@@ -2562,6 +2562,8 @@ EXCEPTION
 END;
 $$ LANGUAGE plpgsql;
 
+--------------------------------
+
 CREATE OR REPLACE FUNCTION fun_change_booking_status_when_dep_aToDep()
 RETURNS TRIGGER
 AS $$
@@ -2571,7 +2573,7 @@ DECLARE
 
 BEGIN
 
-	SELECT proc_change_booking_status_when_dep_aToDep(OLD.id_flight, OLD.flight_type, OLD.flight_status, NEW.flight_type, NEW.flight_status) INTO tot_passengers;
+	SELECT actual_func_change_booking_status_when_dep_aToDep(OLD.id_flight, OLD.flight_type, OLD.flight_status, NEW.flight_type, NEW.flight_status) INTO tot_passengers;
 
 	NEW.free_seats := NEW.free_seats + tot_passengers;
 
@@ -2592,10 +2594,12 @@ EXECUTE FUNCTION fun_change_booking_status_when_dep_aToDep();
 --CIRCA IL 90% DEI SUOI PASSEGGERI CON PRENOTAZIONI CONFIRMED AVRANNO FATTO IL CHECK-IN, 
 --E TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI PASSEGGERI CON CHECKED_IN A TRUE VENGONO MESSI A LOADED
 
-CREATE OR REPLACE FUNCTION fun_simulate_connection_when_arriving_departed()
-RETURNS TRIGGER
+CREATE OR REPLACE FUNCTION actual_func_simulate_connection_when_arriving_departed(input_old_id_flight VARCHAR(15), input_old_flight_type BOOLEAN, input_old_flight_status FlightStatus, input_new_flight_type BOOLEAN, input_new_flight_status FlightStatus )
+RETURNS INTEGER
 AS $$
 DECLARE
+
+	n_passenger INTEGER := 0;
 
 	i INTEGER := 0;
 	j INTEGER := 0;
@@ -2605,29 +2609,38 @@ DECLARE
 	selected_luggage LUGGAGE%ROWTYPE;
 
 BEGIN
-	
+
+	ALTER TABLE Booking DISABLE TRIGGER upd_free_seats_on_canc_booking;
+
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
-	IF OLD.flight_type = false AND NEW.flight_type = false THEN
+	IF input_old_flight_type = false AND input_new_flight_type = false THEN
 	
 		
 		--questo if serve perché solo un volo PROGRAMMED o ABOUT_TO_DEPART può essere impostato a DEPARTED
-		IF OLD.flight_status <> 'PROGRAMMED' AND OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
+		IF input_old_flight_status <> 'PROGRAMMED' AND input_old_flight_status <> 'ABOUT_TO_DEPART' THEN
 
 			RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', OLD.id_flight;
 
 		END IF;
 
 
-		IF OLD.flight_status <> 'DEPARTED' AND NEW.flight_status = 'DEPARTED' THEN
+		IF input_old_flight_status <> 'DEPARTED' AND input_new_flight_status = 'DEPARTED' THEN
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
-									 WHERE B.id_flight = OLD.id_flight AND B.booking_status <> 'CANCELLED') LOOP
+									 WHERE B.id_flight = input_old_id_flight AND B.booking_status <> 'CANCELLED') LOOP
 
 				IF selected_booking.booking_status = 'PENDING' THEN
 
 					UPDATE BOOKING
 					SET booking_status = 'CANCELLED'
 					WHERE id_booking = selected_booking.id_booking;
+
+					FOR selected_ticket IN (SELECT * FROM TICKET T
+								WHERE T.id_booking = selected_booking.id_booking) LOOP
+
+						n_passenger := n_passenger + 1;
+
+					END LOOP;
 
 				ELSE
 				--basta else, perchè tanto quelle già a CANCELLED non le prendo proprio con la select
@@ -2667,6 +2680,32 @@ BEGIN
 		END IF;
 
 	END IF;
+
+	ALTER TABLE Booking ENABLE TRIGGER upd_free_seats_on_canc_booking;
+
+	RETURN n_passenger;
+    
+EXCEPTION
+    WHEN OTHERS THEN
+        ALTER TABLE Booking ENABLE TRIGGER upd_free_seats_on_canc_booking;
+        RAISE;
+END;
+$$ LANGUAGE plpgsql;
+
+------------------------------
+
+CREATE OR REPLACE FUNCTION fun_simulate_connection_when_arriving_departed()
+RETURNS TRIGGER
+AS $$
+DECLARE
+
+	tot_passengers INTEGER := 0;
+
+BEGIN
+	
+	SELECT actual_func_simulate_connection_when_arriving_departed(OLD.id_flight, OLD.flight_type, OLD.flight_status, NEW.flight_type, NEW.flight_status) INTO tot_passengers;
+
+	NEW.free_seats := NEW.free_seats + tot_passengers;
 
 	RETURN NEW;
 
