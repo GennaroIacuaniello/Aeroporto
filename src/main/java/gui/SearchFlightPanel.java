@@ -1216,7 +1216,7 @@ public class SearchFlightPanel extends JPanel {
      * @param controller the system controller providing access to flight search services and comprehensive error handling functionality
      * @param searchButton the search button component for error message coordination and user feedback integration
      */
-    public void executeResearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton){
+    public void executeResearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String origin = fromField.getText();
         String destination = toField.getText();
@@ -1227,26 +1227,32 @@ public class SearchFlightPanel extends JPanel {
 
         controller.setErrorButton(searchButton);
 
-        if( (fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())){
+        boolean flag = false;
+        String msg = "";
 
-            new FloatingMessage("Se si specifica una città, vanno specificate entrambe!", searchButton, FloatingMessage.ERROR_MESSAGE);
-            updateResultsPanel(callingObjects, controller, true);
+        if ((fromField.getText().isEmpty() && !toField.getText().isEmpty()) || (!fromField.getText().isEmpty() && toField.getText().isEmpty())) {
 
-        }else if( (dateBefore != null && dateAfter == null) || (dateBefore == null && dateAfter != null) ){
+            msg = "Se si specifica una città, vanno specificate entrambe!";
+            flag = true;
+        } else if ((dateBefore != null && dateAfter == null) || (dateBefore == null && dateAfter != null)) {
 
-            new FloatingMessage("Errore nel range di date!", searchButton, FloatingMessage.ERROR_MESSAGE);
-            updateResultsPanel(callingObjects, controller, true);
-
+            msg = "Errore nel range di date!";
+            flag = true;
         } else if (dateBefore != null /*&& dateAfter != null*/ && dateAfter.isBefore(dateBefore)) {
 
-            new FloatingMessage("La seconda data deve essere successiva alla prima!", searchButton, FloatingMessage.ERROR_MESSAGE);
-            updateResultsPanel(callingObjects, controller,true);
-
+            msg = "La seconda data deve essere successiva alla prima!";
+            flag = true;
         } else if ((timeBefore != null && timeAfter == null) || (timeBefore == null && timeAfter != null)) {
 
-            new FloatingMessage("Errore nella fascia oraria!", searchButton, FloatingMessage.ERROR_MESSAGE);
-            updateResultsPanel(callingObjects, controller,true);
-        }else{
+            msg = "Errore nella fascia oraria!";
+            flag = true;
+        }
+
+        if (flag) {
+
+            new FloatingMessage(msg, searchButton, FloatingMessage.ERROR_MESSAGE);
+
+        } else {
 
             ids = new ArrayList<>();
             companyNames = new ArrayList<>();
@@ -1263,12 +1269,11 @@ public class SearchFlightPanel extends JPanel {
                     ids, companyNames, dates, departureTimes, arrivalTimes, delays, status,
                     maxSeats, freeSeats, cities, searchButton);
 
-
-            updateResultsPanel(callingObjects, controller, true);
-
+            searchPerformed = true;
 
         }
 
+        updateResultsPanel(callingObjects, controller, true);
     }
 
     /**
