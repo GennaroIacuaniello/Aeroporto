@@ -9,20 +9,42 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * The type Seat chooser.
+ * The SeatChooser class provides a graphical interface for selecting airplane seats.
+ * This dialog displays a grid of seat buttons arranged in a layout similar to an airplane cabin,
+ * with rows numbered and columns labeled A-F. It allows passengers to select an available seat,
+ * showing which seats are already booked or selected by other passengers in the same booking.
+ * The dialog includes confirmation and deletion buttons to apply or remove the seat selection.
  */
 public class SeatChooser extends JFrame {
 
+    /**
+     * The collection of all seat buttons in the grid.
+     * Each button represents a seat in the airplane and can be selected by the user.
+     * Buttons are enabled or disabled based on seat availability.
+     */
     private final ArrayList<JButton> seatButtons;
+
+    /**
+     * The currently selected seat number.
+     * This value is -1 if no seat is selected, otherwise it represents
+     * the index of the selected seat in the seatButtons array.
+     */
     private int seat;
 
     /**
-     * Instantiates a new Seat chooser.
+     * Instantiates a new Seat chooser dialog.
+     * This constructor creates and configures the seat selection grid, showing available
+     * and unavailable seats. It sets up the confirmation and deletion buttons, and
+     * handles the interaction between selected seats and the passenger panel.
      *
-     * @param controller      the controller
-     * @param callingPanel    the calling panel
-     * @param passengerPanels the passenger panels
-     * @param bookedSeats     the booked seats
+     * @param controller      the main controller that provides access to flight information
+     *                        including the maximum number of seats
+     * @param callingPanel    the passenger panel that initiated this seat selection,
+     *                        which will receive the selected seat information
+     * @param passengerPanels the list of all passenger panels in the current booking,
+     *                        used to identify seats already selected by other passengers
+     * @param bookedSeats     the list of seat numbers that are already booked on this flight
+     *                        and cannot be selected
      */
     public SeatChooser(Controller controller, PassengerPanel callingPanel, List<PassengerPanel> passengerPanels, List<Integer> bookedSeats) {
 
@@ -154,9 +176,13 @@ public class SeatChooser extends JFrame {
     }
 
     /**
-     * Sets location.
+     * Centers this dialog over the specified button.
+     * This method calculates the position to place the dialog so that it appears
+     * centered over the button that triggered it, creating a more intuitive
+     * user experience by connecting the visual elements spatially.
      *
-     * @param callingButton the calling button
+     * @param callingButton the button that triggered this dialog and over which
+     *                      the dialog should be centered
      */
     public void setLocation(JButton callingButton) {
         //coordinate punto in alto a sx del bottone
@@ -175,10 +201,14 @@ public class SeatChooser extends JFrame {
     }
 
     /**
-     * Print seat string.
+     * Converts a seat index to a human-readable seat code.
+     * This method transforms a numeric seat index (0-based) into a standard airline
+     * seat code format combining row number (1-based) and column letter (A-F).
+     * For example, seat index 7 would be converted to "2B" (second row, column B).
+     * If the seat index is -1, it returns "***" to indicate no seat selection.
      *
-     * @param seat the seat
-     * @return the string
+     * @param seat the numeric index of the seat (0-based), or -1 for no selection
+     * @return the formatted seat code (e.g., "1A", "2B") or "***" for no selection
      */
     public String printSeat(int seat) {
 

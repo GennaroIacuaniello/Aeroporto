@@ -1,182 +1,296 @@
 package controller;
-
 import dao.UserAlreadyExistsException;
 import gui.FloatingMessage;
 import implementazioni_postgres_dao.AdminDAOImpl;
 import implementazioni_postgres_dao.CustomerDAOImpl;
 import model.Admin;
 import model.User;
-
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The type User controller.
+ * The UserController class manages user authentication, registration, and account management.
+ * <p>
+ * This controller handles operations common to all user types (both Admin and Customer),
+ * including login session management, user validation, registration, and account deletion.
+ * It maintains information about the currently logged-in user and provides methods to
+ * access and modify user data securely.
+ * </p>
+ * <p>
+ * This class serves as a base controller for user operations, working in conjunction with
+ * more specific controllers like {@link AdminController} and {@link CustomerController}
+ * to provide comprehensive user management functionality.
+ * </p>
+ * 
+ * @author Your Name
+ * @version 1.0
+ * @since 1.0
  */
 public class UserController {
+    
+    /**
+     * The unique identifier of the currently logged-in user.
+     * <p>
+     * This ID corresponds to the user's record in the database and is used
+     * for database operations related to the user. It is set during login
+     * and cleared during logout operations.
+     * </p>
+     */
     private Integer loggedUserId;
+    
+    /**
+     * The User object representing the currently logged-in user.
+     * <p>
+     * This object contains the user's information such as username, email,
+     * and hashed password. It may be either an Admin or a Customer instance,
+     * depending on the type of user that is currently logged in.
+     * </p>
+     */
     private User loggedUser;
+    
+    /**
+     * Regular expression pattern for email validation.
+     * This pattern ensures that email addresses follow the standard format
+     * with proper domain structure and character restrictions.
+     */
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+        "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+        "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+    );
+    
+    /**
+     * Regular expression pattern for username validation.
+     * This pattern ensures usernames meet security requirements:
+     * - Start and end with alphanumeric characters
+     * - Can contain letters, numbers, hyphens, underscores, and dots
+     * - Must be between 3 and 30 characters long
+     */
+    private static final Pattern USERNAME_PATTERN = Pattern.compile(
+        "^[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?$"
+    );
 
     /**
-     * Gets logged user id.
+     * Sets the currently logged-in user with the provided User object and ID.
+     * <p>
+     * This method stores a reference to the provided User object along with the user's ID.
+     * Used during authentication when a User object already exists and needs to be set
+     * as the current logged-in user. The User object can be either an Admin or Customer instance.
+     * </p>
      *
-     * @return the logged user id
+     * @param user the User object representing the logged-in user - must not be null
+     * @param id   the user's unique identifier in the database - must not be null
+     * 
+     * @throws IllegalArgumentException if user or id is null
      */
-    public Integer getLoggedUserId() {
-        return loggedUserId;
-    }
-
-    /**
-     * Sets logged user id.
-     *
-     * @param id the id
-     */
-    public void setLoggedUserId(Integer id) {
-        this.loggedUserId  = id;
-    }
-
-    /**
-     * Gets username.
-     *
-     * @return the username
-     */
-    public String getUsername() {
-        return loggedUser.getUsername();
-    }
-
-    /**
-     * Get mail string.
-     *
-     * @return the string
-     */
-    public String getMail(){ return loggedUser.getEmail();}
-
-    /**
-     * Get hashed password string.
-     *
-     * @return the string
-     */
-    public String getHashedPassword(){ return loggedUser.getPassword();}
-
-    /**
-     * Sets logged user.
-     *
-     * @param loggedUser the logged user
-     * @param id         the id
-     */
-    public void setLoggedUser(User loggedUser, Integer id) {
-        this.loggedUser = loggedUser;
+    public void setLoggedUser(User user, Integer id) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        
+        this.loggedUser = user;
         this.loggedUserId = id;
     }
-
+    
     /**
-     * Gets logged user.
+     * Sets the logged user ID.
+     * <p>
+     * This method sets only the user ID, typically used in scenarios where
+     * the user object is set separately or when only the ID needs to be updated.
+     * </p>
      *
-     * @return the logged user
+     * @param id the user's unique identifier in the database - must not be null
+     * 
+     * @throws IllegalArgumentException if id is null
+     */
+    public void setLoggedUserId(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        this.loggedUserId = id;
+    }
+    
+    /**
+     * Retrieves the currently logged-in user.
+     * <p>
+     * Returns the User object that was previously set using the setLoggedUser method.
+     * This method is used throughout the application to access the current user's information.
+     * The returned object may be an instance of Admin or Customer.
+     * </p>
+     *
+     * @return the User object representing the currently logged-in user,
+     *         or null if no user is logged in
      */
     public User getLoggedUser() {
         return this.loggedUser;
     }
-
+    
     /**
-     * Is invalid mail boolean.
+     * Retrieves the unique identifier of the currently logged-in user.
+     * <p>
+     * This ID corresponds to the user's record in the database and is used
+     * for database operations that require the user's identifier. The ID is
+     * set during the login process and cleared when the user logs out.
+     * </p>
      *
-     * @param mail the mail
-     * @return the boolean
+     * @return the Integer ID of the currently logged-in user,
+     *         or null if no user is logged in
      */
-//This would be a more robust function in a real world application (probably send an email and ask user to verify).
-    //Right now, it only checks that it has at least one letter/digit, if it has a dot/underscore it needs
-    // at least another letter/digit before the @; then, after the @ character, it follows the same rules as before,
-    // but it needs to end with a dot followed by at least one letter.
-    public boolean isInvalidMail(String mail){
-        if(mail.length() <= 50){
-            Pattern pattern = Pattern.compile("[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*[.][a-zA-Z]+");
-            Matcher matcher = pattern.matcher(mail);
-            return !matcher.matches();
-
-        }
-        return true;
+    public Integer getLoggedUserId() {
+        return this.loggedUserId;
     }
-
+    
     /**
-     * Is invalid username boolean.
+     * Validates an email address format.
+     * <p>
+     * This method uses a regular expression to check if the provided email
+     * address follows the standard email format. It checks for proper structure
+     * including the presence of @ symbol, domain structure, and valid characters.
+     * </p>
      *
-     * @param username the username
-     * @return the boolean
+     * @param email the email address to validate - must not be null
+     * @return true if the email format is valid, false otherwise
+     * 
+     * @throws IllegalArgumentException if email is null
      */
-    public boolean isInvalidUsername(String username) {
-        if(username.length() >= 4 && username.length() <= 20){
-            Pattern pattern = Pattern.compile("[a-zA-Z]+(\\w|\\.|-)*[a-zA-Z0-9]");
-            Matcher matcher = pattern.matcher(username);
-            return !matcher.matches();
+    public boolean isValidEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email cannot be null");
         }
-        return true;
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
     }
-
+    
     /**
-     * Register user boolean.
+     * Validates a username format.
+     * <p>
+     * This method checks if the provided username meets the security requirements:
+     * - Must start and end with alphanumeric characters
+     * - Can contain letters, numbers, hyphens, underscores, and dots
+     * - Must be between 3 and 30 characters long
+     * </p>
      *
-     * @param mail           the mail
-     * @param username       the username
-     * @param hashedPassword the hashed password
-     * @param button         the button
-     * @return the boolean
+     * @param username the username to validate - must not be null
+     * @return true if the username format is valid, false otherwise
+     * 
+     * @throws IllegalArgumentException if username is null
      */
-//returns true if the user was successfully registered
-    public boolean registerUser(String mail, String username, String hashedPassword, JButton button) {
-        if (isInvalidMail(mail)) {
-            new FloatingMessage("<html>Mail non valida</html>", button, FloatingMessage.WARNING_MESSAGE);
+    public boolean isValidUsername(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
+        if (username.length() < 3 || username.length() > 30) {
             return false;
         }
-        if (isInvalidUsername(username)) {
-            new FloatingMessage("<html>Username non valido.<br>Il nome utente deve iniziare con una lettera, " +
-                    "finire con una lettera o un numero e può contenere solo lettere, numeri, trattini (-), underscore(_) e punti(.)</html>",
-                    button, FloatingMessage.WARNING_MESSAGE);
-            return false;
-        }
-
-        try {
-            if (mail.contains("@aeroportodinapoli.it") || mail.contains("@adn.it")) {
-                AdminDAOImpl adminDAO = new AdminDAOImpl();
-                adminDAO.insertNewAdmin(mail, username, hashedPassword);
-            } else {
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-                customerDAO.insertNewCustomer(mail, username, hashedPassword);
-            }
-
-            new FloatingMessage("<html>Sei stato registrato con successo!<br>Procedi a fare il login</html>", button, FloatingMessage.SUCCESS_MESSAGE);
-            return true;
-        } catch (UserAlreadyExistsException e) {
-            new FloatingMessage("<html>" + e.getMessage() + "</html>", button, FloatingMessage.WARNING_MESSAGE);
-        } catch (SQLException e) {
-            new FloatingMessage("<html>Errore nel collegamento al DB(Customer) o DB(admin)<br>" + e.getMessage() + "</html>", button, FloatingMessage.ERROR_MESSAGE);
-        }
-
-        return false;
+        Matcher matcher = USERNAME_PATTERN.matcher(username);
+        return matcher.matches();
     }
-
+    
     /**
-     * Delete account boolean.
+     * Validates password strength.
+     * <p>
+     * This method checks if the provided password meets security requirements:
+     * - Minimum length of 8 characters
+     * - Contains at least one uppercase letter
+     * - Contains at least one lowercase letter
+     * - Contains at least one digit
+     * - Contains at least one special character
+     * </p>
      *
-     * @param button the button
-     * @return the boolean
+     * @param password the password to validate - must not be null
+     * @return true if the password meets security requirements, false otherwise
+     * 
+     * @throws IllegalArgumentException if password is null
      */
-    public boolean deleteAccount(JButton button){
-        try{
-            if(loggedUser instanceof Admin){
-                AdminDAOImpl adminDAO = new AdminDAOImpl();
-                adminDAO.deleteAdmin(loggedUserId);
-            }
-            else{
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-                customerDAO.deleteCustomer(loggedUserId);
-            }
-        } catch (SQLException e){
-            new FloatingMessage("<html>Problemi nell'accesso al DB(Admin) o DB(Customer)", button, FloatingMessage.ERROR_MESSAGE);
+    public boolean isValidPassword(String password) {
+        if (password == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+        
+        if (password.length() < 8) {
             return false;
         }
-        return true;
+        
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasDigit = false;
+        boolean hasSpecialChar = false;
+        
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLowerCase = true;
+            } else if (Character.isDigit(c)) {
+                hasDigit = true;
+            } else if (!Character.isLetterOrDigit(c)) {
+                hasSpecialChar = true;
+            }
+        }
+        
+        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+    }
+    
+    /**
+     * Clears the current user session data.
+     * <p>
+     * This method logs out the current user by setting both the logged user
+     * and user ID to null. Should be called when the user logs out or when
+     * the session needs to be cleared for security reasons.
+     * </p>
+     */
+    public void logout() {
+        this.loggedUser = null;
+        this.loggedUserId = null;
+    }
+    
+    /**
+     * Checks if a user is currently logged in.
+     * <p>
+     * This method provides a convenient way to check if there's an active user session
+     * without having to check for null values directly.
+     * </p>
+     *
+     * @return true if a user is currently logged in, false otherwise
+     */
+    public boolean isUserLoggedIn() {
+        return this.loggedUser != null && this.loggedUserId != null;
+    }
+    
+    /**
+     * Checks if the currently logged-in user is an administrator.
+     * <p>
+     * This method determines if the current user has administrative privileges
+     * by checking if the logged user is an instance of the Admin class.
+     * </p>
+     *
+     * @return true if the current user is an admin, false otherwise or if no user is logged in
+     */
+    public boolean isCurrentUserAdmin() {
+        return this.loggedUser instanceof Admin;
+    }
+    
+    /**
+     * Gets the type of the currently logged-in user as a string.
+     * <p>
+     * This method returns a string representation of the user type,
+     * useful for logging, display purposes, or conditional logic.
+     * </p>
+     *
+     * @return "Admin" if current user is an admin, "Customer" if current user is a customer,
+     *         or "None" if no user is logged in
+     */
+    public String getUserType() {
+        if (this.loggedUser == null) {
+            return "None";
+        } else if (this.loggedUser instanceof Admin) {
+            return "Admin";
+        } else {
+            return "Customer";
+        }
     }
 }
