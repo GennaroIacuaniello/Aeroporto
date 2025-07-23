@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class BookingPageAdmin extends BookingPage {
@@ -196,7 +195,7 @@ public class BookingPageAdmin extends BookingPage {
 
         try {
 
-            //delayTextField.setText("20");
+            /*//delayTextField.setText("20");
 
             System.out.println("empty" + delayTextField.getText().isEmpty());
 
@@ -204,11 +203,11 @@ public class BookingPageAdmin extends BookingPage {
 
             System.out.println("delay: " + delayTextField.getText());
 
-            System.out.println("delay: " + delayTextField.getText().trim());
+            System.out.println("delay: " + delayTextField.getText().trim());*/
 
-            Integer delay = Integer.parseInt(delayTextField.getText().trim());
+            int delay = Integer.parseInt(delayTextField.getText().trim());
 
-            System.out.println("delay: " + delay);
+            //System.out.println("delay: " + delay);
 
             if (controller.getFlightController().addDelay(delay) == 1)
                 new FloatingMessage("Ritardo settato correttamente", setDelayButton, FloatingMessage.SUCCESS_MESSAGE);

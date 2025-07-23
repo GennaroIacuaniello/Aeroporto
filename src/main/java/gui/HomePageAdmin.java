@@ -19,7 +19,7 @@ public class HomePageAdmin extends DisposableObject {
         constraints = new Constraints();
         this.setMainFrame(callingObjects);
 
-        this.addTitlePanel(controller);
+        this.addTitlePanel();
         this.addNavigatorBarPanel(callingObjects, controller);
         this.addMenuPanel(callingObjects, controller);
         this.addUserPanel(callingObjects, controller);
@@ -43,7 +43,7 @@ public class HomePageAdmin extends DisposableObject {
 
     }
 
-    private void addTitlePanel(Controller controller) {
+    private void addTitlePanel() {
 
         TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
 
