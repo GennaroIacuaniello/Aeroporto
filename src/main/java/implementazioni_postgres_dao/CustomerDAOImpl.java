@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * The type Customer dao.
- */
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public void searchUserByUsername(List<Integer> userID, String username, List<String> mail, String password) throws SQLException{

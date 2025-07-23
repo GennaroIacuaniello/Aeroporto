@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"controller"},{"l":"dao"},{"l":"database"},{"l":"gui"},{"l":"implementazioni_postgres_dao"},{"l":"model"},{"l":"org.example"}];updateSearchResults();

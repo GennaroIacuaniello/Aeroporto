@@ -9,20 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-/**
- * The type Gate chooser.
- */
 public class GateChooser {
 
     private final JFrame mainFrame;
     private final JComboBox comboBox;
 
-    /**
-     * Instantiates a new Gate chooser.
-     *
-     * @param controller    the controller
-     * @param callingButton the calling button
-     */
     public GateChooser(Controller controller, JButton callingButton) {
 
         mainFrame = new JFrame("Gate Chooser");
@@ -109,11 +100,6 @@ public class GateChooser {
         }
     }
 
-    /**
-     * Gets main frame.
-     *
-     * @return the main frame
-     */
     public JFrame getMainFrame() {
         return mainFrame;
     }

@@ -10,9 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-/**
- * The type Modify account.
- */
 public class ModifyAccount extends JDialog {
 
     private final JPanel mainPanel;
@@ -26,22 +23,9 @@ public class ModifyAccount extends JDialog {
 
     private final Constraints constraints = new Constraints();
 
-    /**
-     * The Old username.
-     */
     String oldUsername = null;
-    /**
-     * The Old mail.
-     */
     String oldMail = null;
 
-    /**
-     * Instantiates a new Modify account.
-     *
-     * @param owner          the owner
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     */
     public ModifyAccount(Frame owner, List<DisposableObject> callingObjects, Controller controller) {
 
         super(owner, "Modifica Account", true);

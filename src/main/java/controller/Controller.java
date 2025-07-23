@@ -21,9 +21,6 @@ import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * The type Controller.
- */
 public class Controller {
 
     private final AdminController adminController;
@@ -38,9 +35,6 @@ public class Controller {
     private JButton errorButton;
     private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
 
-    /**
-     * Instantiates a new Controller.
-     */
     public Controller() {
         adminController = new AdminController();
         bookingController = new BookingController();
@@ -53,65 +47,30 @@ public class Controller {
         ticketController = new TicketController();
     }
 
-    /**
-     * Gets booking controller.
-     *
-     * @return the booking controller
-     */
     public BookingController getBookingController() {
         return bookingController;
     }
 
-    /**
-     * Gets customer controller.
-     *
-     * @return the customer controller
-     */
     public CustomerController getCustomerController() {
         return customerController;
     }
 
-    /**
-     * Gets flight controller.
-     *
-     * @return the flight controller
-     */
     public FlightController getFlightController() {
         return flightController;
     }
 
-    /**
-     * Gets gate controller.
-     *
-     * @return the gate controller
-     */
     public GateController getGateController() {
         return gateController;
     }
 
-    /**
-     * Gets luggage controller.
-     *
-     * @return the luggage controller
-     */
     public LuggageController getLuggageController() {
         return luggageController;
     }
 
-    /**
-     * Gets user controller.
-     *
-     * @return the user controller
-     */
     public UserController getUserController() {
         return userController;
     }
 
-    /**
-     * Go to login.
-     *
-     * @param callingObjects the calling objects
-     */
     public void goToLogin(List<DisposableObject> callingObjects){
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
@@ -136,11 +95,6 @@ public class Controller {
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
-    /**
-     * Go home.
-     *
-     * @param callingObjects the calling objects
-     */
     public void goHome (List<DisposableObject> callingObjects) {
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
@@ -166,11 +120,6 @@ public class Controller {
 
     }
 
-    /**
-     * Go back.
-     *
-     * @param callingObjects the calling objects
-     */
     public void goBack (List<DisposableObject> callingObjects) {
 
         Dimension sourceDimension = callingObjects.getLast().getFrame().getSize();
@@ -193,11 +142,6 @@ public class Controller {
 
     }
 
-    /**
-     * Log out.
-     *
-     * @param callingObjects the calling objects
-     */
     public void logOut (List<DisposableObject> callingObjects) {
 
         for (int i = callingObjects.size() - 1; i > 0; i--) {
@@ -210,12 +154,6 @@ public class Controller {
         callingObjects.getLast().getFrame().setVisible(true);
     }
 
-    /**
-     * Add booking.
-     *
-     * @param passengerPanels the passenger panels
-     * @param bookingStatus   the booking status
-     */
     public void addBooking(List<PassengerPanel> passengerPanels, String bookingStatus) {
 
         try {
@@ -241,12 +179,6 @@ public class Controller {
         }
     }
 
-    /**
-     * Translate flight status string.
-     *
-     * @param status the status
-     * @return the string
-     */
     public static String translateFlightStatus(FlightStatus status){
 
         switch (status.toString()){
@@ -269,12 +201,6 @@ public class Controller {
         }
     }
 
-    /**
-     * Modify booking.
-     *
-     * @param passengerPanels the passenger panels
-     * @param bookingStatus   the booking status
-     */
     public void modifyBooking (List<PassengerPanel> passengerPanels, String bookingStatus) {
 
         try {
@@ -328,12 +254,6 @@ public class Controller {
         }
     }
 
-    /**
-     * Generate ticket number string.
-     *
-     * @param offset the offset
-     * @return the string
-     */
     public String generateTicketNumber (int offset) {
 
         TicketDAOImpl ticketDAO = new TicketDAOImpl();
@@ -341,23 +261,10 @@ public class Controller {
         return ticketDAO.generateTicketNumber(offset);
     }
 
-    /**
-     * Sets error button.
-     *
-     * @param errorButton the error button
-     */
     public void setErrorButton(JButton errorButton) {
         this.errorButton = errorButton;
     }
 
-    /**
-     * Gets all books looged customer.
-     *
-     * @param bookingDates  the booking dates
-     * @param bookingStatus the booking status
-     * @param flightIds     the flight ids
-     * @param searchButton  the search button
-     */
     public void getAllBooksLoogedCustomer(List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {
 
 
@@ -475,20 +382,6 @@ public class Controller {
 
     }
 
-    /**
-     * Search books looged customer filtered flights.
-     *
-     * @param origin        the origin
-     * @param destination   the destination
-     * @param dateBefore    the date before
-     * @param dateAfter     the date after
-     * @param timeBefore    the time before
-     * @param timeAfter     the time after
-     * @param bookingDates  the booking dates
-     * @param bookingStatus the booking status
-     * @param flightIds     the flight ids
-     * @param searchButton  the search button
-     */
     public void searchBooksLoogedCustomerFilteredFlights(String origin, String destination, LocalDate dateBefore, LocalDate dateAfter, LocalTime timeBefore, LocalTime timeAfter,
                                                          List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {
 
@@ -608,18 +501,6 @@ public class Controller {
 
     }
 
-    /**
-     * Search books looged customer filtered passengers.
-     *
-     * @param firstName     the first name
-     * @param lastName      the last name
-     * @param passengerSSN  the passenger ssn
-     * @param ticketNumber  the ticket number
-     * @param bookingDates  the booking dates
-     * @param bookingStatus the booking status
-     * @param flightIds     the flight ids
-     * @param searchButton  the search button
-     */
     public void searchBooksLoogedCustomerFilteredPassengers(String firstName, String lastName, String passengerSSN, String ticketNumber,
                                                             List<Date> bookingDates, List<String> bookingStatus, List<String> flightIds, JButton searchButton) {
 
@@ -738,11 +619,6 @@ public class Controller {
 
     }
 
-    /**
-     * Load and check if open my bookings or new booking boolean.
-     *
-     * @return the boolean
-     */
     public boolean loadAndCheckIfOpenMyBookingsOrNewBooking() {
 
         String flightId = flightController.getId();
@@ -836,9 +712,6 @@ public class Controller {
 
     }
 
-    /**
-     * Clear search booking result cache.
-     */
     public void clearSearchBookingResultCache() {
 
         bookingController.setSearchBookingResult(null);
@@ -847,23 +720,12 @@ public class Controller {
 
     }
 
-    /**
-     * Clear search flights result cache.
-     */
     public void clearSearchFlightsResultCache() {
 
         flightController.setSearchResult(null);
 
     }
 
-    /**
-     * Verify user boolean.
-     *
-     * @param loggingInfo    the logging info
-     * @param hashedPassword the hashed password
-     * @param loginButton    the login button
-     * @return the boolean
-     */
     public boolean verifyUser(String loggingInfo, String hashedPassword, JButton loginButton){
 
         //Avoid opening DB if it is obvious that it won't contain the user
@@ -920,38 +782,18 @@ public class Controller {
         return true;
     }
 
-    /**
-     * Sets booked seats.
-     *
-     * @param bookedSeats the booked seats
-     */
     public void setBookedSeats (List<Integer> bookedSeats) {
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 
         flightDAO.getBookedSeats(flightController.getId(), bookingController.getId(), bookedSeats);
     }
 
-    /**
-     * Is logged admin boolean.
-     *
-     * @return the boolean
-     */
     public boolean isLoggedAdmin() {
 
         return userController.getLoggedUser() instanceof Admin;
 
     }
 
-    /**
-     * Gets lost luggages.
-     *
-     * @param flightIds              the flight ids
-     * @param bookingDates           the booking dates
-     * @param firstNames             the first names
-     * @param lastNames              the last names
-     * @param passengerSSNs          the passenger ss ns
-     * @param luggageIdsAfterCheckin the luggage ids after checkin
-     */
     public void getLostLuggages(List<String> flightIds, List<Date> bookingDates, List<String> firstNames, List<String> lastNames, List<String> passengerSSNs, List<String> luggageIdsAfterCheckin) {
 
         ArrayList<String> companyNames = new ArrayList<>();
@@ -1110,11 +952,6 @@ public class Controller {
 
     }
 
-    /**
-     * Sets booking result selected flight for lost luaggages.
-     *
-     * @param luggageIndex the luggage index
-     */
     public void setBookingResultSelectedFlightForLostLuaggages(Integer luggageIndex) {
 
         flightController.setFlight(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getFlight());
@@ -1123,11 +960,6 @@ public class Controller {
 
     }
 
-    /**
-     * Gets all for a flight.
-     *
-     * @param index the index
-     */
     public void getAllForAFlight(Integer index) {
 
         String flightId = flightController.getSearchResult().get(index).getId();
@@ -1275,11 +1107,6 @@ public class Controller {
 
     }
 
-    /**
-     * Gets all luggages for a booking.
-     *
-     * @param index the index
-     */
     public void getAllLuggagesForABooking(Integer index) {
 
 
@@ -1337,22 +1164,8 @@ public class Controller {
 
     }
 
-    /**
-     * Get logger logger.
-     *
-     * @return the logger
-     */
     public static Logger getLogger(){ return LOGGER;}
 
-    /**
-     * Update user boolean.
-     *
-     * @param mail           the mail
-     * @param username       the username
-     * @param hashedPassword the hashed password
-     * @param button         the button
-     * @return the boolean
-     */
     public boolean updateUser(String mail, String username, String hashedPassword, JButton button){
         if (userController.isInvalidMail(mail)) {
             new FloatingMessage("<html>Mail non valida</html>", button, FloatingMessage.WARNING_MESSAGE);

@@ -7,9 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The type My bookings customer main frame.
- */
 public class MyBookingsCustomerMainFrame extends DisposableObject {
 
     private JFrame mainFrame;
@@ -17,16 +14,6 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     private SearchBookingPanel searchBookingPanel;
     private final Constraints constraints;
 
-    /**
-     * Instantiates a new My bookings customer main frame.
-     *
-     * @param callingObjects   the calling objects
-     * @param controller       the controller
-     * @param dimension        the dimension
-     * @param point            the point
-     * @param fullScreen       the full screen
-     * @param ifOpenedFromMenu the if opened from menu
-     */
     public MyBookingsCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension,
                                        Point point, int fullScreen, boolean ifOpenedFromMenu) {
 

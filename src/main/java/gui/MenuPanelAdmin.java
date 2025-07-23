@@ -7,17 +7,8 @@ import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * The type Menu panel admin.
- */
 public class MenuPanelAdmin extends JPanel {
 
-    /**
-     * Instantiates a new Menu panel admin.
-     *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     */
     public MenuPanelAdmin(List<DisposableObject> callingObjects, Controller controller) {
 
         super();

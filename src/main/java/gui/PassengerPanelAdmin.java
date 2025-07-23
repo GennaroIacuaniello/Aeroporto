@@ -6,20 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-/**
- * The type Passenger panel admin.
- */
 public class PassengerPanelAdmin extends PassengerPanel {
 
     private JCheckBox checkinCheckBox;
 
-    /**
-     * Instantiates a new Passenger panel admin.
-     *
-     * @param controller           the controller
-     * @param passengerPanelsAdmin the passenger panels admin
-     * @param bookedSeats          the booked seats
-     */
     public PassengerPanelAdmin(Controller controller, List<PassengerPanel> passengerPanelsAdmin, List<Integer> bookedSeats) {
 
         super(controller, passengerPanelsAdmin, bookedSeats);

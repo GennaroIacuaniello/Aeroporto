@@ -13,9 +13,6 @@ import java.util.ArrayList;
 
 import static java.lang.Math.max;
 
-/**
- * The type Log in screen.
- */
 public class LogInScreen extends DisposableObject {
 
     //Padding
@@ -41,13 +38,6 @@ public class LogInScreen extends DisposableObject {
     //Bottom options
     private JButton registerButton;
 
-    /**
-     * Instantiates a new Log in screen.
-     *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     * @param startingSize   the starting size
-     */
     public LogInScreen(List<DisposableObject> callingObjects, Controller controller, Dimension startingSize) {
 
         if (!callingObjects.isEmpty()) {
@@ -161,11 +151,6 @@ public class LogInScreen extends DisposableObject {
         });
     }
 
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
     public static void main(String[] args) {
         Controller controller = new Controller();
         try {

@@ -3,34 +3,15 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The type Floating message.
- */
 public class FloatingMessage {
 
-    /**
-     * The constant ERROR_MESSAGE.
-     */
     public static final int ERROR_MESSAGE = 1;
-    /**
-     * The constant WARNING_MESSAGE.
-     */
     public static final int WARNING_MESSAGE = 2;
-    /**
-     * The constant SUCCESS_MESSAGE.
-     */
     public static final int SUCCESS_MESSAGE = 3;
     
     private JWindow messageWindow;
     private RoundedPanel messagePanel;
 
-    /**
-     * Instantiates a new Floating message.
-     *
-     * @param msg           the msg
-     * @param callingButton the calling button
-     * @param messageType   the message type
-     */
     public FloatingMessage (String msg, JButton callingButton, int messageType){
 
         setWindow(callingButton);

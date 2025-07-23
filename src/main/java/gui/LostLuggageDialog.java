@@ -14,21 +14,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The type Lost luggage dialog.
- */
 public class LostLuggageDialog extends JDialog {
 
     private final JTable luggageTable;
     private final LostBaggageTableModel tableModel;
 
-    /**
-     * Instantiates a new Lost luggage dialog.
-     *
-     * @param owner          the owner
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     */
     public LostLuggageDialog(Frame owner, List<DisposableObject> callingObjects, Controller controller) {
 
         super(owner, "Gestione Bagagli Smarriti", true);
@@ -139,16 +129,6 @@ public class LostLuggageDialog extends JDialog {
 
         private final String[] colNames = {"ID Volo", "Data Prenotazione", "Nome", "Cognome", "Codice Fiscale", "ID Bagaglio", "Azione"};
 
-        /**
-         * Instantiates a new Lost baggage table model.
-         *
-         * @param flightIds    the flight ids
-         * @param bookingDates the booking dates
-         * @param names        the names
-         * @param surnames     the surnames
-         * @param fiscalCodes  the fiscal codes
-         * @param baggageIds   the baggage ids
-         */
         public LostBaggageTableModel(List<String> flightIds, List<Date> bookingDates, List<String> names, List<String> surnames, List<String> fiscalCodes, List<String> baggageIds) {
 
             this.flightIds = flightIds;
@@ -205,9 +185,6 @@ public class LostLuggageDialog extends JDialog {
 
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
 
-        /**
-         * Instantiates a new Button renderer.
-         */
         public ButtonRenderer() {
             setOpaque(true);
             setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -234,12 +211,6 @@ public class LostLuggageDialog extends JDialog {
 
         private final String emptyMessage;
 
-        /**
-         * Instantiates a new J table with empty message.
-         *
-         * @param model        the model
-         * @param emptyMessage the empty message
-         */
         public JTableWithEmptyMessage(AbstractTableModel model, String emptyMessage) {
 
             super(model);

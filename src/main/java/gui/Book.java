@@ -7,20 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
-/**
- * The type Book.
- */
 public class Book extends BookingModifyPage {
 
-    /**
-     * Instantiates a new Book.
-     *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     * @param dimension      the dimension
-     * @param point          the point
-     * @param fullScreen     the full screen
-     */
     public Book(List<DisposableObject> callingObjects, Controller controller,
                 Dimension dimension, Point point, int fullScreen) {
 

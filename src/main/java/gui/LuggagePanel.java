@@ -3,9 +3,6 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * The type Luggage panel.
- */
 public class LuggagePanel extends JPanel {
 
     private JLabel label;
@@ -14,11 +11,6 @@ public class LuggagePanel extends JPanel {
 
     private final Constraints constraints;
 
-    /**
-     * Instantiates a new Luggage panel.
-     *
-     * @param i the
-     */
     public LuggagePanel(int i) {
 
         this.setLayout(new GridBagLayout());
@@ -29,11 +21,6 @@ public class LuggagePanel extends JPanel {
         setComboBox();
     }
 
-    /**
-     * Sets label.
-     *
-     * @param string the string
-     */
     public void setLabel(String string) {
         label.setText(string);
     }
@@ -63,57 +50,26 @@ public class LuggagePanel extends JPanel {
         comboBox.setVisible(true);
     }
 
-    /**
-     * Gets index.
-     *
-     * @return the index
-     */
     public int getIndex() {
         return index;
     }
 
-    /**
-     * Check luggage boolean.
-     *
-     * @return the boolean
-     */
     public boolean checkLuggage() {
         return comboBox.getSelectedIndex() == 0;
     }
 
-    /**
-     * Sets type.
-     *
-     * @param type the type
-     */
     public void setType(Integer type) {
         comboBox.setSelectedIndex(type + 1);
     }
 
-    /**
-     * Gets combo box.
-     *
-     * @return the combo box
-     */
     public JComboBox<String> getComboBox() {
         return comboBox;
     }
 
-    /**
-     * Gets ticket.
-     *
-     * @return the ticket
-     */
     public String getTicket () {
         return getSubstringAfterColon(label.getText());
     }
 
-    /**
-     * Gets substring after colon.
-     *
-     * @param inputString the input string
-     * @return the substring after colon
-     */
     public static String getSubstringAfterColon(String inputString) {
         // Controlla se la stringa è valida (non null e non vuota)
         if (inputString == null || inputString.isEmpty()) {

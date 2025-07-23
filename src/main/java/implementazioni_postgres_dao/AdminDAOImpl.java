@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * The type Admin dao.
- */
 public class AdminDAOImpl implements AdminDAO {
 
 

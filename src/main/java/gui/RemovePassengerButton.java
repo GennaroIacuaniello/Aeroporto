@@ -7,28 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * The type Remove passenger button.
- */
 public class RemovePassengerButton extends JButton {
 
-    /**
-     * The Index.
-     */
     int index;
-    /**
-     * The Constraints.
-     */
     Constraints constraints;
 
-    /**
-     * Instantiates a new Remove passenger button.
-     *
-     * @param book                   the book
-     * @param passengerPanels        the passenger panels
-     * @param removePassengerButtons the remove passenger buttons
-     * @param idx                    the idx
-     */
     public RemovePassengerButton(BookingPage book, List<PassengerPanel> passengerPanels,
                                  ArrayList<RemovePassengerButton> removePassengerButtons, int idx) {
 

@@ -6,17 +6,8 @@ import javax.swing.*;
 import java.util.List;
 import java.util.ArrayList;
 
-/**
- * The type Menu panel customer.
- */
 public class MenuPanelCustomer extends JPanel {
 
-    /**
-     * Instantiates a new Menu panel customer.
-     *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     */
     public MenuPanelCustomer(List<DisposableObject> callingObjects, Controller controller) {
 
         super();

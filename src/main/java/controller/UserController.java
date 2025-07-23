@@ -12,81 +12,36 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * The type User controller.
- */
 public class UserController {
     private Integer loggedUserId;
     private User loggedUser;
 
-    /**
-     * Gets logged user id.
-     *
-     * @return the logged user id
-     */
     public Integer getLoggedUserId() {
         return loggedUserId;
     }
 
-    /**
-     * Sets logged user id.
-     *
-     * @param id the id
-     */
     public void setLoggedUserId(Integer id) {
         this.loggedUserId  = id;
     }
 
-    /**
-     * Gets username.
-     *
-     * @return the username
-     */
     public String getUsername() {
         return loggedUser.getUsername();
     }
 
-    /**
-     * Get mail string.
-     *
-     * @return the string
-     */
     public String getMail(){ return loggedUser.getEmail();}
 
-    /**
-     * Get hashed password string.
-     *
-     * @return the string
-     */
     public String getHashedPassword(){ return loggedUser.getPassword();}
 
-    /**
-     * Sets logged user.
-     *
-     * @param loggedUser the logged user
-     * @param id         the id
-     */
     public void setLoggedUser(User loggedUser, Integer id) {
         this.loggedUser = loggedUser;
         this.loggedUserId = id;
     }
 
-    /**
-     * Gets logged user.
-     *
-     * @return the logged user
-     */
     public User getLoggedUser() {
         return this.loggedUser;
     }
 
-    /**
-     * Is invalid mail boolean.
-     *
-     * @param mail the mail
-     * @return the boolean
-     */
-//This would be a more robust function in a real world application (probably send an email and ask user to verify).
+    //This would be a more robust function in a real world application (probably send an email and ask user to verify).
     //Right now, it only checks that it has at least one letter/digit, if it has a dot/underscore it needs
     // at least another letter/digit before the @; then, after the @ character, it follows the same rules as before,
     // but it needs to end with a dot followed by at least one letter.
@@ -100,12 +55,6 @@ public class UserController {
         return true;
     }
 
-    /**
-     * Is invalid username boolean.
-     *
-     * @param username the username
-     * @return the boolean
-     */
     public boolean isInvalidUsername(String username) {
         if(username.length() >= 4 && username.length() <= 20){
             Pattern pattern = Pattern.compile("[a-zA-Z]+(\\w|\\.|-)*[a-zA-Z0-9]");
@@ -115,16 +64,7 @@ public class UserController {
         return true;
     }
 
-    /**
-     * Register user boolean.
-     *
-     * @param mail           the mail
-     * @param username       the username
-     * @param hashedPassword the hashed password
-     * @param button         the button
-     * @return the boolean
-     */
-//returns true if the user was successfully registered
+    //returns true if the user was successfully registered
     public boolean registerUser(String mail, String username, String hashedPassword, JButton button) {
         if (isInvalidMail(mail)) {
             new FloatingMessage("<html>Mail non valida</html>", button, FloatingMessage.WARNING_MESSAGE);
@@ -157,12 +97,6 @@ public class UserController {
         return false;
     }
 
-    /**
-     * Delete account boolean.
-     *
-     * @param button the button
-     * @return the boolean
-     */
     public boolean deleteAccount(JButton button){
         try{
             if(loggedUser instanceof Admin){

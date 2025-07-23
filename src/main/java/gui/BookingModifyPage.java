@@ -9,38 +9,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The type Booking modify page.
- */
 public class BookingModifyPage extends BookingPageCustomer {
 
-    /**
-     * The Remove passenger buttons.
-     */
     protected ArrayList<RemovePassengerButton> removePassengerButtons;
-    /**
-     * The Add passenger button.
-     */
     protected JButton addPassengerButton;
 
-    /**
-     * The Confirm button.
-     */
     protected JButton confirmButton;
-    /**
-     * The Save pending button.
-     */
     protected JButton savePendingButton;
 
-    /**
-     * Instantiates a new Booking modify page.
-     *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     * @param dimension      the dimension
-     * @param point          the point
-     * @param fullScreen     the full screen
-     */
     public BookingModifyPage(List<DisposableObject> callingObjects, Controller controller,
                              Dimension dimension, Point point, int fullScreen) {
 
@@ -49,16 +25,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         mainFrame.setVisible(true);
     }
 
-    /**
-     * Instantiates a new Booking modify page.
-     *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     * @param dimension      the dimension
-     * @param point          the point
-     * @param fullScreen     the full screen
-     * @param flag           the flag
-     */
     public BookingModifyPage(List<DisposableObject> callingObjects, Controller controller,
                              Dimension dimension, Point point, int fullScreen, boolean flag) {
 
@@ -68,11 +34,6 @@ public class BookingModifyPage extends BookingPageCustomer {
     }
 
 
-    /**
-     * Add modify panel.
-     *
-     * @param controller the controller
-     */
     protected void addModifyPanel (Controller controller) {
 
         modifyPanel = new JPanel();
@@ -100,11 +61,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         modifyPanel.setVisible (true);
     }
 
-    /**
-     * Add add passenger button.
-     *
-     * @param controller the controller
-     */
     protected void addAddPassengerButton(Controller controller) {
 
         addPassengerButton = new JButton("AGGIUNGI PASSEGGERO");
@@ -184,9 +140,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         removePassengerButtons.getFirst().setEnabled(passengerPanels.size() > 1);
     }
 
-    /**
-     * Sets passengers visibility.
-     */
     protected void setPassengersVisibility () {
 
         goToPage(passengerPanels.size() / 3);
@@ -208,12 +161,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         confirmPanel.setVisible (true);
     }
 
-    /**
-     * Add confirm button.
-     *
-     * @param controller     the controller
-     * @param callingObjects the calling objects
-     */
     protected void addConfirmButton (Controller controller, List<DisposableObject> callingObjects) {
 
         confirmButton = new JButton("CONFERMA PRENOTAZIONE");
@@ -242,12 +189,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         mainFrame.add (confirmPanel, constraints.getGridBagConstraints());
     }
 
-    /**
-     * Add save pending button.
-     *
-     * @param controller     the controller
-     * @param callingObjects the calling objects
-     */
     protected void addSavePendingButton (Controller controller, List<DisposableObject> callingObjects) {
 
         savePendingButton = new JButton("SALVA IN ATTESA");
@@ -272,11 +213,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         savePendingButton.setVisible (true);
     }
 
-    /**
-     * Check save pending button boolean.
-     *
-     * @return the boolean
-     */
     protected boolean checkSavePendingButton() {
 
         for (PassengerPanel passengerPanel : passengerPanels) {
@@ -298,11 +234,6 @@ public class BookingModifyPage extends BookingPageCustomer {
         return true;
     }
 
-    /**
-     * Check confirm button boolean.
-     *
-     * @return the boolean
-     */
     protected boolean checkConfirmButton() {
         for (PassengerPanel passengerPanel : passengerPanels) {
 
