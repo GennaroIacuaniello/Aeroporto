@@ -16,8 +16,8 @@ import java.util.List;
 
 public class SearchBookingResultPanel extends JPanel {
 
-    private JTable resultsTable;
-    private BookingTableModel tableModel;
+    private final JTable resultsTable;
+    private final BookingTableModel tableModel;
 
     public SearchBookingResultPanel(List<DisposableObject> callingObjects, Controller controller, List<Date> bookingDates, List<String> bookingStatus,
                                     List<String> ids) {
@@ -60,7 +60,7 @@ public class SearchBookingResultPanel extends JPanel {
             }
         });
 
-        setTableApperance(callingObjects, controller);
+        setTableApperance();
 
         JTableHeader header = resultsTable.getTableHeader();
 
@@ -71,7 +71,7 @@ public class SearchBookingResultPanel extends JPanel {
 
     }
 
-    private void setTableApperance(List<DisposableObject> callingObjects, Controller controller) {
+    private void setTableApperance() {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         resultsTable.getTableHeader().setBackground(new Color(230, 230, 230));
@@ -96,7 +96,7 @@ public class SearchBookingResultPanel extends JPanel {
                 return c;
             }
         };
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         for (int i = 0; i < resultsTable.getColumnCount() - 1; i++) {
             resultsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -109,7 +109,7 @@ public class SearchBookingResultPanel extends JPanel {
 
     private static class BookingTableModel extends AbstractTableModel {
 
-        private Controller controller;
+        private final Controller controller;
         private final ArrayList<Date> bookingDates;
         private final ArrayList<String> bookingStatus;
         private final ArrayList<String> ids;

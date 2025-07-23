@@ -122,15 +122,21 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
 
     @Override
     public void doOnDispose (List<DisposableObject> callingObjects, Controller controller) {
-        //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().dispose();
         controller.clearSearchFlightsResultCache();
     }
 
     @Override
     public void doOnRestore (List<DisposableObject> callingObjects, Controller controller) {
-        //if (search_panel.getSearch_result() != null) search_panel.getSearch_result().getMain_frame().setVisible(true);
-        if(searchFlightPanel.isSearchPerformed())
+        if(searchFlightPanel.isSearchPerformed()){
+
             searchFlightPanel.executeResearch(callingObjects, controller, searchFlightPanel.getSearchButton());
+
+            searchFlightPanel.repaint();
+            searchFlightPanel.revalidate();
+        }
+
+
+
     }
 
     @Override

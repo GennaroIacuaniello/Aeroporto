@@ -118,8 +118,14 @@ public class HomePageAdmin extends DisposableObject {
             mainFrame.remove(userPanel);
             addUserPanel(callingObjects, controller);
         }
-        if(searchFlightPanel.isSearchPerformed())
+        if(searchFlightPanel.isSearchPerformed()){
+
             searchFlightPanel.executeResearch(callingObjects, controller, searchFlightPanel.getSearchButton());
+
+            searchFlightPanel.repaint();
+            searchFlightPanel.revalidate();
+
+        }
 
     }
 
