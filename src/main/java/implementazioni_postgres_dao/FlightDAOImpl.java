@@ -14,12 +14,104 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Flight dao.
+ * PostgreSQL implementation of the FlightDAO interface for managing flight operations in the airport management system.
+ * <p>
+ * This class provides concrete implementations for all flight-related database operations
+ * defined in the {@link FlightDAO} interface. It handles comprehensive flight management
+ * functions including flight retrieval, searching, creation, and data management operations
+ * using PostgreSQL database connectivity.
+ * </p>
+ * <p>
+ * The implementation provides comprehensive flight management capabilities including:
+ * </p>
+ * <ul>
+ *   <li>Dashboard flight retrieval for imminent arrivals and departures</li>
+ *   <li>Advanced flight search functionality with flexible filtering criteria</li>
+ *   <li>Complete flight data retrieval including associated bookings, tickets, passengers, and luggage</li>
+ *   <li>Flight creation and insertion operations for administrative purposes</li>
+ *   <li>Operational flight management including gate assignments, status updates, and delays</li>
+ *   <li>Check-in management and seat assignment operations</li>
+ * </ul>
+ * <p>
+ * All database operations use prepared statements to prevent SQL injection attacks and ensure
+ * data security. The class implements proper connection management using the singleton
+ * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
+ * statements.
+ * </p>
+ * <p>
+ * The class handles complex multi-table operations and provides specialized functionality for:
+ * </p>
+ * <ul>
+ *   <li>Real-time flight information with delay calculations and current status</li>
+ *   <li>Dynamic search queries with special handling for "Napoli" as the airport's base location</li>
+ *   <li>Comprehensive flight data aggregation joining multiple related tables</li>
+ *   <li>Operational management including gate assignments and flight status transitions</li>
+ *   <li>Seat management with conversion between application (0-based) and database (1-based) indexing</li>
+ * </ul>
+ * <p>
+ * The implementation supports flexible search capabilities including city-based filtering
+ * with special logic for the airport's base city, date and time range filtering with support
+ * for overnight time spans, and comprehensive result ordering for optimal user experience.
+ * </p>
+ * <p>
+ * All methods follow the contract defined by the {@link FlightDAO} interface and maintain
+ * data consistency through proper transaction handling, error logging, and validation mechanisms.
+ * The class uses appropriate SQL data types and handles null values consistently across all operations.
+ * </p>
+ *
+ * @author Aeroporto Di Napoli
+ * @version 1.0
+ * @since 1.0
+ * @see FlightDAO
+ * @see Flight
+ * @see ConnessioneDatabase
+ * @see SQLException
  */
 public class FlightDAOImpl implements FlightDAO {
 
+    /**
+     * Logger instance for recording database operation events and errors.
+     */
     private static final Logger LOGGER = Logger.getLogger(FlightDAOImpl.class.getName());
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation executes a SQL query that retrieves up to 6 arriving flights
+     * that are scheduled to arrive soon and haven't landed yet. The query filters flights
+     * by type (flight_type = false for arriving flights) and excludes flights with status
+     * 'LANDED' or 'CANCELLED'.
+     * </p>
+     * <p>
+     * The method uses real-time calculations to determine imminent arrivals by adding
+     * flight delays to the scheduled arrival time and comparing with the current timestamp.
+     * Results are ordered by arrival time to provide chronological organization of
+     * approaching flights.
+     * </p>
+     * <p>
+     * Gate information is handled specially - when a gate is assigned (id_gate > 0),
+     * the gate number is added to the list; otherwise, null is added to maintain
+     * consistent list indexing across all result parameters.
+     * </p>
+     * <p>
+     * This method is essential for airport dashboard displays and real-time flight
+     * information systems, providing up-to-date arrival information for passengers
+     * and airport operations staff.
+     * </p>
+     *
+     * @param parId list to be populated with flight identifiers
+     * @param parCompanyName list to be populated with airline company names
+     * @param parDate list to be populated with flight dates derived from departure timestamps
+     * @param parDepartureTime list to be populated with departure times from origin airports
+     * @param parArrivalTime list to be populated with scheduled arrival times
+     * @param parStatus list to be populated with current flight status values
+     * @param parMaxSeats list to be populated with maximum seating capacity
+     * @param parFreeSeats list to be populated with available seats count
+     * @param origin list to be populated with origin airport or city names
+     * @param delay list to be populated with arrival delay values in minutes
+     * @param parGate list to be populated with assigned gate numbers (null if not assigned)
+     * @throws SQLException if a database access error occurs during the retrieval operation
+     */
     public void getImminentArrivingFlights (List<String> parId, List<String> parCompanyName, List<Date> parDate,
                                             List<Time> parDepartureTime, List<Time> parArrivalTime, List<String> parStatus,
                                             List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> origin,
@@ -75,6 +167,43 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation executes a SQL query that retrieves up to 6 departing flights
+     * that are scheduled to depart soon and are still at the airport. The query filters
+     * flights by type (flight_type = true for departing flights) and includes only flights
+     * with operational statuses: 'PROGRAMMED', 'ABOUT_TO_DEPART', or 'DELAYED'.
+     * </p>
+     * <p>
+     * The method uses real-time calculations to determine imminent departures by adding
+     * flight delays to the scheduled departure time and comparing with the current timestamp.
+     * Results are ordered by arrival time to provide consistent ordering with arrival flights,
+     * facilitating unified dashboard displays.
+     * </p>
+     * <p>
+     * Gate information is handled consistently with arrival flights - when a gate is
+     * assigned (id_gate > 0), the gate number is added to the list; otherwise, null
+     * is added to maintain proper list indexing.
+     * </p>
+     * <p>
+     * This method is crucial for gate management systems and departure boards, providing
+     * real-time departure information for passengers and ground operations staff.
+     * </p>
+     *
+     * @param parId list to be populated with flight identifiers
+     * @param parCompanyName list to be populated with airline company names
+     * @param parDate list to be populated with flight dates derived from departure timestamps
+     * @param parDepartureTime list to be populated with scheduled departure times
+     * @param parArrivalTime list to be populated with arrival times at destination airports
+     * @param parStatus list to be populated with current flight status values
+     * @param parMaxSeats list to be populated with maximum seating capacity
+     * @param parFreeSeats list to be populated with available seats count
+     * @param origin list to be populated with destination airport or city names
+     * @param delay list to be populated with departure delay values in minutes
+     * @param parGate list to be populated with assigned gate numbers (null if not assigned)
+     * @throws SQLException if a database access error occurs during the retrieval operation
+     */
     public void getImminentDepartingFlights (List<String> parId, List<String> parCompanyName, List<Date> parDate,
                                              List<Time> parDepartureTime, List<Time> parArrivalTime, List<String> parStatus,
                                              List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> origin,
@@ -130,6 +259,54 @@ public class FlightDAOImpl implements FlightDAO {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation constructs a dynamic SQL query based on the provided filtering
+     * criteria, with special handling for "Napoli" as the airport's base location. The
+     * method supports flexible filtering across multiple flight characteristics including
+     * cities, dates, and times.
+     * </p>
+     * <p>
+     * The city filtering logic includes special cases:
+     * </p>
+     * <ul>
+     *   <li>When departing city is "Napoli" or null/empty: no city filter applied (local departures)</li>
+     *   <li>When arriving city is "Napoli" or null/empty: no city filter applied (local arrivals)</li>
+     *   <li>When departing city is not "Napoli": filters for arriving flights from that city</li>
+     *   <li>When arriving city is not "Napoli": filters for departing flights to that city</li>
+     * </ul>
+     * <p>
+     * Date filtering uses PostgreSQL's date casting and BETWEEN operations for inclusive
+     * range matching. Time filtering supports both same-day and overnight time spans:
+     * when initial time is before final time, it uses BETWEEN; when initial time is
+     * after final time, it uses OR logic for overnight searches.
+     * </p>
+     * <p>
+     * The method dynamically constructs the WHERE clause based on provided parameters
+     * and handles cases where no filters are applied by removing the WHERE clause entirely.
+     * Results are ordered by departure time in descending order to show recent flights first.
+     * </p>
+     *
+     * @param departingCity the departure city name for filtering (null or empty for no filter)
+     * @param arrivingCity the arrival city name for filtering (null or empty for no filter)
+     * @param initialDate the start date for date range filtering (null for no date filter)
+     * @param finalDate the end date for date range filtering (null for no date filter)
+     * @param initialTime the start time for time range filtering (null for no time filter)
+     * @param finalTime the end time for time range filtering (null for no time filter)
+     * @param ids list to be populated with flight identifiers
+     * @param companyNames list to be populated with airline company names
+     * @param dates list to be populated with flight dates
+     * @param departureTimes list to be populated with departure times
+     * @param arrivalTimes list to be populated with arrival times
+     * @param delays list to be populated with flight delay values in minutes
+     * @param status list to be populated with flight status values
+     * @param maxSeats list to be populated with maximum seating capacity
+     * @param freeSeats list to be populated with available seats count
+     * @param cities list to be populated with destination or origin city names
+     * @param types list to be populated with flight type indicators (true for departing, false for arriving)
+     * @throws SQLException if a database access error occurs during the search operation
+     */
     public void searchFlight (String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                               List<String> ids, List<String> companyNames, List<java.sql.Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                               List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types) throws SQLException{
@@ -265,7 +442,55 @@ public class FlightDAOImpl implements FlightDAO {
 
     }
 
-
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation executes a complex SQL query that joins multiple tables (FLIGHT,
+     * BOOKING, TICKET, PASSENGER, LUGGAGE, CUSTOMER) to provide comprehensive flight
+     * information. The query uses NATURAL JOIN for FLIGHT and BOOKING tables, and explicit
+     * JOINs for other relationships to maintain data integrity.
+     * </p>
+     * <p>
+     * The method handles various data types and nullable fields appropriately:
+     * </p>
+     * <ul>
+     *   <li>Gate assignments: null when id_gate <= 0, otherwise the gate number</li>
+     *   <li>Seat assignments: converted from 1-based database storage to 0-based application indexing</li>
+     *   <li>Luggage information: null when id_luggage <= 0, otherwise the luggage ID</li>
+     *   <li>Timestamps: properly converted to Date objects for consistent handling</li>
+     * </ul>
+     * <p>
+     * The LEFT JOIN with LUGGAGE table ensures that tickets without associated luggage
+     * are still included in the results, providing complete flight manifest information
+     * regardless of luggage status.
+     * </p>
+     * <p>
+     * Results are ordered by booking ID to group related tickets together, facilitating
+     * organized display and processing of flight data for administrative purposes.
+     * </p>
+     *
+     * @param flightId the unique identifier of the flight to retrieve data for
+     * @param flightGates list to be populated with gate assignments (null if not assigned)
+     * @param buyerIds list to be populated with customer identifiers who made bookings
+     * @param usernames list to be populated with customer usernames
+     * @param mails list to be populated with customer email addresses
+     * @param hashedPasswords list to be populated with customer password hashes
+     * @param bookingDates list to be populated with booking creation timestamps
+     * @param bookingStatus list to be populated with booking status values
+     * @param bookingIds list to be populated with unique booking identifiers
+     * @param ticketNumbers list to be populated with ticket numbers
+     * @param seats list to be populated with seat assignments (null if not assigned, 0-based indexing)
+     * @param checkedIns list to be populated with check-in status indicators
+     * @param firstNames list to be populated with passenger first names
+     * @param lastNames list to be populated with passenger last names
+     * @param passengerSSNs list to be populated with passenger SSN identifiers
+     * @param birthDates list to be populated with passenger birth dates
+     * @param luggageIds list to be populated with luggage identifiers (null if no luggage)
+     * @param luggageTypes list to be populated with luggage type descriptions
+     * @param luggageStatus list to be populated with luggage status values
+     * @param luggageIdsAfterCheckin list to be populated with post-checkin luggage identifiers
+     * @throws SQLException if a database access error occurs during the data retrieval operation
+     */
     public void getAllDataForAFlight(String flightId, List<Integer> flightGates, List<Integer> buyerIds,
                                      List<String> usernames, List<String> mails, List<String> hashedPasswords,
                                      List<java.sql.Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds,
@@ -351,6 +576,42 @@ public class FlightDAOImpl implements FlightDAO {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This implementation creates a new flight record with all essential flight details
+     * using a prepared statement to ensure data security and consistency. The method
+     * inserts flights with default operational settings appropriate for new flights.
+     * </p>
+     * <p>
+     * Default values set for new flights:
+     * </p>
+     * <ul>
+     *   <li>Flight status: 'PROGRAMMED' (indicating a scheduled but not yet operational flight)</li>
+     *   <li>Free seats: equal to max seats (no bookings yet)</li>
+     *   <li>Flight delay: 0 minutes (no delays initially)</li>
+     *   <li>Gate assignment: null (to be assigned later)</li>
+     * </ul>
+     * <p>
+     * The flight type parameter determines how the flight operates relative to the airport:
+     * when flightType is true, it represents a departing flight where otherCity is the
+     * destination; when false, it represents an arriving flight where otherCity is the origin.
+     * </p>
+     * <p>
+     * The method uses PostgreSQL's enum casting (::FlightStatus) to ensure proper data
+     * type handling for the flight_status field, maintaining database integrity and
+     * enabling proper status-based filtering in other operations.
+     * </p>
+     *
+     * @param flightId the unique identifier for the new flight (must be unique in the system)
+     * @param companyName the name of the airline company operating the flight
+     * @param departureTimestamp the complete departure date and time
+     * @param arrivalTimestamp the complete arrival date and time
+     * @param maxSeats the maximum number of seats available on the flight (must be positive)
+     * @param otherCity the destination city (for departing flights) or origin city (for arriving flights)
+     * @param flightType true for departing flights, false for arriving flights
+     * @throws SQLException if a database access error occurs during the flight insertion operation
+     */
     public void InsertAFlight(String flightId, String companyName, Timestamp departureTimestamp, Timestamp arrivalTimestamp,
                               int maxSeats, String otherCity, boolean flightType) throws SQLException {
 
@@ -382,13 +643,28 @@ public class FlightDAOImpl implements FlightDAO {
 
     }
 
-
     /**
-     * Gets booked seats.
+     * Retrieves all currently booked seats for a specific flight, excluding cancelled bookings.
+     * <p>
+     * This method queries the database to find all seat assignments for tickets associated
+     * with a specific flight. It excludes bookings with 'CANCELLED' status to provide
+     * accurate seat availability information for booking and seat selection operations.
+     * </p>
+     * <p>
+     * The method handles seat number conversion from database storage (1-based) to
+     * application indexing (0-based) for consistency with the application's seat
+     * management system. Seats with value 0 or null in the database are not included
+     * in the results as they represent unassigned seats.
+     * </p>
+     * <p>
+     * An optional booking ID parameter allows excluding a specific booking from the
+     * results, which is useful during booking modifications where the current booking's
+     * seats should not be considered as occupied.
+     * </p>
      *
-     * @param flightId    the flight id
-     * @param bookingId   the booking id
-     * @param bookedSeats the booked seats
+     * @param flightId the unique identifier of the flight to check seat availability for
+     * @param bookingId optional booking ID to exclude from results (can be null)
+     * @param bookedSeats list to be populated with booked seat numbers (0-based indexing)
      */
     public void getBookedSeats(String flightId, Integer bookingId, List<Integer> bookedSeats) {
 
@@ -421,11 +697,22 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Start checkin int.
+     * Initiates the check-in process for a flight by updating its status to 'ABOUT_TO_DEPART'.
+     * <p>
+     * This method updates a flight's status to indicate that check-in procedures have
+     * begun and the flight is preparing for departure. This status change typically
+     * triggers various operational processes including gate assignments, passenger
+     * notifications, and boarding preparations.
+     * </p>
+     * <p>
+     * The status change from 'PROGRAMMED' to 'ABOUT_TO_DEPART' is a critical operational
+     * transition that affects passenger check-in availability, seat assignments, and
+     * various airport management systems.
+     * </p>
      *
-     * @param flightId the flight id
-     * @return the int
-     * @throws SQLException the sql exception
+     * @param flightId the unique identifier of the flight to start check-in for
+     * @return the number of rows affected by the update operation (1 if successful, 0 if flight not found)
+     * @throws SQLException if a database access error occurs during the status update operation
      */
     public int startCheckin(String flightId) throws SQLException {
 
@@ -440,10 +727,25 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Search gate int.
+     * Searches for an available gate and assigns it to the specified flight.
+     * <p>
+     * This method implements automatic gate assignment by iterating through gates 1-20
+     * and finding the first available gate (not assigned to any non-cancelled flight).
+     * Once an available gate is found, it is immediately assigned to the specified flight.
+     * </p>
+     * <p>
+     * The method uses database transactions to ensure atomicity of the gate assignment
+     * process. It checks each gate's availability and assigns the first free gate,
+     * preventing race conditions in concurrent gate assignment operations.
+     * </p>
+     * <p>
+     * Gate availability is determined by checking if any flights are currently assigned
+     * to the gate with a status other than 'CANCELLED'. This ensures that cancelled
+     * flights do not block gate availability for operational flights.
+     * </p>
      *
-     * @param idFlight the id flight
-     * @return the int
+     * @param idFlight the unique identifier of the flight to assign a gate to
+     * @return the assigned gate number (1-20) if successful, -1 if no gates are available or an error occurs
      */
     public int searchGate(String idFlight) {
 
@@ -489,10 +791,20 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Sets gate.
+     * Assigns a specific gate to a flight.
+     * <p>
+     * This method updates the gate assignment for a specified flight, allowing manual
+     * gate assignment or reassignment operations. The method uses database transactions
+     * to ensure the assignment is completed atomically.
+     * </p>
+     * <p>
+     * Unlike {@link #searchGate(String)}, this method does not check gate availability
+     * and will assign the specified gate regardless of its current status. This allows
+     * for administrative override of automatic gate assignments when necessary.
+     * </p>
      *
-     * @param idGate   the id gate
-     * @param idFlight the id flight
+     * @param idGate the gate number to assign to the flight
+     * @param idFlight the unique identifier of the flight to assign the gate to
      */
     public void setGate(int idGate, String idFlight) {
 
@@ -516,11 +828,29 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Sets status.
+     * Updates the status of a specific flight.
+     * <p>
+     * This method allows updating a flight's operational status to reflect current
+     * conditions such as delays, boarding, departure, arrival, or cancellation.
+     * The method uses PostgreSQL's enum casting to ensure proper status validation.
+     * </p>
+     * <p>
+     * Common flight status transitions include:
+     * </p>
+     * <ul>
+     *   <li>PROGRAMMED → ABOUT_TO_DEPART (check-in started)</li>
+     *   <li>ABOUT_TO_DEPART → DELAYED (departure delayed)</li>
+     *   <li>ABOUT_TO_DEPART → DEPARTED (flight has left)</li>
+     *   <li>Any status → CANCELLED (flight cancelled)</li>
+     * </ul>
+     * <p>
+     * The method uses database transactions to ensure status changes are applied
+     * atomically and consistently across the system.
+     * </p>
      *
-     * @param status   the status
-     * @param idFlight the id flight
-     * @return the status
+     * @param status the new flight status to set (must be a valid FlightStatus enum value)
+     * @param idFlight the unique identifier of the flight to update
+     * @return the number of rows affected by the update (1 if successful, 0 if flight not found), -1 if an error occurs
      */
     public int setStatus (String status, String idFlight) {
 
@@ -546,11 +876,21 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Add delay int.
+     * Adds additional delay to a flight's current delay value.
+     * <p>
+     * This method increases the flight's delay by the specified number of minutes,
+     * allowing for cumulative delay tracking. The delay is added to any existing
+     * delay value, providing accurate delay information for passengers and operations.
+     * </p>
+     * <p>
+     * Flight delays affect various system calculations including arrival and departure
+     * time displays, gate scheduling, and passenger notifications. The method uses
+     * database transactions to ensure delay updates are applied consistently.
+     * </p>
      *
-     * @param delay    the delay
-     * @param idFlight the id flight
-     * @return the int
+     * @param delay the number of minutes to add to the current flight delay (must be positive)
+     * @param idFlight the unique identifier of the flight to add delay to
+     * @return the number of rows affected by the update (1 if successful, 0 if flight not found), -1 if an error occurs
      */
     public int addDelay(int delay, String idFlight) {
 
@@ -577,10 +917,21 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Sets checkins.
+     * Updates check-in status for multiple tickets in batch operations.
+     * <p>
+     * This method efficiently updates the check-in status for multiple tickets using
+     * separate lists for tickets to be checked in (true) and tickets to be unchecked
+     * (false). This batch approach reduces database round trips and ensures consistent
+     * check-in status updates.
+     * </p>
+     * <p>
+     * The method uses database transactions to ensure all check-in status changes
+     * are applied atomically. This is particularly important for group bookings
+     * where multiple passengers' check-in status needs to be updated simultaneously.
+     * </p>
      *
-     * @param trueTickets  the true tickets
-     * @param falseTickets the false tickets
+     * @param trueTickets list of ticket numbers to set check-in status to true
+     * @param falseTickets list of ticket numbers to set check-in status to false
      */
     public void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets) {
 
@@ -618,10 +969,25 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Gets luggages checkins.
+     * Retrieves post-checkin luggage identifiers for multiple tickets.
+     * <p>
+     * This method queries the database to retrieve luggage identifiers assigned after
+     * check-in for a list of tickets. These identifiers are used for luggage tracking
+     * during the baggage handling process after passengers have checked in.
+     * </p>
+     * <p>
+     * The method returns a nested list structure where each inner list contains all
+     * luggage identifiers associated with a specific ticket. This allows for proper
+     * correlation between tickets and their associated luggage items.
+     * </p>
+     * <p>
+     * Post-checkin luggage identifiers are typically assigned during the check-in
+     * process and are used for physical luggage tracking throughout the airport
+     * baggage handling system.
+     * </p>
      *
-     * @param tickets the tickets
-     * @return the luggages checkins
+     * @param tickets list of ticket numbers to retrieve luggage identifiers for
+     * @return nested list where each inner list contains luggage identifiers for the corresponding ticket, null if an error occurs
      */
     public ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets) {
 
