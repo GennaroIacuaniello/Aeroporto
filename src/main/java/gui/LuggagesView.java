@@ -9,9 +9,6 @@ import java.util.ArrayList;
 
 import controller.Controller;
 
-/**
- * The type Luggages view.
- */
 public class LuggagesView extends JFrame {
 
     private final JFrame thisFrame;
@@ -25,9 +22,6 @@ public class LuggagesView extends JFrame {
 
     private final Constraints constraints;
 
-    /**
-     * Instantiates a new Luggages view.
-     */
     public LuggagesView() {
 
         super("Luggages");
@@ -120,23 +114,10 @@ public class LuggagesView extends JFrame {
         scrollPane.setVisible(true);
     }
 
-    /**
-     * Gets luggages panels.
-     *
-     * @return the luggages panels
-     */
     public List<LuggagePanel> getLuggagesPanels() {
         return luggagesPanels;
     }
 
-    /**
-     * Sets luggages.
-     *
-     * @param luggagesTypes   the luggages types
-     * @param luggagesTickets the luggages tickets
-     * @param luggagesStatus  the luggages status
-     * @param controller      the controller
-     */
     public void setLuggages(List<Integer> luggagesTypes, List<String> luggagesTickets, List<String> luggagesStatus,Controller controller) {
 
         int i = 0;
@@ -219,11 +200,6 @@ public class LuggagesView extends JFrame {
         }
     }
 
-    /**
-     * Sets location.
-     *
-     * @param callingButton the calling button
-     */
     public void setLocation(JButton callingButton) {
         //coordinate punto in alto a sx del bottone
         double x = callingButton.getLocationOnScreen().getX();
@@ -240,29 +216,14 @@ public class LuggagesView extends JFrame {
         this.setLocation((int) x, (int) y);
     }
 
-    /**
-     * Gets add luggage button.
-     *
-     * @return the add luggage button
-     */
     public JButton getAddLuggageButton () {
         return addLuggageButton;
     }
 
-    /**
-     * Gets confirm button.
-     *
-     * @return the confirm button
-     */
     public JButton getConfirmButton () {
         return confirmButton;
     }
 
-    /**
-     * Sets luggages ids.
-     *
-     * @param luggagesIds the luggages ids
-     */
     public void setLuggagesIds (List<String> luggagesIds) {
 
         for (int i = 0; i < luggagesIds.size(); i++) {
