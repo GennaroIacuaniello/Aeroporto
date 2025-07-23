@@ -16,29 +16,246 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Search flight result panel.
+ * Customer-focused flight search results display panel providing comprehensive flight information and booking capabilities for the airport management system.
+ * <p>
+ * This class extends {@link JPanel} to provide a specialized customer interface for displaying flight
+ * search results with integrated booking functionality and professional table presentation. The
+ * SearchFlightResultPanel serves as the primary flight results display component for customer workflows,
+ * offering comprehensive flight information presentation, availability checking, and direct booking
+ * initiation through an intuitive table-based interface optimized for customer travel planning operations.
+ * </p>
+ * <p>
+ * The SearchFlightResultPanel class provides comprehensive customer flight result capabilities including:
+ * </p>
+ * <ul>
+ *   <li><strong>Flight Information Display:</strong> Complete flight details with company, route, schedule, and availability information</li>
+ *   <li><strong>Booking Integration:</strong> Direct booking initiation with availability validation and workflow coordination</li>
+ *   <li><strong>Professional Table Presentation:</strong> Alternating row colors, center alignment, and optimized typography for readability</li>
+ *   <li><strong>Interactive Booking Buttons:</strong> Conditional button rendering based on flight availability and status</li>
+ *   <li><strong>Empty State Management:</strong> Professional messaging for no-results scenarios with centered display</li>
+ *   <li><strong>Status Localization:</strong> Italian language translation for all flight status information</li>
+ *   <li><strong>Navigation Integration:</strong> Seamless integration with customer booking workflows and interface hierarchy</li>
+ * </ul>
+ * <p>
+ * The interface is designed with customer experience optimization, providing travelers with:
+ * </p>
+ * <ul>
+ *   <li><strong>Clear Flight Information:</strong> Comprehensive flight details with route indicators and scheduling information</li>
+ *   <li><strong>Availability Awareness:</strong> Real-time seat availability display with clear capacity indicators</li>
+ *   <li><strong>Intuitive Booking Access:</strong> One-click booking initiation with automatic availability validation</li>
+ *   <li><strong>Professional Presentation:</strong> Clean table design with optimal spacing and readability</li>
+ *   <li><strong>Status Clarity:</strong> Italian-localized flight status information for customer understanding</li>
+ *   <li><strong>Responsive Design:</strong> Adaptive interface that maintains functionality across different window configurations</li>
+ * </ul>
+ * <p>
+ * Table architecture utilizes {@link BorderLayout} for optimal component organization with header
+ * positioning in the NORTH region and flight results table in the CENTER region. The layout
+ * supports dynamic content sizing and maintains professional presentation throughout customer
+ * flight selection and booking workflows.
+ * </p>
+ * <p>
+ * Flight information display includes comprehensive details for customer travel planning:
+ * </p>
+ * <ul>
+ *   <li><strong>Company Information:</strong> Airline company names for carrier identification</li>
+ *   <li><strong>Route Display:</strong> Directional route information with Naples integration and arrow indicators</li>
+ *   <li><strong>Schedule Details:</strong> Departure and arrival times with professional HH:MM formatting</li>
+ *   <li><strong>Delay Information:</strong> Current delay status with minute display or "--" for no delays</li>
+ *   <li><strong>Flight Status:</strong> Italian-localized status information for all flight operational states</li>
+ *   <li><strong>Seat Availability:</strong> Free/total seat display for booking decision support</li>
+ * </ul>
+ * <p>
+ * Booking integration provides sophisticated customer workflow coordination through mouse event
+ * handling that validates flight availability and status before initiating booking operations.
+ * The integration includes seamless transitions to booking interfaces while maintaining customer
+ * session context and flight selection information throughout reservation workflows.
+ * </p>
+ * <p>
+ * Professional table presentation includes alternating row colors (248,248,248 and white) for
+ * enhanced readability, center-aligned content, and consistent typography throughout flight
+ * information display. The presentation optimizes customer scanning and information comprehension
+ * during flight selection processes.
+ * </p>
+ * <p>
+ * Interactive booking functionality includes conditional button rendering that ensures booking
+ * buttons are only enabled for flights with available seats and "PROGRAMMED" status. The
+ * functionality prevents invalid booking attempts while providing clear visual feedback about
+ * flight availability throughout customer interaction workflows.
+ * </p>
+ * <p>
+ * Empty state management provides professional no-results messaging through the specialized
+ * {@link JTableWithEmptyMessage} component that displays centered Italian messages when search
+ * criteria return no matching flights. The messaging maintains professional appearance and
+ * provides clear user guidance during unsuccessful search scenarios.
+ * </p>
+ * <p>
+ * Status localization includes comprehensive Italian translation for all flight operational
+ * states including PROGRAMMED (In programma), CANCELLED (Cancellato), DELAYED (In ritardo),
+ * ABOUT_TO_DEPART (In partenza), DEPARTED (Partito), ABOUT_TO_ARRIVE (In arrivo), and
+ * LANDED (Atterrato) for optimal customer understanding.
+ * </p>
+ * <p>
+ * The class integrates seamlessly with the broader airport management system through comprehensive
+ * {@link Controller} integration, enabling access to flight information services, booking
+ * management, and customer workflow coordination. The integration supports customer travel
+ * planning workflows while maintaining proper separation of concerns and interface consistency.
+ * </p>
+ * <p>
+ * Data management utilizes extensive ArrayList collections for flight information including
+ * flight IDs, company names, dates, times, delays, status, seat availability, and destination
+ * cities. The data management ensures efficient result presentation and supports dynamic
+ * content updates for optimal customer experience throughout flight selection operations.
+ * </p>
+ * <p>
+ * Navigation integration includes sophisticated calling objects hierarchy management that
+ * maintains customer workflow context during booking transitions and enables proper resource
+ * management throughout customer interactions with the airport management system.
+ * </p>
+ * <p>
+ * The SearchFlightResultPanel serves as a critical component of the customer flight booking
+ * ecosystem, providing essential flight information presentation and booking initiation
+ * capabilities while maintaining interface consistency, user experience quality, and
+ * operational effectiveness throughout customer travel planning and reservation workflows.
+ * </p>
+ *
+ * @author Aeroporto Di Napoli
+ * @version 1.0
+ * @since 1.0
+ * @see JPanel
+ * @see Controller
+ * @see AbstractTableModel
+ * @see MouseAdapter
+ * @see BorderLayout
+ * @see MyBookingsCustomerMainFrame
+ * @see Book
  */
 public class SearchFlightResultPanel extends JPanel {
 
+    /**
+     * Primary results table for displaying flight search results with integrated booking functionality.
+     * <p>
+     * This final JTable component serves as the main display interface for flight search results,
+     * configured with custom table model, professional styling, and interactive booking capabilities.
+     * The table includes alternating row colors, center-aligned content, and conditional button
+     * rendering based on flight availability and status for optimal customer experience throughout
+     * flight selection and booking workflows.
+     * </p>
+     */
     private final JTable resultsTable;
+
+    /**
+     * Custom table model providing flight data management and presentation logic for customer interfaces.
+     * <p>
+     * This final FlightTableModel instance manages comprehensive flight information including
+     * company names, routes, schedules, delays, status, and availability data. The model provides
+     * Italian-localized content presentation, conditional formatting, and integration with booking
+     * validation logic for optimal customer flight information display and interaction workflows.
+     * </p>
+     */
     private final FlightTableModel tableModel;
 
     /**
-     * Instantiates a new Search flight result panel.
+     * Constructs a new SearchFlightResultPanel with comprehensive flight results display and integrated booking capabilities for customer workflows.
+     * <p>
+     * This constructor initializes the complete customer flight results interface by establishing table
+     * configuration, data model setup, event handling integration, and visual styling for optimal
+     * customer experience during flight result review and booking operations. The constructor creates
+     * a fully functional results panel ready for immediate integration within customer flight search
+     * workflows with support for both populated results and empty state scenarios.
+     * </p>
+     * <p>
+     * The initialization process includes:
+     * </p>
+     * <ul>
+     *   <li><strong>Layout Configuration:</strong> BorderLayout establishment with proper component organization</li>
+     *   <li><strong>Visual Styling:</strong> White background configuration for professional appearance and optimal readability</li>
+     *   <li><strong>Table Model Setup:</strong> FlightTableModel initialization with controller integration and data binding</li>
+     *   <li><strong>Empty State Handling:</strong> Conditional table creation based on result availability with specialized messaging</li>
+     *   <li><strong>Event Handler Integration:</strong> MouseAdapter setup for interactive booking access and navigation</li>
+     *   <li><strong>Appearance Configuration:</strong> Professional table styling through setTableApperance method delegation</li>
+     *   <li><strong>Header Management:</strong> Table header configuration and visibility setup for column identification</li>
+     *   <li><strong>Component Assembly:</strong> BorderLayout component placement for optimal interface organization</li>
+     * </ul>
+     * <p>
+     * Layout configuration establishes {@link BorderLayout} as the primary layout manager,
+     * providing optimal organization for table header and content areas. The layout ensures
+     * proper component positioning and supports responsive design principles for different
+     * window sizes and customer usage scenarios throughout flight result presentation.
+     * </p>
+     * <p>
+     * Visual styling includes white background configuration that provides optimal content
+     * readability and professional appearance. The styling integrates seamlessly with the
+     * airport management system's visual design standards and ensures consistent branding
+     * throughout customer flight search and booking interfaces.
+     * </p>
+     * <p>
+     * Table model setup creates the FlightTableModel with comprehensive flight data including
+     * company names, routes, schedules, delays, status information, and seat availability.
+     * The model provides Italian-localized content presentation and integrates with controller
+     * systems for dynamic flight information access throughout customer result display.
+     * </p>
+     * <p>
+     * Empty state handling includes conditional table creation that provides specialized
+     * no-results messaging through JTableWithEmptyMessage when search criteria return no
+     * matching flights. The handling ensures professional presentation and clear user
+     * guidance during unsuccessful search scenarios with appropriate Italian messaging.
+     * </p>
+     * <p>
+     * Event handler integration establishes comprehensive MouseAdapter functionality for
+     * interactive booking access. The handler includes click detection, availability validation,
+     * booking workflow initiation, and navigation coordination for seamless customer booking
+     * transitions throughout flight selection and reservation workflows.
+     * </p>
+     * <p>
+     * Booking validation within the mouse event handler ensures that booking operations are
+     * only initiated for flights with available seats and "PROGRAMMED" status. The validation
+     * prevents invalid booking attempts while providing appropriate booking workflow routing
+     * based on customer booking history through loadAndCheckIfOpenMyBookingsOrNewBooking integration.
+     * </p>
+     * <p>
+     * Navigation coordination includes proper calling objects hierarchy management during
+     * booking transitions, ensuring that previous interface frames are properly hidden
+     * and customer workflow context is maintained throughout booking operations and
+     * interface transitions within the airport management system.
+     * </p>
+     * <p>
+     * Appearance configuration delegates to the setTableApperance method for comprehensive
+     * table styling including typography, colors, alignment, and renderer configuration.
+     * The appearance setup ensures professional presentation and optimal readability
+     * throughout customer flight result display and booking interaction operations.
+     * </p>
+     * <p>
+     * Header management includes proper JTableHeader configuration and visibility setup
+     * based on the ifSearched parameter, ensuring that column headers are only displayed
+     * when actual search results are present. The management supports clean interface
+     * presentation and appropriate user guidance throughout flight search workflows.
+     * </p>
+     * <p>
+     * Component assembly utilizes BorderLayout positioning to place the table header in
+     * the NORTH region and the results table in the CENTER region. The assembly ensures
+     * proper component hierarchy and supports responsive layout behavior throughout
+     * different interface scenarios and customer usage patterns.
+     * </p>
+     * <p>
+     * The constructor completes by establishing a fully functional customer flight results
+     * display ready for immediate customer interaction, providing comprehensive flight
+     * information presentation, booking capabilities, and professional visual design
+     * throughout customer travel planning and reservation workflows.
+     * </p>
      *
-     * @param callingObjects the calling objects
-     * @param controller     the controller
-     * @param ids            the ids
-     * @param companyNames   the company names
-     * @param dates          the dates
-     * @param departureTimes the departure times
-     * @param arrivalTimes   the arrival times
-     * @param delays         the delays
-     * @param status         the status
-     * @param maxSeats       the max seats
-     * @param freeSeats      the free seats
-     * @param cities         the cities
-     * @param ifSearched     the if searched
+     * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and workflow coordination
+     * @param controller the system controller providing access to flight information services and booking management functionality
+     * @param ids the list of unique flight identifiers for result correlation and detailed flight access
+     * @param companyNames the list of airline company names for carrier identification and display
+     * @param dates the list of flight dates for scheduling information and temporal organization
+     * @param departureTimes the list of flight departure times for schedule display and customer planning
+     * @param arrivalTimes the list of flight arrival times for complete schedule information and travel planning
+     * @param delays the list of flight delay information in minutes for current status presentation
+     * @param status the list of flight operational status information for customer awareness and booking validation
+     * @param maxSeats the list of maximum seat capacity for each flight for availability context
+     * @param freeSeats the list of available seat counts for booking decision support and validation
+     * @param cities the list of destination cities for route information and travel planning
+     * @param ifSearched the boolean flag indicating whether a search has been performed for proper header visibility and interface state management
      */
     public SearchFlightResultPanel(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
@@ -104,6 +321,75 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
+    /**
+     * Configures comprehensive table appearance with professional styling and optimal customer readability for flight results display.
+     * <p>
+     * This private method establishes complete table visual configuration including typography,
+     * colors, alignment, and renderer setup to ensure professional appearance and optimal
+     * readability throughout customer flight result display operations. The method implements
+     * consistent styling standards that align with the airport management system's visual design
+     * principles and enhance customer experience during flight selection and booking workflows.
+     * </p>
+     * <p>
+     * The table appearance configuration includes:
+     * </p>
+     * <ul>
+     *   <li><strong>Header Styling:</strong> Bold typography, background colors, and reordering prevention for professional presentation</li>
+     *   <li><strong>Content Typography:</strong> Segoe UI font configuration with appropriate sizing for optimal readability</li>
+     *   <li><strong>Row Configuration:</strong> Height optimization and selection behavior setup for enhanced user interaction</li>
+     *   <li><strong>Visual Enhancement:</strong> Grid colors, viewport filling, and professional color scheme application</li>
+     *   <li><strong>Cell Rendering:</strong> Custom renderer setup with alternating row colors for improved content scanning</li>
+     *   <li><strong>Button Integration:</strong> Specialized button renderer configuration for booking column functionality</li>
+     * </ul>
+     * <p>
+     * Header styling includes bold Segoe UI font (14pt) for clear column identification and
+     * light gray background (230, 230, 230) that provides subtle visual separation while
+     * maintaining professional appearance. Column reordering is disabled to maintain
+     * consistent layout and prevent customer interface confusion during flight result browsing.
+     * </p>
+     * <p>
+     * Content typography utilizes plain Segoe UI font (14pt) for optimal readability and
+     * consistent visual presentation across all table content. The typography ensures
+     * clear information display while maintaining professional appearance standards
+     * throughout the airport management system interface.
+     * </p>
+     * <p>
+     * Row configuration includes 35-pixel height optimization that provides comfortable
+     * vertical spacing for content readability while maintaining efficient space utilization.
+     * The row selection is disabled (setRowSelectionAllowed(false)) to focus customer
+     * interaction on the booking button column for precise booking control.
+     * </p>
+     * <p>
+     * Visual enhancement includes viewport filling (setFillsViewportHeight(true)) that
+     * ensures optimal space utilization and professional presentation. The grid color
+     * configuration (220, 220, 220) provides subtle visual organization that enhances
+     * readability without overwhelming the content presentation.
+     * </p>
+     * <p>
+     * Cell rendering utilizes a custom DefaultTableCellRenderer that implements alternating
+     * row colors for enhanced content scanning. The renderer applies light gray (248, 248, 248)
+     * for even rows and white for odd rows, creating visual rhythm that improves customer
+     * ability to scan flight information and make booking decisions.
+     * </p>
+     * <p>
+     * Center alignment is applied to all content columns (excluding the booking button column)
+     * to ensure consistent presentation and optimal readability of flight information including
+     * times, dates, status, and availability data throughout customer result display.
+     * </p>
+     * <p>
+     * Button integration includes specialized ButtonRenderer configuration for the booking
+     * column that provides conditional button rendering based on flight availability and
+     * status. The button renderer ensures that booking buttons are only enabled for
+     * available flights while maintaining consistent visual presentation throughout
+     * the flight results table.
+     * </p>
+     * <p>
+     * The method ensures comprehensive visual consistency that enhances customer experience
+     * through professional presentation, clear information hierarchy, and optimal readability
+     * throughout flight result display and booking interaction workflows within the airport
+     * management system customer interface.
+     * </p>
+     */
     private void setTableApperance() {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -140,36 +426,257 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
+    /**
+     * Custom table model providing comprehensive flight data management and Italian-localized presentation for customer flight results display.
+     * <p>
+     * This private static class extends {@link AbstractTableModel} to provide sophisticated flight data
+     * management and presentation capabilities for customer flight results. The FlightTableModel includes
+     * comprehensive Italian localization for all status fields, professional temporal formatting, and
+     * integrated availability information for optimal customer flight information display throughout
+     * travel planning and booking workflows within the airport management system.
+     * </p>
+     * <p>
+     * The table model functionality includes:
+     * </p>
+     * <ul>
+     *   <li><strong>Data Management:</strong> Comprehensive flight information storage and retrieval with controller integration</li>
+     *   <li><strong>Italian Localization:</strong> Complete status translation for all flight operational states</li>
+     *   <li><strong>Temporal Formatting:</strong> Professional time presentation with zero-padding and HH:MM format consistency</li>
+     *   <li><strong>Route Information:</strong> Directional route display with Naples integration and arrow indicators</li>
+     *   <li><strong>Availability Display:</strong> Clear seat availability presentation with free/total seat formatting</li>
+     *   <li><strong>Status Management:</strong> Comprehensive flight status handling with delay information presentation</li>
+     *   <li><strong>Booking Integration:</strong> Access methods for availability validation and booking workflow coordination</li>
+     * </ul>
+     * <p>
+     * Data management utilizes comprehensive ArrayList collections for all flight information
+     * including identifiers, company names, schedules, delays, status, and availability data.
+     * The data management ensures efficient information access and supports dynamic content
+     * presentation throughout customer flight result display and booking workflows.
+     * </p>
+     * <p>
+     * Italian localization provides complete translation of flight operational states including
+     * PROGRAMMED (In programma), CANCELLED (Cancellato), DELAYED (In ritardo), ABOUT_TO_DEPART
+     * (In partenza), DEPARTED (Partito), ABOUT_TO_ARRIVE (In arrivo), and LANDED (Atterrato)
+     * for optimal customer understanding and interface accessibility.
+     * </p>
+     * <p>
+     * Temporal formatting includes sophisticated time presentation with automatic zero-padding
+     * for hours and minutes less than 10, ensuring consistent HH:MM format throughout all
+     * time displays. The formatting supports both departure and arrival time presentation
+     * with professional appearance standards for customer schedule planning.
+     * </p>
+     * <p>
+     * Route information utilizes intelligent directional display based on flight type detection
+     * through controller integration. The presentation shows either "Napoli → Destination" for
+     * departing flights or "Origin → Napoli" for arriving flights, providing immediate visual
+     * clarity for customer travel direction understanding.
+     * </p>
+     * <p>
+     * Availability display presents seat information in clear "free/total" format that enables
+     * immediate customer assessment of booking opportunities. The display integrates with
+     * booking validation logic to support informed customer decision-making throughout
+     * flight selection and reservation workflows.
+     * </p>
+     * <p>
+     * Status management includes comprehensive handling of flight operational states with
+     * delay information presentation that shows delay minutes for delayed flights or "--"
+     * for flights without delays. The management provides clear customer awareness of
+     * current flight conditions for travel planning purposes.
+     * </p>
+     * <p>
+     * The model serves as the foundation for customer flight result presentation, ensuring
+     * comprehensive information display, professional formatting, and seamless integration
+     * with booking workflows throughout the airport management system's customer interface.
+     * </p>
+     */
     private static class FlightTableModel extends AbstractTableModel {
 
+        /**
+         * System controller providing access to flight information services and business logic coordination.
+         * <p>
+         * This final Controller reference enables access to flight management functionality,
+         * route type determination, and business logic coordination throughout flight result
+         * presentation and customer booking workflows. The controller integration ensures
+         * proper data access and maintains consistency with system-wide flight management
+         * operations and customer service coordination.
+         * </p>
+         */
         private final Controller controller;
+
+        /**
+         * Collection of unique flight identifiers for result correlation and detailed flight access.
+         * <p>
+         * This final ArrayList stores flight IDs that enable proper result correlation with
+         * detailed flight information and support booking workflow integration. The identifiers
+         * provide essential linkage between display presentation and underlying flight data
+         * management throughout customer flight selection and reservation operations.
+         * </p>
+         */
         private final ArrayList<String> ids;
+
+        /**
+         * Collection of airline company names for carrier identification and customer information display.
+         * <p>
+         * This final ArrayList stores airline company names that provide essential carrier
+         * identification for customer travel planning and booking decisions. The company
+         * information supports customer preference management and enables informed flight
+         * selection throughout travel planning and reservation workflows.
+         * </p>
+         */
         private final ArrayList<String> companyNames;
+
+        /**
+         * Collection of flight dates for scheduling information and temporal organization throughout customer planning.
+         * <p>
+         * This final ArrayList stores flight dates that provide essential temporal information
+         * for customer travel planning and schedule coordination. The date information supports
+         * customer trip planning and enables proper scheduling decisions throughout flight
+         * selection and booking workflows within the airport management system.
+         * </p>
+         */
         private final ArrayList<Date> dates;
+
+        /**
+         * Collection of flight departure times for schedule display and customer travel planning coordination.
+         * <p>
+         * This final ArrayList stores departure time information that enables customer schedule
+         * planning and coordination with travel itineraries. The departure time data supports
+         * professional time formatting and provides essential scheduling information for
+         * customer decision-making throughout flight selection and booking workflows.
+         * </p>
+         */
         private final ArrayList<Time> departureTimes;
+
+        /**
+         * Collection of flight arrival times for complete schedule information and customer travel coordination.
+         * <p>
+         * This final ArrayList stores arrival time information that provides complete flight
+         * scheduling details for customer travel planning and coordination. The arrival time
+         * data supports comprehensive schedule presentation and enables customer planning
+         * for destination activities throughout flight selection and booking workflows.
+         * </p>
+         */
         private final ArrayList<Time> arrivalTimes;
+
+        /**
+         * Collection of flight delay information in minutes for current status presentation and customer awareness.
+         * <p>
+         * This final ArrayList stores delay information that provides real-time flight status
+         * updates for customer awareness and travel planning adjustments. The delay data
+         * supports dynamic status presentation with appropriate formatting (minutes or "--")
+         * throughout customer flight result display and booking decision workflows.
+         * </p>
+         */
         private final ArrayList<Integer> delays;
+
+        /**
+         * Collection of flight operational status information for customer awareness and booking validation throughout planning workflows.
+         * <p>
+         * This final ArrayList stores current flight operational status including states such as
+         * PROGRAMMED, CANCELLED, DELAYED, ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE, and LANDED.
+         * The status information supports Italian localization for customer understanding and
+         * integrates with booking validation logic throughout flight selection and reservation workflows.
+         * </p>
+         */
         private final ArrayList<String> status;
+
+        /**
+         * Collection of maximum seat capacity information for flight availability context and customer planning support.
+         * <p>
+         * This final ArrayList stores maximum seat capacity for each flight that provides
+         * essential context for availability assessment and customer booking decisions.
+         * The capacity information supports availability ratio display and enables customer
+         * understanding of flight demand throughout flight selection and booking workflows.
+         * </p>
+         */
         private final ArrayList<Integer> maxSeats;
+
+        /**
+         * Collection of available seat counts for real-time booking availability and customer decision support.
+         * <p>
+         * This final ArrayList stores current available seat counts that provide real-time
+         * booking availability information for customer decision-making. The availability
+         * data supports booking validation logic and enables immediate customer assessment
+         * of reservation opportunities throughout flight selection and booking workflows.
+         * </p>
+         */
         private final ArrayList<Integer> freeSeats;
+
+        /**
+         * Collection of destination city names for route information display and customer travel planning coordination.
+         * <p>
+         * This final ArrayList stores destination cities that provide essential route
+         * information for customer travel planning and destination coordination. The city
+         * information supports directional route display formatting and enables customer
+         * understanding of travel destinations throughout flight selection and booking workflows.
+         * </p>
+         */
         private final ArrayList<String> cities;
 
+        /**
+         * Array of Italian column names providing localized table headers for customer interface accessibility and understanding.
+         * <p>
+         * This final String array defines the table column headers in Italian language including
+         * "Compagnia" (Company), "Tratta" (Route), "Data" (Date), "Partenza" (Departure),
+         * "Ritardo" (Delay), "Arrivo" (Arrival), "Stato" (Status), "Posti" (Seats), and
+         * "Prenotazione" (Booking) for complete customer interface localization and accessibility.
+         * </p>
+         */
         private final String[] colNames = {"Compagnia", "Tratta", "Data", "Partenza", "Ritardo", "Arrivo", "Stato", "Posti", "Prenotazione"};
 
         /**
-         * Instantiates a new Flight table model.
+         * Constructs a new FlightTableModel with comprehensive flight data integration and Italian localization for customer result presentation.
+         * <p>
+         * This constructor initializes the complete flight table model by establishing data binding
+         * with provided flight information collections and controller integration for business logic
+         * access. The constructor creates a fully functional table model ready for immediate
+         * integration within customer flight result display with support for Italian localization,
+         * professional formatting, and booking workflow coordination throughout customer travel planning operations.
+         * </p>
+         * <p>
+         * The initialization process includes:
+         * </p>
+         * <ul>
+         *   <li><strong>Controller Integration:</strong> System controller reference establishment for business logic access</li>
+         *   <li><strong>Data Binding:</strong> Comprehensive flight information collection assignment with type casting</li>
+         *   <li><strong>Collection Management:</strong> ArrayList references establishment for all flight data categories</li>
+         *   <li><strong>Business Logic Access:</strong> Controller integration for flight type determination and route formatting</li>
+         * </ul>
+         * <p>
+         * Controller integration establishes the system controller reference that provides access
+         * to flight management functionality, route type determination, and business logic
+         * coordination throughout flight result presentation and customer booking workflows.
+         * </p>
+         * <p>
+         * Data binding includes comprehensive assignment of all provided flight information
+         * collections with appropriate type casting to ArrayList instances. The binding ensures
+         * proper data access and maintains type safety throughout flight information presentation
+         * and customer interaction workflows.
+         * </p>
+         * <p>
+         * Collection management establishes references to all flight information categories
+         * including identifiers, company names, schedules, delays, status, availability, and
+         * destination data. The management ensures efficient data access and supports dynamic
+         * content presentation throughout customer flight result display operations.
+         * </p>
+         * <p>
+         * The constructor completes by establishing a fully functional flight table model ready
+         * for immediate customer flight result presentation with comprehensive data access,
+         * Italian localization support, and professional formatting capabilities throughout
+         * customer travel planning and booking workflows.
+         * </p>
          *
-         * @param controller        the controller
-         * @param parIds            the par ids
-         * @param parCompanyNames   the par company names
-         * @param parDates          the par dates
-         * @param parDepartureTimes the par departure times
-         * @param parArrivalTimes   the par arrival times
-         * @param parDelays         the par delays
-         * @param parStatus         the par status
-         * @param parMaxSeats       the par max seats
-         * @param parFreeSeats      the par free seats
-         * @param parCities         the par cities
+         * @param controller the system controller providing access to flight information services and business logic coordination
+         * @param parIds the list of unique flight identifiers for result correlation and detailed flight access
+         * @param parCompanyNames the list of airline company names for carrier identification and customer information display
+         * @param parDates the list of flight dates for scheduling information and temporal organization
+         * @param parDepartureTimes the list of flight departure times for schedule display and customer travel planning
+         * @param parArrivalTimes the list of flight arrival times for complete schedule information and travel coordination
+         * @param parDelays the list of flight delay information in minutes for current status presentation
+         * @param parStatus the list of flight operational status information for customer awareness and booking validation
+         * @param parMaxSeats the list of maximum seat capacity for flight availability context and planning support
+         * @param parFreeSeats the list of available seat counts for real-time booking availability and decision support
+         * @param parCities the list of destination cities for route information display and travel planning coordination
          */
         public FlightTableModel( Controller controller, List<String> parIds, List<String> parCompanyNames, List<Date> parDates, List<Time> parDepartureTimes, List<Time> parArrivalTimes,
                                 List<Integer> parDelays, List<String> parStatus, List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> parCities) {
@@ -189,38 +696,168 @@ public class SearchFlightResultPanel extends JPanel {
         }
 
         /**
-         * Get free seats list.
+         * Returns the collection of available seat counts for booking validation and availability assessment throughout customer workflows.
+         * <p>
+         * This public method provides access to the free seats collection for external booking
+         * validation and availability checking. The method enables booking button rendering logic
+         * to determine button state based on seat availability and supports customer decision-making
+         * throughout flight selection and reservation workflows within the airport management system.
+         * </p>
+         * <p>
+         * Free seats access enables:
+         * </p>
+         * <ul>
+         *   <li><strong>Booking Validation:</strong> Real-time availability checking for booking button state management</li>
+         *   <li><strong>Customer Information:</strong> Availability data for customer booking decision support</li>
+         *   <li><strong>Interface Integration:</strong> Button renderer access for conditional rendering based on availability</li>
+         *   <li><strong>Workflow Coordination:</strong> Availability validation throughout booking workflow initiation</li>
+         * </ul>
+         * <p>
+         * The method supports booking functionality by providing availability information that
+         * enables conditional button rendering and booking workflow validation throughout
+         * customer flight selection and reservation operations.
+         * </p>
          *
-         * @return the list
+         * @return the list of available seat counts for booking validation and customer availability assessment
          */
         public List<Integer> getFreeSeats(){
             return freeSeats;
         }
 
         /**
-         * Get status list.
+         * Returns the collection of flight operational status information for booking validation and customer status awareness.
+         * <p>
+         * This public method provides access to the flight status collection for external booking
+         * validation and status-based interface behavior. The method enables booking button rendering
+         * logic to determine button state based on flight status and supports customer awareness
+         * of flight conditions throughout selection and reservation workflows within the airport management system.
+         * </p>
+         * <p>
+         * Flight status access enables:
+         * </p>
+         * <ul>
+         *   <li><strong>Booking Validation:</strong> Status-based availability checking for booking button state management</li>
+         *   <li><strong>Customer Awareness:</strong> Flight condition information for informed booking decisions</li>
+         *   <li><strong>Interface Integration:</strong> Button renderer access for conditional rendering based on operational status</li>
+         *   <li><strong>Workflow Coordination:</strong> Status validation throughout booking workflow initiation and customer guidance</li>
+         * </ul>
+         * <p>
+         * The method supports booking functionality by providing status information that enables
+         * conditional button rendering (only enabled for "PROGRAMMED" flights) and booking
+         * workflow validation throughout customer flight selection and reservation operations.
+         * </p>
          *
-         * @return the list
+         * @return the list of flight operational status information for booking validation and customer status awareness
          */
         public List<String> getStatus(){
             return status;
         }
 
+        /**
+         * Returns the total number of flight results for table row management and display coordination.
+         * <p>
+         * This overridden method from AbstractTableModel provides the row count for table display
+         * management by returning the size of the flight IDs collection. The row count enables
+         * proper table sizing, scrolling behavior, and empty state detection throughout customer
+         * flight result presentation and interface management within the airport management system.
+         * </p>
+         *
+         * @return the total number of flight results for table row management and display coordination
+         */
         @Override
         public int getRowCount() {
             return ids.size();
         }
 
+        /**
+         * Returns the total number of table columns for display management and header coordination.
+         * <p>
+         * This overridden method from AbstractTableModel provides the column count for table display
+         * management by returning the length of the column names array. The column count enables
+         * proper table structure, header display, and column renderer assignment throughout customer
+         * flight result presentation and interface coordination within the airport management system.
+         * </p>
+         *
+         * @return the total number of table columns for display management and header coordination
+         */
         @Override
         public int getColumnCount() {
             return colNames.length;
         }
 
+        /**
+         * Returns the Italian-localized column name for table header display and customer interface accessibility.
+         * <p>
+         * This overridden method from AbstractTableModel provides localized column names for table
+         * header display by returning the appropriate Italian column name from the colNames array.
+         * The method enables proper header presentation with Italian localization for customer
+         * accessibility and interface understanding throughout flight result display within the airport management system.
+         * </p>
+         *
+         * @param column the column index for header name retrieval and display coordination
+         * @return the Italian-localized column name for table header display and customer interface accessibility
+         */
         @Override
         public String getColumnName(int column) {
             return colNames[column];
         }
 
+        /**
+         * Returns the formatted cell value for comprehensive flight information display with Italian localization and professional formatting.
+         * <p>
+         * This overridden method from AbstractTableModel provides comprehensive cell content generation
+         * for flight information display including company names, routes, schedules, delays, status,
+         * and availability information. The method includes Italian localization for status information,
+         * professional time formatting with zero-padding, and directional route display for optimal
+         * customer understanding throughout flight result presentation and booking workflows.
+         * </p>
+         * <p>
+         * The content generation includes:
+         * </p>
+         * <ul>
+         *   <li><strong>Column 0:</strong> Airline company name for carrier identification and customer information</li>
+         *   <li><strong>Column 1:</strong> Directional route display with Naples integration and arrow indicators for travel clarity</li>
+         *   <li><strong>Column 2:</strong> Flight date with standard toString formatting for schedule reference</li>
+         *   <li><strong>Column 3:</strong> Departure time with professional HH:MM formatting and zero-padding for consistency</li>
+         *   <li><strong>Column 4:</strong> Delay information with minute display or "--" for no delays for customer awareness</li>
+         *   <li><strong>Column 5:</strong> Arrival time with professional HH:MM formatting and zero-padding for schedule completion</li>
+         *   <li><strong>Column 6:</strong> Italian-localized flight status for customer understanding and booking validation</li>
+         *   <li><strong>Column 7:</strong> Seat availability with free/total format for booking decision support</li>
+         *   <li><strong>Column 8:</strong> Booking button text ("Prenota") for reservation action identification</li>
+         * </ul>
+         * <p>
+         * Route display utilizes controller integration to determine flight type and provide
+         * appropriate directional formatting. Departing flights show "Napoli → Destination"
+         * while arriving flights show "Origin → Napoli" for immediate customer travel
+         * direction understanding and route clarity.
+         * </p>
+         * <p>
+         * Time formatting includes sophisticated zero-padding logic for both hours and minutes
+         * less than 10, ensuring consistent HH:MM presentation throughout all time displays.
+         * The formatting maintains professional appearance and supports customer schedule
+         * planning throughout flight selection and booking workflows.
+         * </p>
+         * <p>
+         * Status localization provides comprehensive Italian translation for all flight
+         * operational states including PROGRAMMED (In programma), CANCELLED (Cancellato),
+         * DELAYED (In ritardo), ABOUT_TO_DEPART (In partenza), DEPARTED (Partito),
+         * ABOUT_TO_ARRIVE (In arrivo), and LANDED (Atterrato) for customer accessibility.
+         * </p>
+         * <p>
+         * Delay presentation shows delay minutes for delayed flights or "--" for flights
+         * without delays, providing clear customer awareness of current flight conditions
+         * for travel planning and booking decision-making throughout customer workflows.
+         * </p>
+         * <p>
+         * Availability display presents seat information in "free/total" format that enables
+         * immediate customer assessment of booking opportunities and supports informed
+         * decision-making throughout flight selection and reservation workflows.
+         * </p>
+         *
+         * @param row the row index for flight data retrieval and content generation
+         * @param col the column index for specific information type determination and formatting
+         * @return the formatted cell value for comprehensive flight information display with Italian localization and professional formatting
+         */
         @Override
         public Object getValueAt(int row, int col) {
 
@@ -301,17 +938,134 @@ public class SearchFlightResultPanel extends JPanel {
         }
     }
 
-
+    /**
+     * Custom button renderer providing conditional booking button display based on flight availability and operational status.
+     * <p>
+     * This private static class extends {@link JButton} and implements {@link TableCellRenderer} to provide
+     * sophisticated booking button rendering with conditional enablement based on flight availability and
+     * operational status. The ButtonRenderer ensures that booking buttons are only enabled for flights
+     * with available seats and "PROGRAMMED" status while maintaining consistent visual presentation
+     * throughout customer flight result display and booking workflows.
+     * </p>
+     * <p>
+     * The button renderer functionality includes:
+     * </p>
+     * <ul>
+     *   <li><strong>Conditional Enablement:</strong> Button state management based on seat availability and flight status</li>
+     *   <li><strong>Professional Styling:</strong> Consistent typography and appearance for booking column presentation</li>
+     *   <li><strong>Selection Integration:</strong> Proper color coordination with table selection states</li>
+     *   <li><strong>Availability Validation:</strong> Real-time availability checking for button state determination</li>
+     *   <li><strong>Status Awareness:</strong> Flight operational status integration for booking validation</li>
+     * </ul>
+     * <p>
+     * Conditional enablement ensures that booking buttons are only active for flights that meet
+     * both availability requirements (free seats > 0) and operational requirements (status equals
+     * "PROGRAMMED"). The enablement prevents invalid booking attempts while providing clear
+     * visual feedback about flight booking eligibility throughout customer interaction workflows.
+     * </p>
+     * <p>
+     * Professional styling includes bold Segoe UI font (12pt) for clear button text presentation
+     * and opaque rendering for consistent visual appearance. The styling maintains professional
+     * presentation standards throughout the booking column while ensuring optimal readability
+     * and customer interaction clarity.
+     * </p>
+     * <p>
+     * Selection integration provides proper color coordination with table selection states by
+     * applying appropriate foreground and background colors based on selection status. The
+     * integration ensures consistent visual behavior throughout table interaction while
+     * maintaining button functionality and presentation standards.
+     * </p>
+     * <p>
+     * The renderer serves as a critical component of the booking workflow, providing visual
+     * feedback about flight availability and enabling controlled access to booking functionality
+     * throughout customer flight selection and reservation operations within the airport management system.
+     * </p>
+     */
     private static class ButtonRenderer extends JButton implements TableCellRenderer {
 
         /**
-         * Instantiates a new Button renderer.
+         * Constructs a new ButtonRenderer with professional styling and optimal configuration for booking button display.
+         * <p>
+         * This constructor initializes the button renderer with professional visual styling including
+         * opaque rendering and bold typography for optimal booking button presentation throughout
+         * customer flight result display. The constructor establishes consistent appearance standards
+         * that align with airport management system design principles and enhance customer experience
+         * during flight selection and booking workflows.
+         * </p>
+         * <p>
+         * The initialization includes:
+         * </p>
+         * <ul>
+         *   <li><strong>Opaque Rendering:</strong> Ensures proper background color display and visual consistency</li>
+         *   <li><strong>Typography Configuration:</strong> Bold Segoe UI font (12pt) for clear button text presentation</li>
+         * </ul>
+         * <p>
+         * Opaque rendering configuration ensures that background colors are properly displayed
+         * and maintains visual consistency throughout table rendering operations. The opaque
+         * setting supports proper color coordination with table selection states and provides
+         * consistent visual presentation throughout booking button display.
+         * </p>
+         * <p>
+         * Typography configuration utilizes bold Segoe UI font (12pt) for clear button text
+         * presentation and professional appearance. The font configuration maintains consistency
+         * with overall table typography while providing appropriate visual weight for booking
+         * action identification throughout customer flight result presentation.
+         * </p>
          */
         public ButtonRenderer() {
             setOpaque(true);
             setFont(new Font("Segoe UI", Font.BOLD, 12));
         }
 
+        /**
+         * Returns the configured button component with conditional enablement and professional styling for booking column display.
+         * <p>
+         * This overridden method from TableCellRenderer provides comprehensive button configuration
+         * including text assignment, conditional enablement based on flight availability and status,
+         * and color coordination with table selection states. The method ensures that booking buttons
+         * are only enabled for available flights while maintaining consistent visual presentation
+         * throughout customer flight result display and booking workflows.
+         * </p>
+         * <p>
+         * The button configuration includes:
+         * </p>
+         * <ul>
+         *   <li><strong>Text Assignment:</strong> Button text setting from cell value with null handling</li>
+         *   <li><strong>Availability Validation:</strong> Conditional enablement based on free seats and flight status</li>
+         *   <li><strong>Color Coordination:</strong> Proper foreground and background color assignment based on selection state</li>
+         *   <li><strong>Visual Consistency:</strong> Consistent appearance throughout different interaction states</li>
+         * </ul>
+         * <p>
+         * Text assignment includes proper handling of cell values with null checking to ensure
+         * consistent button text presentation. The assignment supports dynamic content updates
+         * and maintains professional appearance throughout booking button display operations.
+         * </p>
+         * <p>
+         * Availability validation utilizes the flight table model to check both seat availability
+         * (free seats > 0) and operational status ("PROGRAMMED" flights only) for conditional
+         * button enablement. The validation prevents invalid booking attempts while providing
+         * clear visual feedback about flight booking eligibility.
+         * </p>
+         * <p>
+         * Color coordination includes proper foreground and background color assignment based
+         * on table selection state. Selected rows receive table selection colors while
+         * unselected rows use standard table colors and default button background for
+         * consistent visual presentation throughout customer interaction workflows.
+         * </p>
+         * <p>
+         * The method returns a fully configured button component ready for booking column
+         * display with appropriate enablement, styling, and color coordination for optimal
+         * customer experience throughout flight selection and booking workflows.
+         * </p>
+         *
+         * @param table the JTable component for context and color coordination
+         * @param value the cell value for button text assignment and display
+         * @param isSelected the selection state for color coordination and visual consistency
+         * @param hasFocus the focus state for visual presentation management
+         * @param row the row index for flight data access and availability validation
+         * @param column the column index for renderer coordination and display management
+         * @return the configured button component with conditional enablement and professional styling for booking column display
+         */
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
@@ -334,16 +1088,92 @@ public class SearchFlightResultPanel extends JPanel {
         }
     }
 
-
+    /**
+     * Specialized table component providing professional empty state messaging for no-results scenarios in customer flight search displays.
+     * <p>
+     * This private static class extends {@link JTable} to provide sophisticated empty state handling
+     * with centered Italian messaging when flight search operations return no matching results.
+     * The JTableWithEmptyMessage ensures professional presentation and clear customer guidance
+     * during unsuccessful search scenarios while maintaining consistent visual design throughout
+     * the airport management system's customer interface and flight search workflows.
+     * </p>
+     * <p>
+     * The specialized table functionality includes:
+     * </p>
+     * <ul>
+     *   <li><strong>Empty State Detection:</strong> Automatic detection of zero-row conditions for message display activation</li>
+     *   <li><strong>Professional Messaging:</strong> Centered Italian message display with appropriate typography and styling</li>
+     *   <li><strong>Visual Integration:</strong> Consistent appearance with standard table styling and airport system branding</li>
+     *   <li><strong>Custom Painting:</strong> Sophisticated graphics rendering for optimal message presentation and readability</li>
+     *   <li><strong>Anti-aliasing Support:</strong> Smooth text rendering for professional appearance and optimal readability</li>
+     * </ul>
+     * <p>
+     * Empty state detection automatically identifies when the table contains no rows and activates
+     * the custom message display functionality. The detection ensures that empty state messaging
+     * is only displayed when appropriate while maintaining standard table functionality for
+     * populated result scenarios throughout customer flight search workflows.
+     * </p>
+     * <p>
+     * Professional messaging provides centered Italian language messages with appropriate typography
+     * (italic Segoe UI, 16pt) and gray color for subtle yet clear communication with customers.
+     * The messaging maintains professional appearance standards while providing helpful guidance
+     * during no-results scenarios throughout flight search operations.
+     * </p>
+     * <p>
+     * Visual integration ensures consistent appearance with standard JTable styling while adding
+     * the specialized empty state functionality. The integration maintains airport management
+     * system visual design standards and provides seamless user experience throughout different
+     * result scenarios and customer interaction workflows.
+     * </p>
+     * <p>
+     * The class serves as an essential component of customer experience management, providing
+     * clear communication during unsuccessful search scenarios while maintaining professional
+     * presentation standards throughout the airport management system's customer flight search interface.
+     * </p>
+     */
     private static class JTableWithEmptyMessage extends JTable {
 
+        /**
+         * Italian message text for empty state display and customer guidance during no-results scenarios.
+         * <p>
+         * This final String stores the Italian message text that is displayed when the table
+         * contains no flight results. The message provides clear customer guidance and maintains
+         * professional communication standards during unsuccessful search scenarios throughout
+         * customer flight search workflows within the airport management system interface.
+         * </p>
+         */
         private final String emptyMessage;
 
         /**
-         * Instantiates a new J table with empty message.
+         * Constructs a new JTableWithEmptyMessage with specialized empty state messaging for customer no-results scenarios.
+         * <p>
+         * This constructor initializes the specialized table component with standard JTable functionality
+         * and additional empty state messaging capabilities. The constructor establishes the table
+         * model integration and message text storage for professional no-results presentation throughout
+         * customer flight search workflows when search criteria return no matching flights.
+         * </p>
+         * <p>
+         * The initialization includes:
+         * </p>
+         * <ul>
+         *   <li><strong>Table Model Integration:</strong> Standard AbstractTableModel assignment for data management</li>
+         *   <li><strong>Message Storage:</strong> Empty state message text storage for display functionality</li>
+         * </ul>
+         * <p>
+         * Table model integration provides standard JTable functionality with the provided
+         * AbstractTableModel for data management and display coordination. The integration
+         * ensures proper table behavior while adding specialized empty state capabilities
+         * for enhanced customer experience during no-results scenarios.
+         * </p>
+         * <p>
+         * Message storage establishes the Italian message text that will be displayed when
+         * the table contains no rows. The storage enables custom painting functionality
+         * to provide professional customer guidance during unsuccessful flight search
+         * operations throughout airport management system workflows.
+         * </p>
          *
-         * @param model        the model
-         * @param emptyMessage the empty message
+         * @param model the AbstractTableModel providing data management and table functionality
+         * @param emptyMessage the Italian message text for empty state display and customer guidance
          */
         public JTableWithEmptyMessage(AbstractTableModel model, String emptyMessage) {
 
@@ -352,6 +1182,64 @@ public class SearchFlightResultPanel extends JPanel {
 
         }
 
+        /**
+         * Renders custom empty state messaging with professional typography and centered alignment for optimal customer communication.
+         * <p>
+         * This overridden method from JTable provides sophisticated custom painting functionality
+         * that displays centered Italian messages when the table contains no flight results. The
+         * method includes standard table painting followed by conditional empty state message
+         * rendering with anti-aliasing, professional typography, and precise center alignment
+         * for optimal customer guidance during no-results scenarios throughout flight search workflows.
+         * </p>
+         * <p>
+         * The custom painting process includes:
+         * </p>
+         * <ul>
+         *   <li><strong>Standard Painting:</strong> Parent paintComponent invocation for normal table rendering</li>
+         *   <li><strong>Empty State Detection:</strong> Row count verification for message display activation</li>
+         *   <li><strong>Graphics Enhancement:</strong> Graphics2D casting and anti-aliasing activation for smooth text rendering</li>
+         *   <li><strong>Typography Configuration:</strong> Italic Segoe UI font setup with appropriate sizing and color</li>
+         *   <li><strong>Center Alignment:</strong> Precise message positioning calculations for optimal visual presentation</li>
+         *   <li><strong>Message Rendering:</strong> Professional text drawing with proper coordinate calculation</li>
+         * </ul>
+         * <p>
+         * Standard painting includes calling the parent paintComponent method to ensure proper
+         * table rendering for normal scenarios while preparing the graphics context for additional
+         * custom painting operations during empty state scenarios.
+         * </p>
+         * <p>
+         * Empty state detection verifies that the table row count is zero before proceeding
+         * with empty state message rendering. The detection ensures that custom messaging
+         * is only displayed when appropriate while maintaining standard functionality for
+         * populated table scenarios throughout customer flight result presentation.
+         * </p>
+         * <p>
+         * Graphics enhancement includes Graphics2D casting for advanced rendering capabilities
+         * and anti-aliasing activation for smooth text presentation. The enhancement ensures
+         * professional text rendering quality and optimal readability throughout empty state
+         * message display operations within the airport management system interface.
+         * </p>
+         * <p>
+         * Typography configuration establishes italic Segoe UI font (16pt) with gray color
+         * for subtle yet clear message presentation. The typography maintains consistency
+         * with airport management system design standards while providing appropriate
+         * visual weight for customer guidance messaging.
+         * </p>
+         * <p>
+         * Center alignment includes sophisticated coordinate calculations using FontMetrics
+         * to determine precise message positioning for optimal visual presentation. The
+         * calculations ensure that empty state messages are properly centered both horizontally
+         * and vertically within the available table space.
+         * </p>
+         * <p>
+         * Message rendering utilizes precise coordinate calculation with string width and height
+         * determination for optimal positioning. The rendering includes proper baseline adjustment
+         * and ensures clear message presentation throughout empty result scenarios and customer
+         * guidance operations within the airport management system interface.
+         * </p>
+         *
+         * @param g the Graphics context for painting operations and custom message rendering
+         */
         @Override
         protected void paintComponent(Graphics g) {
 
@@ -377,6 +1265,5 @@ public class SearchFlightResultPanel extends JPanel {
             }
         }
     }
-
 
 }
