@@ -98,7 +98,7 @@ public class HomePageCustomer extends DisposableObject {
         setArrivingTable(arrivingPanel, controller);
 
         constraints.setConstraints(0, 4, 2, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_START, 1, 1);
+                0, 0, GridBagConstraints.PAGE_START, 1, 1, new Insets(0, 32, 0, 32));
 
         arrivingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
         mainFrame.add(arrivingPanel, constraints.getGridBagConstraints());
@@ -136,7 +136,7 @@ public class HomePageCustomer extends DisposableObject {
         setDepartingTable(departingPanel, controller);
 
         constraints.setConstraints(0, 5, 2, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_START, 1, 1);
+                0, 0, GridBagConstraints.PAGE_START, 1, 1, new Insets(8, 32, 16, 32));
 
         departingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
         mainFrame.add(departingPanel, constraints.getGridBagConstraints());
