@@ -16,49 +16,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The SearchFlightResultPanel class displays search results for flights in a tabular format.
- * This panel presents flight information including company name, route, date, departure and arrival times,
- * delay information, flight status, seat availability, and booking options. It uses a custom table model
- * to manage the data and provides interactive booking buttons for available flights.
- * The panel also handles the case of empty search results by displaying an appropriate message.
+ * The type Search flight result panel.
  */
 public class SearchFlightResultPanel extends JPanel {
 
-    /**
-     * The table component that displays the flight search results.
-     * This may be a standard JTable or a custom JTableWithEmptyMessage depending on whether
-     * there are search results to display.
-     */
     private final JTable resultsTable;
-
-    /**
-     * The data model for the results table.
-     * This model manages the flight data and defines how it should be displayed in the table.
-     */
     private final FlightTableModel tableModel;
 
     /**
-     * Instantiates a new Search flight result panel with the specified flight data.
-     * This constructor creates and configures the table to display flight search results.
-     * It sets up the table model with the provided flight data, configures the table appearance,
-     * and adds a mouse listener to handle booking actions when a user clicks on a booking button.
-     * If no search results are found, it displays an appropriate message.
+     * Instantiates a new Search flight result panel.
      *
-     * @param callingObjects the list of disposable objects in the application hierarchy,
-     *                       used for navigation when booking a flight
-     * @param controller     the main controller that manages application state and business logic
-     * @param ids            the list of flight IDs for the search results
-     * @param companyNames   the list of airline company names for each flight
-     * @param dates          the list of flight dates
-     * @param departureTimes the list of departure times for each flight
-     * @param arrivalTimes   the list of arrival times for each flight
-     * @param delays         the list of delay durations in minutes for each flight
-     * @param status         the list of flight statuses (e.g., PROGRAMMED, CANCELLED)
-     * @param maxSeats       the list of maximum seat capacities for each flight
-     * @param freeSeats      the list of available seats for each flight
-     * @param cities         the list of destination/origin cities for each flight
-     * @param ifSearched     boolean indicating whether a search has been performed,
-     *                       used to determine whether to show the table header
+     * @param callingObjects the calling objects
+     * @param controller     the controller
+     * @param ids            the ids
+     * @param companyNames   the company names
+     * @param dates          the dates
+     * @param departureTimes the departure times
+     * @param arrivalTimes   the arrival times
+     * @param delays         the delays
+     * @param status         the status
+     * @param maxSeats       the max seats
+     * @param freeSeats      the free seats
+     * @param cities         the cities
+     * @param ifSearched     the if searched
      */
     public SearchFlightResultPanel(List<DisposableObject> callingObjects, Controller controller, List<String> ids, List<String> companyNames, List<Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
                                    List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, boolean ifSearched) {
@@ -124,13 +104,6 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
-    /**
-     * Configures the visual appearance of the results table.
-     * This method sets fonts, colors, row heights, and other visual properties of the table
-     * to create a consistent and user-friendly display. It also configures cell renderers
-     * to center-align text and alternate row colors for better readability, and sets up
-     * a special renderer for the booking button column.
-     */
     private void setTableApperance() {
 
         resultsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -167,93 +140,36 @@ public class SearchFlightResultPanel extends JPanel {
 
     }
 
-    /**
-     * The FlightTableModel class provides the data model for the flight results table.
-     * This class extends AbstractTableModel and manages the flight data to be displayed in the table.
-     * It defines the structure of the table (columns and their names), provides access to the data,
-     * and formats the data appropriately for display (e.g., converting time values to formatted strings,
-     * translating flight status codes to user-friendly text).
-     */
     private static class FlightTableModel extends AbstractTableModel {
 
-        /**
-         * Reference to the main controller for accessing application state and business logic.
-         */
         private final Controller controller;
-
-        /**
-         * List of flight IDs for the search results.
-         */
         private final ArrayList<String> ids;
-
-        /**
-         * List of airline company names for each flight.
-         */
         private final ArrayList<String> companyNames;
-
-        /**
-         * List of flight dates.
-         */
         private final ArrayList<Date> dates;
-
-        /**
-         * List of departure times for each flight.
-         */
         private final ArrayList<Time> departureTimes;
-
-        /**
-         * List of arrival times for each flight.
-         */
         private final ArrayList<Time> arrivalTimes;
-
-        /**
-         * List of delay durations in minutes for each flight.
-         */
         private final ArrayList<Integer> delays;
-
-        /**
-         * List of flight statuses (e.g., PROGRAMMED, CANCELLED).
-         */
         private final ArrayList<String> status;
-
-        /**
-         * List of maximum seat capacities for each flight.
-         */
         private final ArrayList<Integer> maxSeats;
-
-        /**
-         * List of available seats for each flight.
-         */
         private final ArrayList<Integer> freeSeats;
-
-        /**
-         * List of destination/origin cities for each flight.
-         */
         private final ArrayList<String> cities;
 
-        /**
-         * Array of column names for the table header.
-         */
         private final String[] colNames = {"Compagnia", "Tratta", "Data", "Partenza", "Ritardo", "Arrivo", "Stato", "Posti", "Prenotazione"};
 
         /**
-         * Instantiates a new Flight table model with the specified flight data.
-         * This constructor initializes the model with lists of flight information that will be
-         * displayed in the table. It stores references to all the provided data lists and
-         * the controller for later use in rendering the table cells.
+         * Instantiates a new Flight table model.
          *
-         * @param controller        the main controller that provides access to application state
-         *                          and business logic, particularly flight type information
-         * @param parIds            the list of flight IDs for the search results
-         * @param parCompanyNames   the list of airline company names for each flight
-         * @param parDates          the list of flight dates
-         * @param parDepartureTimes the list of departure times for each flight
-         * @param parArrivalTimes   the list of arrival times for each flight
-         * @param parDelays         the list of delay durations in minutes for each flight
-         * @param parStatus         the list of flight statuses (e.g., PROGRAMMED, CANCELLED)
-         * @param parMaxSeats       the list of maximum seat capacities for each flight
-         * @param parFreeSeats      the list of available seats for each flight
-         * @param parCities         the list of destination/origin cities for each flight
+         * @param controller        the controller
+         * @param parIds            the par ids
+         * @param parCompanyNames   the par company names
+         * @param parDates          the par dates
+         * @param parDepartureTimes the par departure times
+         * @param parArrivalTimes   the par arrival times
+         * @param parDelays         the par delays
+         * @param parStatus         the par status
+         * @param parMaxSeats       the par max seats
+         * @param parFreeSeats      the par free seats
+         * @param parCities         the par cities
          */
         public FlightTableModel( Controller controller, List<String> parIds, List<String> parCompanyNames, List<Date> parDates, List<Time> parDepartureTimes, List<Time> parArrivalTimes,
                                 List<Integer> parDelays, List<String> parStatus, List<Integer> parMaxSeats, List<Integer> parFreeSeats, List<String> parCities) {
@@ -273,25 +189,18 @@ public class SearchFlightResultPanel extends JPanel {
         }
 
         /**
-         * Gets the list of available seats for each flight.
-         * This method provides access to the freeSeats list, which contains the number
-         * of seats still available for booking on each flight. This information is used
-         * by the ButtonRenderer to determine whether booking buttons should be enabled.
+         * Get free seats list.
          *
-         * @return the list of available seats for each flight
+         * @return the list
          */
         public List<Integer> getFreeSeats(){
             return freeSeats;
         }
 
         /**
-         * Gets the list of flight statuses.
-         * This method provides access to the status list, which contains the current status
-         * of each flight (e.g., PROGRAMMED, CANCELLED, DELAYED). This information is used
-         * by the ButtonRenderer to determine whether booking buttons should be enabled,
-         * as only flights with certain statuses can be booked.
+         * Get status list.
          *
-         * @return the list of status codes for each flight
+         * @return the list
          */
         public List<String> getStatus(){
             return status;

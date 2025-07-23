@@ -1,10 +1,7 @@
 package model;
 
 /**
- * The User class represents a base user in the airport management system.
- * This class serves as the foundation for all user types in the system, providing
- * common attributes and behaviors such as username, email, and password management.
- * It is extended by specific user types like Admin and Customer to provide specialized functionality.
+ * The type User.
  */
 public class User {
 
@@ -13,11 +10,10 @@ public class User {
     private final String hashedPassword;
 
     /**
-     * Instantiates a new User with username and password only.
-     * This constructor creates a user without an email address, which may be set later.
+     * Instantiates a new User.
      *
-     * @param parUsername       the user's username for login identification
-     * @param parHashedPassword the user's password in hashed format for security
+     * @param parUsername       the par username
+     * @param parHashedPassword the par hashed password
      */
     public User(String parUsername, String parHashedPassword){
         this.username = parUsername;
@@ -25,12 +21,11 @@ public class User {
     }
 
     /**
-     * Instantiates a new User with complete information.
-     * This constructor creates a user with username, email, and password.
+     * Instantiates a new User.
      *
-     * @param parUsername       the user's username for login identification
-     * @param parEmail          the user's email address for contact and notifications
-     * @param parHashedPassword the user's password in hashed format for security
+     * @param parUsername       the par username
+     * @param parEmail          the par email
+     * @param parHashedPassword the par hashed password
      */
     public User(String parUsername, String parEmail, String parHashedPassword){
         this.username = parUsername;
@@ -39,51 +34,47 @@ public class User {
     }
 
     /**
-     * Gets the user's username.
-     * The username is used for login identification and display purposes.
+     * Get username string.
      *
-     * @return the user's username as a String
+     * @return the string
      */
     public String getUsername(){
         return this.username;
     }
 
     /**
-     * Sets or updates the user's username.
-     * This method allows changing the username while maintaining the same user account.
+     * Set username.
      *
-     * @param parUsername the new username to set for this user
+     * @param parUsername the par username
      */
     public void setUsername(String parUsername){
         this.username = parUsername;
     }
 
     /**
-     * Gets the user's hashed password.
-     * The password is stored in a hashed format for security purposes.
-     * Note: This method should be used carefully to avoid exposing password information.
+     * Get password string.
      *
-     * @return the user's hashed password as a String
+     * @return the string
      */
     public String getPassword(){
+
         return this.hashedPassword;
+
     }
 
     /**
-     * Gets the user's email address.
-     * The email is used for contact, notifications, and account recovery.
+     * Gets email.
      *
-     * @return the user's email address as a String, or null if not set
+     * @return the email
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Sets or updates the user's email address.
-     * This method allows changing the email while maintaining the same user account.
+     * Sets email.
      *
-     * @param email the new email address to set for this user
+     * @param email the email
      */
     public void setEmail(String email) {
         this.email = email;
