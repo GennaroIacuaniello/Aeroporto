@@ -211,6 +211,7 @@ public class LostLuggageDialog extends JDialog {
 
             return this;
         }
+    }
 
     private static class JTableWithEmptyMessage extends JTable {
 
