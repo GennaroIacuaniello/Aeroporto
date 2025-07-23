@@ -127,6 +127,8 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
                 searchBookingPanel.filteredPassengerSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
 
             }
+            searchBookingPanel.repaint();
+            searchBookingPanel.revalidate();
         }
 
     }

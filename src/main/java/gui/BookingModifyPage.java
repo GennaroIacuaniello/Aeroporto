@@ -118,7 +118,7 @@ public class BookingModifyPage extends BookingPageCustomer {
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_END);
         passengerPage.add(passengerPanel, constraints.getGridBagConstraints());
 
-        RemovePassengerButton removePassengerButton = new RemovePassengerButton(this, controller, passengerPanels, removePassengerButtons, removePassengerButtons.size());
+        RemovePassengerButton removePassengerButton = new RemovePassengerButton(this, passengerPanels, removePassengerButtons, removePassengerButtons.size());
 
         constraints.setConstraints(1, (passengerPanels.size() % 3), 1, 1,
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.LINE_START);

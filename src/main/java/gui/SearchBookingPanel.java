@@ -7,6 +7,8 @@ import controller.Controller;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,42 +19,28 @@ public class SearchBookingPanel extends JPanel {
 
     private JScrollPane resultsScrollPane;
 
-    private Constraints constraints;
+    private final Constraints constraints;
 
-
-    private JPanel flightFilterPanel;
-    private JPanel passengerFilterPanel;
 
     //Contiene il filtro attuale, può essere: "NONE", "FLIGHT", "PASSENGER"
     private String activeFilter = "NONE";
 
 
-    private JLabel fromLabel;
     private JTextField fromField;
-    private JLabel toLabel;
     private JTextField toField;
-    private JLabel dateLabel;
     private DatePicker dateFrom;
-    private JLabel dateSep;
     private DatePicker dateTo;
-    private JLabel timeLabel;
     private TimePicker timeFrom;
-    private JLabel timeSep;
     private TimePicker timeTo;
 
 
-    private JLabel firstNameLabel;
     private JTextField firstNameField;
-    private JLabel lastNameLabel;
+
     private JTextField lastNameField;
-    private JLabel SSNLabel;
-    private JTextField SSNField;
-    private JLabel ticketNumberLabel;
+
+    private JTextField passengerSSNField;
     private JTextField ticketNumberField;
 
-
-    private JButton flightButton;
-    private JButton passengerButton;
 
     private JButton searchButton;
 
@@ -62,7 +50,7 @@ public class SearchBookingPanel extends JPanel {
     ArrayList<String> bookingStatus = new ArrayList<>();
     ArrayList<String> flightIds = new ArrayList<>();
 
-    public SearchBookingPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
+    public SearchBookingPanel(List<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         super();
 
@@ -79,11 +67,11 @@ public class SearchBookingPanel extends JPanel {
         setComponents(callingObjects, controller, ifOpenedFromMenu);
     }
 
-    private void setComponents(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
+    private void setComponents(List<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         JPanel parametersPanel = createMainFilterPanel();
 
-        JButton searchButton = createSearchButton(callingObjects, controller);
+        searchButton = createSearchButton(callingObjects, controller);
 
         resultsScrollPane = new JScrollPane();
 
@@ -108,10 +96,14 @@ public class SearchBookingPanel extends JPanel {
             this.flightIds = (ArrayList<String>) controller.getFlightController().getSearchBookingResultIds();
         }
 
-        updateResultsPanel(callingObjects, controller, false);
+        updateResultsPanel(callingObjects, controller);
     }
 
     private JPanel createMainFilterPanel() {
+        JButton passengerButton;
+        JButton flightButton;
+        JPanel passengerFilterPanel;
+        JPanel flightFilterPanel;
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setOpaque(false);
@@ -168,6 +160,13 @@ public class SearchBookingPanel extends JPanel {
     }
 
     private JPanel createFlightFilterPanel() {
+
+        JLabel timeSep;
+        JLabel timeLabel;
+        JLabel dateSep;
+        JLabel dateLabel;
+        JLabel toLabel;
+        JLabel fromLabel;
 
         JPanel container = new JPanel(new GridLayout(1, 2, 40, 0));
         container.setOpaque(false);
@@ -271,6 +270,10 @@ public class SearchBookingPanel extends JPanel {
 
     private JPanel createPassengerFilterPanel() {
 
+        JLabel passengerSSNLabel;
+        JLabel lastNameLabel;
+        JLabel firstNameLabel;
+
         JPanel container = new JPanel(new GridLayout(1, 2, 40, 0));
         container.setOpaque(false);
 
@@ -287,13 +290,13 @@ public class SearchBookingPanel extends JPanel {
         lastNameField = new JTextField(15);
         lastNameField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
-        SSNLabel = new JLabel("Codice Fiscale:");
-        setLabelApperance(SSNLabel);
+        passengerSSNLabel = new JLabel("Codice Fiscale:");
+        setLabelApperance(passengerSSNLabel);
 
-        SSNField = new JTextField(15);
-        SSNField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        passengerSSNField = new JTextField(15);
+        passengerSSNField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
-        ticketNumberLabel = new JLabel("N. Biglietto:");
+        JLabel ticketNumberLabel = new JLabel("N. Biglietto:");
         setLabelApperance(ticketNumberLabel);
 
         ticketNumberField = new JTextField(15);
@@ -313,11 +316,11 @@ public class SearchBookingPanel extends JPanel {
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.NONE,
                 0, 0, GridBagConstraints.LINE_END, 0.0f, 0.0f, new Insets(0, 0, 30, 10));
-        leftPanel.add(SSNLabel, constraints.getGridBagConstraints());
+        leftPanel.add(passengerSSNLabel, constraints.getGridBagConstraints());
 
         constraints.setConstraints(1, 1, 1, 1, GridBagConstraints.HORIZONTAL,
                 0, 10, GridBagConstraints.LINE_START, 1.0f, 0.0f, new Insets(0, 0, 30, 0));
-        leftPanel.add(SSNField, constraints.getGridBagConstraints());
+        leftPanel.add(passengerSSNField, constraints.getGridBagConstraints());
 
 
         JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -345,7 +348,7 @@ public class SearchBookingPanel extends JPanel {
         return container;
     }
 
-    private JButton createSearchButton(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private JButton createSearchButton(List<DisposableObject> callingObjects, Controller controller) {
 
         searchButton = new JButton("Cerca");
         searchButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -358,23 +361,27 @@ public class SearchBookingPanel extends JPanel {
 
         searchButton.setPreferredSize(new Dimension(200, 50));
 
-        searchButton.addActionListener(e -> {
-            if (activeFilter.equals("NONE")) {
-                new FloatingMessage("Selezionare un tipo di filtro prima di cercare.", searchButton, FloatingMessage.ERROR_MESSAGE);
-                return;
-            }
-
-            if (activeFilter.equals("FLIGHT")) {
-
-                filteredFlightSearch(callingObjects, controller, searchButton);
-
-            } else if (activeFilter.equals("PASSENGER")) {
-
-                filteredPassengerSearch(callingObjects, controller, searchButton);
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (activeFilter) {
+                    case "NONE":
+                        new FloatingMessage("Selezionare un tipo di filtro prima di cercare.", searchButton, FloatingMessage.ERROR_MESSAGE);
+                        break;
+                    case "FLIGHT":
+                        filteredFlightSearch(callingObjects, controller, searchButton);
+                        break;
+                    case "PASSENGER":
+                        filteredPassengerSearch(callingObjects, controller, searchButton);
+                        break;
+                    default:
+                        break;
+                }
 
             }
         });
 
+        searchPerformed = true;
         controller.setErrorButton(searchButton);
 
         return searchButton;
@@ -415,20 +422,20 @@ public class SearchBookingPanel extends JPanel {
 
                 controller.searchBooksLoogedCustomerFilteredFlights(origin, destination, dateBefore, dateAfter, timeBefore, timeAfter, bookingDates, bookingStatus, flightIds, searchButton);
 
-                updateResultsPanel(callingObjects, controller, true);
+                updateResultsPanel(callingObjects, controller);
 
             }
             return;
         }
 
-        updateResultsPanel(callingObjects, controller, true);
+        updateResultsPanel(callingObjects, controller);
     }
 
     public void filteredPassengerSearch(List<DisposableObject> callingObjects, Controller controller, JButton searchButton) {
 
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
-        String passengerSSN = SSNField.getText();
+        String passengerSSN = passengerSSNField.getText();
         String ticketNumber = ticketNumberField.getText();
 
         if (controller != null) {
@@ -439,12 +446,12 @@ public class SearchBookingPanel extends JPanel {
 
             controller.searchBooksLoogedCustomerFilteredPassengers(firstName, lastName, passengerSSN, ticketNumber, bookingDates, bookingStatus, flightIds, searchButton);
 
-            updateResultsPanel(callingObjects, controller, true);
+            updateResultsPanel(callingObjects, controller);
         }
     }
 
 
-    private void updateResultsPanel(List<DisposableObject> callingObjects, Controller controller, boolean ifSearched) {
+    private void updateResultsPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         SearchBookingResultPanel resultsPanel = new SearchBookingResultPanel(callingObjects, controller,
                                                                              bookingDates, bookingStatus, flightIds);
@@ -453,8 +460,8 @@ public class SearchBookingPanel extends JPanel {
 
         resultsScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        resultsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        resultsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        resultsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        resultsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         resultsScrollPane.getVerticalScrollBar().setUnitIncrement(30);
 
@@ -481,23 +488,12 @@ public class SearchBookingPanel extends JPanel {
         return searchPerformed;
     }
 
-    public void setSearchPerformed(boolean searchPerformed) {
-        this.searchPerformed = searchPerformed;
-    }
-
     public JButton getSearchButton() {
         return searchButton;
-    }
-
-    public void setSearchButton(JButton searchButton) {
-        this.searchButton = searchButton;
     }
 
     public String getActiveFilter() {
         return activeFilter;
     }
 
-    public void setActiveFilter(String activeFilter) {
-        this.activeFilter = activeFilter;
-    }
 }

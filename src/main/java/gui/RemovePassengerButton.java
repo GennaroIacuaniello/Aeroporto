@@ -4,16 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.ArrayList;
-
-import controller.Controller;
 
 public class RemovePassengerButton extends JButton {
 
     int index;
     Constraints constraints;
 
-    public RemovePassengerButton(BookingPage book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
+    public RemovePassengerButton(BookingPage book, List<PassengerPanel> passengerPanels,
                                  ArrayList<RemovePassengerButton> removePassengerButtons, int idx) {
 
         super("Remove Passenger");
@@ -103,7 +102,4 @@ public class RemovePassengerButton extends JButton {
 
         this.setEnabled(true);
     }
-
-    public RemovePassengerButton(Book book, Controller controller, ArrayList<PassengerPanel> passengerPanels,
-                                 ArrayList<RemovePassengerButton> removePassengerButtons, int idx, JPanel passengersPage, JButton nextPageButton) {}
 }

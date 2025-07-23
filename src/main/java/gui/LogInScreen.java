@@ -58,10 +58,10 @@ public class LogInScreen extends DisposableObject {
 
 
         //todo: ELIMINA QUESTE DUE RIGHE
-        //usernameTextField.setText("customer_user1");
-        //passwordField.setText("Customer_User1");
-        usernameTextField.setText("admin_user1");
-        passwordField.setText("Admin_User1");
+        usernameTextField.setText("customer_user1");
+        passwordField.setText("Customer_User1");
+        //usernameTextField.setText("admin_user1");
+        //passwordField.setText("Admin_User1");
 
         //Logging in logic
         logInButton.addActionListener(new ActionListener() {
