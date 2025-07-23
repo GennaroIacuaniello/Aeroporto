@@ -12,24 +12,25 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     private JFrame mainFrame;
 
     private SearchBookingPanel searchBookingPanel;
-    Constraints constraints;
+    private final Constraints constraints;
 
-    public MyBookingsCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension, Point point, int fullScreen, boolean ifOpenedFromMenu) {
+    public MyBookingsCustomerMainFrame(List<DisposableObject> callingObjects, Controller controller, Dimension dimension,
+                                       Point point, int fullScreen, boolean ifOpenedFromMenu) {
 
         super();
         constraints = new Constraints();
-        this.setMainFrame((ArrayList<DisposableObject>)callingObjects, dimension, point, fullScreen);
+        this.setMainFrame(callingObjects, dimension, point, fullScreen);
 
-        this.addTitlePanel(controller);
-        this.addNavigatorBarPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addMenuPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addUserPanel((ArrayList<DisposableObject>)callingObjects, controller);
-        this.addSearchPanel((ArrayList<DisposableObject>)callingObjects, controller, ifOpenedFromMenu);
+        this.addTitlePanel();
+        this.addNavigatorBarPanel(callingObjects, controller);
+        this.addMenuPanel(callingObjects, controller);
+        this.addUserPanel(callingObjects, controller);
+        this.addSearchPanel(callingObjects, controller, ifOpenedFromMenu);
 
         mainFrame.setVisible(true);
     }
 
-    private void setMainFrame(ArrayList<DisposableObject> callingObjects, Dimension dimension, Point point, int fullScreen) {
+    private void setMainFrame(List<DisposableObject> callingObjects, Dimension dimension, Point point, int fullScreen) {
 
         mainFrame = new JFrame("Le mie prenotazioni");
         mainFrame.setSize(dimension);
@@ -45,7 +46,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
 
     }
 
-    private void addTitlePanel(Controller controller) {
+    private void addTitlePanel() {
         TitlePanel titlePanel;
 
         titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
@@ -59,7 +60,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         titlePanel.setVisible(true);
     }
 
-    private void addNavigatorBarPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addNavigatorBarPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         NavigatorBarPanel navigatorBarPanel = new NavigatorBarPanel(callingObjects, controller);
 
@@ -72,7 +73,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         navigatorBarPanel.setVisible(true);
     }
 
-    private void addMenuPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addMenuPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         MenuPanelCustomer menu = new MenuPanelCustomer(callingObjects, controller);
 
@@ -85,7 +86,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         menu.setVisible(true);
     }
 
-    private void addUserPanel(ArrayList<DisposableObject> callingObjects, Controller controller) {
+    private void addUserPanel(List<DisposableObject> callingObjects, Controller controller) {
 
         UserPanel userPanel = new UserPanel(callingObjects, controller);
 
@@ -98,7 +99,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         userPanel.setVisible(true);
     }
 
-    private void addSearchPanel(ArrayList<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
+    private void addSearchPanel(List<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         searchBookingPanel = new SearchBookingPanel(callingObjects, controller, ifOpenedFromMenu);
 

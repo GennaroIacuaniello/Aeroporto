@@ -31,7 +31,7 @@ public class HomePageCustomer extends DisposableObject {
 
 
         //Setting surrounding panels
-        this.addTitlePanel(controller);
+        this.addTitlePanel();
         this.addNavigatorBarPanel(callingObjects, controller);
         this.addMenuPanel(callingObjects, controller);
         this.addUserPanel(callingObjects, controller);
@@ -52,9 +52,9 @@ public class HomePageCustomer extends DisposableObject {
         mainFrame.getContentPane().setBackground(new Color(240, 242, 245));
     }
 
-    private void addTitlePanel(Controller controller) {
+    private void addTitlePanel() {
 
-        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
         constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
                 0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(5, 10, 0, 10));
         mainFrame.add(titlePanel, constraints.getGridBagConstraints());
