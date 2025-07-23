@@ -54,9 +54,9 @@ public class HomePageCustomer extends DisposableObject {
 
     private void addTitlePanel(Controller controller) {
 
-        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI");
-        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.BOTH,
-                0, 125, GridBagConstraints.PAGE_START);
+        TitlePanel titlePanel = new TitlePanel("AEROPORTO DI NAPOLI", controller);
+        constraints.setConstraints(0, 0, 2, 1, GridBagConstraints.HORIZONTAL,
+                0, 0, GridBagConstraints.PAGE_START, 1.0f, 0.0f, new Insets(5, 10, 0, 10));
         mainFrame.add(titlePanel, constraints.getGridBagConstraints());
         titlePanel.setVisible(true);
     }
@@ -137,7 +137,7 @@ public class HomePageCustomer extends DisposableObject {
         setDepartingTable(departingPanel, controller);
 
         constraints.setConstraints(0, 5, 2, 1, GridBagConstraints.BOTH,
-                0, 0, GridBagConstraints.PAGE_START, 1, 1, new Insets(8, 32, 16, 32));
+                0, 0, GridBagConstraints.PAGE_START, 1, 1, new Insets(8, 32, 32, 32));
 
         departingPanel.setBorder(BorderFactory.createEmptyBorder(16, 32, 0, 32));
         mainFrame.add(departingPanel, constraints.getGridBagConstraints());
