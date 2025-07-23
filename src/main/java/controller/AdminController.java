@@ -22,3 +22,10 @@ public class AdminController {
 
     public Integer getLoggedAdminId(){ return this.loggedAdminId; }
 }
+
+
+
+
+
+
+
