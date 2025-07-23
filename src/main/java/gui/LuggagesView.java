@@ -35,7 +35,7 @@ public class LuggagesView extends JFrame {
         this.setSize(300, 400);
 
         setLuggagesPanel();
-        setButtons(controller);
+        setButtons();
         setScrollPane();
     }
 
@@ -48,7 +48,7 @@ public class LuggagesView extends JFrame {
         lostLuggageButtons = new ArrayList<>();
     }
 
-    private void setButtons(Controller controller) {
+    private void setButtons() {
         addLuggageButton = new JButton("+");
         confirmButton = new JButton("Confirm");
 
@@ -201,14 +201,14 @@ public class LuggagesView extends JFrame {
         }
     }
 
-    public void setLocation(JButton callingButtonutton) {
+    public void setLocation(JButton callingButton) {
         //coordinate punto in alto a sx del bottone
-        double x = callingButtonutton.getLocationOnScreen().getX();
-        double y = callingButtonutton.getLocationOnScreen().getY();
+        double x = callingButton.getLocationOnScreen().getX();
+        double y = callingButton.getLocationOnScreen().getY();
 
         //coordinate centro
-        x += callingButtonutton.getSize().getWidth() / 2;
-        y += callingButtonutton.getSize().getHeight() / 2;
+        x += callingButton.getSize().getWidth() / 2;
+        y += callingButton.getSize().getHeight() / 2;
 
         //coordinate punto in alto a sx frame
         x -= (double) this.getWidth() / 2;
@@ -225,11 +225,7 @@ public class LuggagesView extends JFrame {
         return confirmButton;
     }
 
-    public ArrayList<RemoveLuggageButton> getRemoveLuggageButtons () {
-        return removeLuggageButtons;
-    }
-
-    public void setLuggagesIds (ArrayList<String> luggagesIds) {
+    public void setLuggagesIds (List<String> luggagesIds) {
 
         for (int i = 0; i < luggagesIds.size(); i++) {
 
