@@ -142,20 +142,7 @@ public class Controller {
 
     /**
      * Constructs a new Controller instance and initializes all specialized controllers.
-     * <p>
-     * This constructor creates instances of all specialized controllers that manage
-     * different aspects of the airport management system. Each controller is initialized
-     * with default state and is ready to handle operations within its domain.
-     * </p>
-     * <p>
-     * The initialization follows a dependency-free approach where controllers are
-     * created independently and coordinate through this central controller rather
-     * than having direct dependencies on each other.
-     * </p>
-     * <p>
-     * All controllers are created as final instances to ensure immutability of the
-     * controller architecture and prevent accidental reassignment during system
-     * operation.
+     *
      * </p>
      */
     public Controller() {
@@ -172,12 +159,6 @@ public class Controller {
 
     /**
      * Retrieves the booking controller instance for booking-related operations.
-     * <p>
-     * This method provides access to the {@link BookingController} which manages
-     * all booking-related operations including creation, modification, deletion,
-     * and search functionality. The controller maintains booking session state
-     * and coordinates with passenger and luggage management.
-     * </p>
      *
      * @return the {@link BookingController} instance for booking operations
      */
@@ -187,11 +168,6 @@ public class Controller {
 
     /**
      * Retrieves the customer controller instance for customer-related operations.
-     * <p>
-     * This method provides access to the {@link CustomerController} which manages
-     * customer authentication, session state, profile information, and customer-specific
-     * operations throughout the system.
-     * </p>
      *
      * @return the {@link CustomerController} instance for customer operations
      */
@@ -201,11 +177,6 @@ public class Controller {
 
     /**
      * Retrieves the flight controller instance for flight-related operations.
-     * <p>
-     * This method provides access to the {@link FlightController} which manages
-     * all flight-related operations including flight information, scheduling,
-     * passenger management, check-in procedures, and flight status updates.
-     * </p>
      *
      * @return the {@link FlightController} instance for flight operations
      */
@@ -215,11 +186,6 @@ public class Controller {
 
     /**
      * Retrieves the gate controller instance for gate management operations.
-     * <p>
-     * This method provides access to the {@link GateController} which manages
-     * gate assignments, availability checking, and integration with flight
-     * check-in procedures and operational workflows.
-     * </p>
      *
      * @return the {@link GateController} instance for gate operations
      */
@@ -229,11 +195,7 @@ public class Controller {
 
     /**
      * Retrieves the luggage controller instance for luggage management operations.
-     * <p>
-     * This method provides access to the {@link LuggageController} which manages
-     * luggage search results, status tracking, lost luggage reporting, and
-     * administrative luggage management functions.
-     * </p>
+     *
      * @return the {@link LuggageController} instance for luggage operations
      */
     public LuggageController getLuggageController() {
@@ -242,11 +204,6 @@ public class Controller {
 
     /**
      * Retrieves the user controller instance for user management operations.
-     * <p>
-     * This method provides access to the {@link UserController} which manages
-     * user authentication, session state, input validation, account registration,
-     * and account deletion for both administrators and customers.
-     * </p>
      *
      * @return the {@link UserController} instance for user operations
      */
@@ -468,12 +425,6 @@ public class Controller {
 
     /**
      * Translates flight status enumeration values to localized Italian strings.
-     * <p>
-     * This static utility method provides consistent translation of {@link FlightStatus}
-     * enumeration values to user-friendly Italian text for display in the user interface.
-     * It ensures that flight status information is presented in a language appropriate
-     * for the target user base.
-     * </p>
      *
      * @param status the {@link FlightStatus} enumeration value to translate
      * @return the Italian translation of the flight status, or null if the status is not recognized
@@ -631,8 +582,7 @@ public class Controller {
      * <p>
      * This method establishes a UI button reference that can be used as a fallback
      * for displaying error messages when operations don't have a specific UI context
-     * but still need to provide user feedback. This is particularly useful for
-     * background operations or system-level errors.
+     * but still need to provide user feedback.
      * </p>
      *
      * @param errorButton the {@link JButton} to use as a reference for error message display
@@ -644,22 +594,10 @@ public class Controller {
     /**
      * Retrieves all bookings for the currently logged-in customer with comprehensive flight information.
      * <p>
-     * This method performs a comprehensive search for all bookings associated with the
+     * This method performs a search for all bookings associated with the
      * currently logged-in customer, retrieving complete flight information, passenger
      * details, and organizing the data into synchronized collections for display and
      * processing purposes.
-     * </p>
-     * <p>
-     * Ticket processing includes retrieving all tickets associated with each booking
-     * and constructing complete {@link Ticket} objects with passenger associations.
-     * The method handles both single and multi-passenger bookings, ensuring that
-     * all ticket relationships are properly established.
-     * </p>
-     * <p>
-     * Data deduplication logic prevents duplicate entries in search results while
-     * maintaining proper relationships between bookings, tickets, passengers, and
-     * flights. This includes SSN-based passenger deduplication and flight ID-based
-     * flight deduplication.
      * </p>
      * <p>
      * The method populates search results across multiple specialized controllers
@@ -812,38 +750,6 @@ public class Controller {
      * {@link #getAllBooksLoogedCustomer(List, List, List, JButton)} but applies
      * additional filtering constraints through the {@link BookingDAO#searchBooksCustomerFilteredFlights}
      * method to limit results to flights matching the specified criteria.
-     * </p>
-     * <p>
-     * Database operations include complex filtering queries that join multiple tables
-     * to provide flight information, booking details, and passenger data while
-     * maintaining performance through optimized query structures and appropriate
-     * database indexing strategies.
-     * </p>
-     * <p>
-     * The method creates appropriate flight objects ({@link Departing} or {@link Arriving})
-     * based on flight type indicators, ensuring that flight-specific behavior and
-     * information presentation is handled correctly throughout the application.
-     * </p>
-     * <p>
-     * Ticket and passenger processing includes complete object construction with
-     * proper associations, deduplication logic to prevent duplicate entries, and
-     * organization into search result collections across multiple specialized controllers.
-     * </p>
-     * <p>
-     * The search results are populated across multiple controllers to enable
-     * comprehensive data access from different application components, maintaining
-     * the same data structure and relationships as non-filtered searches.
-     * </p>
-     * <p>
-     * Error handling includes comprehensive exception catching with user-friendly
-     * error messages displayed through {@link FloatingMessage} components. Database
-     * connectivity issues and query failures are handled gracefully with appropriate
-     * user feedback.
-     * </p>
-     * <p>
-     * The method is typically called from search interfaces where customers can
-     * filter their booking history based on flight characteristics, enabling
-     * efficient retrieval of specific bookings from potentially large booking histories.
      * </p>
      *
      * @param origin the origin city name for filtering (null or empty for no filter)
@@ -999,39 +905,10 @@ public class Controller {
      * {@link BookingDAO#searchBooksCustomerFilteredPassengers} method to limit results
      * to bookings containing passengers matching the specified criteria.
      * </p>
-     * <p>
-     * Database operations include complex filtering queries that join multiple tables
-     * (bookings, passengers, tickets, flights) to provide comprehensive information while
-     * maintaining performance through optimized query structures and appropriate database
-     * indexing strategies.
-     * </p>
-     * <p>
-     * The method creates appropriate flight objects ({@link Departing} or {@link Arriving})
-     * based on flight type indicators, ensuring that flight-specific behavior and
-     * information presentation is handled correctly throughout the application.
-     * </p>
-     * <p>
-     * Ticket and passenger processing includes complete object construction with
-     * proper associations, deduplication logic to prevent duplicate entries, and
-     * organization into search result collections across multiple specialized controllers.
-     * </p>
-     * <p>
      * The search results are populated across multiple controllers ({@link BookingController},
      * {@link FlightController}, {@link TicketController}, {@link PassengerController}) to
      * enable comprehensive data access from different application components, maintaining
      * the same data structure and relationships as other search operations.
-     * </p>
-     * <p>
-     * Error handling includes comprehensive exception catching with user-friendly
-     * error messages displayed through {@link FloatingMessage} components. Database
-     * connectivity issues and query failures are handled gracefully with appropriate
-     * user feedback.
-     * </p>
-     * <p>
-     * The method is typically called from search interfaces where customers can
-     * filter their booking history based on passenger characteristics, enabling
-     * efficient retrieval of specific bookings from potentially large booking histories.
-     * This is particularly useful for customers with multiple bookings or group travelers.
      * </p>
      *
      * @param firstName the first name for filtering (null or empty for no filter)
@@ -1179,47 +1056,10 @@ public class Controller {
      *   <li><strong>Session Preparation:</strong> Prepares controller states for subsequent operations</li>
      * </ul>
      * <p>
-     * The operation involves several key processes:
-     * </p>
-     * <ul>
-     *   <li>Database query through {@link BookingDAO#searchBooksCustomerForAFlight} for flight-specific bookings</li>
-     *   <li>Flight information preparation with current flight context</li>
-     *   <li>Complete ticket information retrieval for each booking</li>
-     *   <li>Booking object construction with full passenger associations</li>
-     *   <li>Passenger data organization and deduplication</li>
-     *   <li>Search result population across multiple controllers</li>
-     * </ul>
-     * <p>
      * The method initializes search result collections across multiple specialized controllers
      * ({@link FlightController}, {@link BookingController}, {@link TicketController},
      * {@link PassengerController}) to ensure that subsequent booking operations have access
      * to complete and properly organized data structures.
-     * </p>
-     * <p>
-     * Flight context is established by adding the current flight to the flight controller's
-     * search results, providing the necessary context for booking operations that require
-     * flight information integration.
-     * </p>
-     * <p>
-     * Ticket processing includes retrieving all tickets associated with each booking and
-     * constructing complete {@link Ticket} objects with passenger associations. The method
-     * handles both single and multi-passenger bookings, ensuring that all ticket relationships
-     * are properly established.
-     * </p>
-     * <p>
-     * Data deduplication logic prevents duplicate passenger entries in search results while
-     * maintaining proper relationships between bookings, tickets, and passengers. This includes
-     * SSN-based passenger deduplication to ensure data consistency.
-     * </p>
-     * <p>
-     * Error handling includes comprehensive exception catching with user-friendly error
-     * messages displayed through {@link FloatingMessage} components using the error button
-     * reference. Database connectivity issues are handled gracefully with appropriate feedback.
-     * </p>
-     * <p>
-     * The method is typically called during flight selection workflows where the system needs
-     * to determine whether to present existing booking modification interfaces or new booking
-     * creation forms to the customer.
      * </p>
      *
      * @return true if the customer has existing bookings for the current flight, false if no bookings exist
@@ -1320,12 +1160,6 @@ public class Controller {
     /**
      * Clears all cached search result data from booking-related controllers.
      * <p>
-     * This utility method performs comprehensive cleanup of search result collections
-     * across multiple specialized controllers to ensure that stale data does not
-     * interfere with new search operations or booking workflows. It resets the
-     * search result state to a clean condition for subsequent operations.
-     * </p>
-     * <p>
      * Controllers affected by this cleanup include:
      * </p>
      * <ul>
@@ -1344,11 +1178,7 @@ public class Controller {
 
     /**
      * Clears cached flight search result data from the flight controller.
-     * <p>
-     * This utility method performs cleanup of flight search result collections
-     * to ensure that stale flight data does not interfere with new search
-     * operations or flight selection workflows. It resets the flight search
-     * state to a clean condition for subsequent operations.
+     *
      * </p>
      *
      */
@@ -1376,30 +1206,6 @@ public class Controller {
      *   <li><strong>Error Handling:</strong> Comprehensive error feedback for various failure scenarios</li>
      * </ul>
      * <p>
-     * Login identifier flexibility supports both email addresses and usernames:
-     * </p>
-     * <ul>
-     *   <li><strong>Email Login:</strong> Identified by presence of '@' character, validated against email format rules</li>
-     *   <li><strong>Username Login:</strong> Standard username format validation and database lookup</li>
-     * </ul>
-     * <p>
-     * Authentication follows a hierarchical approach:
-     * </p>
-     * <ol>
-     *   <li><strong>Administrator Check:</strong> First attempts authentication against administrator database</li>
-     *   <li><strong>Customer Fallback:</strong> If administrator authentication fails, attempts customer authentication</li>
-     *   <li><strong>Session Creation:</strong> Establishes appropriate user session based on user type</li>
-     * </ol>
-     * <p>
-     * Session establishment includes:
-     * </p>
-     * <ul>
-     *   <li>Setting logged user in {@link AdminController} or {@link CustomerController}</li>
-     *   <li>Setting unified user session in {@link UserController}</li>
-     *   <li>Storing user database ID for subsequent operations</li>
-     *   <li>Creating appropriate user objects ({@link Admin} or {@link Customer})</li>
-     * </ul>
-     * <p>
      * Input validation prevents unnecessary database queries for obviously invalid
      * credentials, improving performance and reducing database load. Validation
      * is performed using the methods from {@link UserController}.
@@ -1412,15 +1218,6 @@ public class Controller {
      *   <li><strong>Authentication Errors:</strong> Incorrect credentials</li>
      *   <li><strong>Database Errors:</strong> Connection or query execution problems</li>
      * </ul>
-     * <p>
-     * Security considerations include password hashing verification and protection
-     * against SQL injection through parameterized queries in the DAO layer.
-     * </p>
-     * <p>
-     * The method is typically called from login interfaces where users enter their
-     * credentials to access the system. Successful authentication enables access
-     * to user-specific functionality and booking operations.
-     * </p>
      *
      * @param loggingInfo the login identifier (email address or username)
      * @param hashedPassword the pre-hashed password for authentication
@@ -1485,12 +1282,6 @@ public class Controller {
 
     /**
      * Retrieves and populates booked seat information for the current flight and booking context.
-     * <p>
-     * This method queries the database to retrieve all seats that are currently booked
-     * for the active flight, excluding seats from the current booking session. This
-     * information is essential for seat selection interfaces to prevent conflicts and
-     * ensure that customers can only select available seats.
-     * </p>
      *
      * @param bookedSeats list to be populated with seat numbers that are currently booked for the flight
      */
@@ -1502,12 +1293,6 @@ public class Controller {
 
     /**
      * Determines whether the currently logged-in user is an administrator.
-     * <p>
-     * This method performs runtime type checking on the currently logged-in user
-     * to determine their role within the system. It provides a simple boolean
-     * interface for role-based access control and feature availability decisions
-     * throughout the application.
-     * </p>
      *
      * @return true if the currently logged-in user is an administrator, false if the user is a customer or no user is logged in
      */
@@ -1516,7 +1301,7 @@ public class Controller {
         return userController.getLoggedUser() instanceof Admin;
 
     }
-/**
+    /**
      * Retrieves comprehensive information about all lost luggage items in the system for recovery operations.
      * <p>
      * This method performs a complex database operation to fetch complete information about all luggage
@@ -1536,57 +1321,11 @@ public class Controller {
      *   <li>Search result population across multiple controllers for comprehensive data access</li>
      * </ul>
      * <p>
-     * The method handles flight type determination by creating appropriate {@link Departing}
-     * or {@link Arriving} flight objects based on database type indicators. This ensures
-     * that flight-specific behavior and information display is handled correctly for
-     * lost luggage recovery operations.
-     * </p>
-     * <p>
-     * Customer processing includes creating {@link Customer} objects for all luggage owners,
-     * enabling customer service representatives to contact affected passengers and coordinate
-     * luggage recovery efforts. Customer information is deduplicated to prevent redundant
-     * entries while maintaining proper associations.
-     * </p>
-     * <p>
-     * Booking and ticket processing includes complete object construction with proper
-     * associations, ensuring that lost luggage items can be traced back to their original
-     * bookings and associated with the correct passengers. This enables comprehensive
-     * luggage recovery workflows.
-     * </p>
-     * <p>
-     * Luggage object creation handles both typed luggage (with specific {@link LuggageType})
-     * and untyped luggage items, ensuring that all lost luggage is properly represented
-     * regardless of the completeness of the original luggage information.
-     * </p>
-     * <p>
-     * Data deduplication logic prevents duplicate entries across flights, customers, bookings,
-     * tickets, and passengers while maintaining proper relationships between all entities.
-     * This includes flight ID-based flight deduplication, customer ID-based customer
-     * deduplication, booking ID-based booking deduplication, ticket number-based ticket
-     * deduplication, and SSN-based passenger deduplication.
-     * </p>
-     * <p>
      * The method populates search results across multiple specialized controllers
      * ({@link FlightController}, {@link CustomerController}, {@link BookingController},
      * {@link TicketController}, {@link PassengerController}, {@link LuggageController})
      * to enable comprehensive data access from different application components for
      * lost luggage recovery operations.
-     * </p>
-     * <p>
-     * Error handling includes comprehensive exception catching with user-friendly error
-     * messages displayed through {@link FloatingMessage} components using the error button
-     * reference. Database connectivity issues are handled gracefully with appropriate
-     * user feedback and detailed logging for operational oversight.
-     * </p>
-     * <p>
-     * The method is typically called by administrative interfaces that need to display
-     * comprehensive lost luggage information for recovery operations, customer service
-     * inquiries, and operational reporting purposes.
-     * </p>
-     * <p>
-     * Integration with the broader luggage management system ensures that lost luggage
-     * information is always current and reflects the real-time state of luggage recovery
-     * operations throughout the airport system.
      * </p>
      *
      * @param flightIds list to be populated with flight identifiers associated with lost luggage
@@ -1756,20 +1495,6 @@ public class Controller {
 
     /**
      * Sets the booking result selected flight context for lost luggage recovery operations.
-     * <p>
-     * This method establishes flight context for lost luggage recovery by setting the
-     * flight associated with a specific lost luggage item as the current active flight.
-     * It also adds the associated booking to the flight's booking collection to provide
-     * complete context for luggage recovery operations.
-     * </p>
-     * <p>
-     * The operation involves:
-     * </p>
-     * <ul>
-     *   <li>Retrieving the flight associated with the specified lost luggage item</li>
-     *   <li>Setting the retrieved flight as the current active flight in {@link FlightController}</li>
-     *   <li>Adding the associated booking to the flight's booking collection</li>
-     * </ul>
      *
      * @param luggageIndex the zero-based index of the lost luggage item in the search results
      */
@@ -1802,52 +1527,9 @@ public class Controller {
      *   <li>Search result population across multiple controllers for comprehensive data access</li>
      * </ul>
      * <p>
-     * Flight context establishment includes setting the selected flight as the current active
-     * flight and retrieving gate assignment information if available. Gate information is
-     * used for operational planning and passenger information displays.
-     * </p>
-     * <p>
-     * Customer processing includes creating {@link Customer} objects for all passengers
-     * associated with the flight, enabling comprehensive passenger management and customer
-     * service operations. Customer information is deduplicated to prevent redundant entries
-     * while maintaining proper booking associations.
-     * </p>
-     * <p>
-     * Booking processing includes complete {@link Booking} object construction with proper
-     * customer and flight associations. Bookings are organized to support administrative
-     * operations including passenger manifests, check-in procedures, and operational reporting.
-     * </p>
-     * <p>
-     * Ticket processing includes creating {@link Ticket} objects with complete passenger
-     * information and proper booking associations. Both primary tickets (first ticket in
-     * each booking) and additional tickets are handled to ensure complete passenger
-     * representation.
-     * </p>
-     * <p>
-     * Luggage processing handles both typed luggage (with specific {@link LuggageType})
-     * and untyped luggage items, ensuring that all luggage associated with the flight
-     * is properly represented with current status information for baggage handling operations.
-     * </p>
-     * <p>
-     * Data deduplication logic prevents duplicate entries across customers, bookings,
-     * tickets, and passengers while maintaining proper relationships between all entities.
-     * This ensures data consistency and prevents display issues in administrative interfaces.
-     * </p>
-     * <p>
      * The method populates search results across multiple specialized controllers and
      * integrates all data into the flight object's collections, providing both controller-based
      * access for GUI components and flight-based access for business logic operations.
-     * </p>
-     * <p>
-     * Error handling includes comprehensive exception catching with user-friendly error
-     * messages displayed through {@link FloatingMessage} components using the error button
-     * reference. Database connectivity issues and data processing errors are handled
-     * gracefully with appropriate user feedback and detailed logging.
-     * </p>
-     * <p>
-     * The method is typically called when administrators need comprehensive flight information
-     * for operational management, passenger services, check-in procedures, or administrative
-     * reporting purposes.
      * </p>
      *
      * @param index the zero-based index of the flight in the search results to retrieve comprehensive data for
@@ -2019,45 +1701,10 @@ public class Controller {
      *   <li>Search result population for administrative access</li>
      * </ul>
      * <p>
-     * Flight context establishment sets the flight associated with the selected booking
-     * as the current active flight context, enabling flight-specific operations and
-     * providing necessary context for luggage management workflows.
-     * </p>
-     * <p>
-     * Booking selection establishes the specific booking context for luggage operations,
-     * ensuring that subsequent luggage management operations are properly scoped to
-     * the selected booking.
-     * </p>
-     * <p>
-     * Luggage processing handles both typed luggage (with specific {@link LuggageType})
-     * and untyped luggage items, ensuring that all luggage associated with the booking
-     * is properly represented regardless of the completeness of the original luggage
-     * information. Each luggage item includes current status information for operational
-     * decision-making.
-     * </p>
-     * <p>
-     * Ticket-luggage associations are established by linking each luggage item to its
-     * corresponding ticket through ticket number correlation. This enables comprehensive
-     * luggage tracking and ensures that luggage items can be properly associated with
-     * their passengers.
-     * </p>
-     * <p>
      * The method populates search results in {@link LuggageController} to enable
      * administrative interfaces to access and manage booking-specific luggage information.
      * Database IDs are also maintained for efficient luggage selection and operation
      * targeting in administrative workflows.
-     * </p>
-     * <p>
-     * Error handling includes comprehensive exception catching with user-friendly error
-     * messages displayed through {@link FloatingMessage} components using the error button
-     * reference. Database connectivity issues and data processing errors are handled
-     * gracefully with appropriate user feedback and detailed logging for operational
-     * oversight.
-     * </p>
-     * <p>
-     * The method is typically called when administrators or customer service representatives
-     * need to view or manage luggage associated with a specific booking, enabling focused
-     * luggage operations within the booking context.
      * </p>
      *
      * @param index the zero-based index of the booking in the search results to retrieve luggage information for
@@ -2121,41 +1768,6 @@ public class Controller {
 
     /**
      * Retrieves the centralized logger instance for system-wide logging operations.
-     * <p>
-     * This static method provides access to the centralized {@link Logger} instance
-     * that is used throughout the airport management system for consistent logging
-     * operations. The logger is configured with the Controller class name to provide
-     * clear identification of log sources.
-     * </p>
-     * <p>
-     * The logger supports comprehensive logging capabilities including:
-     * </p>
-     * <ul>
-     *   <li>Error logging for exception handling and troubleshooting</li>
-     *   <li>Operational logging for system monitoring and audit trails</li>
-     *   <li>Debug logging for development and maintenance purposes</li>
-     *   <li>Performance logging for system optimization</li>
-     * </ul>
-     * <p>
-     * Logging levels are used consistently throughout the system to categorize
-     * log messages by severity and importance, enabling effective filtering and
-     * monitoring of system operations.
-     * </p>
-     * <p>
-     * The centralized logging approach ensures that all system components use
-     * consistent logging practices and that log messages are properly formatted
-     * and categorized for operational monitoring and debugging purposes.
-     * </p>
-     * <p>
-     * Integration with standard Java logging frameworks enables compatibility
-     * with existing logging infrastructure and supports various logging outputs
-     * including files, console, and external monitoring systems.
-     * </p>
-     * <p>
-     * The method is typically called by other system components that need to
-     * perform logging operations, ensuring that all logging is centralized and
-     * consistent across the entire airport management system.
-     * </p>
      *
      * @return the centralized {@link Logger} instance for system-wide logging operations
      */
@@ -2179,49 +1791,6 @@ public class Controller {
      *   <li>Session state synchronization across multiple controllers</li>
      *   <li>User feedback through floating message components</li>
      * </ul>
-     * <p>
-     * Input validation follows the same rigorous standards as user registration,
-     * using methods from {@link UserController} to ensure data consistency and
-     * system integrity. Email validation includes format checking and length
-     * constraints, while username validation enforces format rules and character
-     * restrictions.
-     * </p>
-     * <p>
-     * User type determination uses runtime type checking on the current logged user
-     * to select the appropriate update strategy. Administrators and customers have
-     * different update requirements and constraints:
-     * </p>
-     * <ul>
-     *   <li><strong>Administrator Updates:</strong> Username and password only (email is immutable for admins)</li>
-     *   <li><strong>Customer Updates:</strong> Email, username, and password (full profile flexibility)</li>
-     * </ul>
-     * <p>
-     * Database operations are performed through type-specific DAO implementations
-     * ({@link AdminDAOImpl} or {@link CustomerDAOImpl}) to ensure that updates
-     * are applied using the correct database schema and business rules for each
-     * user type.
-     * </p>
-     * <p>
-     * Session state synchronization ensures that all controllers ({@link AdminController},
-     * {@link CustomerController}, {@link UserController}) maintain consistent user
-     * information after successful updates. This prevents inconsistencies between
-     * different system components that rely on user session data.
-     * </p>
-     * <p>
-     * User feedback includes specific validation error messages for input problems
-     * and success messages for completed updates. Database operation failures are
-     * handled gracefully with appropriate error messages for troubleshooting.
-     * </p>
-     * <p>
-     * Security considerations include maintaining password hashing and ensuring
-     * that user authentication state remains valid after profile updates. The
-     * method preserves existing security measures while enabling profile flexibility.
-     * </p>
-     * <p>
-     * The method is typically called from user profile management interfaces where
-     * users can modify their account information, enabling self-service profile
-     * management within appropriate security constraints.
-     * </p>
      *
      * @param mail the updated email address for the user (used only for customer accounts)
      * @param username the updated username for the user
