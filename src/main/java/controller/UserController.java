@@ -196,6 +196,7 @@ public class UserController {
      *   <li>Database insertion through appropriate DAO implementations</li>
      *   <li>Comprehensive error handling and user feedback</li>
      * </ul>
+     * <p>
      * Error handling includes specific exception types to provide appropriate user feedback:
      * </p>
      * <ul>

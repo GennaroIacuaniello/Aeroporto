@@ -143,7 +143,6 @@ public class Controller {
     /**
      * Constructs a new Controller instance and initializes all specialized controllers.
      *
-     * </p>
      */
     public Controller() {
         adminController = new AdminController();
@@ -905,6 +904,7 @@ public class Controller {
      * {@link BookingDAO#searchBooksCustomerFilteredPassengers} method to limit results
      * to bookings containing passengers matching the specified criteria.
      * </p>
+     * <p>
      * The search results are populated across multiple controllers ({@link BookingController},
      * {@link FlightController}, {@link TicketController}, {@link PassengerController}) to
      * enable comprehensive data access from different application components, maintaining
@@ -1178,8 +1178,6 @@ public class Controller {
 
     /**
      * Clears cached flight search result data from the flight controller.
-     *
-     * </p>
      *
      */
     public void clearSearchFlightsResultCache() {
