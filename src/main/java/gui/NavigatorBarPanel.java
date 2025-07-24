@@ -74,16 +74,6 @@ public class NavigatorBarPanel extends JPanel {
     JButton backButton;
     
     /**
-     * Path display label for showing current navigation location (currently commented out).
-     * <p>
-     * This label would provide users with visual indication of their current location
-     * within the application navigation hierarchy. The component is maintained for
-     * potential future implementation of breadcrumb navigation functionality.
-     * </p>
-     */
-    //JLabel pathLabel;
-    
-    /**
      * Layout constraints utility for precise component positioning within the navigation panel.
      * <p>
      * This Constraints helper object provides standardized GridBagConstraints configuration
@@ -122,7 +112,7 @@ public class NavigatorBarPanel extends JPanel {
 
         this.setHomeButton(callingObjects, controller);
         this.setBackButton(callingObjects, controller);
-        //this.setPath(callingObjects);
+
     }
 
     /**
