@@ -7,11 +7,9 @@ import java.util.List;
 /**
  * Represents a flight booking in the airport management system.
  * <p>
- * This class encapsulates all information related to a flight reservation,
+ * This class encapsulates all information related to a flight booking,
  * including the booking status, customer details, flight information, and
- * associated tickets. A booking serves as the central entity that links
- * customers to their flight reservations and manages the lifecycle of
- * travel arrangements.
+ * associated tickets.
  * </p>
  * <p>
  * The booking maintains a collection of tickets, where each ticket represents
@@ -28,7 +26,6 @@ import java.util.List;
  *   <li>Customer and flight association</li>
  *   <li>Multiple ticket management for group bookings</li>
  *   <li>Booking date tracking</li>
- *   <li>Data validation and integrity checks</li>
  * </ul>
  *
  * @author Aeroporto Di Napoli
@@ -47,7 +44,7 @@ public class Booking {
      * <p>
      * Tracks the booking state throughout its lifecycle, from initial
      * creation to completion or cancellation. This field is mutable
-     * to allow status updates as the booking progresses.
+     * to allow status updates.
      * </p>
      *
      * @see BookingStatus
@@ -58,8 +55,7 @@ public class Booking {
      * The customer who made this booking.
      * <p>
      * This field is final as the buyer cannot be changed after booking
-     * creation. It represents the customer responsible for the reservation
-     * and any associated payments.
+     * creation.
      * </p>
      *
      * @see Customer
@@ -91,9 +87,7 @@ public class Booking {
      * The list of tickets associated with this booking.
      * <p>
      * Each ticket represents an individual passenger on the flight.
-     * The collection is implemented as an ArrayList for efficient
-     * access and modification. The booking must contain at least
-     * one ticket to be valid.
+     * The booking must contain at least one ticket to be valid.
      * </p>
      *
      * @see Ticket
@@ -104,8 +98,7 @@ public class Booking {
      * Constructs a new booking with PENDING status and multiple tickets.
      * <p>
      * Creates a booking with default PENDING status, suitable for new
-     * reservations that require confirmation. This constructor is used
-     * for group bookings with multiple passengers.
+     * reservations that require confirmation.
      * </p>
      *
      * @param parBuyer the customer making the booking
@@ -114,7 +107,7 @@ public class Booking {
      * @param parTickets the list of tickets for passengers
      * @throws InvalidBuyer if the buyer is null
      * @throws InvalidFlight if the flight is null
-     * @throws InvalidPassengerNumber if the tickets list is empty
+     * @throws InvalidPassengerNumber if the ticket list is empty
      */
     public Booking(Customer parBuyer, Flight parBookedFlight, Date parBookingDate, List<Ticket> parTickets) throws InvalidBuyer, InvalidFlight, InvalidPassengerNumber {
 
@@ -147,10 +140,9 @@ public class Booking {
     /**
      * Constructs a new booking with specified status and multiple tickets.
      * <p>
-     * Creates a booking with a specific status, allowing for bookings
-     * that are created in states other than PENDING. This constructor
+     * Creates a booking with a specific status. This constructor
      * is useful for importing existing bookings or creating confirmed
-     * reservations directly.
+     * bookings directly.
      * </p>
      *
      * @param parStatus the initial status of the booking
@@ -193,8 +185,6 @@ public class Booking {
      * Constructs a new booking with PENDING status and a single ticket.
      * <p>
      * Creates a booking with default PENDING status for a single passenger.
-     * This constructor is convenient for individual bookings where only
-     * one passenger is traveling.
      * </p>
      *
      * @param parBuyer the customer making the booking
@@ -234,12 +224,7 @@ public class Booking {
     }
 
     /**
-     * Constructs a new booking with specified status and a single ticket.
-     * <p>
-     * Creates a booking with a specific status for a single passenger.
-     * This constructor allows for direct creation of bookings in any
-     * desired status state.
-     * </p>
+     * Constructs a new booking with a specified status and a single ticket.
      *
      * @param parStatus the initial status of the booking
      * @param parBuyer the customer making the booking
@@ -357,8 +342,7 @@ public class Booking {
      * Gets the current status of this booking.
      * <p>
      * Returns the booking status which indicates the current state
-     * of the reservation in its lifecycle. This information is used
-     * for processing, display, and business logic decisions.
+     * of the reservation in its lifecycle.
      * </p>
      *
      * @return the current booking status
@@ -372,8 +356,7 @@ public class Booking {
      * Sets the status of this booking.
      * <p>
      * Updates the booking status to reflect changes in the reservation
-     * state. This method is used to progress bookings through their
-     * lifecycle or to cancel reservations.
+     * state.
      * </p>
      *
      * @param status the new booking status
@@ -387,8 +370,7 @@ public class Booking {
      * Gets the customer who made this booking.
      * <p>
      * Returns the customer object representing the buyer of this
-     * reservation. This information is used for customer service,
-     * billing, and account management purposes.
+     * reservation.
      * </p>
      *
      * @return the customer who made the booking
@@ -402,8 +384,6 @@ public class Booking {
      * Gets the flight associated with this booking.
      * <p>
      * Returns the flight object representing the reserved flight.
-     * This information is used for schedule management, seat
-     * allocation, and passenger services.
      * </p>
      *
      * @return the flight associated with this booking
@@ -416,8 +396,7 @@ public class Booking {
     /**
      * Gets the date when this booking was created.
      * <p>
-     * Returns the booking creation date, which is used for
-     * record keeping, reporting, and business analytics.
+     * Returns the booking creation date.
      * This date cannot be modified after booking creation.
      * </p>
      *
@@ -447,12 +426,11 @@ public class Booking {
      * <p>
      * Updates the complete list of tickets associated with this booking.
      * This method ensures that the booking maintains at least one ticket
-     * to preserve data integrity. It is useful for bulk updates or
-     * modifications to passenger lists.
+     * to preserve data integrity.
      * </p>
      *
      * @param tickets the new list of tickets. Must not be null or empty.
-     * @throws InvalidPassengerNumber if the tickets list is empty
+     * @throws InvalidPassengerNumber if the ticket list is empty
      * @see Ticket
      */
     public void setTickets(List<Ticket> tickets) throws InvalidPassengerNumber{
