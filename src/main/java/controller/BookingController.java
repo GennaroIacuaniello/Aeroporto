@@ -29,38 +29,6 @@ import java.util.logging.Level;
  *   <li>Coordinating booking operations such as creation, modification, and deletion</li>
  *   <li>Supporting booking status management and validation</li>
  * </ul>
- * <p>
- * The class follows a dual approach for data management:
- * </p>
- * <ul>
- *   <li><strong>Session Management:</strong> Maintains a single active booking with its database ID</li>
- *   <li><strong>Search Results:</strong> Manages collections of booking search results with corresponding IDs</li>
- * </ul>
- * <p>
- * Session management includes both the {@link Booking} object containing complete booking information
- * (status, customer, flight, tickets, passengers) and the unique booking ID for database operations.
- * This dual approach ensures that both object-oriented operations and database queries can be
- * performed efficiently.
- * </p>
- * <p>
- * Search result management maintains synchronized collections of {@link Booking} objects and their
- * corresponding database IDs, enabling efficient retrieval and correlation of booking data for
- * display purposes and user selection operations.
- * </p>
- * <p>
- * The controller provides extensive access methods for navigating the complex relationships between
- * bookings, tickets, passengers, and luggage, abstracting the underlying object model complexity
- * from GUI components and business logic.
- * </p>
- * <p>
- * Integration with the {@link BookingDAOImpl} provides database persistence capabilities for
- * booking deletion operations, with comprehensive error handling and logging for operational
- * monitoring and debugging purposes.
- * </p>
- * <p>
- * All methods maintain data consistency and provide null-safe operations where appropriate,
- * ensuring robust behavior in various application states and error conditions.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -99,66 +67,12 @@ public class BookingController {
     private ArrayList<Integer> searchBookingResultIds;
 
     /**
-     * Creates and sets a booking session using individual components with validation.
-     * <p>
-     * This method creates a new {@link Booking} object using the provided customer, flight,
-     * and ticket information, performing comprehensive validation during the construction
-     * process. It establishes a booking session with a default booking date and ensures
-     * all required components are valid and properly related.
-     * </p>
-     * <p>
-     * The method performs validation for:
-     * </p>
-     * <ul>
-     *   <li>Customer validity and non-null status</li>
-     *   <li>Flight validity and availability</li>
-     *   <li>Ticket list completeness and passenger associations</li>
-     *   <li>Proper relationships between all booking components</li>
-     * </ul>
-     * <p>
-     * The booking is initialized with a default date and pending status, ready for
-     * subsequent operations and modifications through the booking lifecycle.
-     * </p>
-     * <p>
-     * This method is typically used during new booking creation workflows where
-     * individual components have been validated and prepared for booking assembly.
-     * </p>
-     *
-     * @param customer the customer making the booking, must not be null
-     * @param flight the flight being booked, must not be null and available
-     * @param tickets list of tickets associated with the booking, must not be empty
-     * @throws InvalidPassengerNumber if the ticket list is empty or contains invalid passenger data
-     * @throws InvalidBuyer if the customer is null or invalid
-     * @throws InvalidFlight if the flight is null or invalid
-     */
-    public void setBooking(Customer customer, Flight flight, List<Ticket> tickets) throws InvalidPassengerNumber, InvalidBuyer, InvalidFlight {
-        try {
-            booking = new Booking(customer, flight, new Date(10, 0, 0), tickets);
-        } catch (InvalidPassengerNumber e) {
-            throw new InvalidPassengerNumber("Invalid passenger number");
-        } catch (InvalidBuyer e) {
-            throw new InvalidBuyer("Invalid buyer");
-        } catch (InvalidFlight e) {
-            throw new InvalidFlight("Invalid flight");
-        }
-    }
-
-    /**
      * Sets the booking session using an existing {@link Booking} object.
      * <p>
      * This method establishes a booking session using a pre-constructed and validated
      * {@link Booking} object. It is typically used when a booking object has already
      * been created and needs to be set as the current session, such as when loading
      * existing bookings from search results or database retrieval operations.
-     * </p>
-     * <p>
-     * This approach is useful for session management operations such as switching
-     * between different bookings, loading booking details for modification, or
-     * restoring session state from cached objects.
-     * </p>
-     * <p>
-     * The method directly assigns the provided {@link Booking} object, making it
-     * immediately available for use throughout the application.
      * </p>
      *
      * @param booking the {@link Booking} object to set as the current session
@@ -175,16 +89,6 @@ public class BookingController {
      * including status, customer details, flight information, and all associated
      * tickets with passenger and luggage data.
      * </p>
-     * <p>
-     * The method is used throughout the application to access booking information
-     * for display purposes, validation operations, and business logic that requires
-     * booking context.
-     * </p>
-     * <p>
-     * If no booking is currently active, this method returns null. Calling code
-     * should check for null values to handle cases where no booking session is
-     * established.
-     * </p>
      *
      * @return the {@link Booking} object for the current session, or null if no booking is active
      */
@@ -199,16 +103,6 @@ public class BookingController {
      * associated passenger information, returning a consolidated list of all
      * passengers involved in the booking. This is useful for operations that
      * need to process all passengers collectively.
-     * </p>
-     * <p>
-     * The method iterates through all tickets in the booking and collects the
-     * passenger associated with each ticket, maintaining the order of tickets
-     * for consistent passenger indexing throughout the application.
-     * </p>
-     * <p>
-     * Each passenger in the returned list corresponds to a specific ticket in
-     * the booking, enabling correlation between passenger information and
-     * ticket details when needed.
      * </p>
      *
      * @return list of {@link Passenger} objects representing all passengers in the current booking
@@ -233,11 +127,6 @@ public class BookingController {
      * for update, deletion, and retrieval operations that require unique
      * booking identification.
      * </p>
-     * <p>
-     * The database ID provides an efficient way to reference the booking in
-     * database queries without needing to pass complex booking objects or
-     * perform customer/flight-based lookups.
-     * </p>
      *
      * @param id the unique database identifier for the current booking
      */
@@ -252,16 +141,6 @@ public class BookingController {
      * session. The ID is used for database operations that require booking
      * identification, such as updating booking details, processing payments,
      * or associating additional services with the booking.
-     * </p>
-     * <p>
-     * The database ID provides an efficient way to reference the booking in
-     * database queries and ensures proper correlation with related data such
-     * as tickets, passengers, and luggage records.
-     * </p>
-     * <p>
-     * If no booking is currently active or no ID has been set, this method
-     * returns null. Database operations should check for null values and
-     * handle the case where no booking session is established.
      * </p>
      *
      * @return the unique database identifier for the current booking session, or null if no booking is active
@@ -278,16 +157,6 @@ public class BookingController {
      * This information is essential for various operations including seat management,
      * passenger processing, and booking validation.
      * </p>
-     * <p>
-     * The ticket count is used throughout the application for loop iterations,
-     * capacity checks, and user interface display purposes. It provides a
-     * reliable way to determine the size of passenger groups and booking complexity.
-     * </p>
-     * <p>
-     * This method assumes that a booking is currently active and contains tickets.
-     * Calling code should ensure that a valid booking session exists before
-     * invoking this method.
-     * </p>
      *
      * @return the number of tickets in the current booking
      */
@@ -301,16 +170,6 @@ public class BookingController {
      * This method returns the {@link Passenger} object for the ticket at the specified
      * index within the current booking. It provides direct access to passenger
      * information including personal details, identification, and travel document data.
-     * </p>
-     * <p>
-     * The index corresponds to the position of the ticket within the booking's
-     * ticket list, enabling consistent passenger identification across different
-     * operations and user interface components.
-     * </p>
-     * <p>
-     * This method is fundamental for accessing individual passenger data within
-     * group bookings and is used extensively throughout the application for
-     * passenger-specific operations.
      * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the booking
@@ -328,11 +187,6 @@ public class BookingController {
      * passenger object retrieval. It simplifies access to commonly needed
      * passenger information for display and processing purposes.
      * </p>
-     * <p>
-     * The method delegates to the passenger retrieval mechanism and extracts
-     * the first name, providing a streamlined interface for GUI components
-     * and business logic that need quick access to passenger names.
-     * </p>
      *
      * @param index the zero-based index of the passenger within the booking
      * @return the first name of the passenger at the specified index
@@ -348,11 +202,6 @@ public class BookingController {
      * specific passenger within the current booking. It simplifies passenger
      * name retrieval for display purposes, form population, and passenger
      * identification operations.
-     * </p>
-     * <p>
-     * The method provides a consistent interface for accessing passenger
-     * surnames without requiring explicit passenger object manipulation,
-     * streamlining GUI component development and data binding operations.
      * </p>
      *
      * @param index the zero-based index of the passenger within the booking
@@ -370,11 +219,6 @@ public class BookingController {
      * is used for passenger identification, duplicate prevention, and correlation
      * with government travel document requirements.
      * </p>
-     * <p>
-     * The SSN is essential for various airport operations including security
-     * screening, passenger manifest generation, and compliance with travel
-     * regulations. It ensures unique passenger identification across the system.
-     * </p>
      *
      * @param index the zero-based index of the passenger within the booking
      * @return the SSN of the passenger at the specified index
@@ -391,11 +235,6 @@ public class BookingController {
      * operations, luggage association, boarding passes, and various airport
      * processing systems.
      * </p>
-     * <p>
-     * The ticket number serves as a unique identifier for individual tickets
-     * within the broader context of the booking, enabling precise ticket
-     * management and passenger service operations.
-     * </p>
      *
      * @param index the zero-based index of the ticket within the booking
      * @return the unique ticket number for the ticket at the specified index
@@ -410,11 +249,6 @@ public class BookingController {
      * This method returns the seat number assigned to a specific ticket within
      * the current booking. Seat assignments are managed using zero-based indexing
      * to maintain consistency with the application's seat management system.
-     * </p>
-     * <p>
-     * The seat assignment is used for boarding pass generation, seat map displays,
-     * check-in operations, and ensuring proper passenger placement on the aircraft.
-     * A value of -1 indicates that no seat has been assigned to the ticket.
      * </p>
      *
      * @param index the zero-based index of the ticket within the booking
@@ -432,11 +266,6 @@ public class BookingController {
      * and checked luggage items, providing comprehensive luggage information for
      * the passenger.
      * </p>
-     * <p>
-     * Luggage information is essential for check-in operations, baggage handling,
-     * weight calculations, and ensuring proper luggage tracking throughout the
-     * travel process. Each luggage item contains type, status, and tracking information.
-     * </p>
      *
      * @param index the zero-based index of the ticket within the booking
      * @return list of {@link Luggage} objects associated with the ticket at the specified index
@@ -451,17 +280,6 @@ public class BookingController {
      * This method processes all luggage items associated with a specific ticket and
      * returns a list of integer codes representing the luggage types. The mapping
      * follows the convention: 0 for CARRY_ON luggage and 1 for CHECKED luggage.
-     * </p>
-     * <p>
-     * This integer-based representation simplifies integration with GUI components
-     * that use numeric indices for luggage type selection and display purposes.
-     * The method maintains the order of luggage items for consistent correlation
-     * with other luggage-related information.
-     * </p>
-     * <p>
-     * The type information is essential for luggage handling procedures, weight
-     * calculations, and ensuring proper luggage processing during check-in and
-     * baggage handling operations.
      * </p>
      *
      * @param index the zero-based index of the ticket within the booking
@@ -491,16 +309,6 @@ public class BookingController {
      * throughout the baggage handling process. These identifiers are typically assigned
      * during check-in and used for physical luggage tracking.
      * </p>
-     * <p>
-     * Luggage tracking identifiers are essential for baggage handling systems,
-     * lost luggage recovery, and ensuring proper luggage routing through airport
-     * baggage handling infrastructure. They provide a link between digital records
-     * and physical luggage items.
-     * </p>
-     * <p>
-     * The identifiers maintain correlation with luggage type and status information,
-     * enabling comprehensive luggage management throughout the travel process.
-     * </p>
      *
      * @param index the zero-based index of the ticket within the booking
      * @return list of luggage tracking identifiers for the ticket at the specified index
@@ -520,16 +328,6 @@ public class BookingController {
      * returns a list of status strings representing the current state of each luggage
      * item. Status values include states such as BOOKED, LOADED, WITHDRAWABLE, and LOST.
      * </p>
-     * <p>
-     * Luggage status information is crucial for baggage handling operations, customer
-     * service inquiries, and tracking luggage throughout the travel process. It provides
-     * real-time information about luggage location and handling state.
-     * </p>
-     * <p>
-     * The status information enables proactive customer service and operational
-     * decision-making regarding luggage handling, delivery, and recovery operations.
-     * It maintains synchronization with luggage type and tracking information.
-     * </p>
      *
      * @param index the zero-based index of the ticket within the booking
      * @return list of luggage status strings for the ticket at the specified index
@@ -543,48 +341,12 @@ public class BookingController {
     }
 
     /**
-     * Checks if the current booking allows pending status operations.
-     * <p>
-     * This method determines whether booking operations that require pending status
-     * are available for the current booking. It returns true if no booking is active
-     * (allowing new bookings to be created in pending status) or if the current
-     * booking has a PENDING status (allowing modifications).
-     * </p>
-     * <p>
-     * This validation is essential for controlling user interface elements and
-     * business logic that should only be available when bookings are in a
-     * modifiable state. Confirmed or completed bookings typically have restricted
-     * modification capabilities.
-     * </p>
-     * <p>
-     * The method supports workflows where bookings progress through different
-     * states, and certain operations are only available during the pending phase
-     * of the booking lifecycle.
-     * </p>
-     *
-     * @return true if no booking is active or the current booking has PENDING status, false otherwise
-     */
-    public boolean checkPendingButton () {
-        return this.booking == null || this.booking.getStatus() == BookingStatus.PENDING;
-    }
-
-    /**
      * Retrieves the current status of the active booking.
      * <p>
      * This method returns the {@link BookingStatus} enum value representing the
      * current state of the booking. Status values include PENDING, CONFIRMED,
      * CANCELLED, and other states that reflect the booking's position in the
      * reservation and travel lifecycle.
-     * </p>
-     * <p>
-     * Booking status is used throughout the application to control available
-     * operations, determine user interface states, and enforce business rules
-     * regarding booking modifications, cancellations, and service delivery.
-     * </p>
-     * <p>
-     * The status information is essential for workflow management and ensuring
-     * that booking operations are performed in the correct sequence and under
-     * appropriate conditions.
      * </p>
      *
      * @return the {@link BookingStatus} of the current booking
@@ -597,25 +359,9 @@ public class BookingController {
      * Deletes the current booking from the database.
      * <p>
      * This method performs a booking deletion operation using the {@link BookingDAOImpl}
-     * to remove the current booking from the database. The deletion is performed
+     * to set the current bookinStatus to CANCELLED. The deletion is performed
      * using the booking's database ID, ensuring precise targeting of the correct
      * booking record.
-     * </p>
-     * <p>
-     * The deletion operation is typically irreversible and may trigger cascading
-     * operations to remove associated tickets, passenger records, and luggage
-     * information depending on the database schema and constraints.
-     * </p>
-     * <p>
-     * Comprehensive error handling includes logging of database errors for
-     * operational monitoring and debugging purposes. Failed deletion operations
-     * are logged with appropriate severity levels for system administration
-     * and troubleshooting.
-     * </p>
-     * <p>
-     * This method should be used carefully and typically requires appropriate
-     * authorization and confirmation before execution to prevent accidental
-     * data loss.
      * </p>
      */
     public void deleteBooking() {
@@ -640,11 +386,6 @@ public class BookingController {
      * ticket number, seat assignment, check-in status, and associated passenger
      * and luggage data.
      * </p>
-     * <p>
-     * Direct ticket access is useful for operations that need to work with
-     * the complete ticket object rather than individual ticket properties,
-     * such as ticket validation, status updates, and comprehensive data display.
-     * </p>
      *
      * @param index the zero-based index of the ticket within the booking
      * @return the {@link Ticket} object at the specified index
@@ -654,21 +395,16 @@ public class BookingController {
     }
 
     /**
-     * Retrieves the birth date of the passenger at the specified index.
+     * Retrieves the birthdate of the passenger at the specified index.
      * <p>
-     * This convenience method provides direct access to the birth date of a
-     * specific passenger within the current booking. Birth date information
+     * This convenience method provides direct access to the birthdate of a
+     * specific passenger within the current booking. Birthdate information
      * is essential for age verification, special service requirements, and
      * compliance with travel regulations.
      * </p>
-     * <p>
-     * The method delegates to the passenger retrieval mechanism and extracts
-     * the birth date, providing a streamlined interface for components that
-     * need passenger age-related information for processing and validation.
-     * </p>
      *
      * @param index the zero-based index of the passenger within the booking
-     * @return the birth date of the passenger at the specified index
+     * @return the birthdate of the passenger at the specified index
      */
     public Date getPassengerDate(int index) {
         return getPassenger(index).getBirthDate();
@@ -681,12 +417,6 @@ public class BookingController {
      * from search operations. The search results maintain synchronized indexing
      * with the corresponding database IDs, enabling efficient data correlation
      * and selection operations.
-     * </p>
-     * <p>
-     * Search results are used by GUI components for displaying booking lists,
-     * enabling user selection of specific bookings, and providing context for
-     * booking management operations. The results maintain all booking information
-     * including associated tickets, passengers, and metadata.
      * </p>
      *
      * @return list of {@link Booking} objects from search operations
@@ -703,11 +433,6 @@ public class BookingController {
      * consistency and performance optimization. The search results are used for
      * displaying booking information and enabling user selection operations.
      * </p>
-     * <p>
-     * The method ensures that search results are properly stored and available
-     * for subsequent retrieval and manipulation operations throughout the
-     * application workflow.
-     * </p>
      *
      * @param searchBookingResult list of {@link Booking} objects to set as search results
      */
@@ -722,11 +447,6 @@ public class BookingController {
      * booking objects in the search results. The IDs maintain synchronized indexing
      * with the booking objects, enabling efficient correlation between display
      * data and database operations.
-     * </p>
-     * <p>
-     * The database IDs are essential for performing operations on selected bookings,
-     * such as modifications, deletions, or detailed information retrieval. They
-     * provide the link between user interface selections and database records.
      * </p>
      *
      * @return list of database identifiers corresponding to search result bookings
@@ -743,11 +463,6 @@ public class BookingController {
      * consistency. The IDs must maintain synchronized indexing with the booking
      * objects to ensure proper correlation between display data and database operations.
      * </p>
-     * <p>
-     * Proper synchronization between booking objects and their database IDs is
-     * essential for maintaining data integrity and enabling correct booking
-     * selection and operation targeting.
-     * </p>
      *
      * @param searchBookingResultIds list of database identifiers to set for search results
      */
@@ -762,16 +477,6 @@ public class BookingController {
      * from the search results based on the provided index. It sets both the
      * booking object and its corresponding database ID, creating a complete
      * session context for subsequent operations.
-     * </p>
-     * <p>
-     * The method ensures that the active session is properly synchronized with
-     * search result data, enabling seamless transitions from search and selection
-     * operations to detailed booking management and modification workflows.
-     * </p>
-     * <p>
-     * This functionality is essential for user interface workflows where users
-     * select bookings from search results and then perform detailed operations
-     * on the selected booking.
      * </p>
      *
      * @param index the zero-based index of the booking to select from search results
@@ -790,12 +495,6 @@ public class BookingController {
      * their booking dates, returning a consolidated list for display and processing
      * purposes. The dates maintain correlation with the original booking order for
      * consistent data presentation.
-     * </p>
-     * <p>
-     * Booking dates are essential for chronological sorting, filtering operations,
-     * and providing temporal context for booking management and customer service
-     * operations. The extracted dates enable efficient date-based operations without
-     * requiring full booking object manipulation.
      * </p>
      *
      * @return list of booking dates from all search result bookings
@@ -820,12 +519,6 @@ public class BookingController {
      * and filtering purposes. The status values maintain correlation with the
      * original booking order for consistent data presentation.
      * </p>
-     * <p>
-     * Booking status information is essential for user interface display, filtering
-     * operations, and business logic that needs to process bookings based on their
-     * current state. The string representation enables easy integration with GUI
-     * components and reporting systems.
-     * </p>
      *
      * @return list of booking status strings from all search result bookings
      */
@@ -848,17 +541,6 @@ public class BookingController {
      * with the specified database ID, returning the corresponding {@link Booking}
      * object if found. This enables efficient booking retrieval based on database
      * identifiers without requiring index-based access.
-     * </p>
-     * <p>
-     * The method performs a linear search through the search results, comparing
-     * database IDs to find the matching booking. It maintains synchronization
-     * between the booking objects and their database identifiers for accurate
-     * retrieval operations.
-     * </p>
-     * <p>
-     * This functionality is essential for operations that need to locate specific
-     * bookings based on database references, such as updating booking information
-     * from external systems or correlating bookings with related data records.
      * </p>
      *
      * @param id the database identifier of the booking to retrieve

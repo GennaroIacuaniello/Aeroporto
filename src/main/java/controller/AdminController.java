@@ -42,24 +42,6 @@ public class AdminController {
     private Admin loggedAdmin;
 
     /**
-     * Creates and sets an administrator session using individual profile components.
-     * <p>
-     * This method creates a new {@link Admin} object using the provided profile information
-     * and establishes an administrator session. It is typically used during the authentication
-     * process when administrator credentials have been verified against the database.
-     * </p>
-     *
-     * @param username the administrator's username for the session
-     * @param email the administrator's email address for the session
-     * @param hashedPassword the administrator's hashed password for the session
-     * @param id the unique database identifier for the administrator
-     */
-    public void setAdmin(String username, String email, String hashedPassword, Integer id) {
-        loggedAdmin = new Admin(username, email, hashedPassword);
-        loggedAdminId = id;
-    }
-
-    /**
      * Sets the administrator session using an existing {@link Admin} object.
      * <p>
      * This method establishes an administrator session using a pre-constructed
@@ -74,34 +56,5 @@ public class AdminController {
     public void setLoggedAdmin(Admin loggedAdmin, Integer id) {
         this.loggedAdmin = loggedAdmin;
         this.loggedAdminId = id;
-    }
-
-    /**
-     * Retrieves the currently logged-in administrator object.
-     * <p>
-     * This method returns the {@link Admin} object representing the current
-     * administrator session. The returned object contains the administrator's
-     * profile information including username, email, and hashed password.
-     * </p>
-     *
-     * @return the {@link Admin} object for the current session, or null if no administrator is logged in
-     */
-    public Admin getLoggedAdmin() {
-        return this.loggedAdmin;
-    }
-
-    /**
-     * Retrieves the database identifier for the currently logged-in administrator.
-     * <p>
-     * This method returns the unique database identifier for the current administrator
-     * session. The ID is used for database operations that require administrator
-     * identification, such as logging administrative actions, updating administrator
-     * profiles, or associating administrative operations with specific users.
-     * </p>
-     *
-     * @return the unique database identifier for the current administrator session, or null if no administrator is logged in
-     */
-    public Integer getLoggedAdminId(){ 
-        return this.loggedAdminId; 
     }
 }
