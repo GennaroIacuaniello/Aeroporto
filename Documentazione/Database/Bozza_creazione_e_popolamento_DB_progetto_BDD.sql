@@ -2612,6 +2612,7 @@ DECLARE
 BEGIN
 
 	ALTER TABLE Booking DISABLE TRIGGER upd_free_seats_on_canc_booking;
+	ALTER TABLE Ticket  DISABLE TRIGGER check_ticket_checked_in_only_if_flight_aToDep_dep_lan;
 
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF input_old_flight_type = false AND input_new_flight_type = false THEN
@@ -2683,12 +2684,13 @@ BEGIN
 	END IF;
 
 	ALTER TABLE Booking ENABLE TRIGGER upd_free_seats_on_canc_booking;
-
+	ALTER TABLE Ticket  ENABLE TRIGGER check_ticket_checked_in_only_if_flight_aToDep_dep_lan;
 	RETURN n_passenger;
     
 EXCEPTION
     WHEN OTHERS THEN
         ALTER TABLE Booking ENABLE TRIGGER upd_free_seats_on_canc_booking;
+		ALTER TABLE Ticket  ENABLE TRIGGER check_ticket_checked_in_only_if_flight_aToDep_dep_lan;
         RAISE;
 END;
 $$ LANGUAGE plpgsql;
