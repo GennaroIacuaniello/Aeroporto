@@ -27,100 +27,6 @@ import java.util.ArrayList;
  *   <li><strong>Page Navigation:</strong> Intelligent page visibility management and navigation coordination during removal operations</li>
  *   <li><strong>Resource Cleanup:</strong> Comprehensive disposal of associated components including seat choosers and luggage views</li>
  * </ul>
- * <p>
- * The button is designed with booking workflow optimization, providing users with:
- * </p>
- * <ul>
- *   <li><strong>Intuitive Interaction:</strong> Clear "Remove Passenger" label for immediate action recognition and user guidance</li>
- *   <li><strong>Immediate Response:</strong> Real-time interface updates during passenger removal operations with visual feedback</li>
- *   <li><strong>Automatic Cleanup:</strong> Complete removal of associated components and data structures without manual intervention</li>
- *   <li><strong>Layout Preservation:</strong> Maintains organized interface layout after passenger removal with proper repositioning</li>
- *   <li><strong>Navigation Consistency:</strong> Ensures proper page navigation and visibility management throughout removal processes</li>
- * </ul>
- * <p>
- * Removal architecture utilizes a comprehensive multi-phase process that ensures complete cleanup
- * and interface consistency. The removal operation includes visibility management for immediate user
- * feedback, collection cleanup with synchronized state management, component removal from layout containers,
- * comprehensive resource disposal for associated components, layout restructuring for remaining passengers,
- * and intelligent page navigation coordination for optimal user experience.
- * </p>
- * <p>
- * Collection management handles removal from both passenger panel collections and remove button
- * collections while maintaining synchronized state across all data structures. The management ensures
- * that removed passengers are completely eliminated from all tracking mechanisms and user interface
- * components to prevent memory leaks, reference inconsistencies, and interface artifacts during
- * continued booking modification operations.
- * </p>
- * <p>
- * Layout restructuring provides intelligent repositioning of remaining passengers after removal
- * operations using a sophisticated coordinate system. The restructuring process includes removing
- * existing components from the layout, recalculating optimal positioning using {@link GridBagConstraints}
- * with modular arithmetic for page-based organization, and re-adding components with updated layout
- * parameters to maintain visual organization and consistent user experience.
- * </p>
- * <p>
- * Index coordination ensures that all remaining passengers maintain correct sequential indexing
- * after removal operations. The coordination process automatically decrements indices for passengers
- * positioned after the removed passenger, preserving logical ordering and supporting continued
- * dynamic operations on the remaining passenger collection while maintaining data integrity.
- * </p>
- * <p>
- * Page navigation management includes sophisticated visibility coordination that handles page-based
- * passenger display with intelligent transition logic. The navigation system calculates optimal
- * passenger visibility based on current page context, manages automatic page transitions when
- * necessary, and ensures that users maintain visual context throughout removal operations
- * with consistent interface behavior.
- * </p>
- * <p>
- * Resource cleanup includes comprehensive disposal of associated passenger components such as
- * {@link gui.SeatChooser} dialogs and {@link gui.LuggagesView} windows to prevent resource leaks
- * and ensure optimal system performance. The cleanup process handles null reference checking
- * and provides safe disposal operations for all passenger-related sub-components.
- * </p>
- * <p>
- * Button state management includes intelligent enabling and disabling logic that prevents users
- * from removing the last passenger from a booking while maintaining appropriate removal capabilities
- * for multi-passenger scenarios. The state management integrates with navigation controls to
- * provide consistent interface behavior throughout passenger removal workflows.
- * </p>
- * <p>
- * Event handling architecture utilizes {@link ActionListener} implementation to provide responsive
- * removal operations with comprehensive error prevention and user feedback mechanisms. The event
- * handling includes multi-phase removal processing, resource management coordination, and interface
- * state synchronization to ensure reliable passenger removal functionality across different
- * operational contexts and booking modification scenarios.
- * </p>
- * <p>
- * The class integrates seamlessly with the broader booking modification ecosystem including
- * {@link BookingModifyPage} containers, {@link PassengerPanel} components, {@link BookingPage}
- * navigation systems, and {@link Constraints} layout utilities while maintaining clean separation
- * of concerns and reusable component design patterns throughout the airport management system.
- * </p>
- * <p>
- * Layout management utilizes {@link GridBagConstraints} for precise component positioning during
- * restructuring operations with a two-column layout system. The layout management includes proper
- * constraint configuration with modular arithmetic for page-based organization, alignment specification
- * for optimal visual presentation, and positioning coordination that maintains visual consistency
- * and optimal space utilization throughout removal operations.
- * </p>
- * <p>
- * Pagination integration provides essential coordination with page-based passenger display systems,
- * supporting dynamic page transitions and visibility management during removal operations. The
- * pagination system ensures that users maintain appropriate visual context while providing
- * efficient navigation capabilities throughout multi-passenger booking modification workflows.
- * </p>
- * <p>
- * Resource management follows standard Swing component lifecycle patterns with enhanced cleanup
- * procedures for passenger-specific components. The resource management ensures optimal system
- * performance and prevents resource leaks during extended booking modification sessions with
- * frequent passenger addition and removal operations while maintaining interface responsiveness.
- * </p>
- * <p>
- * The button serves as a critical component of the dynamic passenger management system within
- * booking modification workflows, providing essential removal functionality that enables flexible
- * passenger configuration while maintaining interface consistency, user experience quality, and
- * operational integrity throughout airport management booking modification operations.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -169,59 +75,10 @@ public class RemovePassengerButton extends JButton {
      * seamless passenger management within booking modification workflows.
      * </p>
      * <p>
-     * The initialization process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Button Configuration:</strong> "Remove Passenger" label setup with English localization for user recognition</li>
-     *   <li><strong>Index Assignment:</strong> Position tracking within passenger collection for proper identification and coordination</li>
-     *   <li><strong>Focus Management:</strong> Non-focusable configuration for clean interface behavior and consistent interaction patterns</li>
-     *   <li><strong>Layout Preparation:</strong> Constraints utility initialization for restructuring operations and component positioning</li>
-     *   <li><strong>Event Handler Setup:</strong> Comprehensive ActionListener implementation for complete removal workflow management</li>
-     *   <li><strong>State Management:</strong> Initial button state configuration for immediate operational readiness</li>
-     * </ul>
-     * <p>
-     * Button configuration establishes the removal button with clear English "Remove Passenger"
-     * label text that provides immediate action recognition for users. The configuration follows
-     * standard Swing JButton patterns while preparing for specialized passenger removal functionality
-     * and integration with booking modification interface layouts and user interaction workflows.
-     * </p>
-     * <p>
      * Index assignment stores the provided position value for tracking the button's associated
      * passenger within collections and interface layouts. The index enables proper identification
      * during removal operations and supports automatic adjustment during layout restructuring to
      * maintain correct sequential ordering across remaining passengers throughout booking modifications.
-     * </p>
-     * <p>
-     * Focus management configures the button as non-focusable to maintain clean interface behavior
-     * and prevent focus-related interface artifacts during passenger removal operations. The focus
-     * configuration ensures consistent user interaction patterns and maintains visual design
-     * integrity throughout booking modification workflows.
-     * </p>
-     * <p>
-     * Layout preparation creates the Constraints utility object that standardizes GridBagConstraints
-     * configuration throughout removal and restructuring operations. The preparation ensures
-     * consistent component positioning with modular arithmetic for page-based organization, proper
-     * alignment coordination, and visual organization during dynamic interface updates and
-     * passenger management operations.
-     * </p>
-     * <p>
-     * Event handler setup establishes comprehensive ActionListener implementation that manages
-     * the complete passenger removal workflow including:
-     * </p>
-     * <ul>
-     *   <li><strong>Immediate Visibility Management:</strong> Instantaneous hiding of targeted passenger panel and removal button</li>
-     *   <li><strong>Collection Synchronization:</strong> Coordinated removal from passenger panels and removal button collections</li>
-     *   <li><strong>Layout Container Updates:</strong> Removal from booking page layout containers and component hierarchies</li>
-     *   <li><strong>Resource Disposal:</strong> Comprehensive cleanup of associated components including seat choosers and luggage views</li>
-     *   <li><strong>Layout Restructuring:</strong> Repositioning and index adjustment for remaining passengers with coordinate recalculation</li>
-     *   <li><strong>Page Navigation Coordination:</strong> Intelligent page visibility management and navigation state updates</li>
-     *   <li><strong>Interface State Management:</strong> Button state coordination and navigation control updates for consistent behavior</li>
-     * </ul>
-     * <p>
-     * Immediate visibility management provides instantaneous user feedback by hiding both the
-     * targeted passenger panel and its associated removal button before beginning collection
-     * and container cleanup operations. The management ensures smooth visual transitions and
-     * immediate user confirmation of removal initiation throughout passenger removal processes.
      * </p>
      * <p>
      * Collection synchronization removes the targeted components from both passenger panel and
@@ -237,12 +94,6 @@ public class RemovePassengerButton extends JButton {
      * passenger management throughout booking modification workflows.
      * </p>
      * <p>
-     * Resource disposal includes comprehensive cleanup of passenger-specific sub-components such
-     * as seat chooser dialogs and luggage view windows with proper null reference checking. The
-     * disposal prevents resource leaks and ensures optimal system performance during extended
-     * booking modification sessions with frequent passenger management operations.
-     * </p>
-     * <p>
      * Layout restructuring repositions all remaining passengers and their associated removal
      * buttons with updated GridBagConstraints positioning using modular arithmetic for page-based
      * organization. The restructuring includes proper constraint configuration, component re-addition
@@ -254,26 +105,6 @@ public class RemovePassengerButton extends JButton {
      * based on current passenger count and page context. The coordination includes automatic page
      * transitions when necessary, visibility management for optimal user experience, and navigation
      * control state updates to maintain consistent interface behavior throughout removal operations.
-     * </p>
-     * <p>
-     * Interface state management includes navigation button state coordination and removal button
-     * state management to prevent invalid removal operations. The state management ensures that
-     * next page buttons are properly enabled or disabled based on current page context and that
-     * the first removal button is disabled when only one passenger remains to prevent invalid
-     * booking configurations.
-     * </p>
-     * <p>
-     * State management includes initial button state configuration that enables the removal button
-     * for immediate operational readiness. The state management integrates with booking modification
-     * workflow requirements and provides appropriate button availability based on passenger count
-     * and removal constraints throughout booking modification operations.
-     * </p>
-     * <p>
-     * Collection integration maintains references to all necessary data structures and container
-     * components required for comprehensive removal operations. The integration enables coordinated
-     * updates across multiple interface components, ensures consistent state management throughout
-     * passenger removal workflows, and provides seamless coordination with booking page navigation
-     * and layout management systems.
      * </p>
      *
      * @param book the BookingPage instance providing access to layout containers and navigation controls for removal coordination
