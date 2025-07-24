@@ -187,35 +187,29 @@ public class BookingDAOImpl implements BookingDAO {
             //prendo un passeggero per aggiungere ticket temporaneo
             query = "SELECT id_passenger FROM Ticket WHERE id_booking = ? LIMIT 1;";
 
-            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+            try (PreparedStatement preparedSelectQuery = connection.prepareStatement(query)) {
 
-                preparedQuery.setInt(1, idBooking);
+                preparedSelectQuery.setInt(1, idBooking);
 
-                resultSet = preparedQuery.executeQuery();
-            }
+                resultSet = preparedSelectQuery.executeQuery();
 
-            if (!resultSet.next()) throw new SQLException();
+                if (!resultSet.next()) {
+                    throw new SQLException();
+                }
 
-            query = "INSERT INTO Ticket (ticket_number, id_booking, id_passenger, id_flight) VALUES (?, ?, ?, ?);";
+                query = "INSERT INTO Ticket (ticket_number, id_booking, id_passenger, id_flight) VALUES (?, ?, ?, ?);";
 
-            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+                try (PreparedStatement preparedInsertQuery = connection.prepareStatement(query)) {
 
-                System.out.println("Errore qui1");
+                    preparedInsertQuery.setString(1, tmpTicket);
+                    preparedInsertQuery.setInt(2, idBooking);
+                    preparedInsertQuery.setString(3, resultSet.getString("id_passenger"));
+                    preparedInsertQuery.setString(4, idFlight);
 
-                preparedQuery.setString(1, tmpTicket);
-                preparedQuery.setInt(2, idBooking);
-                preparedQuery.setString(3, resultSet.getString("id_passenger"));
-                preparedQuery.setString(4, idFlight);
+                    preparedInsertQuery.executeUpdate();
 
-                System.out.println("Errore qui2");
-
-                preparedQuery.executeUpdate();
-
-                System.out.println("Errore qui3");
-
-                resultSet.close();
-
-                System.out.println("Errore qui4");
+                    resultSet.close();
+                }
             }
 
             //cancellazione vecchi tickets
@@ -230,13 +224,10 @@ public class BookingDAOImpl implements BookingDAO {
 
             //eventuale inserimento in passenger
             insertPassengers(connection, firstNames, lastNames, birthDates, passengerSSNs);
-
             //inserisci in ticket
             insertTickets(connection, idBooking, idFlight, ticketNumbers, passengerSSNs, seats);
-
             //inserisci in luggage
             insertLuggages(connection, ticketForLuggages,  luggagesTypes);
-
             //cancellazione ticket temporaneo
             query = "DELETE FROM Ticket WHERE ticket_number = ?;";
 
@@ -259,7 +250,6 @@ public class BookingDAOImpl implements BookingDAO {
             }
 
             connection.commit();
-
         }
     }
 
