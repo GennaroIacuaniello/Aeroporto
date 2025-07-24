@@ -43,12 +43,6 @@ public class AdminController {
 
     /**
      * Sets the administrator session using an existing {@link Admin} object.
-     * <p>
-     * This method establishes an administrator session using a pre-constructed
-     * {@link Admin} object and the corresponding database identifier. It is typically
-     * used when an {@link Admin} object has already been created and needs to be
-     * set as the current session.
-     * </p>
      *
      * @param loggedAdmin the {@link Admin} object to set as the current session
      * @param id the unique database identifier for the administrator

@@ -22,23 +22,6 @@ import java.util.List;
  *   <li>Username and email uniqueness validation across user types</li>
  *   <li>Password management and security enforcement</li>
  * </ul>
- * <p>
- * Unlike administrators, customers have more flexible account requirements where email addresses
- * are optional during registration, allowing for streamlined account creation processes.
- * However, the interface maintains strict validation to prevent conflicts with existing
- * administrator and customer accounts across the entire user base.
- * </p>
- * <p>
- * The interface follows the DAO pattern to provide a clean separation between business logic
- * and data persistence layer, enabling different implementations for various database systems
- * while maintaining consistent functionality across the application.
- * </p>
- * <p>
- * Implementation classes should handle all database-specific operations, connection management,
- * error handling, and ensure proper transaction handling for data consistency and integrity.
- * Cross-table validation ensures that usernames and email addresses remain unique across
- * both customer and administrator user types.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -98,8 +81,6 @@ public interface CustomerDAO {
      * <p>
      * Only active (non-deleted) customer accounts are considered during the search.
      * The password parameter should be provided in hashed format for security purposes.
-     * Note that customers may have null email addresses, so this method may not find
-     * all customer accounts.
      * </p>
      *
      * @param userID list to be populated with the customer's unique identifier
@@ -153,16 +134,12 @@ public interface CustomerDAO {
      * The method enforces the following validation rules:
      * </p>
      * <ul>
-     *   <li>New username must be unique across all user types (Customer and Admin)</li>
-     *   <li>New email address must be unique across all user types if provided</li>
+     *   <li>The new username must be unique across all user types (Customer and Admin)</li>
+     *   <li>A new email address must be unique across all user types if provided</li>
      *   <li>Username and email cannot be the same as any existing user except the current user</li>
      *   <li>Only active (non-deleted) accounts are considered during uniqueness validation</li>
      *   <li>Password must be provided in hashed format</li>
      * </ul>
-     * <p>
-     * This method allows customers to update all their account information including
-     * email addresses, providing full account management capabilities.
-     * </p>
      *
      * @param userID the unique identifier of the customer account to update
      * @param mail the new email address for the customer account, can be null
@@ -171,7 +148,7 @@ public interface CustomerDAO {
      * @throws SQLException if a database access error occurs during the operation
      * @throws UserAlreadyExistsException if the new username or email address is already in use by another user
      */
-    public void updateCustomer(Integer userID, String mail, String username, String password) throws SQLException;
+    void updateCustomer(Integer userID, String mail, String username, String password) throws SQLException;
 
     /**
      * Marks a customer account as deleted in the system.
@@ -202,6 +179,6 @@ public interface CustomerDAO {
      * @param userID the unique identifier of the customer account to delete
      * @throws SQLException if a database access error occurs during the operation
      */
-    public void deleteCustomer(Integer userID) throws SQLException;
+    void deleteCustomer(Integer userID) throws SQLException;
 
 }

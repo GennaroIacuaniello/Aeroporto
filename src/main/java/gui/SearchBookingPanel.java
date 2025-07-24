@@ -20,9 +20,8 @@ import java.util.List;
  * <p>
  * This class extends {@link JPanel} to provide booking search functionality within the
  * {@link MyBookingsCustomerMainFrame} frame. The SearchBookingPanel serves as the primary search
- * and filtering interface for customers to locate their existing bookings using various criteria
- * including flight information and passenger details, with comprehensive result display and
- * management capabilities throughout customer booking workflows.
+ * and filtering interface for customers to locate their existing bookings using various criteria,
+ * including flight information and passenger details.
  * </p>
  * <p>
  * The SearchBookingPanel class provides comprehensive booking search functionality including:
@@ -51,23 +50,11 @@ public class SearchBookingPanel extends JPanel {
 
     /**
      * Scroll container for search results display with overflow handling and navigation support.
-     * <p>
-     * This JScrollPane contains the {@link SearchBookingResultPanel} and provides scrolling
-     * capability when search results exceed the visible area. The container includes
-     * optimized scroll policies and smooth scrolling configuration for enhanced user
-     * experience during result browsing and booking selection operations.
-     * </p>
      */
     private JScrollPane resultsScrollPane;
 
     /**
      * Layout constraints utility for precise component positioning throughout the search interface.
-     * <p>
-     * This final Constraints helper object provides standardized {@link GridBagConstraints}
-     * configuration for optimal component layout and positioning. The constraints ensure
-     * consistent spacing, alignment, and visual organization throughout all search interface
-     * components and dynamic filter panel switching operations.
-     * </p>
      */
     private final Constraints constraints;
 
@@ -75,176 +62,83 @@ public class SearchBookingPanel extends JPanel {
      * Current active filter mode identifier for dynamic interface behavior management.
      * <p>
      * This string field tracks the currently selected search mode, containing values of
-     * "NONE", "FLIGHT", or "PASSENGER". The field enables proper filter panel visibility
-     * management, search operation routing, and user interface state coordination throughout
-     * booking search workflows and filter switching operations.
+     * "NONE", "FLIGHT", or "PASSENGER".
      * </p>
      */
-    //Contiene il filtro attuale, può essere: "NONE", "FLIGHT", "PASSENGER"
     private String activeFilter = "NONE";
 
     /**
      * Origin city input field for flight-based booking search operations.
-     * <p>
-     * This text field accepts departure city input for flight filtering, enabling customers
-     * to search for bookings based on flight origin locations. The field includes proper
-     * validation integration and supports partial city name matching for enhanced search
-     * flexibility and customer convenience during booking location operations.
-     * </p>
      */
     private JTextField fromField;
     
     /**
      * Destination city input field for flight-based booking search operations.
-     * <p>
-     * This text field accepts arrival city input for flight filtering, enabling customers
-     * to search for bookings based on flight destination locations. The field works in
-     * conjunction with the origin field to provide comprehensive route-based booking
-     * search capabilities with proper validation and error handling.
-     * </p>
      */
     private JTextField toField;
     
     /**
      * Start date picker component for flight date range filtering in booking searches.
-     * <p>
-     * This DatePicker component enables customers to specify the beginning of a date range
-     * for flight-based booking searches. The component includes proper date validation,
-     * user-friendly date selection interface, and integration with date range validation
-     * logic to ensure valid search criteria specification.
-     * </p>
      */
     private DatePicker dateFrom;
     
     /**
      * End date picker component for flight date range filtering in booking searches.
-     * <p>
-     * This DatePicker component enables customers to specify the end of a date range
-     * for flight-based booking searches. The component works with dateFrom to provide
-     * comprehensive date range filtering with validation to ensure logical date
-     * range specification and proper search criteria handling.
-     * </p>
      */
     private DatePicker dateTo;
     
     /**
      * Start time picker component for flight time range filtering in booking searches.
-     * <p>
-     * This TimePicker component enables customers to specify the beginning of a time range
-     * for flight-based booking searches. The component provides precise time selection
-     * capabilities and integrates with time range validation logic to ensure consistent
-     * and valid time range specification for flight filtering operations.
-     * </p>
      */
     private TimePicker timeFrom;
     
     /**
      * End time picker component for flight time range filtering in booking searches.
-     * <p>
-     * This TimePicker component enables customers to specify the end of a time range
-     * for flight-based booking searches. The component works with timeFrom to provide
-     * comprehensive time range filtering with validation to ensure logical time
-     * range specification and proper flight time-based search functionality.
-     * </p>
      */
     private TimePicker timeTo;
 
     /**
      * First name input field for passenger-based booking search operations.
-     * <p>
-     * This text field accepts passenger first name input for passenger filtering,
-     * enabling customers to search for bookings based on passenger personal information.
-     * The field supports partial name matching and case-insensitive search operations
-     * for enhanced search flexibility and customer convenience during booking location.
-     * </p>
      */
     private JTextField firstNameField;
 
     /**
      * Last name input field for passenger-based booking search operations.
-     * <p>
-     * This text field accepts passenger last name input for passenger filtering,
-     * providing surname-based booking search capabilities. The field integrates with
-     * other passenger search criteria to enable comprehensive passenger information
-     * matching and flexible booking location based on passenger identification.
-     * </p>
      */
     private JTextField lastNameField;
 
     /**
      * Passenger SSN (Codice Fiscale) input field for precise passenger identification in booking searches.
-     * <p>
-     * This text field accepts Italian fiscal code (codice fiscale) input for precise
-     * passenger identification during booking searches. The field provides exact
-     * passenger matching capabilities and integrates with passenger validation
-     * systems for accurate booking location and customer service operations.
-     * </p>
      */
     private JTextField passengerSSNField;
     
     /**
      * Ticket number input field for direct ticket-based booking identification and search.
-     * <p>
-     * This text field accepts ticket number input for direct booking location,
-     * providing the most precise booking search method available. The field enables
-     * immediate booking access through unique ticket identification and supports
-     * exact matching for efficient customer service and booking management operations.
-     * </p>
      */
     private JTextField ticketNumberField;
 
     /**
      * Primary search button for executing booking search operations with comprehensive validation and error handling.
-     * <p>
-     * This JButton initiates booking search operations based on the currently selected
-     * filter mode and input criteria. The button includes dynamic state management,
-     * comprehensive input validation, and integrates with the FloatingMessage system
-     * for user feedback during search operations and error scenarios.
-     * </p>
      */
     private JButton searchButton;
 
     /**
      * Search performance status flag for tracking search operation execution and interface state management.
-     * <p>
-     * This boolean field indicates whether search operations have been performed,
-     * supporting interface state management and search result persistence throughout
-     * navigation operations. The flag enables proper search state tracking and
-     * interface behavior coordination during customer booking management workflows.
-     * </p>
      */
     private boolean searchPerformed = false;
 
     /**
      * Collection of booking dates from search results for comprehensive booking information management.
-     * <p>
-     * This ArrayList contains booking creation dates retrieved from search operations,
-     * providing temporal information for booking identification and organization.
-     * The collection is synchronized with booking status and flight ID collections
-     * to maintain data consistency throughout search result processing and display.
-     * </p>
      */
     ArrayList<Date> bookingDates = new ArrayList<>();
     
     /**
      * Collection of booking status information from search results for booking state tracking and display.
-     * <p>
-     * This ArrayList contains booking status strings (CONFIRMED, PENDING, CANCELLED)
-     * retrieved from search operations, providing current booking state information
-     * for customer awareness and booking management decisions. The collection maintains
-     * synchronization with other result data for consistent information presentation.
-     * </p>
      */
     ArrayList<String> bookingStatus = new ArrayList<>();
     
     /**
      * Collection of flight identifiers from search results for flight information correlation and management.
-     * <p>
-     * This ArrayList contains flight ID strings associated with booking search results,
-     * enabling correlation with flight information and detailed booking data presentation.
-     * The collection supports result display operations and booking detail access
-     * throughout customer booking management and modification workflows.
-     * </p>
      */
     ArrayList<String> flightIds = new ArrayList<>();
 
@@ -267,47 +161,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Border Management:</strong> Compound border creation with line borders and padding for visual definition</li>
      *   <li><strong>Component Assembly:</strong> Complete search interface creation through setComponents method delegation</li>
      * </ul>
-     * <p>
-     * Layout configuration establishes {@link GridBagLayout} as the primary layout manager,
-     * providing precise control over component positioning, spacing, and alignment throughout
-     * the search interface. The layout supports dynamic component switching between filter
-     * modes while maintaining consistent visual organization and user experience.
-     * </p>
-     * <p>
-     * Visual styling includes white background configuration for optimal content readability
-     * and professional appearance that integrates seamlessly with the airport management
-     * system's visual design standards. The styling ensures consistent branding and user
-     * experience throughout customer booking management interfaces.
-     * </p>
-     * <p>
-     * Constraints setup initializes the {@link Constraints} utility object that provides
-     * standardized {@link GridBagConstraints} configuration throughout the search interface.
-     * The constraints ensure consistent component spacing, alignment, and positioning across
-     * all search interface elements and dynamic filter panel operations.
-     * </p>
-     * <p>
-     * Border management creates a compound border system combining line borders for visual
-     * definition with empty borders for proper padding. The border configuration includes
-     * light gray line borders (200, 200, 200) and comprehensive padding (40, 50, 40, 50)
-     * that provides optimal visual separation and content organization.
-     * </p>
-     * <p>
-     * Component assembly delegates to the {@link #setComponents(List, Controller, boolean)}
-     * method for complete search interface creation including filter panels, search buttons,
-     * result display areas, and menu integration functionality. The assembly process ensures
-     * proper component initialization and event handling setup.
-     * </p>
-     * <p>
-     * Menu integration support enables specialized behavior when the search panel is accessed
-     * through customer menu navigation, providing automatic booking data loading and immediate
-     * result display for enhanced customer convenience and workflow efficiency.
-     * </p>
-     * <p>
-     * The constructor completes by establishing a fully functional search interface that
-     * provides comprehensive booking search capabilities with professional styling, responsive
-     * layout management, and seamless integration with the airport management system's
-     * customer booking management infrastructure and workflow requirements.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and workflow coordination
      * @param controller the system controller providing access to booking search functionality and data management services
@@ -350,67 +203,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Data Loading Logic:</strong> Conditional data loading based on menu access patterns and existing search results</li>
      *   <li><strong>Result Display Initialization:</strong> Initial result panel setup and display for immediate user interaction</li>
      * </ul>
-     * <p>
-     * Filter panel creation utilizes the {@link #createMainFilterPanel()} method to establish
-     * the dual-mode filtering interface with flight-based and passenger-based search options.
-     * The filter panel includes dynamic switching capabilities and comprehensive input validation
-     * for all search criteria types supported by the booking search system.
-     * </p>
-     * <p>
-     * Search button setup creates the primary search execution button through the
-     * {@link #createSearchButton(List, Controller)} method, including comprehensive event
-     * handling, input validation, and integration with the {@link FloatingMessage} system
-     * for user feedback during search operations and error scenarios.
-     * </p>
-     * <p>
-     * Results container configuration establishes a {@link JScrollPane} for dynamic result
-     * display, providing scrolling capabilities when search results exceed visible area.
-     * The container supports smooth scrolling and optimal result presentation throughout
-     * customer booking search and selection operations.
-     * </p>
-     * <p>
-     * Layout management applies {@link GridBagConstraints} through the constraints utility
-     * to ensure optimal component positioning and spacing. The layout includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Filter Panel Positioning:</strong> Top area with horizontal expansion and proper margins</li>
-     *   <li><strong>Search Button Placement:</strong> Center positioning with appropriate spacing and visual prominence</li>
-     *   <li><strong>Results Area Configuration:</strong> Full expansion with both horizontal and vertical filling</li>
-     * </ul>
-     * <p>
-     * Data loading logic provides conditional behavior based on the ifOpenedFromMenu parameter:
-     * </p>
-     * <ul>
-     *   <li><strong>Menu Access:</strong> Automatic loading of all customer bookings through controller.getAllBooksLoogedCustomer()</li>
-     *   <li><strong>Direct Access:</strong> Retrieval of existing search results from controller caching for result persistence</li>
-     * </ul>
-     * <p>
-     * Menu access enables immediate booking display for customers accessing the search interface
-     * through navigation menus, providing convenient access to all booking information without
-     * requiring manual search operations. The automatic loading enhances customer experience
-     * and reduces interaction complexity for common booking management tasks.
-     * </p>
-     * <p>
-     * Direct access supports navigation continuity by retrieving cached search results from
-     * previous operations, maintaining search context and result persistence throughout
-     * customer navigation between different interface components and booking management areas.
-     * </p>
-     * <p>
-     * Result display initialization completes the setup process by calling
-     * {@link #updateResultsPanel(List, Controller)} to establish initial result presentation.
-     * The initialization ensures that customers see immediate booking information based on
-     * the access context and available data, providing responsive interface behavior.
-     * </p>
-     * <p>
-     * Error button configuration integrates the search button with the controller's error
-     * handling system, enabling proper error message positioning and user feedback during
-     * search operations and validation failures throughout booking search workflows.
-     * </p>
-     * <p>
-     * The method ensures complete search interface functionality with proper event handling,
-     * data management, and user experience optimization for both menu-initiated and direct
-     * access patterns throughout customer booking management and search operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and navigation coordination
      * @param controller the system controller providing access to booking search services and data management functionality
@@ -451,7 +243,7 @@ public class SearchBookingPanel extends JPanel {
         updateResultsPanel(callingObjects, controller);
     }
 
-        /**
+    /**
      * Creates and configures the main filter panel with dual-mode filtering capabilities and dynamic panel switching.
      * <p>
      * This private method establishes the primary filtering interface that enables customers to choose
@@ -470,69 +262,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Dynamic Visibility Management:</strong> Initial visibility configuration with proper panel state management</li>
      *   <li><strong>Event Handler Integration:</strong> ActionListener setup for dynamic panel switching and state coordination</li>
      * </ul>
-     * <p>
-     * Container setup creates the main panel with transparent background and GridBagLayout configuration
-     * for optimal component organization. The container includes a button panel with GridLayout for
-     * uniform button distribution and proper spacing (40 pixels) between filter mode selection buttons
-     * to ensure clear visual separation and professional interface appearance.
-     * </p>
-     * <p>
-     * Mode selection buttons include professionally styled flight and passenger filtering buttons
-     * with Italian localization ("Filtra per voli" and "Filtra per passeggeri"). The buttons utilize
-     * the {@link #setButtonApperance(JButton)} method for consistent styling and provide clear
-     * visual indication of available filtering modes for customer selection.
-     * </p>
-     * <p>
-     * Filter panel creation utilizes specialized methods {@link #createFlightFilterPanel()} and
-     * {@link #createPassengerFilterPanel()} to establish comprehensive input interfaces for each
-     * search mode. The panels are created with complete functionality but initially hidden to
-     * provide clean interface presentation before user selection.
-     * </p>
-     * <p>
-     * Dynamic visibility management includes initial configuration where both filter panels are
-     * set to invisible, providing a clean initial interface state. The panels are positioned
-     * using overlapping layout constraints, enabling efficient space utilization while maintaining
-     * proper visual presentation when activated through user interaction.
-     * </p>
-     * <p>
-     * Event handler integration includes comprehensive ActionListener implementation for both
-     * filter mode buttons that provides:
-     * </p>
-     * <ul>
-     *   <li><strong>Flight Button Handler:</strong> Sets activeFilter to "FLIGHT", shows flight filter panel, hides passenger panel</li>
-     *   <li><strong>Passenger Button Handler:</strong> Sets activeFilter to "PASSENGER", shows passenger filter panel, hides flight panel</li>
-     *   <li><strong>Interface Updates:</strong> Automatic panel revalidation and repainting for smooth visual transitions</li>
-     *   <li><strong>State Management:</strong> Active filter mode tracking for proper search operation routing</li>
-     * </ul>
-     * <p>
-     * The flight button event handler configures the interface for flight-based booking searches
-     * by updating the activeFilter state variable, managing panel visibility for flight-specific
-     * input fields, and triggering interface updates to ensure immediate visual feedback for
-     * user selection and proper interface state presentation.
-     * </p>
-     * <p>
-     * The passenger button event handler configures the interface for passenger-based booking
-     * searches by updating the activeFilter state variable, managing panel visibility for
-     * passenger-specific input fields, and ensuring proper interface coordination for passenger
-     * information-based search operations throughout the booking management workflow.
-     * </p>
-     * <p>
-     * Layout management utilizes precise GridBagConstraints configuration through the constraints
-     * utility to ensure optimal component positioning. The button panel is positioned at the top
-     * with horizontal expansion and appropriate bottom margin (35 pixels), while filter panels
-     * are positioned below with overlapping constraints for efficient space utilization.
-     * </p>
-     * <p>
-     * Interface state management ensures that only one filter panel is visible at any time,
-     * providing clean user experience and preventing interface confusion. The dynamic switching
-     * includes proper revalidation and repainting to ensure smooth visual transitions and
-     * immediate user feedback during filter mode selection.
-     * </p>
-     * <p>
-     * The method returns a fully configured main panel ready for integration within the broader
-     * search interface, providing comprehensive dual-mode filtering capabilities with professional
-     * visual presentation and seamless user interaction throughout booking search operations.
-     * </p>
      *
      * @return the configured main filter panel with dual-mode filtering capabilities and dynamic switching functionality
      */
@@ -615,69 +344,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Time Range Selection:</strong> TimePicker components with time range validation and precise selection</li>
      *   <li><strong>Visual Organization:</strong> Label styling, separator elements, and optimal spacing for professional presentation</li>
      * </ul>
-     * <p>
-     * Container architecture utilizes a sophisticated layout system with a main GridLayout container
-     * (1 row, 2 columns, 40-pixel gap) that houses left and right panels configured with GridBagLayout
-     * for precise component positioning. All panels use transparent backgrounds to maintain visual
-     * integration with the parent container and overall interface design consistency.
-     * </p>
-     * <p>
-     * Origin/destination fields include professionally styled text fields with appropriate sizing
-     * (15 characters) and Segoe UI font configuration (plain, 16pt) for optimal readability. The
-     * left panel houses the "Da:" (From) field while the right panel contains the "A:" (To) field,
-     * providing intuitive left-to-right flight route specification that matches natural user expectations.
-     * </p>
-     * <p>
-     * Date range selection utilizes {@link DatePicker} components with custom font configuration
-     * (Segoe UI, plain, 14pt) for the date text fields. The date pickers are positioned with a
-     * visual separator ("--") between them to clearly indicate range specification, and include
-     * proper constraint configuration for optimal space distribution (0.5f weight each) within
-     * the available layout space.
-     * </p>
-     * <p>
-     * Time range selection employs {@link TimePicker} components with matching font configuration
-     * and layout principles as the date range selection. The time pickers enable precise time
-     * specification for flight filtering and include visual separation with consistent spacing
-     * and alignment throughout the interface for professional presentation.
-     * </p>
-     * <p>
-     * Visual organization includes comprehensive label styling through {@link #setLabelApperance(JLabel)}
-     * for consistent typography and professional appearance. Labels include Italian localization:
-     * </p>
-     * <ul>
-     *   <li><strong>"Da:" and "A:":</strong> Origin and destination city labels with clear identification</li>
-     *   <li><strong>"Range date:":</strong> Date range section label for temporal filtering</li>
-     *   <li><strong>"Fascia oraria:":</strong> Time range section label for temporal precision</li>
-     *   <li><strong>"--" Separators:</strong> Visual separators between range components for clarity</li>
-     * </ul>
-     * <p>
-     * Layout management utilizes precise GridBagConstraints configuration through the constraints
-     * utility to ensure optimal component positioning and spacing. The layout includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Left Panel Layout:</strong> Origin field and date range components with proper alignment</li>
-     *   <li><strong>Right Panel Layout:</strong> Destination field and time range components with consistent spacing</li>
-     *   <li><strong>Spacing Management:</strong> 30-pixel bottom margins for visual separation between sections</li>
-     *   <li><strong>Alignment Control:</strong> LINE_END and LINE_START alignment for optimal visual organization</li>
-     * </ul>
-     * <p>
-     * Component positioning ensures that labels are right-aligned (LINE_END) for clean visual
-     * organization, while input fields are left-aligned (LINE_START) with horizontal expansion
-     * for optimal space utilization. Separators are center-aligned to provide clear visual
-     * indication of range relationships between paired components.
-     * </p>
-     * <p>
-     * The method integrates field initialization with proper styling and positioning to create
-     * a comprehensive flight filtering interface that supports advanced search criteria specification
-     * while maintaining professional visual presentation and intuitive user interaction patterns
-     * throughout flight-based booking search operations.
-     * </p>
-     * <p>
-     * Validation integration is prepared through proper field configuration and styling that
-     * supports the comprehensive input validation implemented in {@link #filteredFlightSearch}
-     * for city specification consistency, date range logic, and time range validation throughout
-     * the booking search workflow.
-     * </p>
      *
      * @return the configured flight filter panel with comprehensive flight search criteria and professional visual presentation
      */
@@ -809,78 +475,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Italian Localization:</strong> Comprehensive Italian language labels for customer-friendly interface presentation</li>
      *   <li><strong>Professional Styling:</strong> Consistent typography, spacing, and visual organization throughout the interface</li>
      * </ul>
-     * <p>
-     * Container architecture utilizes a sophisticated layout system with a main GridLayout container
-     * (1 row, 2 columns, 40-pixel gap) that houses left and right panels configured with GridBagLayout
-     * for precise component positioning. All panels use transparent backgrounds to maintain visual
-     * integration with the parent container and consistent interface design throughout the application.
-     * </p>
-     * <p>
-     * Personal information fields include comprehensive passenger identification options with
-     * professional styling and appropriate sizing. All text fields are configured with 15-character
-     * width and Segoe UI font (plain, 16pt) for optimal readability and consistent visual presentation
-     * that matches the flight filter panel styling for interface coherence.
-     * </p>
-     * <p>
-     * The left panel houses essential personal information fields:
-     * </p>
-     * <ul>
-     *   <li><strong>First Name Field:</strong> "Nome:" label with corresponding text input for passenger first name searches</li>
-     *   <li><strong>SSN Field:</strong> "Codice Fiscale:" label with text input for Italian fiscal code-based precise identification</li>
-     * </ul>
-     * <p>
-     * The right panel contains complementary identification fields:
-     * </p>
-     * <ul>
-     *   <li><strong>Last Name Field:</strong> "Cognome:" label with corresponding text input for passenger surname searches</li>
-     *   <li><strong>Ticket Number Field:</strong> "N. Biglietto:" label with text input for direct ticket-based booking identification</li>
-     * </ul>
-     * <p>
-     * Italian localization provides customer-friendly interface presentation with comprehensive
-     * Italian language labels that match the customer base and operational context of the airport
-     * management system. The localization includes proper terminology for passenger identification
-     * fields and ticket-based search functionality that aligns with Italian aviation standards.
-     * </p>
-     * <p>
-     * Professional styling utilizes {@link #setLabelApperance(JLabel)} for consistent typography
-     * and visual presentation across all label elements. The styling ensures professional appearance
-     * with proper font configuration, alignment, and spacing that maintains visual consistency
-     * with other interface components throughout the booking management system.
-     * </p>
-     * <p>
-     * Layout management utilizes precise GridBagConstraints configuration through the constraints
-     * utility to ensure optimal component positioning and spacing. The layout includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Label Positioning:</strong> Right-aligned labels (LINE_END) for clean visual organization</li>
-     *   <li><strong>Field Positioning:</strong> Left-aligned input fields (LINE_START) with horizontal expansion</li>
-     *   <li><strong>Spacing Management:</strong> 30-pixel bottom margins and 10-pixel horizontal spacing for professional presentation</li>
-     *   <li><strong>Weight Distribution:</strong> Proper weight configuration (1.0f for fields) for optimal space utilization</li>
-     * </ul>
-     * <p>
-     * Component positioning ensures consistent visual organization with labels positioned for
-     * optimal readability and input fields configured for efficient data entry. The layout
-     * maintains consistent spacing (30-pixel vertical margins, 10-pixel horizontal margins)
-     * throughout the interface for professional appearance and user-friendly interaction patterns.
-     * </p>
-     * <p>
-     * Field configuration includes proper font styling and sizing that supports various types
-     * of passenger searches from partial name matching to precise fiscal code and ticket number
-     * identification. The flexible search capability enables customers to locate bookings using
-     * whatever passenger information they have available for enhanced convenience and accessibility.
-     * </p>
-     * <p>
-     * The method creates a comprehensive passenger filtering interface that supports the diverse
-     * search requirements of customer booking management while maintaining professional visual
-     * presentation and intuitive user interaction patterns that align with the broader airport
-     * management system interface design and functionality standards.
-     * </p>
-     * <p>
-     * Integration with {@link #filteredPassengerSearch} enables comprehensive validation and
-     * search execution based on the passenger criteria specified through this interface, providing
-     * flexible booking location capabilities that enhance customer service and booking management
-     * efficiency throughout the airport management system operations.
-     * </p>
      *
      * @return the configured passenger filter panel with comprehensive personal information search criteria and professional presentation
      */
@@ -984,76 +578,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Event Handling:</strong> Comprehensive ActionListener implementation with filter mode routing</li>
      *   <li><strong>Error Integration:</strong> Controller error button registration for proper error message positioning</li>
      * </ul>
-     * <p>
-     * Visual configuration establishes professional button appearance with Italian "Cerca" (Search)
-     * label that provides clear action indication for customers. The button utilizes modern design
-     * principles with appropriate sizing (200x50 pixels) for optimal clickability and visual prominence
-     * within the search interface layout.
-     * </p>
-     * <p>
-     * Font styling applies bold Segoe UI font (18pt) for optimal readability and professional
-     * appearance that maintains consistency with the airport management system's typography
-     * standards. The font configuration ensures clear text visibility across different display
-     * configurations and user interface scaling scenarios.
-     * </p>
-     * <p>
-     * Color scheme utilizes professional blue background (0, 120, 215) with white foreground
-     * text that provides excellent contrast and visual prominence. The color configuration
-     * follows modern interface design principles and integrates seamlessly with the overall
-     * airport management system visual branding and user experience standards.
-     * </p>
-     * <p>
-     * Interactive elements include hand cursor configuration for clear interaction indication
-     * and focus painting disabled for clean visual presentation. The interactive configuration
-     * enhances user experience by providing immediate visual feedback for button interaction
-     * while maintaining professional interface appearance.
-     * </p>
-     * <p>
-     * Event handling implements comprehensive ActionListener functionality that provides
-     * intelligent search operation routing based on the current activeFilter state:
-     * </p>
-     * <ul>
-     *   <li><strong>NONE State:</strong> Displays error message requiring filter selection before search execution</li>
-     *   <li><strong>FLIGHT State:</strong> Routes to filteredFlightSearch method for flight-based booking searches</li>
-     *   <li><strong>PASSENGER State:</strong> Routes to filteredPassengerSearch method for passenger-based booking searches</li>
-     *   <li><strong>Default Handling:</strong> Provides fallback behavior for unexpected filter states</li>
-     * </ul>
-     * <p>
-     * The NONE state handler displays Italian-language error message "Selezionare un tipo di
-     * filtro prima di cercare." (Select a filter type before searching) through the FloatingMessage
-     * system, providing clear user guidance when no filter mode has been selected. The error
-     * handling prevents invalid search operations and guides users toward proper interface usage.
-     * </p>
-     * <p>
-     * The FLIGHT state handler delegates search execution to the {@link #filteredFlightSearch}
-     * method, providing comprehensive flight-based booking search functionality with origin/destination
-     * city filtering, date range validation, and time range specification throughout the booking
-     * search workflow with proper error handling and result presentation.
-     * </p>
-     * <p>
-     * The PASSENGER state handler delegates search execution to the {@link #filteredPassengerSearch}
-     * method, enabling comprehensive passenger-based booking searches using personal information
-     * including first name, last name, SSN, and ticket number criteria for flexible booking
-     * location capabilities throughout customer service operations.
-     * </p>
-     * <p>
-     * Error integration includes controller error button registration through the setErrorButton
-     * method, enabling proper error message positioning and user feedback during search operations
-     * and validation failures. The integration ensures consistent error presentation throughout
-     * booking search workflows and maintains professional user experience standards.
-     * </p>
-     * <p>
-     * Search performance tracking includes automatic searchPerformed flag setting to true,
-     * supporting interface state management and search result persistence throughout navigation
-     * operations. The performance tracking enables proper search state coordination and interface
-     * behavior management during customer booking management workflows.
-     * </p>
-     * <p>
-     * The method returns a fully configured search button ready for immediate integration within
-     * the booking search interface, providing comprehensive search execution capabilities with
-     * professional styling, intelligent routing, and seamless user experience throughout
-     * customer booking management and search operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and search coordination
      * @param controller the system controller providing access to booking search services and error handling functionality
@@ -1117,83 +641,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Result Presentation:</strong> Dynamic result panel updates with immediate user feedback and data display</li>
      *   <li><strong>Error Handling:</strong> Comprehensive error messaging through FloatingMessage system integration</li>
      * </ul>
-     * <p>
-     * Parameter extraction includes comprehensive retrieval of all flight search criteria:
-     * </p>
-     * <ul>
-     *   <li><strong>Origin City:</strong> Departure city text from fromField input component</li>
-     *   <li><strong>Destination City:</strong> Arrival city text from toField input component</li>
-     *   <li><strong>Date Range:</strong> Start and end dates from dateFrom and dateTo DatePicker components</li>
-     *   <li><strong>Time Range:</strong> Start and end times from timeFrom and timeTo TimePicker components</li>
-     * </ul>
-     * <p>
-     * Input validation implements comprehensive multi-level validation logic with specific
-     * Italian-language error messaging for each validation scenario:
-     * </p>
-     * <ul>
-     *   <li><strong>City Consistency:</strong> Validates that both origin and destination cities are specified or both are empty</li>
-     *   <li><strong>Date Range Logic:</strong> Ensures complete date range specification when partial dates are provided</li>
-     *   <li><strong>Date Sequence Validation:</strong> Verifies that end date is after or equal to start date</li>
-     *   <li><strong>Time Range Consistency:</strong> Validates complete time range specification when partial times are provided</li>
-     * </ul>
-     * <p>
-     * City consistency validation prevents incomplete route specifications by ensuring that
-     * customers provide both origin and destination cities or leave both fields empty for
-     * broader search results. The validation displays Italian error message "Se si specifica
-     * una città, vanno specificate entrambe!" (If you specify a city, both must be specified!)
-     * for incomplete city specifications.
-     * </p>
-     * <p>
-     * Date range logic validation ensures logical date range specification by preventing
-     * partial date range entries where only start or end date is provided. The validation
-     * displays Italian error message "Errore nel range di date!" (Error in date range!)
-     * for incomplete date range specifications that could lead to invalid search results.
-     * </p>
-     * <p>
-     * Date sequence validation ensures logical temporal ordering by verifying that the
-     * end date is not before the start date. The validation displays Italian error message
-     * "La seconda data deve essere successiva alla prima!" (The second date must be after
-     * the first!) for invalid date sequence specifications.
-     * </p>
-     * <p>
-     * Time range consistency validation ensures complete time range specification by
-     * preventing partial time range entries where only start or end time is provided.
-     * The validation displays Italian error message "Errore nella fascia oraria!"
-     * (Error in time range!) for incomplete time specifications.
-     * </p>
-     * <p>
-     * Search execution includes controller-coordinated search operations when all validation
-     * checks pass successfully. The execution process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Data Collection Initialization:</strong> Creates new ArrayList instances for search results</li>
-     *   <li><strong>Controller Search Invocation:</strong> Calls searchBooksLoogedCustomerFilteredFlights with all search parameters</li>
-     *   <li><strong>Result Processing:</strong> Handles search result data in synchronized collections</li>
-     *   <li><strong>Interface Updates:</strong> Triggers result panel updates for immediate user feedback</li>
-     * </ul>
-     * <p>
-     * Data collection initialization creates fresh ArrayList instances for bookingDates,
-     * bookingStatus, and flightIds to ensure clean search result storage without contamination
-     * from previous search operations. The initialization provides proper data isolation
-     * and consistent search result presentation.
-     * </p>
-     * <p>
-     * Controller search invocation delegates actual search operations to the controller's
-     * searchBooksLoogedCustomerFilteredFlights method, providing all extracted search parameters
-     * and result collection references. The invocation includes proper error button integration
-     * for comprehensive error handling and user feedback.
-     * </p>
-     * <p>
-     * Result presentation includes immediate result panel updates through the updateResultsPanel
-     * method, ensuring that customers see search results immediately upon successful search
-     * execution. The presentation provides responsive user experience and immediate feedback
-     * for search operations throughout booking management workflows.
-     * </p>
-     * <p>
-     * Error handling ensures that result panel updates occur even when validation errors
-     * prevent search execution, maintaining interface consistency and providing proper
-     * error message display through the FloatingMessage system integration.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and search coordination
      * @param controller the system controller providing access to flight-based booking search functionality and error handling services
@@ -1263,66 +710,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Result Presentation:</strong> Dynamic result panel updates with immediate user feedback and booking information display</li>
      *   <li><strong>Data Management:</strong> Proper collection initialization and synchronization for consistent result handling</li>
      * </ul>
-     * <p>
-     * Parameter extraction includes comprehensive retrieval of all passenger search criteria:
-     * </p>
-     * <ul>
-     *   <li><strong>First Name:</strong> Passenger first name text from firstNameField input component</li>
-     *   <li><strong>Last Name:</strong> Passenger surname text from lastNameField input component</li>
-     *   <li><strong>Passenger SSN:</strong> Italian fiscal code text from passengerSSNField input component</li>
-     *   <li><strong>Ticket Number:</strong> Unique ticket identifier text from ticketNumberField input component</li>
-     * </ul>
-     * <p>
-     * Flexible search logic accommodates various search scenarios without requiring complete
-     * passenger information specification. The method supports:
-     * </p>
-     * <ul>
-     *   <li><strong>Partial Name Searches:</strong> First name only, last name only, or both names for flexible matching</li>
-     *   <li><strong>Precise Identification:</strong> SSN-based searches for exact passenger identification</li>
-     *   <li><strong>Direct Ticket Access:</strong> Ticket number-based searches for immediate booking location</li>
-     *   <li><strong>Combined Criteria:</strong> Multiple search parameters for refined search results</li>
-     * </ul>
-     * <p>
-     * Search execution includes controller-coordinated search operations when valid controller
-     * reference is available. The execution process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Data Collection Initialization:</strong> Creates new ArrayList instances for passenger search results</li>
-     *   <li><strong>Controller Search Invocation:</strong> Calls searchBooksLoogedCustomerFilteredPassengers with all search parameters</li>
-     *   <li><strong>Result Processing:</strong> Handles passenger search result data in synchronized collections</li>
-     *   <li><strong>Interface Updates:</strong> Triggers result panel updates for immediate passenger booking display</li>
-     * </ul>
-     * <p>
-     * Data collection initialization creates fresh ArrayList instances for bookingDates,
-     * bookingStatus, and flightIds to ensure clean passenger search result storage without
-     * contamination from previous search operations. The initialization provides proper data
-     * isolation and consistent passenger booking result presentation.
-     * </p>
-     * <p>
-     * Controller search invocation delegates actual passenger search operations to the
-     * controller's searchBooksLoogedCustomerFilteredPassengers method, providing all extracted
-     * passenger search parameters and result collection references. The invocation includes
-     * proper error button integration for comprehensive error handling and user feedback.
-     * </p>
-     * <p>
-     * Result processing ensures that passenger search results are properly stored in the
-     * synchronized collection system, maintaining data consistency and enabling accurate
-     * booking information presentation through the integrated result display components
-     * throughout passenger-based booking management workflows.
-     * </p>
-     * <p>
-     * Interface updates include immediate result panel updates through the updateResultsPanel
-     * method, ensuring that customers see passenger booking search results immediately upon
-     * search execution. The updates provide responsive user experience and immediate feedback
-     * for passenger-based search operations throughout booking management workflows.
-     * </p>
-     * <p>
-     * The method provides enhanced customer service capabilities by enabling flexible
-     * passenger information searches that accommodate various customer knowledge scenarios,
-     * from complete passenger information to partial details or unique identifiers,
-     * supporting comprehensive booking location and customer assistance throughout
-     * airport management system operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and search coordination
      * @param controller the system controller providing access to passenger-based booking search functionality and data management services
@@ -1368,56 +755,6 @@ public class SearchBookingPanel extends JPanel {
      *   <li><strong>Scroll Performance Optimization:</strong> Enhanced scrolling unit increments for smooth user interaction</li>
      *   <li><strong>Interface Refresh:</strong> Component revalidation and repainting for immediate visual updates</li>
      * </ul>
-     * <p>
-     * Result panel creation instantiates new SearchBookingResultPanel with comprehensive
-     * parameter passing including calling objects hierarchy, controller reference, and all
-     * current search result data collections (bookingDates, bookingStatus, flightIds).
-     * The creation ensures that results display reflects the most current search data
-     * with proper navigation integration and interactive booking management capabilities.
-     * </p>
-     * <p>
-     * Viewport configuration updates the scroll pane's viewport to display the newly
-     * created results panel, ensuring that customers see immediate result updates following
-     * search operations. The viewport configuration provides seamless transitions between
-     * different search result displays and maintains proper component hierarchy integration.
-     * </p>
-     * <p>
-     * Border management applies empty border configuration to the scroll pane, ensuring
-     * clean visual presentation without unnecessary border artifacts that could interfere
-     * with the professional interface appearance. The border management maintains consistency
-     * with the overall airport management system visual design standards.
-     * </p>
-     * <p>
-     * Scroll policy configuration establishes optimal scroll bar visibility policies:
-     * </p>
-     * <ul>
-     *   <li><strong>Vertical Scrolling:</strong> AS_NEEDED policy for automatic scroll bar display when content exceeds visible area</li>
-     *   <li><strong>Horizontal Scrolling:</strong> AS_NEEDED policy for automatic horizontal scroll support when required</li>
-     * </ul>
-     * <p>
-     * The AS_NEEDED scroll policies ensure that scroll bars appear only when necessary,
-     * providing clean interface presentation for small result sets while automatically
-     * enabling scrolling capabilities when search results exceed the available display
-     * area, optimizing space utilization and user experience.
-     * </p>
-     * <p>
-     * Scroll performance optimization configures enhanced vertical scrolling with 30-pixel
-     * unit increments, providing smooth and responsive scrolling behavior during result
-     * browsing operations. The optimized scrolling enhances user experience by enabling
-     * precise navigation through search results with comfortable scrolling speeds.
-     * </p>
-     * <p>
-     * Interface refresh includes comprehensive component revalidation and repainting to
-     * ensure immediate visual updates following result panel changes. The refresh process
-     * triggers proper layout recalculation and visual rendering to provide responsive
-     * interface behavior and immediate user feedback during search result updates.
-     * </p>
-     * <p>
-     * The method ensures that search result presentation maintains optimal user experience
-     * through professional visual design, responsive scrolling behavior, and immediate
-     * result display updates that support efficient booking location and management
-     * throughout customer interaction with the airport management system.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and result panel integration
      * @param controller the system controller providing access to booking data and result management functionality

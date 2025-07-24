@@ -22,20 +22,6 @@ import java.util.List;
  *   <li>Username and email uniqueness validation</li>
  *   <li>Password management and security enforcement</li>
  * </ul>
- * <p>
- * All administrator operations are subject to enhanced security requirements compared to regular
- * customer operations. Administrators must provide valid email addresses and are subject to
- * stricter validation rules to ensure system security and proper administrative oversight.
- * </p>
- * <p>
- * The interface follows the DAO pattern to provide a clean separation between business logic
- * and data persistence layer, enabling different implementations for various database systems
- * while maintaining consistent functionality across the application.
- * </p>
- * <p>
- * Implementation classes should handle all database-specific operations, connection management,
- * error handling, and ensure proper transaction handling for data consistency and integrity.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -123,10 +109,6 @@ public interface AdminDAO {
      *   <li>Email address is mandatory for administrator accounts</li>
      *   <li>Password must be provided in hashed format</li>
      * </ul>
-     * <p>
-     * The newly created administrator account will be active by default and can
-     * immediately be used for authentication and system access.
-     * </p>
      *
      * @param mail the email address for the new administrator account, must not be null and must be unique
      * @param username the username for the new administrator account, must not be null and must be unique
@@ -148,15 +130,11 @@ public interface AdminDAO {
      * The method enforces the following validation rules:
      * </p>
      * <ul>
-     *   <li>New username must be unique across all user types (Admin and Customer)</li>
+     *   <li>The new username must be unique across all user types (Admin and Customer)</li>
      *   <li>Username cannot be the same as any existing user except the current user</li>
      *   <li>Only active (non-deleted) accounts are considered during uniqueness validation</li>
      *   <li>Password must be provided in hashed format</li>
      * </ul>
-     * <p>
-     * Note that email addresses cannot be updated through this method, as they are
-     * considered immutable for administrator accounts once created.
-     * </p>
      *
      * @param userID the unique identifier of the administrator account to update
      * @param username the new username for the administrator account, must be unique
@@ -184,10 +162,6 @@ public interface AdminDAO {
      *   <li>Username and email become available for reuse</li>
      *   <li>Historical data and associations are preserved</li>
      * </ul>
-     * <p>
-     * The deletion operation is irreversible through normal application operations
-     * and would require direct database access to restore the account.
-     * </p>
      *
      * @param userID the unique identifier of the administrator account to delete
      * @throws SQLException if a database access error occurs during the operation
