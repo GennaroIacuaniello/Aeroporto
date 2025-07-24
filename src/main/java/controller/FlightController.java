@@ -36,19 +36,6 @@ import java.util.logging.Level;
  *   <li>Coordinating flight operations such as check-in, status updates, and delay management</li>
  *   <li>Supporting both arriving and departing flight types with specialized handling</li>
  * </ul>
- * <p>
- * The class follows a triple approach for data management:
- * </p>
- * <ul>
- *   <li><strong>Session Management:</strong> Maintains a single active flight with complete information</li>
- *   <li><strong>Search Results:</strong> Manages collections of flight search results for customer selection</li>
- *   <li><strong>Booking Results:</strong> Manages flight collections associated with booking operations</li>
- * </ul>
- * <p>
- * Integration with the {@link FlightDAOImpl} provides database persistence capabilities for
- * flight search operations, check-in procedures, status updates, and comprehensive flight
- * data retrieval with proper error handling and logging.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -258,11 +245,6 @@ public class FlightController {
      * This method returns the airline company name for a flight at the specified
      * index within the search results collection.
      * </p>
-     * <p>
-     * This functionality is essential for displaying flight search results,
-     * enabling users to compare different airlines and make informed flight
-     * selection decisions.
-     * </p>
      *
      * @param index the zero-based index of the flight in the search results
      * @return the airline company name for the flight at the specified index
@@ -339,11 +321,6 @@ public class FlightController {
      * within the search results collection. It enables access to timing information
      * for flights in search results without setting them as the active flight session.
      * </p>
-     * <p>
-     * This functionality is essential for displaying complete flight information
-     * in search results, enabling users to understand the full flight duration
-     * and plan their travel accordingly.
-     * </p>
      *
      * @param index the zero-based index of the flight in the search results
      * @return the scheduled arrival time for the flight at the specified index
@@ -359,11 +336,6 @@ public class FlightController {
      * with the specified ID and returns its arrival time. This is useful for
      * booking management operations where complete timing information is needed
      * based on flight identifiers.
-     * </p>
-     * <p>
-     * The method performs a linear search through the booking search results,
-     * comparing flight IDs to find the matching flight and extract its arrival
-     * time for operational, scheduling, or display purposes.
      * </p>
      *
      * @param flightId the unique identifier of the flight to retrieve arrival time for
@@ -384,11 +356,6 @@ public class FlightController {
      * for the current flight. This capacity information is essential for booking
      * management, seat allocation, and operational planning.
      * </p>
-     * <p>
-     * Maximum seats represents the physical capacity of the aircraft and is used
-     * for capacity planning, overbooking calculations, and ensuring flight
-     * operations remain within aircraft limitations.
-     * </p>
      *
      * @return the maximum number of passenger seats on the current flight
      */
@@ -402,12 +369,6 @@ public class FlightController {
      * This method returns the current number of seats that are still available
      * for booking on the flight. This real-time availability information is
      * crucial for booking operations, seat selection, and revenue management.
-     * </p>
-     * <p>
-     * Free seats are calculated dynamically based on current bookings and
-     * represent the seats that can still be sold or assigned to passengers.
-     * This information is essential for preventing overbooking and managing
-     * flight capacity effectively.
      * </p>
      *
      * @return the number of available seats on the current flight
@@ -423,16 +384,6 @@ public class FlightController {
      * current state of the flight. Status values include states such as PROGRAMMED,
      * ABOUT_TO_DEPART, DEPARTED, ARRIVED, DELAYED, and CANCELLED.
      * </p>
-     * <p>
-     * Flight status is essential for operational control, passenger information,
-     * ground services coordination, and determining which operations are available
-     * for the flight at any given time.
-     * </p>
-     * <p>
-     * Status information drives business logic throughout the application,
-     * controlling when check-in is available, when gates can be assigned,
-     * and what information is displayed to passengers and staff.
-     * </p>
      *
      * @return the {@link FlightStatus} of the current flight
      */
@@ -447,16 +398,6 @@ public class FlightController {
      * for the current flight. Each ticket represents one passenger's reservation
      * and travel authorization for the flight.
      * </p>
-     * <p>
-     * The ticket count is used for passenger manifest operations, capacity
-     * calculations, check-in procedures, and various administrative functions
-     * that need to process or display passenger-related information.
-     * </p>
-     * <p>
-     * This count includes all tickets regardless of their status (checked-in,
-     * pending, etc.) and provides a comprehensive view of the flight's
-     * passenger load.
-     * </p>
      *
      * @return the total number of tickets for the current flight
      */
@@ -470,16 +411,6 @@ public class FlightController {
      * This method returns the count of distinct bookings that have been made
      * for the current flight. Each booking may contain multiple tickets for
      * group reservations or family travel.
-     * </p>
-     * <p>
-     * The booking count is useful for administrative operations, revenue
-     * analysis, customer service functions, and understanding the booking
-     * patterns for the flight. It provides insight into how passengers
-     * are grouped and organized for travel.
-     * </p>
-     * <p>
-     * This count represents unique booking transactions and is different
-     * from the ticket count, as one booking can contain multiple tickets.
      * </p>
      *
      * @return the total number of bookings for the current flight
@@ -496,17 +427,6 @@ public class FlightController {
      * bookings, family reservations, and administrative operations that need
      * to handle multiple passengers within a single booking transaction.
      * </p>
-     * <p>
-     * The ticket count per booking varies depending on the number of passengers
-     * included in the reservation. This granular information enables proper
-     * handling of booking modifications, check-in procedures, and passenger
-     * service operations.
-     * </p>
-     * <p>
-     * This method is particularly useful for iterating through passengers
-     * within specific bookings for administrative displays, check-in interfaces,
-     * and booking management operations.
-     * </p>
      *
      * @param index the zero-based index of the booking within the flight's booking collection
      * @return the number of tickets in the specified booking
@@ -522,16 +442,6 @@ public class FlightController {
      * booking and passenger indices within the current flight. This granular
      * access to passenger information is essential for administrative interfaces,
      * passenger manifests, and customer service operations.
-     * </p>
-     * <p>
-     * The method navigates the complex relationship between flights, bookings,
-     * tickets, and passengers to extract specific passenger information while
-     * maintaining the organizational structure of the data.
-     * </p>
-     * <p>
-     * This functionality is particularly useful for displaying passenger lists
-     * organized by booking, check-in procedures, and administrative operations
-     * that need to process passengers within their booking context.
      * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
@@ -550,16 +460,6 @@ public class FlightController {
      * is essential for passenger identification, manifest generation, and
      * administrative operations that require complete passenger names.
      * </p>
-     * <p>
-     * The method provides structured access to passenger surname information
-     * while maintaining the organizational hierarchy of flights, bookings,
-     * and individual passenger records.
-     * </p>
-     * <p>
-     * This functionality supports passenger service operations, check-in
-     * procedures, and administrative displays that need to show complete
-     * passenger identification information organized by booking structure.
-     * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
      * @param passengerIndex the zero-based index of the passenger within the booking
@@ -576,16 +476,6 @@ public class FlightController {
      * at the specified booking and passenger indices within the current flight.
      * The SSN serves as the primary key for passenger identification throughout
      * the system.
-     * </p>
-     * <p>
-     * SSN information is crucial for security procedures, passenger verification,
-     * government reporting requirements, and ensuring accurate passenger
-     * identification across all airport operations.
-     * </p>
-     * <p>
-     * This method provides secure access to passenger identification data
-     * while maintaining the organizational structure of bookings and passenger
-     * associations within the flight context.
      * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
@@ -604,16 +494,6 @@ public class FlightController {
      * Ticket numbers are essential for check-in operations, boarding procedures,
      * and passenger service functions.
      * </p>
-     * <p>
-     * Each ticket number uniquely identifies a passenger's travel authorization
-     * and is used throughout the airport system for tracking, verification,
-     * and service delivery operations.
-     * </p>
-     * <p>
-     * This method enables access to ticket identification information while
-     * maintaining the organizational structure of bookings and passenger
-     * relationships within the flight context.
-     * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
      * @param passengerIndex the zero-based index of the passenger within the booking
@@ -631,16 +511,6 @@ public class FlightController {
      * Seat assignments are managed using zero-based indexing consistent with
      * the application's seat management system.
      * </p>
-     * <p>
-     * Seat information is essential for boarding procedures, aircraft configuration
-     * management, passenger service, and ensuring proper passenger placement
-     * throughout the flight operations.
-     * </p>
-     * <p>
-     * The method returns -1 if no seat has been assigned to the passenger,
-     * indicating that seat selection is still pending or the passenger is
-     * on a standby basis.
-     * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
      * @param passengerIndex the zero-based index of the passenger within the booking
@@ -651,27 +521,17 @@ public class FlightController {
     }
 
     /**
-     * Retrieves the birth date of a passenger within a specific booking.
+     * Retrieves the birthdate of a passenger within a specific booking.
      * <p>
-     * This method returns the birth date for a passenger located at the specified
-     * booking and passenger indices within the current flight. Birth date information
+     * This method returns the birthdate for a passenger located at the specified
+     * booking and passenger indices within the current flight. Birthdate information
      * is essential for age verification, special service requirements, security
      * procedures, and compliance with travel regulations.
-     * </p>
-     * <p>
-     * Passenger birth dates are used for various operational purposes including
-     * determining eligibility for age-based services, validating travel documents,
-     * and ensuring compliance with international travel requirements.
-     * </p>
-     * <p>
-     * This method provides structured access to passenger demographic information
-     * while maintaining the organizational hierarchy of flights, bookings, and
-     * individual passenger records within the system.
      * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
      * @param passengerIndex the zero-based index of the passenger within the booking
-     * @return the birth date of the passenger at the specified indices
+     * @return the birthdate of the passenger at the specified indices
      */
     public Date getPassengerDateFromBooking (int bookingIndex, int passengerIndex) {
         return flight.getBookings().get(bookingIndex).getTickets().get(passengerIndex).getPassenger().getBirthDate();
@@ -683,22 +543,6 @@ public class FlightController {
      * This method processes all luggage items associated with a specific passenger within
      * a booking and returns a list of integer codes representing the luggage types. The mapping
      * follows the convention: 0 for CARRY_ON luggage and 1 for CHECKED luggage.
-     * </p>
-     * <p>
-     * This integer-based representation simplifies integration with GUI components
-     * that use numeric indices for luggage type selection and display purposes.
-     * The method maintains the order of luggage items for consistent correlation
-     * with other luggage-related information.
-     * </p>
-     * <p>
-     * The type information is essential for luggage handling procedures, weight
-     * calculations, and ensuring proper luggage processing during check-in and
-     * baggage handling operations within the booking context.
-     * </p>
-     * <p>
-     * This method navigates the complex relationship hierarchy of flights, bookings,
-     * tickets, and luggage to extract specific luggage type information while
-     * maintaining the organizational structure of the data.
      * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
@@ -727,22 +571,6 @@ public class FlightController {
      * and tracking throughout the baggage handling process. These identifiers are typically
      * assigned during check-in and used for physical luggage tracking.
      * </p>
-     * <p>
-     * Luggage tracking identifiers are essential for baggage handling systems,
-     * lost luggage recovery, and ensuring proper luggage routing through airport
-     * baggage handling infrastructure. They provide a link between digital records
-     * and physical luggage items within the booking context.
-     * </p>
-     * <p>
-     * The identifiers maintain correlation with luggage type and status information,
-     * enabling comprehensive luggage management throughout the travel process for
-     * passengers organized within specific bookings.
-     * </p>
-     * <p>
-     * This method navigates the complex relationship hierarchy to extract luggage
-     * identification information while maintaining the organizational structure
-     * of flights, bookings, and passenger associations.
-     * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
      * @param passengerIndex the zero-based index of the passenger within the booking
@@ -765,23 +593,6 @@ public class FlightController {
      * each luggage item. Status values include states such as BOOKED, LOADED, WITHDRAWABLE,
      * and LOST.
      * </p>
-     * <p>
-     * Luggage status information is crucial for baggage handling operations, customer
-     * service inquiries, and tracking luggage throughout the travel process. It provides
-     * real-time information about luggage location and handling state within the
-     * specific booking context.
-     * </p>
-     * <p>
-     * The status information enables proactive customer service and operational
-     * decision-making regarding luggage handling, delivery, and recovery operations.
-     * It maintains synchronization with luggage type and tracking information for
-     * passengers within organized booking structures.
-     * </p>
-     * <p>
-     * This method provides detailed luggage status tracking while maintaining the
-     * organizational hierarchy of flights, bookings, tickets, and associated
-     * luggage items.
-     * </p>
      *
      * @param bookingIndex the zero-based index of the booking within the flight
      * @param passengerIndex the zero-based index of the passenger within the booking
@@ -797,42 +608,12 @@ public class FlightController {
     }
 
     /**
-     * Retrieves the seat assignment for a passenger at the specified ticket index.
-     * <p>
-     * This method returns the seat number assigned to a specific passenger within
-     * the current flight based on their ticket index. Seat assignments are managed
-     * using zero-based indexing consistent with the application's seat management system.
-     * </p>
-     * <p>
-     * Seat information is essential for boarding procedures, aircraft configuration
-     * management, passenger service, and ensuring proper passenger placement
-     * throughout flight operations.
-     * </p>
-     * <p>
-     * The method returns -1 if no seat has been assigned to the passenger,
-     * indicating that seat selection is still pending or the passenger is
-     * on a standby basis.
-     * </p>
-     *
-     * @param index the zero-based index of the ticket/passenger within the flight
-     * @return the seat assignment for the passenger, or -1 if no seat is assigned
-     */
-    public int getPassengerSeat (int index) {
-        return flight.getTickets().get(index).getSeat();
-    }
-
-    /**
      * Retrieves the first name of a passenger at the specified ticket index.
      * <p>
      * This method returns the first name of a specific passenger within the current
      * flight based on their ticket index. This provides direct access to passenger
      * identification information for display purposes, passenger manifests, and
      * customer service operations.
-     * </p>
-     * <p>
-     * The method accesses passenger information through the ticket association,
-     * maintaining the relationship between tickets and their assigned passengers
-     * within the flight context.
      * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
@@ -850,11 +631,6 @@ public class FlightController {
      * passenger identification, manifest generation, and administrative operations
      * that require complete passenger names.
      * </p>
-     * <p>
-     * The method provides structured access to passenger surname information
-     * through the ticket-passenger relationship, enabling efficient passenger
-     * identification and service operations.
-     * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
      * @return the last name of the passenger at the specified index
@@ -869,16 +645,6 @@ public class FlightController {
      * This method returns the unique identification number for a specific passenger
      * within the current flight based on their ticket index. The SSN serves as the
      * primary key for passenger identification throughout the system.
-     * </p>
-     * <p>
-     * SSN information is crucial for security procedures, passenger verification,
-     * government reporting requirements, and ensuring accurate passenger
-     * identification across all airport operations.
-     * </p>
-     * <p>
-     * This method provides secure access to passenger identification data through
-     * the ticket-passenger relationship while maintaining data integrity and
-     * proper access control.
      * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
@@ -896,11 +662,6 @@ public class FlightController {
      * operations, boarding procedures, luggage association, and various airport
      * processing systems.
      * </p>
-     * <p>
-     * The ticket number serves as a unique identifier for individual passenger
-     * travel authorizations within the flight context, enabling precise ticket
-     * management and passenger service operations.
-     * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
      * @return the unique ticket number for the passenger at the specified index
@@ -916,17 +677,6 @@ public class FlightController {
      * within the current flight and returns a list of integer codes representing
      * the luggage types. The mapping follows the convention: 0 for CARRY_ON luggage
      * and 1 for CHECKED luggage.
-     * </p>
-     * <p>
-     * This integer-based representation simplifies integration with GUI components
-     * that use numeric indices for luggage type selection and display purposes.
-     * The method maintains the order of luggage items for consistent correlation
-     * with other luggage-related information.
-     * </p>
-     * <p>
-     * The type information is essential for luggage handling procedures, weight
-     * calculations, and ensuring proper luggage processing during check-in and
-     * baggage handling operations.
      * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
@@ -954,16 +704,6 @@ public class FlightController {
      * and checked luggage items, providing comprehensive luggage information for
      * the passenger.
      * </p>
-     * <p>
-     * Luggage information is essential for check-in operations, baggage handling,
-     * weight calculations, and ensuring proper luggage tracking throughout the
-     * travel process. Each luggage item contains type, status, and tracking information.
-     * </p>
-     * <p>
-     * The method provides direct access to the complete luggage collection for
-     * a passenger, enabling comprehensive luggage management and service operations
-     * within the flight context.
-     * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
      * @return list of {@link Luggage} objects associated with the passenger at the specified index
@@ -980,67 +720,11 @@ public class FlightController {
      * flight is scheduled to operate. The date string is formatted for display
      * purposes in user interfaces, reports, and passenger information systems.
      * </p>
-     * <p>
-     * The string format provides a human-readable representation of the flight
-     * date that is suitable for display in various GUI components and printed
-     * materials without requiring additional formatting operations.
-     * </p>
      *
      * @return the scheduled date of the current flight as a formatted string
      */
     public String getDateString () {
         return flight.getDate().toString();
-    }
-
-    /**
-     * Retrieves the current operational status of the active flight as a formatted string.
-     * <p>
-     * This method returns a string representation of the current flight status,
-     * converting the {@link FlightStatus} enum value to its string representation.
-     * Status values include states such as PROGRAMMED, ABOUT_TO_DEPART, DEPARTED,
-     * ARRIVED, DELAYED, and CANCELLED.
-     * </p>
-     * <p>
-     * The string format provides a standardized representation of flight status
-     * that is suitable for display in user interfaces, logging operations, and
-     * integration with external systems that require textual status information.
-     * </p>
-     * <p>
-     * This method is commonly used for status display in flight information
-     * systems, passenger notifications, and operational reporting where textual
-     * status representation is preferred over enum values.
-     * </p>
-     *
-     * @return the current status of the flight as a formatted string
-     */
-    public String getStatusString () {
-        return flight.getStatus().toString();
-    }
-
-    /**
-     * Retrieves the operational status of a flight in the search results as a formatted string.
-     * <p>
-     * This method returns a string representation of the flight status for a specific
-     * flight at the given index within the search results collection. It converts
-     * the {@link FlightStatus} enum value to its string representation for display
-     * and processing purposes.
-     * </p>
-     * <p>
-     * This functionality is essential for displaying flight status information
-     * in search result listings, enabling users to quickly assess the operational
-     * state of available flights without selecting them as the active flight session.
-     * </p>
-     * <p>
-     * The string format provides consistent status representation across the
-     * application, ensuring that flight status information is presented uniformly
-     * in all user interface components and system outputs.
-     * </p>
-     *
-     * @param index the zero-based index of the flight in the search results
-     * @return the status of the flight at the specified index as a formatted string
-     */
-    public String getStatusString (int index) {
-        return searchResult.get(index).getStatus().toString();
     }
 
     /**
@@ -1088,16 +772,6 @@ public class FlightController {
      * determining which bookings are finalized and which operations can be
      * performed on them.
      * </p>
-     * <p>
-     * Confirmed bookings typically have different operational capabilities
-     * compared to pending or cancelled bookings, such as check-in availability,
-     * seat assignment options, and modification restrictions.
-     * </p>
-     * <p>
-     * This method supports business logic that needs to differentiate between
-     * booking states for operational control, user interface behavior, and
-     * administrative functions.
-     * </p>
      *
      * @param index the zero-based index of the booking within the flight's booking collection
      * @return true if the booking at the specified index has CONFIRMED status, false otherwise
@@ -1115,16 +789,6 @@ public class FlightController {
      * operations management, controlling which operations are available and
      * how the flight is displayed throughout the system.
      * </p>
-     * <p>
-     * Flight status updates typically trigger various business logic responses
-     * such as enabling or disabling check-in procedures, updating passenger
-     * notifications, and modifying operational workflows.
-     * </p>
-     * <p>
-     * This method provides direct status modification capabilities for
-     * administrative operations, operational control systems, and automated
-     * status management processes.
-     * </p>
      *
      * @param flightStatus the new {@link FlightStatus} to set for the current flight
      */
@@ -1138,16 +802,6 @@ public class FlightController {
      * This method returns the check-in status for a passenger at the specified
      * ticket index within the current flight. Check-in status is essential for
      * boarding procedures, passenger manifests, and operational planning.
-     * </p>
-     * <p>
-     * The check-in status determines whether a passenger is cleared for boarding,
-     * has completed necessary pre-flight procedures, and is included in final
-     * passenger counts for flight operations.
-     * </p>
-     * <p>
-     * This information is used throughout the application for check-in interfaces,
-     * boarding management, passenger service operations, and administrative
-     * reporting functions.
      * </p>
      *
      * @param index the zero-based index of the ticket/passenger within the flight
@@ -1165,16 +819,6 @@ public class FlightController {
      * it returns the origin city. This provides a consistent interface for
      * accessing the "other" city regardless of flight direction.
      * </p>
-     * <p>
-     * The method abstracts the complexity of flight type differences, providing
-     * a unified way to access city information that is contextually appropriate
-     * for the flight's direction and operational purpose.
-     * </p>
-     * <p>
-     * This functionality is essential for flight displays, passenger information
-     * systems, and operational interfaces that need to show relevant city
-     * information without requiring flight type-specific logic.
-     * </p>
      *
      * @return the destination city for departing flights, or origin city for arriving flights
      */
@@ -1184,37 +828,6 @@ public class FlightController {
             return ((Arriving) flight).getOrigin();
         else
             return ((Departing) flight).getDestination();
-    }
-
-    /**
-     * Retrieves the destination or origin city for a flight in the search results.
-     * <p>
-     * This method returns the appropriate city name for a flight at the specified
-     * index within the search results collection, based on the flight type.
-     * For departing flights, it returns the destination city; for arriving flights,
-     * it returns the origin city.
-     * </p>
-     * <p>
-     * This functionality enables consistent city information display in search
-     * results without requiring flight type-specific handling in the user interface.
-     * It provides contextually appropriate city information that helps users
-     * understand flight routing and make informed selection decisions.
-     * </p>
-     * <p>
-     * The method supports flight search result displays, comparison interfaces,
-     * and selection workflows where city information needs to be presented
-     * uniformly regardless of flight direction.
-     * </p>
-     *
-     * @param index the zero-based index of the flight in the search results
-     * @return the destination city for departing flights, or origin city for arriving flights at the specified index
-     */
-    public String getCity (int index) {
-
-        if(searchResult.get(index) instanceof Arriving)
-            return ((Arriving) searchResult.get(index)).getOrigin();
-        else
-            return ((Departing) searchResult.get(index)).getDestination();
     }
 
     /**
@@ -1320,22 +933,6 @@ public class FlightController {
      * process typically involves status validation, timing verification, and
      * system preparation for passenger check-in operations.
      * </p>
-     * <p>
-     * The method returns a status code indicating the success or failure of the
-     * check-in initiation process. Success enables passenger check-in operations,
-     * while failure may indicate timing restrictions, status conflicts, or
-     * system issues.
-     * </p>
-     * <p>
-     * Check-in initiation is a critical operational procedure that must be
-     * performed before passengers can complete their check-in process. It
-     * involves system validation and preparation for passenger processing.
-     * </p>
-     * <p>
-     * Error handling includes database exception management, with appropriate
-     * return codes to indicate various failure conditions for operational
-     * decision-making and user feedback.
-     * </p>
      *
      * @return status code indicating check-in initiation success (positive values) or failure (negative values)
      */
@@ -1360,23 +957,6 @@ public class FlightController {
      * in and those who should not be checked in. It coordinates with the database
      * to update check-in statuses and retrieves associated luggage check-in information.
      * </p>
-     * <p>
-     * The method extracts ticket numbers from the passenger panels and delegates
-     * the actual database operations to {@link FlightDAOImpl}. It processes both
-     * positive and negative check-in decisions, enabling comprehensive passenger
-     * status management during check-in procedures.
-     * </p>
-     * <p>
-     * After updating passenger check-in statuses, the method retrieves luggage
-     * check-in information for passengers who were successfully checked in. This
-     * information is essential for baggage handling procedures and luggage
-     * tracking throughout the travel process.
-     * </p>
-     * <p>
-     * The returned data structure contains luggage check-in details organized
-     * for efficient processing by luggage management systems and operational
-     * interfaces that coordinate passenger and baggage handling.
-     * </p>
      *
      * @param truePassengers collection of {@link PassengerPanel} objects representing passengers to be checked in
      * @param falsePassengers collection of {@link PassengerPanel} objects representing passengers not to be checked in
@@ -1396,33 +976,6 @@ public class FlightController {
         flightDAO.setCheckins(trueTickets, falseTickets);
 
         return flightDAO.getLuggagesCheckins(trueTickets);
-    }
-
-    /**
-     * Determines if the currently active flight is a departing flight.
-     * <p>
-     * This method returns true if the current flight is an instance of the
-     * {@link Departing} class, indicating that it represents a flight leaving
-     * from the airport. This type information is essential for determining
-     * appropriate business logic, display formatting, and operational procedures.
-     * </p>
-     * <p>
-     * Flight type determination enables conditional processing throughout the
-     * application, ensuring that departing and arriving flights are handled
-     * with appropriate logic for their specific operational requirements.
-     * </p>
-     * <p>
-     * This method supports user interface components, business logic decisions,
-     * and operational workflows that need to differentiate between flight
-     * directions for proper system behavior.
-     * </p>
-     *
-     * @return true if the current flight is a departing flight, false if it is an arriving flight
-     */
-    public boolean getFlightType() {
-
-        return flight instanceof Departing;
-
     }
 
     /**
@@ -1759,23 +1312,6 @@ public class FlightController {
      * parameter that is cast to String for database operations, providing
      * flexibility in status specification from various UI components.
      * </p>
-     * <p>
-     * Flight status updates are critical for operational control, affecting
-     * passenger notifications, check-in availability, boarding procedures,
-     * and various airport operational workflows. The status change is persisted
-     * immediately to ensure system consistency.
-     * </p>
-     * <p>
-     * The method delegates the actual database operation to the DAO layer,
-     * which handles the SQL execution and transaction management. Return values
-     * indicate the success or failure of the database operation for appropriate
-     * error handling by calling components.
-     * </p>
-     * <p>
-     * This method is typically used by administrative interfaces, operational
-     * control systems, and automated processes that need to update flight
-     * status based on real-time operational conditions.
-     * </p>
      *
      * @param flightStatus the new flight status as an Object (typically String) to be set
      * @return integer status code indicating operation success or failure
@@ -1795,22 +1331,6 @@ public class FlightController {
      * interfacing with the database through {@link FlightDAOImpl}. It includes
      * validation to ensure that delay values are non-negative, throwing a
      * NumberFormatException for invalid input values.
-     * </p>
-     * <p>
-     * Flight delays are critical operational information that affects passenger
-     * notifications, gate assignments, crew scheduling, and various airport
-     * operational procedures. The delay information is persisted immediately
-     * to ensure real-time accuracy across all system components.
-     * </p>
-     * <p>
-     * The validation logic prevents negative delay values which would be
-     * operationally meaningless, ensuring data integrity and preventing
-     * potential system errors in downstream processing components.
-     * </p>
-     * <p>
-     * The method is typically used by operational control systems, airline
-     * operations centers, and administrative interfaces that need to report
-     * and manage flight delays in real-time operational scenarios.
      * </p>
      *
      * @param delay the delay amount in minutes to add to the flight (must be non-negative)
