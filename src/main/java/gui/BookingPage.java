@@ -541,7 +541,7 @@ public abstract class BookingPage extends DisposableObject {
         data[0][4] = controller.getFlightController().getArrivalTime();
         LocalTime departureTime = controller.getFlightController().getDepartureTime().toLocalTime();
         LocalTime arrivalTime = controller.getFlightController().getArrivalTime().toLocalTime();
-        data[0][5] = Duration.between(departureTime, arrivalTime);
+        data[0][5] = Duration.between(departureTime, arrivalTime).toString();
         data[0][6] = controller.getFlightController().getFlightStatus();
         data[0][7] = controller.getFlightController().getFreeSeats();
 

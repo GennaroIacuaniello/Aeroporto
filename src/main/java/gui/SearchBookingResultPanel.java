@@ -745,24 +745,7 @@ public class SearchBookingResultPanel extends JPanel {
                             return null;
                     }
                 case 2:
-                    switch (controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getStatus().toString().toUpperCase()){
-                        case "PROGRAMMED":
-                            return "In programma";
-                        case "CANCELLED":
-                            return "Cancellato";
-                        case "DELAYED":
-                            return "In ritardo";
-                        case "ABOUT_TO_DEPART":
-                            return "In partenza";
-                        case "DEPARTED":
-                            return "Partito";
-                        case "ABOUT_TO_ARRIVE":
-                            return "In arrivo";
-                        case "LANDED":
-                            return "Atterrato";
-                        default:
-                            return null;
-                    }
+                    return controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getCompanyName();
                 case 3:
                     if (controller.getFlightController().getBookingResultSelectedFlightFlightType(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId()))
                         return "Napoli → " + controller.getFlightController().getBookingResultSelectedFlightCity(controller.getBookingController().getSearchBookingResult().get(row).getBookedFlight().getId());
