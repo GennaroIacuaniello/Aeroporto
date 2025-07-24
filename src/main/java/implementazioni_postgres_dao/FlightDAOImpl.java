@@ -56,22 +56,6 @@ public class FlightDAOImpl implements FlightDAO {
      * by type (flight_type = false for arriving flights) and excludes flights with status
      * 'LANDED' or 'CANCELLED'.
      * </p>
-     * <p>
-     * The method uses real-time calculations to determine imminent arrivals by adding
-     * flight delays to the scheduled arrival time and comparing with the current timestamp.
-     * Results are ordered by arrival time to provide chronological organization of
-     * approaching flights.
-     * </p>
-     * <p>
-     * Gate information is handled specially - when a gate is assigned (id_gate > 0),
-     * the gate number is added to the list; otherwise, null is added to maintain
-     * consistent list indexing across all result parameters.
-     * </p>
-     * <p>
-     * This method is essential for airport dashboard displays and real-time flight
-     * information systems, providing up-to-date arrival information for passengers
-     * and airport operations staff.
-     * </p>
      *
      * @param parId list to be populated with flight identifiers
      * @param parCompanyName list to be populated with airline company names
@@ -148,21 +132,6 @@ public class FlightDAOImpl implements FlightDAO {
      * that are scheduled to depart soon and are still at the airport. The query filters
      * flights by type (flight_type = true for departing flights) and includes only flights
      * with operational statuses: 'PROGRAMMED', 'ABOUT_TO_DEPART', or 'DELAYED'.
-     * </p>
-     * <p>
-     * The method uses real-time calculations to determine imminent departures by adding
-     * flight delays to the scheduled departure time and comparing with the current timestamp.
-     * Results are ordered by arrival time to provide consistent ordering with arrival flights,
-     * facilitating unified dashboard displays.
-     * </p>
-     * <p>
-     * Gate information is handled consistently with arrival flights - when a gate is
-     * assigned (id_gate > 0), the gate number is added to the list; otherwise, null
-     * is added to maintain proper list indexing.
-     * </p>
-     * <p>
-     * This method is crucial for gate management systems and departure boards, providing
-     * real-time departure information for passengers and ground operations staff.
      * </p>
      *
      * @param parId list to be populated with flight identifiers
@@ -250,17 +219,6 @@ public class FlightDAOImpl implements FlightDAO {
      *   <li>When departing city is not "Napoli": filters for arriving flights from that city</li>
      *   <li>When arriving city is not "Napoli": filters for departing flights to that city</li>
      * </ul>
-     * <p>
-     * Date filtering uses PostgreSQL's date casting and BETWEEN operations for inclusive
-     * range matching. Time filtering supports both same-day and overnight time spans:
-     * when initial time is before final time, it uses BETWEEN; when initial time is
-     * after final time, it uses OR logic for overnight searches.
-     * </p>
-     * <p>
-     * The method dynamically constructs the WHERE clause based on provided parameters
-     * and handles cases where no filters are applied by removing the WHERE clause entirely.
-     * Results are ordered by departure time in descending order to show recent flights first.
-     * </p>
      *
      * @param departingCity the departure city name for filtering (null or empty for no filter)
      * @param arrivingCity the arrival city name for filtering (null or empty for no filter)
@@ -439,10 +397,6 @@ public class FlightDAOImpl implements FlightDAO {
      * are still included in the results, providing complete flight manifest information
      * regardless of luggage status.
      * </p>
-     * <p>
-     * Results are ordered by booking ID to group related tickets together, facilitating
-     * organized display and processing of flight data for administrative purposes.
-     * </p>
      *
      * @param flightId the unique identifier of the flight to retrieve data for
      * @param flightGates list to be populated with gate assignments (null if not assigned)
@@ -567,16 +521,6 @@ public class FlightDAOImpl implements FlightDAO {
      *   <li>Flight delay: 0 minutes (no delays initially)</li>
      *   <li>Gate assignment: null (to be assigned later)</li>
      * </ul>
-     * <p>
-     * The flight type parameter determines how the flight operates relative to the airport:
-     * when flightType is true, it represents a departing flight where otherCity is the
-     * destination; when false, it represents an arriving flight where otherCity is the origin.
-     * </p>
-     * <p>
-     * The method uses PostgreSQL's enum casting (::FlightStatus) to ensure proper data
-     * type handling for the flight_status field, maintaining database integrity and
-     * enabling proper status-based filtering in other operations.
-     * </p>
      *
      * @param flightId the unique identifier for the new flight (must be unique in the system)
      * @param companyName the name of the airline company operating the flight

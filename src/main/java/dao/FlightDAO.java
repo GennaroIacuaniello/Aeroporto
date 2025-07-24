@@ -144,10 +144,6 @@ public interface FlightDAO {
      *   <li>Time filtering handles both same-day and overnight time spans</li>
      *   <li>When initial time is after final time, it searches for flights departing after initial time OR before final time</li>
      * </ul>
-     * <p>
-     * Results are ordered by departure time in descending order to show the most recent flights first.
-     * All filter parameters are optional and the method constructs appropriate SQL queries based on provided criteria.
-     * </p>
      *
      * @param departingCity the departure city name for filtering (null or empty for no filter)
      * @param arrivingCity the arrival city name for filtering (null or empty for no filter)
@@ -196,10 +192,6 @@ public interface FlightDAO {
      *   <li>Passenger personal information and identification details</li>
      *   <li>Associated luggage information including types and status</li>
      * </ul>
-     * <p>
-     * This method is particularly useful for check-in operations, flight manifest generation,
-     * and comprehensive flight management tasks that require complete flight information.
-     * </p>
      *
      * @param flightId the unique identifier of the flight to retrieve data for
      * @param flightGates list to be populated with gate assignments (null if not assigned)
@@ -244,16 +236,6 @@ public interface FlightDAO {
      *   <li>flightType = true: departing flight (otherCity represents destination)</li>
      *   <li>flightType = false: arriving flight (otherCity represents origin)</li>
      * </ul>
-     * <p>
-     * The flight insertion operation is atomic and uses database transactions to ensure
-     * data consistency. The method sets appropriate default values for status and seating
-     * availability to ensure flights are created in a consistent operational state.
-     * </p>
-     * <p>
-     * Timestamp parameters should include both date and time information for accurate
-     * scheduling. The method assumes that departure and arrival timestamps are provided
-     * in the appropriate timezone for the airport operations.
-     * </p>
      *
      * @param flightId the unique identifier for the new flight (must be unique in the system)
      * @param companyName the name of the airline company operating the flight
@@ -381,7 +363,7 @@ public interface FlightDAO {
     int setStatus (String status, String idFlight);
 
     /**
-     * Adds additional delay to a flight's current delay value.
+     * Adds an additional delay to a flight's current delay value.
      * <p>
      * This method increases the flight's delay by the specified number of minutes,
      * allowing for cumulative delay tracking. The delay is added to any existing
@@ -427,7 +409,7 @@ public interface FlightDAO {
      * </p>
      * <p>
      * The method returns a nested list structure where each inner list contains all
-     * luggage identifiers associated with a specific ticket. This allows for proper
+     * luggage identifiers associated with a specific ticket. This allows for a proper
      * correlation between tickets and their associated luggage items.
      * </p>
      * <p>
@@ -440,4 +422,5 @@ public interface FlightDAO {
      * @return nested list where each inner list contains luggage identifiers for the corresponding ticket, null if an error occurs
      */
     ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets);
+
 }

@@ -63,17 +63,6 @@ public interface TicketDAO {
      *   <li>Passenger SSN identifiers for passenger association</li>
      *   <li>Passenger personal information including names and birth dates</li>
      * </ul>
-     * <p>
-     * Seat numbers are converted from 1-based database storage to 0-based indexing
-     * for consistency with the application's seat management system. Seats with
-     * value 0 or negative in the database are returned as null to indicate no
-     * seat assignment.
-     * </p>
-     * <p>
-     * This method is particularly useful for booking management operations,
-     * check-in procedures, passenger manifest generation, and customer service
-     * inquiries where complete ticket information for a booking is required.
-     * </p>
      *
      * @param bookingId the unique identifier of the booking to retrieve tickets for
      * @param ticketNumbers list to be populated with ticket numbers

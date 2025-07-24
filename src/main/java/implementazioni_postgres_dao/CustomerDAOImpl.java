@@ -244,15 +244,6 @@ public class CustomerDAOImpl implements CustomerDAO {
      *   <li>New hashed password for security</li>
      *   <li>Maintained account status and creation timestamp</li>
      * </ul>
-     * <p>
-     * Unlike administrator updates, customer updates support modifying email addresses,
-     * providing full account management capabilities including the ability to add, change,
-     * or remove email addresses from customer accounts.
-     * </p>
-     * <p>
-     * The method uses prepared statements for both validation and update operations,
-     * ensuring secure parameter binding and SQL injection prevention.
-     * </p>
      *
      * @param userID the unique identifier of the customer account to update
      * @param mail the new email address for the customer account, can be null
@@ -323,17 +314,6 @@ public class CustomerDAOImpl implements CustomerDAO {
      *   <li>Allows the username and email to be reused for new accounts</li>
      *   <li>Maintains referential integrity with related booking and transaction records</li>
      * </ul>
-     * <p>
-     * Once deleted, the customer account will be excluded from authentication
-     * queries and validation checks, effectively removing access while preserving
-     * historical data for compliance, audit requirements, and customer service purposes.
-     * This is particularly important for customer accounts due to their association
-     * with financial transactions and booking records.
-     * </p>
-     * <p>
-     * The method uses prepared statements for secure parameter binding and SQL
-     * injection prevention.
-     * </p>
      *
      * @param userID the unique identifier of the customer account to delete
      * @throws SQLException if a database access error occurs during the operation

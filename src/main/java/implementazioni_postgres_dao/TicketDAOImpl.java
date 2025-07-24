@@ -27,18 +27,6 @@ import java.util.logging.Logger;
  *   <li>Integration with booking, passenger, and seat management systems</li>
  *   <li>Comprehensive seat assignment handling with proper indexing conversion</li>
  * </ul>
- * <p>
- * All database operations use prepared statements to prevent SQL injection attacks and ensure
- * data security. The class implements proper connection management using the singleton
- * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
- * statements.
- * </p>
- * <p>
- * All methods follow the contract defined by the {@link TicketDAO} interface and maintain
- * data consistency through proper transaction handling, error logging, and validation mechanisms.
- * The class provides essential functionality for booking management, check-in operations,
- * and passenger service systems.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -79,16 +67,6 @@ public class TicketDAOImpl implements TicketDAO {
      *   <li>Passenger SSN identifiers for passenger association</li>
      *   <li>Passenger personal information including names and birth dates</li>
      * </ul>
-     * <p>
-     * The method uses prepared statements for secure parameter binding and proper resource
-     * management through try-with-resources. All related data is populated in corresponding
-     * list positions to maintain data correlation across different information types.
-     * </p>
-     * <p>
-     * This method is particularly useful for booking management operations, check-in
-     * procedures, passenger manifest generation, and customer service inquiries where
-     * complete ticket information for a booking is required.
-     * </p>
      *
      * @param bookingId the unique identifier of the booking to retrieve tickets for
      * @param ticketNumbers list to be populated with ticket numbers

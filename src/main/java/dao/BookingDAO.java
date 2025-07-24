@@ -1,7 +1,5 @@
 package dao;
 
-import database.ConnessioneDatabase;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -160,10 +158,6 @@ public interface BookingDAO {
      *   <li>Time filtering supports both same-day and overnight time ranges</li>
      *   <li>Results are ordered by flight departure time in descending order</li>
      * </ul>
-     * <p>
-     * All filter parameters are optional (can be null or empty) and the method
-     * constructs appropriate SQL queries based on provided criteria.
-     * </p>
      *
      * @param departingCity the departure city name for filtering (can be null or empty)
      * @param arrivingCity the arrival city name for filtering (can be null or empty)
@@ -209,12 +203,6 @@ public interface BookingDAO {
      *   <li>SSN matching with case-insensitive partial matching</li>
      *   <li>Ticket number matching with case-insensitive partial matching</li>
      * </ul>
-     * <p>
-     * All filter parameters are optional and use SQL ILIKE for flexible matching.
-     * The method returns distinct results to avoid duplicates when multiple
-     * passengers in the same booking match the criteria. Results are ordered by
-     * flight departure time in descending order.
-     * </p>
      *
      * @param firstName the passenger first name for filtering (can be null or empty)
      * @param lastName the passenger last name for filtering (can be null or empty)
@@ -262,12 +250,6 @@ public interface BookingDAO {
      *   <li>Removes the temporary ticket</li>
      *   <li>Updates the booking status</li>
      * </ol>
-     * <p>
-     * The temporary ticket mechanism ensures that the booking always has at least one
-     * associated ticket during the modification process, preventing foreign key violations
-     * and maintaining referential integrity. All operations are performed within a
-     * single transaction to ensure atomicity.
-     * </p>
      *
      * @param idFlight the flight identifier for the booking
      * @param idBooking the unique identifier of the booking to modify
@@ -303,12 +285,6 @@ public interface BookingDAO {
      *   <li>Maintains referential integrity with related tickets, passengers, and luggage</li>
      *   <li>Allows the booking to be excluded from active booking queries when needed</li>
      * </ul>
-     * <p>
-     * Cancelled bookings are typically filtered out of customer-facing queries but
-     * remain accessible for administrative reporting and audit purposes. This approach
-     * ensures compliance with data retention requirements while providing clear booking
-     * lifecycle management.
-     * </p>
      *
      * @param bookingId the unique identifier of the booking to delete/cancel
      * @throws SQLException if a database access error occurs during the deletion operation

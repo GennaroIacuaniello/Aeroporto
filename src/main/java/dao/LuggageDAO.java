@@ -44,9 +44,9 @@ public interface LuggageDAO {
     /**
      * Retrieves comprehensive information about all lost luggage items in the system.
      * <p>
-     * This method performs a complex query to fetch complete information about all luggage
+     * This method performs a query to fetch complete information about all luggage
      * items that have been reported as lost (luggage_status = 'LOST'). It provides a
-     * comprehensive view of lost luggage including associated flight details, passenger
+     * view of lost luggage including associated flight details, passenger
      * information, booking data, and luggage specifications for recovery and customer
      * service operations.
      * </p>
@@ -66,16 +66,6 @@ public interface LuggageDAO {
      *   <li>Passenger personal information for identification and contact</li>
      *   <li>Luggage specifications including type, status, and tracking identifiers</li>
      * </ul>
-     * <p>
-     * Results are ordered by flight departure time in descending order to prioritize
-     * recent lost luggage items. Only luggage associated with non-deleted customer
-     * accounts is included in the results to maintain data integrity.
-     * </p>
-     * <p>
-     * This method is particularly useful for lost luggage recovery operations,
-     * customer service inquiries, and administrative reporting on baggage handling
-     * performance and recovery statistics.
-     * </p>
      *
      * @param flightIds list to be populated with flight identifiers
      * @param companyNames list to be populated with airline company names
@@ -141,17 +131,6 @@ public interface LuggageDAO {
      *   <li>Luggage type classification (CARRY_ON or CHECKED)</li>
      *   <li>Current luggage status throughout handling lifecycle</li>
      * </ul>
-     * <p>
-     * Results are ordered by ticket number to provide consistent ordering and
-     * enable easy correlation with passenger and ticket information. The method
-     * handles cases where luggage may not have been assigned a physical ID yet
-     * by including null values in the luggageIds list.
-     * </p>
-     * <p>
-     * This method is particularly useful for customer service operations,
-     * check-in procedures, luggage management tasks, and booking modification
-     * processes where complete luggage information is required.
-     * </p>
      *
      * @param bookingId the unique identifier of the booking to retrieve luggage for
      * @param ticketNumbers list to be populated with ticket numbers associated with each luggage item

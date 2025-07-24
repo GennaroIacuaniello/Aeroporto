@@ -27,18 +27,6 @@ import java.util.logging.Logger;
  *   <li>Integration with flight, booking, ticket, passenger, and customer data systems</li>
  *   <li>Comprehensive luggage tracking from booking through final delivery or loss</li>
  * </ul>
- * <p>
- * All database operations use prepared statements to prevent SQL injection attacks and ensure
- * data security. The class implements proper connection management using the singleton
- * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
- * statements.
- * </p>
- * <p>
- * All methods follow the contract defined by the {@link LuggageDAO} interface and maintain
- * data consistency through proper error handling, connection management, and resource cleanup.
- * The class uses appropriate SQL data types including PostgreSQL enums for luggage status
- * management.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -61,7 +49,7 @@ public class LuggageDAOImpl implements LuggageDAO {
      * This implementation executes a complex SQL query that joins multiple tables (FLIGHT,
      * BOOKING, TICKET, PASSENGER, LUGGAGE, CUSTOMER) to retrieve comprehensive information
      * about all lost luggage items in the system. The query filters for luggage with
-     * status 'LOST' and excludes deleted customer accounts to maintain data integrity.
+     *  the status 'LOST' and excludes deleted customer accounts to maintain data integrity.
      * </p>
      * <p>
      * The method processes various data types appropriately:
@@ -76,13 +64,7 @@ public class LuggageDAOImpl implements LuggageDAO {
      * The query uses NATURAL JOIN for FLIGHT and BOOKING tables to efficiently link flight
      * and booking data, while using explicit JOINs for other relationships to maintain
      * proper data associations. Results are ordered by flight departure time in descending
-     * order to prioritize recent lost luggage items.
-     * </p>
-     * <p>
-     * This method is essential for lost luggage recovery operations, providing complete
-     * information needed for customer contact, luggage identification, and recovery
-     * coordination. The comprehensive data set supports both customer service operations
-     * and administrative reporting on baggage handling performance.
+     * order to prioritize recently lost luggage items.
      * </p>
      *
      * @param flightIds list to be populated with flight identifiers
@@ -236,19 +218,9 @@ public class LuggageDAOImpl implements LuggageDAO {
      *   <li>Luggage types and status: retrieved directly from database enum values</li>
      * </ul>
      * <p>
-     * Results are ordered by ticket number to provide consistent ordering and enable
-     * easy correlation with passenger and ticket information. This ordering facilitates
-     * organized display of luggage information grouped by tickets within the booking.
-     * </p>
-     * <p>
      * The LEFT JOIN ensures that all tickets in the booking are included in the results,
      * even if they don't have associated luggage items. This provides complete booking
      * information for customer service and operational purposes.
-     * </p>
-     * <p>
-     * This method is particularly useful for customer service operations, check-in
-     * procedures, luggage management tasks, and booking modification processes where
-     * complete luggage information for a specific booking is required.
      * </p>
      *
      * @param bookingId the unique identifier of the booking to retrieve luggage for
@@ -310,14 +282,9 @@ public class LuggageDAOImpl implements LuggageDAO {
      * to ensure proper luggage status validation and data integrity.
      * </p>
      * <p>
-     * The method includes comprehensive error handling with logging to track
+     * The method includes error handling with logging to track
      * luggage status update operations and any failures that may occur during
      * the update process. This is crucial for luggage tracking and audit purposes.
-     * </p>
-     * <p>
-     * This operation is typically triggered by customer reports of missing luggage,
-     * baggage handling system notifications, or administrative actions when luggage
-     * cannot be located or delivered to passengers.
      * </p>
      *
      * @param ticket the post-checkin luggage identifier used for physical tracking
