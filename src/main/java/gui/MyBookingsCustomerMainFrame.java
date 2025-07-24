@@ -373,6 +373,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
         if(searchBookingPanel.isSearchPerformed()){
 
             controller.clearSearchBookingResultCache();
+
             if ( searchBookingPanel.getActiveFilter().equals("FLIGHT")) {
 
                 searchBookingPanel.filteredFlightSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
@@ -382,8 +383,12 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
                 searchBookingPanel.filteredPassengerSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
 
             }else{
+                
+                new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                        callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), true);
 
-                searchBookingPanel.setComponents(callingObjects, controller, true);
+                callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+                mainFrame.dispose();
 
             }
             searchBookingPanel.revalidate();
