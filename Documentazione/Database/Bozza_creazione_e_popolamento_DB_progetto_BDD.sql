@@ -30,7 +30,7 @@ CREATE TABLE Customer (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNO USERNAME NON SI RIPETE NELLA TABELLA ADMIN TRA GLI ACCOUNT NON CANCELLATI
+--003TRIGGER UNO USERNAME NON SI RIPETE NELLA TABELLA ADMIN TRA GLI ACCOUNT NON CANCELLATI
 
 CREATE OR REPLACE FUNCTION fun_unique_username_admin_not_deleted()
 RETURNS TRIGGER
@@ -61,7 +61,7 @@ EXECUTE FUNCTION fun_unique_username_admin_not_deleted();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNA MAIL NON SI RIPETE NELLA TABELLA ADMIN TRA GLI ACCOUNT NON CANCELLATI
+--004TRIGGER UNA MAIL NON SI RIPETE NELLA TABELLA ADMIN TRA GLI ACCOUNT NON CANCELLATI
 
 CREATE OR REPLACE FUNCTION fun_unique_mail_admin_not_deleted()
 RETURNS TRIGGER
@@ -92,7 +92,7 @@ EXECUTE FUNCTION fun_unique_mail_admin_not_deleted();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNO USERNAME NON SI RIPETE NELLA TABELLA CUSTOMER TRA GLI ACCOUNT NON CANCELLATI
+--005TRIGGER UNO USERNAME NON SI RIPETE NELLA TABELLA CUSTOMER TRA GLI ACCOUNT NON CANCELLATI
 
 CREATE OR REPLACE FUNCTION fun_unique_username_customer_not_deleted()
 RETURNS TRIGGER
@@ -123,7 +123,7 @@ EXECUTE FUNCTION fun_unique_username_customer_not_deleted();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNA MAIL NON SI RIPETE NELLA TABELLA CUSTOMER TRA GLI ACCOUNT NON CANCELLATI
+--006TRIGGER UNA MAIL NON SI RIPETE NELLA TABELLA CUSTOMER TRA GLI ACCOUNT NON CANCELLATI
 
 CREATE OR REPLACE FUNCTION fun_unique_mail_customer_not_deleted()
 RETURNS TRIGGER
@@ -154,7 +154,7 @@ EXECUTE FUNCTION fun_unique_mail_customer_not_deleted();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
+--007TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
 
 CREATE OR REPLACE FUNCTION fun_unique_username_admin_with_customer()
 RETURNS TRIGGER
@@ -181,7 +181,7 @@ EXECUTE FUNCTION fun_unique_username_admin_with_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO CUSTOMER)
+--008TRIGGER UNO USERNAME NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO CUSTOMER)
 
 CREATE OR REPLACE FUNCTION fun_unique_username_customer_with_admin()
 RETURNS TRIGGER
@@ -207,7 +207,7 @@ EXECUTE FUNCTION fun_unique_username_customer_with_admin();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNA MAIL NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
+--010TRIGGER UNA MAIL NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO ADMIN)
 
 CREATE OR REPLACE FUNCTION fun_unique_mail_admin_with_customer()
 RETURNS TRIGGER
@@ -233,7 +233,7 @@ EXECUTE FUNCTION fun_unique_mail_admin_with_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNA MAIL NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO CUSTOMER)
+--011TRIGGER UNA MAIL NON SI RIPETE TRA LE TABELLE ADMIN E CUSTOMER (LATO CUSTOMER)
 
 CREATE OR REPLACE FUNCTION fun_unique_mail_customer_with_admin()
 RETURNS TRIGGER
@@ -259,7 +259,7 @@ EXECUTE FUNCTION fun_unique_mail_customer_with_admin();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCO LE MODIFICHE SU UN ACCOUNT ADMIN CANCELLATO
+--012TRIGGER BLOCCO LE MODIFICHE SU UN ACCOUNT ADMIN CANCELLATO
 
 CREATE OR REPLACE FUNCTION fun_block_upd_canc_admin()
 RETURNS TRIGGER
@@ -284,7 +284,7 @@ EXECUTE FUNCTION fun_block_upd_canc_admin();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCO LE MODIFICHE SU UN ACCOUNT CUSTOMER CANCELLATO
+--013TRIGGER BLOCCO LE MODIFICHE SU UN ACCOUNT CUSTOMER CANCELLATO
 
 CREATE OR REPLACE FUNCTION fun_block_upd_canc_customer()
 RETURNS TRIGGER
@@ -308,7 +308,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_block_upd_canc_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--014
 CREATE TYPE FlightStatus AS ENUM ('PROGRAMMED', 'CANCELLED', 'ABOUT_TO_DEPART', 'DEPARTED', 'DELAYED', 'LANDED', 'ABOUT_TO_ARRIVE');
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -351,7 +351,7 @@ CREATE TABLE Flight (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SI PUò MODIFICARE ID_FLIGHT DI FLIGHT SOLO FINCHè IL VOLO è PROGRAMMED O CANCELLED
+--015TRIGGER SI PUò MODIFICARE ID_FLIGHT DI FLIGHT SOLO FINCHè IL VOLO è PROGRAMMED O CANCELLED
 
 CREATE OR REPLACE FUNCTION fun_block_upd_id_flight_aToDep_or_more()
 RETURNS TRIGGER
@@ -380,7 +380,7 @@ EXECUTE FUNCTION fun_block_upd_id_flight_aToDep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MODIFICARE IL DEPARTURE TIME PER UN VOLO ARRIVING DEPARTED, DELAYED, ABOUTTOARRIVE O LANDED
+--016TRIGGER NON SI PUò MODIFICARE IL DEPARTURE TIME PER UN VOLO ARRIVING DEPARTED, DELAYED, ABOUTTOARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_dep_time_if_dep_or_more()
 RETURNS TRIGGER
@@ -413,7 +413,7 @@ EXECUTE FUNCTION fun_blocked_upd_arriving_dep_time_if_dep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MODIFICARE L'ARRIVAL TIME PER UN VOLO LANDED
+--017TRIGGER NON SI PUò MODIFICARE L'ARRIVAL TIME PER UN VOLO LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_arr_time_if_landed()
 RETURNS TRIGGER
@@ -442,7 +442,7 @@ EXECUTE FUNCTION fun_blocked_upd_arr_time_if_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUÒ MODIFICARE IL FLIGHT_DELAY PER UN VOLO DEPARTING DEPARTED O PIù
+--018TRIGGER NON SI PUÒ MODIFICARE IL FLIGHT_DELAY PER UN VOLO DEPARTING DEPARTED O PIù
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_departing_delay_if_dep_or_more()
 RETURNS TRIGGER
@@ -475,7 +475,7 @@ EXECUTE FUNCTION fun_blocked_upd_departing_delay_if_dep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUÒ MODIFICARE IL FLIGHT_DELAY PER UN VOLO ARRIVING LANDED
+--019TRIGGER NON SI PUÒ MODIFICARE IL FLIGHT_DELAY PER UN VOLO ARRIVING LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_delay_if_dep()
 RETURNS TRIGGER
@@ -508,7 +508,7 @@ EXECUTE FUNCTION fun_blocked_upd_arriving_delay_if_dep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN VOLO DEPARTING PUò AVERE FLIGHT_STATUS AD ABOUTTODEPART
+--020TRIGGER SOLO UN VOLO DEPARTING PUò AVERE FLIGHT_STATUS AD ABOUTTODEPART
 
 CREATE OR REPLACE FUNCTION fun_only_a_dep_flight_can_become_aToDepart()
 RETURNS TRIGGER
@@ -537,7 +537,7 @@ EXECUTE FUNCTION fun_only_a_dep_flight_can_become_aToDepart();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN VOLO ARRIVING PUò AVERE FLIGHT_STATUS AD ABOUTTOARRIVE
+--021TRIGGER SOLO UN VOLO ARRIVING PUò AVERE FLIGHT_STATUS AD ABOUTTOARRIVE
 
 CREATE OR REPLACE FUNCTION fun_only_an_arr_flight_can_become_aToArrive()
 RETURNS TRIGGER
@@ -565,7 +565,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_only_an_arr_flight_can_become_aToArrive();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--022
 CREATE TYPE BookingStatus AS ENUM ('CONFIRMED', 'PENDING', 'CANCELLED');
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -586,7 +586,7 @@ CREATE TABLE Booking (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MODIFICARE GLI ATTRIBUTI COMPANY_NAME, MAX_SEATS, DESTINATION_OR_ORIGIN, FLIGHT_TYPE 
+--023TRIGGER NON SI POSSONO MODIFICARE GLI ATTRIBUTI COMPANY_NAME, MAX_SEATS, DESTINATION_OR_ORIGIN, FLIGHT_TYPE 
 --DI FLIGHT SE IL VOLO HA ALMENO UNA PRENOTAZIONE ASSOCIATA
 
 CREATE OR REPLACE FUNCTION fun_blocked_updates_flight()
@@ -618,7 +618,7 @@ EXECUTE FUNCTION fun_blocked_updates_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER ID BOOKING IN BOOKING SI PUò MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED O CANCELLED
+--024TRIGGER ID BOOKING IN BOOKING SI PUò MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED O CANCELLED
 
 CREATE OR REPLACE FUNCTION fun_block_mod_id_booking_if_f_not_prog_canc()
 RETURNS TRIGGER
@@ -656,7 +656,7 @@ EXECUTE FUNCTION fun_block_mod_id_booking_if_f_not_prog_canc();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MAI MODIFICARE L'ATTRIBUTO BOOKING_TIME DI BOOKING
+--025TRIGGER NON SI PUò MAI MODIFICARE L'ATTRIBUTO BOOKING_TIME DI BOOKING
 
 CREATE OR REPLACE FUNCTION fun_block_mod_booking_time()
 RETURNS TRIGGER
@@ -681,7 +681,7 @@ EXECUTE FUNCTION fun_block_mod_booking_time();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO è ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
+--026TRIGGER SE UN VOLO è ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o  LANDED, LE PRENOTAZIONI NON POSSONO PIÙ ESSERE MODIFICATE (NEMMENO CANCELLATE)
 
 CREATE OR REPLACE FUNCTION fun_block_mod_booking_if_flight_aToDep_dep_aToArr_landed()
 RETURNS TRIGGER
@@ -714,7 +714,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_block_mod_booking_if_flight_aToDep_dep_aToArr_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--027
 CREATE TABLE Passenger (
 
 	
@@ -729,7 +729,7 @@ CREATE TABLE Passenger (
 );
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--028
 CREATE TABLE Ticket (
 	
 	ticket_number CHAR(13) PRIMARY KEY,
@@ -748,7 +748,7 @@ CREATE TABLE Ticket (
 );
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--029
 --TRIGGER PER UN DATO BIGLIETTO, ID_FLIGHT è LO STESSO DELLA PRENOTAZIONE ASSOCIATA (lato BOOKING)
 
 CREATE OR REPLACE FUNCTION fun_correctness_of_id_flight_booking_with_tickets()
@@ -781,7 +781,7 @@ EXECUTE FUNCTION fun_correctness_of_id_flight_booking_with_tickets();
 --Qui non serve il BEFORE INSERT, perchè non posso avere inserito TICKET per una prenotazione che ancora non c'era
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--030
 --TRIGGER PER UN DATO BIGLIETTO, ID_FLIGHT è LO STESSO DELLA PRENOTAZIONE ASSOCIATA (lato TICKET)
 
 CREATE OR REPLACE FUNCTION fun_correctness_of_id_flight_ticket_with_booking()
@@ -819,7 +819,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_correctness_of_id_flight_ticket_with_booking();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--031
 --TRIGGER TICKET_NUMBER IN TICKET SI PUò MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED O CANCELLED
 
 CREATE OR REPLACE FUNCTION fun_block_mod_ticket_number_if_f_not_prog_canc()
@@ -857,7 +857,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_block_mod_ticket_number_if_f_not_prog_canc();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--032
 --TRIGGER SE SI FA DELETE DI UN TICKET, CONTROLLO LA PRENOTAZIONE ASSOCIATA E IL PASSEGGERO ASSOCIATO, 
 --PER ENNTRAMBI, SE NON HANNO ALTRI TICKET, SI FA DELETE ANCHE DI LORO
 
@@ -913,7 +913,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_check_if_del_pass_and_booking_after_del_ticket();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--033
 --TRIGGER POSTI SONO INTERI DA 1 A ASSOCIATED_FLIGHT.MAX_SEATS
 
 CREATE OR REPLACE FUNCTION fun_valid_ticket_seat()
@@ -950,7 +950,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_valid_ticket_seat();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--034
 --TRIGGER I PASSEGERI POSSONO AVERE QUALUNQUE DATO (TRANNE L'SSN PK) A NULL, MA QUESTO SOLO SE NESSUNA LORO PRENOTAZIONE È 'CONFFIRMED', 
 --SE INVECE ALMENO UNA LO È, NIENTE DEVE ESSERE NULL
 
@@ -996,7 +996,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_valid_passenger_data();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--035
 --TRIGGER PRIMA DI METTERE UN PRENOTAZIONE A CONFERMATA, CONTROLLO CHE TUTTI I PASSEGGERI AD ESSA ASSOCIATA NON ABBIANO DATI NULL
 
 CREATE OR REPLACE FUNCTION fun_check_passenger_data_before_conf_booking()
@@ -1042,7 +1042,7 @@ EXECUTE FUNCTION fun_check_passenger_data_before_conf_booking();
 -------------------------------------------------------------------------------------------------------------------------
 
 
---TRIGGER SE FACCIO IL CHECK-IN (OSSIA SE CHECK-IN = TRUE), ALLORA SE POSTO È NULL, ASSEGNO AL TICKET IL PRIMO POSTO LIBERO 
+--036TRIGGER SE FACCIO IL CHECK-IN (OSSIA SE CHECK-IN = TRUE), ALLORA SE POSTO È NULL, ASSEGNO AL TICKET IL PRIMO POSTO LIBERO 
 --(E QUESTO TRIGGER È BEFORE INSERT OR UPDATE OF CHECKED_IN, SEAT; COSÌ NON PUÒ MAI ACCADERE CHE UN TICKET CON CHECK-IN TRUE NON ABBIA POSTO)
 
 CREATE OR REPLACE FUNCTION fun_valid_seat_after_check_in()
@@ -1111,7 +1111,7 @@ EXECUTE FUNCTION fun_valid_seat_after_check_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE ALMENO UN VOLO DI UN PASSEGGERO NON È IN STATO PROGRAMMED O CANCELLED, I DATI DEL PASSEGGERO NON POSSONO PIÙ ESSERE MODIFICATI
+--037TRIGGER SE ALMENO UN VOLO DI UN PASSEGGERO NON È IN STATO PROGRAMMED O CANCELLED, I DATI DEL PASSEGGERO NON POSSONO PIÙ ESSERE MODIFICATI
 
 CREATE OR REPLACE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed()
 RETURNS TRIGGER
@@ -1156,7 +1156,7 @@ EXECUTE FUNCTION fun_block_upd_pass_if_flight_departed_aToArr_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO È ABOUT_TO_DEPART, PUÒ ESSERE MOFIFICATO SOLO IL POSTO O CHECKED_IN DI UN TICKET
+--038TRIGGER SE UN VOLO È ABOUT_TO_DEPART, PUÒ ESSERE MOFIFICATO SOLO IL POSTO O CHECKED_IN DI UN TICKET
 
 CREATE OR REPLACE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep()
 RETURNS TRIGGER
@@ -1194,7 +1194,7 @@ EXECUTE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN VOLO È DEPARTED o ABOUT_TO_ARRIVE O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
+--039TRIGGER SE UN VOLO È DEPARTED o ABOUT_TO_ARRIVE O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
 
 CREATE OR REPLACE FUNCTION fun_block_mod_ticket_if_flight_dep_or_more()
 RETURNS TRIGGER
@@ -1228,7 +1228,7 @@ EXECUTE FUNCTION fun_block_mod_ticket_if_flight_dep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON CI SONO BIGLIETTI PER LO STESSO POSTO SU UN DATO VOLO
+--040TRIGGER NON CI SONO BIGLIETTI PER LO STESSO POSTO SU UN DATO VOLO
 
 CREATE OR REPLACE FUNCTION fun_unique_ticket_per_seat_per_flight()
 RETURNS TRIGGER
@@ -1266,7 +1266,7 @@ EXECUTE FUNCTION fun_unique_ticket_per_seat_per_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALL'INSERIMENTO DI UN BIGLIETTO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
+--041TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALL'INSERIMENTO DI UN BIGLIETTO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
 
 CREATE OR REPLACE FUNCTION fun_if_ticket_inserted_upd_free_seats()
 RETURNS TRIGGER
@@ -1314,7 +1314,7 @@ EXECUTE FUNCTION fun_if_ticket_inserted_upd_free_seats();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALLA CANCELLAZIONE DI UN BIGLIETTO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
+--042TRIGGER CHE AGGIORNA I FREE_SEATS DI UN VOLO ALLA CANCELLAZIONE DI UN BIGLIETTO (DI UNA PRENOTAZIONE NON CANCELLATA) PER QUEL VOLO
 
 CREATE OR REPLACE FUNCTION fun_if_ticket_deleted_upd_free_seats()
 RETURNS TRIGGER
@@ -1355,7 +1355,7 @@ EXECUTE FUNCTION fun_if_ticket_deleted_upd_free_seats();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO PER LE PRENOTAZIONI 'CONFIRMED' UN BIGLIETTO PUò ESSERE CHECKED_IN
+--043TRIGGER SOLO PER LE PRENOTAZIONI 'CONFIRMED' UN BIGLIETTO PUò ESSERE CHECKED_IN
 
 CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_conf_book()
 RETURNS TRIGGER
@@ -1392,7 +1392,7 @@ EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_conf_book();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO PER I VOLI ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
+--044TRIGGER SOLO PER I VOLI ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
 
 CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan()
 RETURNS TRIGGER
@@ -1429,7 +1429,7 @@ EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, ABOUT_TO_ARRIVE O LANDED
+--045TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan()
 RETURNS TRIGGER
@@ -1465,7 +1465,7 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
-
+--046
 CREATE TYPE LuggageStatus AS ENUM ('BOOKED', 'LOADED', 'WITHDRAWABLE', 'LOST');
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -1491,7 +1491,7 @@ CREATE TABLE Luggage (
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE PER UN BIGLIETTO C'è GIà UN BAGAGLIO A MANO, NON SE NE POSSONO INSERIRE ALTRI (BEFORE INSERT)
+--047TRIGGER SE PER UN BIGLIETTO C'è GIà UN BAGAGLIO A MANO, NON SE NE POSSONO INSERIRE ALTRI (BEFORE INSERT)
 
 CREATE OR REPLACE FUNCTION fun_block_ins_multiple_carry_on_luggages()
 RETURNS TRIGGER
@@ -1530,7 +1530,7 @@ EXECUTE FUNCTION fun_block_ins_multiple_carry_on_luggages();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE PER UN BIGLIETTO C'è GIà UN BAGAGLIO A MANO, NON SI PUò MODIFICARE IL TIPO DI UN ALTRO BAGAGLIO PER FAR SI CHE CE NE SIANO DUE (BEFORE UPDATE)
+--048TRIGGER SE PER UN BIGLIETTO C'è GIà UN BAGAGLIO A MANO, NON SI PUò MODIFICARE IL TIPO DI UN ALTRO BAGAGLIO PER FAR SI CHE CE NE SIANO DUE (BEFORE UPDATE)
 
 CREATE OR REPLACE FUNCTION fun_block_upd_to_have_multiple_carry_on_luggages()
 RETURNS TRIGGER
@@ -1569,7 +1569,7 @@ EXECUTE FUNCTION fun_block_upd_to_have_multiple_carry_on_luggages();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER ID LUGGAGE E ID TICKET IN LUGGAGE SI POSSONO MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED
+--049TRIGGER ID LUGGAGE E ID TICKET IN LUGGAGE SI POSSONO MODIFICARE SOLO SE IL VOLO ASSOCIATO è PROGRAMMED
 
 CREATE OR REPLACE FUNCTION fun_block_mod_id_lug_ticket_if_f_not_prog_canc()
 RETURNS TRIGGER
@@ -1613,7 +1613,7 @@ EXECUTE FUNCTION fun_block_mod_id_lug_ticket_if_f_not_prog_canc();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UNA VOLTA GENERATO, NON SI PUò MODIFICARE id_luggage_after_check_in
+--050TRIGGER UNA VOLTA GENERATO, NON SI PUò MODIFICARE id_luggage_after_check_in
 
 CREATE OR REPLACE FUNCTION fun_block_mod_id_lug_after_check_in_after_generation()
 RETURNS TRIGGER
@@ -1638,7 +1638,7 @@ EXECUTE FUNCTION fun_block_mod_id_lug_after_check_in_after_generation();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER PER I BAGAGLI, SE LA PRENOTAZIONE DEL BIGLIETTO ASSOCIATO NON è CONFIRMED, IL TIPO PUò ESSERE A NULL, MA SE è CONFIRMED NO
+--051TRIGGER PER I BAGAGLI, SE LA PRENOTAZIONE DEL BIGLIETTO ASSOCIATO NON è CONFIRMED, IL TIPO PUò ESSERE A NULL, MA SE è CONFIRMED NO
 
 CREATE OR REPLACE FUNCTION fun_valid_luggage_type()
 RETURNS TRIGGER
@@ -1681,7 +1681,7 @@ EXECUTE FUNCTION fun_valid_luggage_type();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE IL BLIGLIETTO NON è CHECKED_IN, IL LUGGAGE_STATUS PUò ESSERE SOLO BOOKED
+--052TRIGGER SE IL BLIGLIETTO NON è CHECKED_IN, IL LUGGAGE_STATUS PUò ESSERE SOLO BOOKED
 
 CREATE OR REPLACE FUNCTION fun_lug_status_only_booked_if_booking_canc()
 RETURNS TRIGGER
@@ -1718,7 +1718,7 @@ EXECUTE FUNCTION fun_lug_status_only_booked_if_booking_canc();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO PER UN BIGLIETTO VIENE FATTO IL CHECK-IN, VIENE GENERATO L'id_luggage_after_check_in PER TUTTI I SUOI BAGAGLI
+--053TRIGGER QUANDO PER UN BIGLIETTO VIENE FATTO IL CHECK-IN, VIENE GENERATO L'id_luggage_after_check_in PER TUTTI I SUOI BAGAGLI
 --(VIENE GENERATO COME ticket_number concatenato un intero da 0 a numero di bagagli del passeggero - 1)
 
 CREATE OR REPLACE FUNCTION fun_generation_of_id_luggage_after_check_in()
@@ -1759,7 +1759,7 @@ EXECUTE FUNCTION fun_generation_of_id_luggage_after_check_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SU id_luggage_after_check_in NOT NULL SE IL SUO BIGLIETTO è CHECKED-IN
+--054TRIGGER SU id_luggage_after_check_in NOT NULL SE IL SUO BIGLIETTO è CHECKED-IN
 
 CREATE OR REPLACE FUNCTION fun_check_id_lug_after_check_in_not_null_if_ticket_checked_in()
 RETURNS TRIGGER
@@ -1797,7 +1797,7 @@ EXECUTE FUNCTION fun_check_id_lug_after_check_in_not_null_if_ticket_checked_in()
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS (DEI BAGAGLI DELLE PRENOTAZIONI NON CANCELLATE) NON PUÒ ESSERE BOOKED SE IL VOLO È DEPARTED, ABOUTTOARRIVE O LANDED
+--055TRIGGER IL LUGGAGE_STATUS (DEI BAGAGLI DELLE PRENOTAZIONI NON CANCELLATE) NON PUÒ ESSERE BOOKED SE IL VOLO È DEPARTED, ABOUTTOARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_valid_luggage_status_after_departure()
 RETURNS TRIGGER
@@ -1850,7 +1850,7 @@ EXECUTE FUNCTION fun_valid_luggage_status_after_departure();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON Può ESSERE WITHDRAWABLE SE IL VOLO NON è LANDED
+--056TRIGGER IL LUGGAGE_STATUS NON Può ESSERE WITHDRAWABLE SE IL VOLO NON è LANDED
 
 CREATE OR REPLACE FUNCTION fun_luggage_not_withd_if_flight_not_landed()
 RETURNS TRIGGER
@@ -1894,7 +1894,7 @@ EXECUTE FUNCTION fun_luggage_not_withd_if_flight_not_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON Può ESSERE LOST SE IL VOLO NON è LANDED
+--057TRIGGER IL LUGGAGE_STATUS NON Può ESSERE LOST SE IL VOLO NON è LANDED
 
 CREATE OR REPLACE FUNCTION fun_luggage_not_lost_if_flight_not_landed()
 RETURNS TRIGGER
@@ -1938,7 +1938,7 @@ EXECUTE FUNCTION fun_luggage_not_lost_if_flight_not_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON Può ESSERE LOADED SE IL VOLO è PROGRAMMED, CANCELLED O LANDED
+--058TRIGGER IL LUGGAGE_STATUS NON Può ESSERE LOADED SE IL VOLO è PROGRAMMED, CANCELLED O LANDED
 
 CREATE OR REPLACE FUNCTION fun_luggage_not_loaded_if_flight_prog_canc_land()
 RETURNS TRIGGER
@@ -1982,7 +1982,7 @@ EXECUTE FUNCTION fun_luggage_not_loaded_if_flight_prog_canc_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER IL LUGGAGE_STATUS NON Può ESSERE DIVERSO DA BOOKED SE LA PRENOTAZIONE è CANCELLED
+--059TRIGGER IL LUGGAGE_STATUS NON Può ESSERE DIVERSO DA BOOKED SE LA PRENOTAZIONE è CANCELLED
 
 CREATE OR REPLACE FUNCTION fun_luggage_status_only_booked_if_book_canc()
 RETURNS TRIGGER
@@ -2026,7 +2026,7 @@ EXECUTE FUNCTION fun_luggage_status_only_booked_if_book_canc();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS BOOKED PUò DIVENTARE LOADED
+--060TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS BOOKED PUò DIVENTARE LOADED
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_loaded_only_if_booked()
 RETURNS TRIGGER
@@ -2055,7 +2055,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_loaded_only_if_booked();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED O LOST PUò DIVENTARE WITHDRAWABLE
+--061TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS LOADED O LOST PUò DIVENTARE WITHDRAWABLE
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_withd_only_if_loaded_lost()
 RETURNS TRIGGER
@@ -2084,7 +2084,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_withd_only_if_loaded_lost();
 
 ----------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS WITHDRAWABLE PUò DIVENTARE LOST
+--062TRIGGER SOLO UN BAGAGLIO CON LUGGAGE STATUS WITHDRAWABLE PUò DIVENTARE LOST
 
 CREATE OR REPLACE FUNCTION fun_lug_status_can_become_lost_only_if_withd()
 RETURNS TRIGGER
@@ -2113,7 +2113,7 @@ EXECUTE FUNCTION fun_lug_status_can_become_lost_only_if_withd();
 
 ----------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO UN VOLO DEPARTING PARTE, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CON CHECKED_IN A TRUE VENGONO MESSI A LOADED
+--063TRIGGER QUANDO UN VOLO DEPARTING PARTE, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CON CHECKED_IN A TRUE VENGONO MESSI A LOADED
 
 CREATE OR REPLACE FUNCTION fun_luggages_loaded_when_depart()
 RETURNS TRIGGER
@@ -2178,7 +2178,7 @@ EXECUTE FUNCTION fun_luggages_loaded_when_depart();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO UN VOLO ATTERRA, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CHECKED_IN VENGONO MESSI A WITHDRAWABLE
+--064TRIGGER QUANDO UN VOLO ATTERRA, TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI BIGLIETTI CHECKED_IN VENGONO MESSI A WITHDRAWABLE
 
 CREATE OR REPLACE FUNCTION fun_luggages_withdrawable_when_landed()
 RETURNS TRIGGER
@@ -2241,7 +2241,7 @@ EXECUTE FUNCTION fun_luggages_withdrawable_when_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO PUÒ ESSERE ABOUT_TO_DEPART O DELAYED O DEPARTED O ABOUT_TO_ARRIVE O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (ABOUT_TO_DEPART O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
+--065TRIGGER UN VOLO PUÒ ESSERE ABOUT_TO_DEPART O DELAYED O DEPARTED O ABOUT_TO_ARRIVE O LANDED SOLO SE FLIGHT.DEPARTURE_TIME::DATE <= DATA_CORRENTE (IMPLEMENTATO CON IF (ABOUT_TO_DEPART O DEPARTED O LANDED) THEN IF DATA > DATA_CORRENTE THEN RAISE EXCEPTION )
 
 CREATE OR REPLACE FUNCTION fun_check_date_before_aToDep_or_more()
 RETURNS TRIGGER
@@ -2282,7 +2282,7 @@ EXECUTE FUNCTION fun_check_date_before_aToDep_or_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN VOLO DEPARTING PROGRAMMED Può ESSERE AGGIORNATO AD ABOUT_TO_DEPART
+--066TRIGGER SOLO UN VOLO DEPARTING PROGRAMMED Può ESSERE AGGIORNATO AD ABOUT_TO_DEPART
 
 CREATE OR REPLACE FUNCTION fun_only_prog_flight_can_become_aToDep()
 RETURNS TRIGGER
@@ -2317,7 +2317,7 @@ EXECUTE FUNCTION fun_only_prog_flight_can_become_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO DEPARTING Può ESSERE AGGIORNATO A DEPARTED SOLO SE ERA ABOUT_TO_DEPART 
+--067TRIGGER UN VOLO DEPARTING Può ESSERE AGGIORNATO A DEPARTED SOLO SE ERA ABOUT_TO_DEPART 
 
 CREATE OR REPLACE FUNCTION fun_only_aToDep_flight_can_become_dep()
 RETURNS TRIGGER
@@ -2348,7 +2348,7 @@ EXECUTE FUNCTION fun_only_aToDep_flight_can_become_dep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN VOLO PROGRAMMED O ABOUTTODEPART O DEPARTED O ABOUTTOARRIVE Può ESSERE AGGIORNATO A DELAYED
+--068TRIGGER SOLO UN VOLO PROGRAMMED O ABOUTTODEPART O DEPARTED O ABOUTTOARRIVE Può ESSERE AGGIORNATO A DELAYED
 
 CREATE OR REPLACE FUNCTION fun_only_prog_or_aToDep_flight_can_become_delayed()
 RETURNS TRIGGER
@@ -2377,7 +2377,7 @@ EXECUTE FUNCTION fun_only_prog_or_aToDep_flight_can_become_delayed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO DEPARTING Può ESSERE AGGIORNATO A LANDED SOLO SE DEPARTED
+--069TRIGGER UN VOLO DEPARTING Può ESSERE AGGIORNATO A LANDED SOLO SE DEPARTED
 
 CREATE OR REPLACE FUNCTION fun_dep_flight_can_become_landed_only_if_dep()
 RETURNS TRIGGER
@@ -2411,7 +2411,7 @@ EXECUTE FUNCTION fun_dep_flight_can_become_landed_only_if_dep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SOLO UN VOLO ARRIVING DEPARTED Può ESSERE AGGIORNATO A ABOUTTOARRIVE
+--070TRIGGER SOLO UN VOLO ARRIVING DEPARTED Può ESSERE AGGIORNATO A ABOUTTOARRIVE
 
 CREATE OR REPLACE FUNCTION fun_only_departed_arriving_flight_can_become_aToArr()
 RETURNS TRIGGER
@@ -2445,7 +2445,7 @@ EXECUTE FUNCTION fun_only_departed_arriving_flight_can_become_aToArr();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO ARRIVING Può ESSERE AGGIORNATO A LANDED SOLO SE DEPARTED O ABOUTTOARRIVE
+--071TRIGGER UN VOLO ARRIVING Può ESSERE AGGIORNATO A LANDED SOLO SE DEPARTED O ABOUTTOARRIVE
 
 CREATE OR REPLACE FUNCTION fun_arriving_f_can_become_land_only_if_dep_or_aToArr()
 RETURNS TRIGGER
@@ -2479,7 +2479,7 @@ EXECUTE FUNCTION fun_arriving_f_can_become_land_only_if_dep_or_aToArr();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO LANDED NON Può PIù CAMBIARE FLIGHT_STATUS
+--072TRIGGER UN VOLO LANDED NON Può PIù CAMBIARE FLIGHT_STATUS
 CREATE OR REPLACE FUNCTION fun_block_mod_flight_status_if_landed()
 RETURNS TRIGGER
 AS $$
@@ -2503,7 +2503,7 @@ EXECUTE FUNCTION fun_block_mod_flight_status_if_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'ABOUT_TO_DEPART', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
+--073TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO DEPARTING DIVENTA 'ABOUT_TO_DEPART', LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED'
 
 CREATE OR REPLACE FUNCTION actual_func_change_booking_status_when_dep_aToDep(input_old_id_flight VARCHAR(15), input_old_flight_type BOOLEAN, input_old_flight_status FlightStatus, input_new_flight_type BOOLEAN, input_new_flight_status FlightStatus )
 RETURNS INTEGER
@@ -2564,7 +2564,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 --------------------------------
-
+--074
 CREATE OR REPLACE FUNCTION fun_change_booking_status_when_dep_aToDep()
 RETURNS TRIGGER
 AS $$
@@ -2590,7 +2590,7 @@ EXECUTE FUNCTION fun_change_booking_status_when_dep_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO ARRIVING DIVENTA 'DEPARTED', SIMULIAMO UNA CONNESSIONE CON L'AEROPORTO DI PARTENZA:
+--075TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO ARRIVING DIVENTA 'DEPARTED', SIMULIAMO UNA CONNESSIONE CON L'AEROPORTO DI PARTENZA:
 --LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED', E FARE IN MODO CHE VENGANO AGGIORNATI ANCHE I FREE_SEATS DI CONSEGUENZA
 --CIRCA IL 90% DEI SUOI PASSEGGERI CON PRENOTAZIONI CONFIRMED AVRANNO FATTO IL CHECK-IN, 
 --E TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI PASSEGGERI CON CHECKED_IN A TRUE VENGONO MESSI A LOADED
@@ -2696,7 +2696,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 ------------------------------
-
+--076
 CREATE OR REPLACE FUNCTION fun_simulate_connection_when_arriving_departed()
 RETURNS TRIGGER
 AS $$
@@ -2722,7 +2722,7 @@ EXECUTE FUNCTION fun_simulate_connection_when_arriving_departed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO DEPARTING DEPARTED O LANDED NON HA PRENOTAZIONI PENDING
+--077TRIGGER UN VOLO DEPARTING DEPARTED O LANDED NON HA PRENOTAZIONI PENDING
 
 CREATE OR REPLACE FUNCTION fun_check_on_booking_status_after_departing_dep()
 RETURNS TRIGGER
@@ -2757,7 +2757,7 @@ EXECUTE FUNCTION fun_check_on_booking_status_after_departing_dep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER UN VOLO ARRIVING ABOUT_TO_ARRIVE O LANDED NON HA PRENOTAZIONI PENDING
+--078TRIGGER UN VOLO ARRIVING ABOUT_TO_ARRIVE O LANDED NON HA PRENOTAZIONI PENDING
 --non serve il controllo su DEPARTED, perchè il trigger simulate_connection_when_arriving_departed le cancella BEFORE UPDATE, 
 --mentre, se viene inserito direttamente un volo come DEPARTED, allora non posso essere inserite prenotazioni PENDING
 
@@ -2793,7 +2793,7 @@ EXECUTE FUNCTION fun_check_on_booking_status_after_departing_arr();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER QUANDO LE PRENOTAZIONI DIVENTANO 'CANCELLED', AGGIORNO I FREE_SEATS DEL VOLO ASSOCIATO
+--079TRIGGER QUANDO LE PRENOTAZIONI DIVENTANO 'CANCELLED', AGGIORNO I FREE_SEATS DEL VOLO ASSOCIATO
 
 CREATE OR REPLACE FUNCTION fun_upd_free_seats_on_canc_booking()
 RETURNS TRIGGER
@@ -2841,7 +2841,7 @@ EXECUTE FUNCTION fun_upd_free_seats_on_canc_booking();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER CHE IMPEDISCE DI METTERE UNA PRENOTAZIONE DA CANCELLED A QUALCOS'ALTRO
+--080TRIGGER CHE IMPEDISCE DI METTERE UNA PRENOTAZIONE DA CANCELLED A QUALCOS'ALTRO
 
 CREATE OR REPLACE FUNCTION fun_block_restore_CANCELLED_booking()
 RETURNS TRIGGER
@@ -2866,7 +2866,7 @@ EXECUTE FUNCTION fun_block_restore_CANCELLED_booking();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER POSSO INSERIRE UN VOLO DEPARTING CON UN GATE SOLO SE è ABOUTTODEPART O DELAYED O DEPARTED O LANDED
+--081TRIGGER POSSO INSERIRE UN VOLO DEPARTING CON UN GATE SOLO SE è ABOUTTODEPART O DELAYED O DEPARTED O LANDED
 
 CREATE OR REPLACE FUNCTION fun_departing_check_insert_with_gate_only_if_aToDep_more()
 RETURNS TRIGGER
@@ -2899,7 +2899,7 @@ EXECUTE FUNCTION fun_departing_check_insert_with_gate_only_if_aToDep_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER POSSO INSERIRE UN VOLO ARRIVING CON UN GATE SOLO SE è ABOUTTOARRIVE O DELAYED O DEPARTED O LANDED
+--082TRIGGER POSSO INSERIRE UN VOLO ARRIVING CON UN GATE SOLO SE è ABOUTTOARRIVE O DELAYED O DEPARTED O LANDED
 
 CREATE OR REPLACE FUNCTION fun_arriving_check_insert_with_gate_only_if_aToDep_more()
 RETURNS TRIGGER
@@ -2932,7 +2932,7 @@ EXECUTE FUNCTION fun_arriving_check_insert_with_gate_only_if_aToDep_more();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER POSSO ASSEGNARE UN GATE AD UN VOLO DEPARTING SOLO SE è ABOUTTODEPART O DELAYED (BEFORE UPDATE)
+--083TRIGGER POSSO ASSEGNARE UN GATE AD UN VOLO DEPARTING SOLO SE è ABOUTTODEPART O DELAYED (BEFORE UPDATE)
 
 CREATE OR REPLACE FUNCTION fun_departing_check_assign_gate_only_if_aToDep_delayed()
 RETURNS TRIGGER
@@ -2966,7 +2966,7 @@ EXECUTE FUNCTION fun_departing_check_assign_gate_only_if_aToDep_delayed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER POSSO ASSEGNARE UN GATE AD UN VOLO ARRIVING SOLO SE è ABOUTTOARRIVE O DELAYED (BEFORE UPDATE)
+--084TRIGGER POSSO ASSEGNARE UN GATE AD UN VOLO ARRIVING SOLO SE è ABOUTTOARRIVE O DELAYED (BEFORE UPDATE)
 
 CREATE OR REPLACE FUNCTION fun_arriving_check_assign_gate_only_if_aToArr_delayed()
 RETURNS TRIGGER
@@ -2999,7 +2999,7 @@ EXECUTE FUNCTION fun_arriving_check_assign_gate_only_if_aToArr_delayed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE VOLI PROGRAMMED O CANCELLED CON UN GATE
+--085TRIGGER NON SI POSSONO INSERIRE VOLI PROGRAMMED O CANCELLED CON UN GATE
 
 CREATE OR REPLACE FUNCTION fun_block_assign_gate_to_a_prog_or_canc_flight()
 RETURNS TRIGGER
@@ -3028,7 +3028,7 @@ EXECUTE FUNCTION fun_block_assign_gate_to_a_prog_or_canc_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE VOLI DEPARTING DEPARTED O LANDED SENZA GATE
+--086TRIGGER NON SI POSSONO INSERIRE VOLI DEPARTING DEPARTED O LANDED SENZA GATE
 
 CREATE OR REPLACE FUNCTION fun_block_departing_flight_dep_or_landed_without_gate()
 RETURNS TRIGGER
@@ -3061,7 +3061,7 @@ EXECUTE FUNCTION fun_block_departing_flight_dep_or_landed_without_gate();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE VOLI ARRIVING LANDED SENZA GATE
+--087TRIGGER NON SI POSSONO INSERIRE VOLI ARRIVING LANDED SENZA GATE
 
 CREATE OR REPLACE FUNCTION fun_block_arriving_flight_landed_without_gate()
 RETURNS TRIGGER
@@ -3094,7 +3094,7 @@ EXECUTE FUNCTION fun_block_arriving_flight_landed_without_gate();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MODIFICARE IL GATE DI UN VOLO DEPARTING DEPARTED o più
+--088TRIGGER NON SI PUò MODIFICARE IL GATE DI UN VOLO DEPARTING DEPARTED o più
 
 CREATE OR REPLACE FUNCTION fun_block_mod_gate_departing_dep()
 RETURNS TRIGGER
@@ -3127,7 +3127,7 @@ EXECUTE FUNCTION fun_block_mod_gate_departing_dep();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MODIFICARE IL GATE DI UN VOLO ARRIVING LANDED
+--089TRIGGER NON SI PUò MODIFICARE IL GATE DI UN VOLO ARRIVING LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_mod_gate_arriving_landed()
 RETURNS TRIGGER
@@ -3160,7 +3160,7 @@ EXECUTE FUNCTION fun_block_mod_gate_arriving_landed();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER SE UN ACCOUNT CUSTOMER VIENE CANCELLATO, METTO A CANCELLED TUTTE LE SUE PRENOTAZIONI PER I VOLI CHE DEVONO ANCORA PARTIRE
+--090TRIGGER SE UN ACCOUNT CUSTOMER VIENE CANCELLATO, METTO A CANCELLED TUTTE LE SUE PRENOTAZIONI PER I VOLI CHE DEVONO ANCORA PARTIRE
 --(OSSIA IL CUI FLIGHT_STATUS è ANCORA PROGRAMMED)
 
 CREATE OR REPLACE FUNCTION fun_canc_future_booking_if_cust_canc()
@@ -3459,7 +3459,7 @@ INSERT INTO Luggage (luggage_type, luggage_status, id_ticket, id_luggage_after_c
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò INSERIRE UN ACCOUNT ADMIN CANCELLATO
+--091TRIGGER NON SI PUò INSERIRE UN ACCOUNT ADMIN CANCELLATO
 
 CREATE OR REPLACE FUNCTION fun_block_ins_deleted_admin()
 RETURNS TRIGGER
@@ -3485,7 +3485,7 @@ EXECUTE FUNCTION fun_block_ins_deleted_admin();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò INSERIRE UN ACCOUNT CUSTOMER CANCELLATO
+--092TRIGGER NON SI PUò INSERIRE UN ACCOUNT CUSTOMER CANCELLATO
 
 CREATE OR REPLACE FUNCTION fun_block_ins_deleted_customer()
 RETURNS TRIGGER
@@ -3511,7 +3511,7 @@ EXECUTE FUNCTION fun_block_ins_deleted_customer();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE PRENOTAZIONI GIà CANCELLATE
+--093TRIGGER NON SI POSSONO INSERIRE PRENOTAZIONI GIà CANCELLATE
 
 CREATE OR REPLACE FUNCTION fun_block_ins_canc_booking()
 RETURNS TRIGGER
@@ -3536,7 +3536,7 @@ EXECUTE FUNCTION fun_block_ins_canc_booking();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE TICKET CON CHECKED-IN GIà A TRUE
+--094TRIGGER NON SI POSSONO INSERIRE TICKET CON CHECKED-IN GIà A TRUE
 
 CREATE OR REPLACE FUNCTION fun_block_ins_checked_in_tickets()
 RETURNS TRIGGER
@@ -3561,7 +3561,7 @@ EXECUTE FUNCTION fun_block_ins_checked_in_tickets();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
+--095TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PRENOTAZIONE SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_booking_an_aToDep_or_more_flight()
 RETURNS TRIGGER
@@ -3594,7 +3594,7 @@ EXECUTE FUNCTION fun_block_booking_an_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PASSEGGERO SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
+--096TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE PASSEGGERO SU UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_tickets_aToDep_or_more_flight()
 RETURNS TRIGGER
@@ -3627,7 +3627,7 @@ EXECUTE FUNCTION fun_block_ins_tickets_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE BAGAGLIO PER UN PASSEGGERO DI UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
+--097TRIGGER BLOCCARE L'INSERIMENTO DI QUALUNQUE BAGAGLIO PER UN PASSEGGERO DI UN VOLO IL CUI FLIGHT_STATUS SIA ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_luggage_aToDep_or_more_flight()
 RETURNS TRIGGER
@@ -3666,7 +3666,7 @@ EXECUTE FUNCTION fun_block_ins_luggage_aToDep_or_more_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO AGGIUNGERE NUOVE PRENOTAZIONI (BEFORE INSERT ON BOOKING) SE IL CUSTOMER ASSOCIATO HA IS_DELETED = TRUE
+--098TRIGGER NON SI POSSONO AGGIUNGERE NUOVE PRENOTAZIONI (BEFORE INSERT ON BOOKING) SE IL CUSTOMER ASSOCIATO HA IS_DELETED = TRUE
 
 CREATE OR REPLACE FUNCTION fun_block_ins_booking_deleted_accounts()
 RETURNS TRIGGER
@@ -3699,7 +3699,7 @@ EXECUTE FUNCTION fun_block_ins_booking_deleted_accounts();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO AGGIUNGERE PRENOTAZIONI (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
+--099TRIGGER NON SI POSSONO AGGIUNGERE PRENOTAZIONI (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_booking_not_prog_flights()
 RETURNS TRIGGER
@@ -3732,7 +3732,7 @@ EXECUTE FUNCTION fun_block_ins_booking_not_prog_flights();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO AGGIUNGERE TICKET (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
+--100TRIGGER NON SI POSSONO AGGIUNGERE TICKET (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_tickets_not_prog_flights()
 RETURNS TRIGGER
@@ -3765,7 +3765,7 @@ EXECUTE FUNCTION fun_block_ins_tickets_not_prog_flights();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO AGGIUNGERE TICKET (BEFORE INSERT ON) PER PRENOTAZIONI CANCELLED
+--101TRIGGER NON SI POSSONO AGGIUNGERE TICKET (BEFORE INSERT ON) PER PRENOTAZIONI CANCELLED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_tickets_canc_bookings()
 RETURNS TRIGGER
@@ -3798,7 +3798,7 @@ EXECUTE FUNCTION fun_block_ins_tickets_canc_bookings();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
+--102TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
 
 CREATE OR REPLACE FUNCTION fun_block_ins_luggages_not_prog_flights()
 RETURNS TRIGGER
@@ -3837,7 +3837,7 @@ EXECUTE FUNCTION fun_block_ins_luggages_not_prog_flights();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER TICKET GIà CON CHECKE_IN A TRUE
+--103TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER TICKET GIà CON CHECKE_IN A TRUE
 --e questo (insieme al trigger successivo) garantisce anche non possano essere inseriti bagagli per voli già partiti
 
 CREATE OR REPLACE FUNCTION fun_block_ins_luggages_checked_in_tickets()
@@ -3871,7 +3871,7 @@ EXECUTE FUNCTION fun_block_ins_luggages_checked_in_tickets();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER PRENOTAZIONI CANCELLED
+--104TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER PRENOTAZIONI CANCELLED
 --e questo (insieme al trigger precedente) garantisce anche non possano essere inseriti bagagli per voli già partiti
 
 CREATE OR REPLACE FUNCTION fun_block_ins_luggages_canc_bookings()
@@ -3911,7 +3911,7 @@ EXECUTE FUNCTION fun_block_ins_luggages_canc_bookings();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER ALL'INSERIMENTO DI UN VOLO, MAX_SEATS E FREE_SEATS DEVONO COINCIDERE
+--105TRIGGER ALL'INSERIMENTO DI UN VOLO, MAX_SEATS E FREE_SEATS DEVONO COINCIDERE
 
 CREATE OR REPLACE FUNCTION fun_check_max_seats_eq_free_ins_flight()
 RETURNS TRIGGER
@@ -3936,7 +3936,7 @@ EXECUTE FUNCTION fun_check_max_seats_eq_free_ins_flight();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MODIFICARE I FREE_SEATS PER UN VOLO ARRIVING DELAYED, ABOUTTOARRIVE O LANDED
+--106TRIGGER NON SI POSSONO MODIFICARE I FREE_SEATS PER UN VOLO ARRIVING DELAYED, ABOUTTOARRIVE O LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land()
 RETURNS TRIGGER
@@ -3969,7 +3969,7 @@ EXECUTE FUNCTION fun_blocked_upd_arriving_free_seats_if_del_aToArr_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI POSSONO MODIFICARE IL DEPARTURE TIME E I FREE_SEATS PER UN VOLO DEPARTING DEPARTED O LANDED
+--107TRIGGER NON SI POSSONO MODIFICARE IL DEPARTURE TIME E I FREE_SEATS PER UN VOLO DEPARTING DEPARTED O LANDED
 
 CREATE OR REPLACE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land()
 RETURNS TRIGGER
@@ -4002,7 +4002,7 @@ EXECUTE FUNCTION fun_blocked_upd_departing_dep_time_free_seats_if_dep_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MODIFICARE UNA PRENOTAZIONE CANCELLATA
+--108TRIGGER NON SI PUò MODIFICARE UNA PRENOTAZIONE CANCELLATA
 
 CREATE OR REPLACE FUNCTION fun_block_mod_canc_book()
 RETURNS TRIGGER
@@ -4027,7 +4027,7 @@ EXECUTE FUNCTION fun_block_mod_canc_book();
 
 -------------------------------------------------------------------------------------------------------------------------
 
---TRIGGER NON SI PUò MODIFICARE UN VOLO CANCELLATO
+--109TRIGGER NON SI PUò MODIFICARE UN VOLO CANCELLATO
 
 CREATE OR REPLACE FUNCTION fun_block_mod_canc_flight()
 RETURNS TRIGGER
