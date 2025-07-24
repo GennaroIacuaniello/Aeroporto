@@ -4,6 +4,10 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 /**
@@ -250,6 +254,44 @@ public class HomePageCustomer extends DisposableObject {
         this.addArrivingPanel(controller);
         this.addDepartingPanel(controller);
         mainFrame.setVisible(true);
+
+
+        //resizing logic
+        mainFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                resizeTable(arrivingPanel, arrivingTable);
+                resizeTable(departingPanel, departingTable);
+
+            }
+        });
+        mainFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                resizeTable(arrivingPanel, arrivingTable);
+                resizeTable(departingPanel, departingTable);
+            }
+        });
+
+        mainFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                super.componentMoved(e);
+                resizeTable(arrivingPanel, arrivingTable);
+                resizeTable(departingPanel, departingTable);
+            }
+        });
+
+        mainFrame.addWindowStateListener(new WindowAdapter() {
+            @Override
+            public void windowStateChanged(WindowEvent e) {
+                super.windowStateChanged(e);
+                resizeTable(arrivingPanel, arrivingTable);
+                resizeTable(departingPanel, departingTable);
+            }
+        });
     }
 
     /**
@@ -607,7 +649,6 @@ public class HomePageCustomer extends DisposableObject {
         arrivingPanel.add(arrivingLabel, constraints.getGridBagConstraints());
 
         arrivingPanel.setVisible(true);
-
     }
 
     /**
@@ -816,6 +857,10 @@ public class HomePageCustomer extends DisposableObject {
         tablePanel.add(departingTable.getScrollContainer(), constraints.getGridBagConstraints());
     }
 
+    private void resizeTable(JPanel parentPanel, ImminentFlightsTable table) {
+        table.setRowHeight(parentPanel.getHeight() / (table.getRowCount() + 3));
+    }
+    
     /**
      * Performs customer session cleanup and resource management during interface disposal operations.
      * <p>
