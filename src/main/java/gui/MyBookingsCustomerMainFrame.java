@@ -379,13 +379,13 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
 
                 searchBookingPanel.filteredPassengerSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
 
-            }else if (searchBookingPanel.getActiveFilter().equals("NONE")){
+            }else{
 
                 searchBookingPanel.setComponents(callingObjects, controller, true);
 
             }
-            searchBookingPanel.repaint();
             searchBookingPanel.revalidate();
+            searchBookingPanel.repaint();
         }
 
     }
