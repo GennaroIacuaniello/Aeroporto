@@ -379,6 +379,10 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
 
                 searchBookingPanel.filteredPassengerSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
 
+            }else if (searchBookingPanel.getActiveFilter().equals("NONE")){
+
+                searchBookingPanel.setComponents(callingObjects, controller, true);
+
             }
             searchBookingPanel.repaint();
             searchBookingPanel.revalidate();
@@ -388,21 +392,6 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
 
     /**
      * Provides access to the main application frame for external window management and integration.
-     * <p>
-     * This method returns the primary JFrame instance that contains the customer booking
-     * management interface, enabling external components to access window properties,
-     * manage window state, and integrate the interface with broader application window
-     * management systems and navigation hierarchies.
-     * </p>
-     * <p>
-     * Frame access enables:
-     * </p>
-     * <ul>
-     *   <li><strong>Window Management:</strong> External control over window visibility, positioning, and state</li>
-     *   <li><strong>Navigation Integration:</strong> Integration with application navigation systems and calling object hierarchies</li>
-     *   <li><strong>Resource Coordination:</strong> Access for resource management and cleanup operations</li>
-     *   <li><strong>State Management:</strong> Window state preservation and restoration during navigation operations</li>
-     * </ul>
      *
      * @return the main JFrame instance containing the customer booking management interface
      */

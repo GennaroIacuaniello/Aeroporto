@@ -505,7 +505,7 @@ public class SearchBookingPanel extends JPanel {
      * @param controller the system controller providing access to booking search services and data management functionality
      * @param ifOpenedFromMenu flag indicating menu-initiated access for automatic booking data loading and specialized interface behavior
      */
-    private void setComponents(List<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
+    public void setComponents(List<DisposableObject> callingObjects, Controller controller, boolean ifOpenedFromMenu) {
 
         JPanel parametersPanel = createMainFilterPanel();
 
@@ -1050,7 +1050,7 @@ public class SearchBookingPanel extends JPanel {
         return container;
     }
 
-        /**
+    /**
      * Creates and configures the primary search button with comprehensive event handling and professional styling.
      * <p>
      * This private method establishes the main search execution button that serves as the central
@@ -1527,53 +1527,7 @@ public class SearchBookingPanel extends JPanel {
     }
 
     /**
-     * Configures professional button appearance with consistent styling throughout the search interface.
-     * <p>
-     * This private method applies standardized button styling that ensures visual consistency
-     * across all button components within the search interface. The method implements professional
-     * appearance standards with focus management, background colors, typography, and sizing
-     * that align with the airport management system's design principles and user experience
-     * requirements for optimal interface presentation and user interaction.
-     * </p>
-     * <p>
-     * The button appearance configuration includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Focus Management:</strong> Disables focus painting for clean visual presentation</li>
-     *   <li><strong>Background Styling:</strong> Light gray background color for professional interface integration</li>
-     *   <li><strong>Typography Configuration:</strong> Bold Segoe UI font with appropriate sizing for optimal readability</li>
-     *   <li><strong>Size Optimization:</strong> Consistent height specification with dynamic width adaptation</li>
-     * </ul>
-     * <p>
-     * Focus management disables focus painting (setFocusPainted(false)) to prevent focus
-     * rectangles from appearing around buttons during keyboard navigation, maintaining clean
-     * visual presentation and professional interface appearance. The focus management ensures
-     * consistent button appearance across different interaction methods and usage scenarios.
-     * </p>
-     * <p>
-     * Background styling applies light gray background color (235, 235, 235) that provides
-     * subtle visual definition while maintaining professional appearance and optimal integration
-     * with the overall interface color scheme. The background color ensures proper contrast
-     * and readability while supporting the airport management system's visual branding.
-     * </p>
-     * <p>
-     * Typography configuration utilizes bold Segoe UI font with 14-point sizing for optimal
-     * readability and professional presentation. The font configuration ensures consistent
-     * typography throughout the search interface while maintaining excellent readability
-     * across different display configurations and user interface scaling scenarios.
-     * </p>
-     * <p>
-     * Size optimization establishes consistent 35-pixel height for all styled buttons while
-     * maintaining dynamic width based on button content and preferred size calculations.
-     * The size optimization ensures uniform button appearance throughout the interface
-     * while accommodating varying button text lengths and content requirements.
-     * </p>
-     * <p>
-     * The method supports the overall interface design consistency by providing standardized
-     * button styling that enhances user experience through professional visual presentation,
-     * clear visual hierarchy, and optimal interaction design throughout the booking search
-     * and management interface components.
-     * </p>
+     * Configures button appearance with consistent styling throughout the search interface.
      *
      * @param button the JButton component to be styled with professional appearance configuration
      */
@@ -1588,53 +1542,6 @@ public class SearchBookingPanel extends JPanel {
 
     /**
      * Configures professional label appearance with consistent typography throughout the search interface.
-     * <p>
-     * This private method applies standardized label styling that ensures visual consistency
-     * across all label components within the search interface. The method implements professional
-     * typography standards with bold font configuration and appropriate sizing that align with
-     * the airport management system's design principles and readability requirements for
-     * optimal user interface presentation and information clarity.
-     * </p>
-     * <p>
-     * The label appearance configuration includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Typography Standardization:</strong> Bold Segoe UI font with 14-point sizing for optimal readability</li>
-     *   <li><strong>Visual Hierarchy:</strong> Bold weight provides clear distinction between labels and input content</li>
-     *   <li><strong>Readability Optimization:</strong> Appropriate font sizing for comfortable reading across display configurations</li>
-     *   <li><strong>Interface Consistency:</strong> Uniform label appearance throughout all search interface components</li>
-     * </ul>
-     * <p>
-     * Typography standardization utilizes bold Segoe UI font with 14-point sizing to ensure
-     * excellent readability and professional presentation across all label elements within
-     * the search interface. The font configuration maintains consistency with the overall
-     * airport management system typography standards while providing clear text presentation
-     * for various search criteria labels and interface guidance text.
-     * </p>
-     * <p>
-     * Visual hierarchy establishment through bold font weight provides clear distinction
-     * between label text and input field content, enhancing interface usability by enabling
-     * users to quickly identify input field purposes and navigate through search criteria
-     * specification with improved visual organization and information clarity.
-     * </p>
-     * <p>
-     * Readability optimization ensures that label text remains clearly legible across
-     * different display configurations, screen resolutions, and user interface scaling
-     * scenarios. The 14-point font sizing provides optimal balance between space efficiency
-     * and reading comfort for diverse user demographics and usage environments.
-     * </p>
-     * <p>
-     * Interface consistency through uniform label styling creates cohesive visual presentation
-     * throughout all search interface components, including filter panels, input field labels,
-     * and section headings. The consistency enhances user experience by providing predictable
-     * visual patterns and professional interface organization throughout booking search workflows.
-     * </p>
-     * <p>
-     * The method supports the overall interface design coherence by ensuring that all textual
-     * elements maintain professional appearance standards and contribute to the comprehensive
-     * user experience optimization throughout the booking search and management interface
-     * components within the airport management system.
-     * </p>
      *
      * @param label the JLabel component to be styled with professional typography configuration
      */
@@ -1646,46 +1553,6 @@ public class SearchBookingPanel extends JPanel {
 
     /**
      * Returns the current search performance status for interface state management and navigation coordination.
-     * <p>
-     * This public method provides access to the search performance status flag that indicates
-     * whether search operations have been executed within the current session. The method
-     * supports interface state management, navigation coordination, and search result persistence
-     * throughout customer booking management workflows by enabling other components to determine
-     * search execution status and adjust their behavior accordingly.
-     * </p>
-     * <p>
-     * Search performance status tracking includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Execution Tracking:</strong> Boolean flag indicating whether search operations have been performed</li>
-     *   <li><strong>State Management:</strong> Supports interface behavior coordination based on search execution status</li>
-     *   <li><strong>Navigation Support:</strong> Enables proper navigation state management during interface transitions</li>
-     *   <li><strong>Result Persistence:</strong> Supports search result persistence and context maintenance across navigation operations</li>
-     * </ul>
-     * <p>
-     * Execution tracking provides essential information about search operation status that
-     * enables other components to understand whether the search interface has been actively
-     * used for booking searches. The tracking supports intelligent interface behavior and
-     * proper workflow coordination throughout customer booking management operations.
-     * </p>
-     * <p>
-     * State management utilizes the search performance status to enable proper interface
-     * behavior coordination, including result display management, navigation control states,
-     * and user experience optimization based on search execution history within the current
-     * session and interface usage patterns.
-     * </p>
-     * <p>
-     * Navigation support enables other components to make informed decisions about interface
-     * transitions, back navigation behavior, and context preservation based on search execution
-     * status. The support ensures smooth navigation experiences and proper state coordination
-     * throughout customer booking management workflows.
-     * </p>
-     * <p>
-     * Result persistence support enables proper search context maintenance during navigation
-     * operations, ensuring that search results and interface states are properly preserved
-     * and restored when customers navigate between different booking management areas and
-     * return to search functionality.
-     * </p>
      *
      * @return true if search operations have been performed within the current session, false otherwise
      */
@@ -1695,48 +1562,6 @@ public class SearchBookingPanel extends JPanel {
 
     /**
      * Returns the search button component for external access and interface coordination.
-     * <p>
-     * This public method provides access to the primary search button component, enabling
-     * external components to coordinate with search functionality, manage button states,
-     * and integrate search operations with broader interface workflows. The method supports
-     * error handling integration, interface state management, and comprehensive user experience
-     * coordination throughout booking search and management operations within the airport
-     * management system.
-     * </p>
-     * <p>
-     * Search button access enables:
-     * </p>
-     * <ul>
-     *   <li><strong>Error Integration:</strong> External error handling systems can position error messages relative to the search button</li>
-     *   <li><strong>State Management:</strong> Interface components can manage button enabled/disabled states based on system conditions</li>
-     *   <li><strong>Workflow Coordination:</strong> External systems can coordinate search operations with broader booking management workflows</li>
-     *   <li><strong>Event Handling:</strong> Additional event listeners can be attached for specialized interface behaviors</li>
-     * </ul>
-     * <p>
-     * Error integration provides the search button reference to error handling systems,
-     * particularly the {@link FloatingMessage} system, enabling proper error message
-     * positioning and visual coordination during validation failures and search operation
-     * errors. The integration ensures consistent user feedback and professional error
-     * presentation throughout booking search workflows.
-     * </p>
-     * <p>
-     * State management enables external components to control search button availability
-     * based on system conditions, user permissions, or interface states. The state management
-     * supports comprehensive workflow control and user experience optimization throughout
-     * different booking management scenarios and operational contexts.
-     * </p>
-     * <p>
-     * Workflow coordination allows external systems to integrate search operations with
-     * broader booking management workflows, including navigation systems, user session
-     * management, and comprehensive customer service operations. The coordination ensures
-     * seamless integration within the overall airport management system architecture.
-     * </p>
-     * <p>
-     * Event handling support enables attachment of additional event listeners for specialized
-     * interface behaviors, system integration, and custom workflow requirements that extend
-     * beyond the standard search functionality while maintaining compatibility with existing
-     * search operations and user experience standards.
-     * </p>
      *
      * @return the JButton component serving as the primary search execution control
      */
@@ -1746,50 +1571,6 @@ public class SearchBookingPanel extends JPanel {
 
     /**
      * Returns the current active filter mode for search operation routing and interface state coordination.
-     * <p>
-     * This public method provides access to the current active filter mode that determines
-     * search operation behavior and interface presentation. The method supports external
-     * components in understanding search interface state, coordinating with search operations,
-     * and maintaining proper workflow integration throughout booking search and management
-     * operations within the airport management system.
-     * </p>
-     * <p>
-     * Active filter mode access includes:
-     * </p>
-     * <ul>
-     *   <li><strong>State Identification:</strong> Returns current filter mode string for interface state determination</li>
-     *   <li><strong>Search Routing:</strong> Enables external components to understand search operation routing logic</li>
-     *   <li><strong>Interface Coordination:</strong> Supports proper interface behavior based on selected filter mode</li>
-     *   <li><strong>Workflow Integration:</strong> Enables external systems to coordinate with search filter selection and behavior</li>
-     * </ul>
-     * <p>
-     * State identification provides the current activeFilter string value that indicates
-     * which search mode is currently selected or if no filter mode has been chosen. The
-     * possible return values include:
-     * </p>
-     * <ul>
-     *   <li><strong>"NONE":</strong> No filter mode selected, search operations will display error message</li>
-     *   <li><strong>"FLIGHT":</strong> Flight-based search mode active, searches use flight criteria</li>
-     *   <li><strong>"PASSENGER":</strong> Passenger-based search mode active, searches use passenger criteria</li>
-     * </ul>
-     * <p>
-     * Search routing information enables external components to understand how search
-     * operations will be processed based on the current filter mode, supporting intelligent
-     * interface behavior and proper workflow coordination throughout booking search and
-     * management operations.
-     * </p>
-     * <p>
-     * Interface coordination support enables external components to adjust their behavior
-     * and presentation based on the active filter mode, ensuring consistent user experience
-     * and proper interface state management throughout the booking search workflow and
-     * related customer service operations.
-     * </p>
-     * <p>
-     * Workflow integration enables external systems to coordinate their operations with
-     * the search interface state, including navigation systems, help systems, and customer
-     * service tools that need to understand current search context and filter selection
-     * for optimal user experience and system integration.
-     * </p>
      *
      * @return the current active filter mode string indicating search operation routing behavior
      */
