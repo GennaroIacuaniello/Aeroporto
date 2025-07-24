@@ -7,86 +7,21 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Customer booking management interface providing comprehensive booking search, display, and management capabilities.
+ * Customer booking management interface providing booking search, display, and management capabilities.
  * <p>
- * This class extends {@link DisposableObject} to provide a dedicated customer interface for managing
- * existing flight bookings within the airport management system. The interface offers comprehensive
- * booking search functionality, detailed booking information display, and booking management operations
- * through an intuitive interface designed specifically for customer self-service operations.
+ * This class extends {@link DisposableObject}.
  * </p>
  * <p>
- * The MyBookingsCustomerMainFrame class supports comprehensive customer booking operations including:
+ * The MyBookingsCustomerMainFrame class supports customer booking operations including:
  * </p>
  * <ul>
- *   <li><strong>Booking Search Functionality:</strong> Advanced search capabilities with multiple filter options for locating specific bookings</li>
+ *   <li><strong>Booking Search Functionality:</strong> Search capabilities with multiple filter options for locating specific bookings</li>
  *   <li><strong>Booking Display Management:</strong> Comprehensive display of booking details including passenger information and flight data</li>
  *   <li><strong>Customer Navigation:</strong> Integrated navigation controls for accessing different customer areas and functions</li>
  *   <li><strong>User Session Management:</strong> Current customer information display and account management integration</li>
  *   <li><strong>Menu-Based Access:</strong> Support for both direct navigation and menu-initiated access patterns</li>
- *   <li><strong>State Restoration:</strong> Advanced state management for maintaining search results and interface continuity</li>
+ *   <li><strong>State Restoration:</strong> State management for maintaining search results and interface continuity</li>
  * </ul>
- * <p>
- * The interface is designed with customer workflow optimization, providing users with:
- * </p>
- * <ul>
- *   <li><strong>Comprehensive Search Interface:</strong> Advanced booking search with flight-based and passenger-based filtering options</li>
- *   <li><strong>Intuitive Navigation:</strong> Seamless integration with application navigation hierarchy and customer menu systems</li>
- *   <li><strong>Professional Presentation:</strong> Clean, organized layout with consistent airport management system branding</li>
- *   <li><strong>Responsive Design:</strong> Adaptive interface that maintains functionality across different screen configurations</li>
- *   <li><strong>Context Preservation:</strong> Intelligent state management that preserves search results during navigation operations</li>
- * </ul>
- * <p>
- * Layout architecture utilizes {@link GridBagLayout} for precise component positioning and optimal
- * space utilization. The interface maintains a structured five-section layout with title branding,
- * navigation controls, customer menu access, user information display, and comprehensive search
- * functionality in the main content area.
- * </p>
- * <p>
- * Booking search integration provides sophisticated search capabilities through the {@link SearchBookingPanel}
- * component, enabling customers to locate their bookings using various criteria including flight information
- * and passenger details. The search functionality includes filter persistence and result caching for
- * optimal user experience during navigation operations.
- * </p>
- * <p>
- * Navigation integration includes comprehensive customer navigation controls through the {@link NavigatorBarPanel}
- * and customer-specific menu functionality through the {@link MenuPanelCustomer} component. The navigation
- * supports seamless transitions between different customer areas while maintaining booking search context.
- * </p>
- * <p>
- * User session management displays current customer information through the {@link UserPanel} component,
- * providing account access, session management, and customer-specific functionality. The integration
- * ensures that booking search results are properly associated with the authenticated customer session.
- * </p>
- * <p>
- * State management includes sophisticated restoration capabilities that maintain search results, filter
- * settings, and interface state across navigation operations. The system automatically restores previous
- * search operations and results when customers return to the booking management interface from other areas.
- * </p>
- * <p>
- * The interface supports both direct navigation access and menu-initiated access patterns, providing
- * flexibility for different customer workflows. Menu-initiated access includes special configuration
- * for optimal integration with customer menu navigation patterns.
- * </p>
- * <p>
- * Resource management follows the disposable object pattern with proper cleanup of search result caches
- * and customer session data during navigation transitions. This ensures optimal system performance and
- * maintains customer privacy through proper session management.
- * </p>
- * <p>
- * The class integrates seamlessly with the broader airport management system through the {@link Controller}
- * interface, ensuring proper data access, business logic execution, and system state coordination throughout
- * customer booking management operations.
- * </p>
- * <p>
- * Visual design maintains consistency with the overall airport management system aesthetic through
- * standardized colors, fonts, and component styling. The interface uses professional design elements
- * optimized for customer self-service operations and public interface requirements.
- * </p>
- * <p>
- * Window management includes minimum size constraints (1420x1080) to ensure optimal functionality across
- * different display configurations while maintaining interface usability and component accessibility
- * throughout customer booking management workflows.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -106,8 +41,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
      * Main application window frame for the customer booking management interface.
      * <p>
      * This JFrame serves as the primary container for all customer booking management
-     * components, configured with Italian localization ("Le mie prenotazioni") and
-     * optimized sizing for comprehensive booking search and display operations.
+     * components.
      * </p>
      */
     private JFrame mainFrame;
@@ -116,7 +50,7 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
      * Booking search panel providing comprehensive search and filtering capabilities.
      * <p>
      * This SearchBookingPanel component enables customers to search for their bookings
-     * using various criteria including flight information and passenger details.
+     * using various criteria, including flight information and passenger details.
      * The panel includes state management for search result persistence and filter
      * configuration throughout navigation operations.
      * </p>
@@ -125,12 +59,6 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     
     /**
      * Layout constraints utility for precise component positioning throughout the interface.
-     * <p>
-     * This final Constraints helper object provides standardized GridBagConstraints
-     * configuration for optimal component layout and positioning. The constraints
-     * ensure consistent spacing, alignment, and visual organization across all
-     * interface components and booking management elements.
-     * </p>
      */
     private final Constraints constraints;
 
@@ -154,38 +82,6 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
      *   <li><strong>Navigation Setup:</strong> Complete navigation system integration with customer workflow support</li>
      *   <li><strong>Visibility Activation:</strong> Final interface visibility activation for immediate customer interaction</li>
      * </ul>
-     * <p>
-     * Component infrastructure initialization creates the {@link Constraints} utility for consistent
-     * layout management and establishes the foundation for component positioning and sizing
-     * throughout the customer booking management interface.
-     * </p>
-     * <p>
-     * Window management establishes the main application frame through the setMainFrame method,
-     * configuring window properties including size, location, extended state, and integration
-     * with the application navigation hierarchy for proper resource management and workflow coordination.
-     * </p>
-     * <p>
-     * Interface assembly includes sequential addition of all customer interface components:
-     * title panel for airport branding, navigator bar for system navigation, customer menu
-     * for specialized functions, user panel for session management, and search panel for
-     * comprehensive booking search and management capabilities.
-     * </p>
-     * <p>
-     * Search integration configures the booking search panel with menu access flag support,
-     * enabling different interface behaviors based on access patterns. Menu-initiated access
-     * provides optimized integration with customer menu navigation while direct access
-     * supports standard application navigation patterns.
-     * </p>
-     * <p>
-     * Navigation setup ensures proper integration with the application navigation hierarchy
-     * through the calling objects list, enabling seamless resource management and state
-     * coordination throughout customer booking management workflows and navigation operations.
-     * </p>
-     * <p>
-     * Visibility activation completes the initialization by making the complete interface
-     * visible and ready for customer interaction, ensuring that all components are properly
-     * configured and accessible for immediate booking search and management operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and navigation
      * @param controller the system controller providing access to booking data, search functionality, and customer operations

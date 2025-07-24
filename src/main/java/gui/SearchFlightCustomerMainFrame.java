@@ -13,16 +13,16 @@ import java.util.List;
  * This class extends {@link DisposableObject}.
  * </p>
  * <p>
- * The SearchFlightCustomerMainFrame class supports comprehensive customer flight operations including:
+ * The SearchFlightCustomerMainFrame class supports customer flight operations including:
  * </p>
  * <ul>
- *   <li><strong>Flight Search Functionality:</strong> Advanced search capabilities with multiple criteria including routes, dates, and times</li>
+ *   <li><strong>Flight Search Functionality:</strong> Search capabilities with multiple criteria including routes, dates, and times</li>
  *   <li><strong>Real-time Availability:</strong> Current flight availability and seat information display with dynamic updates</li>
  *   <li><strong>Booking Integration:</strong> Direct booking initiation from search results with seamless workflow transitions</li>
  *   <li><strong>Customer Navigation:</strong> Integrated navigation controls for accessing different customer areas and functions</li>
  *   <li><strong>User Session Management:</strong> Current customer information display and account management integration</li>
  *   <li><strong>Menu-Based Access:</strong> Support for customer menu navigation and direct interface access patterns</li>
- *   <li><strong>State Restoration:</strong> Advanced state management for maintaining search results and interface continuity</li>
+ *   <li><strong>State Restoration:</strong> State management for maintaining search results and interface continuity</li>
  * </ul>
  * <p>
  * Layout architecture utilizes {@link GridBagLayout} for precise component positioning and optimal
