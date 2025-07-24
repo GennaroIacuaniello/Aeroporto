@@ -87,7 +87,7 @@ public interface BookingDAO {
      * @param seats list of seat assignments for each ticket (can contain -1 for no assignment)
      * @param firstNames list of passenger first names (can contain null values)
      * @param lastNames list of passenger last names (can contain null values)
-     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param birthDates list of passenger birthdates (can contain null values)
      * @param passengerSSNs list of passenger SSN identifiers (required, cannot be null)
      * @param luggagesTypes list of luggage types for each luggage item
      * @param ticketForLuggages list of ticket numbers associated with each luggage item
@@ -257,4 +257,9 @@ public interface BookingDAO {
                                                List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types,
                                                List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException;
 
+
+    void modifyBooking (String idFlight, Integer idBooking, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
+                               List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException;
+
+    void deleteBooking (int bookingId) throws SQLException;
 }

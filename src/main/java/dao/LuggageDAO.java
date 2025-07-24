@@ -180,4 +180,6 @@ public interface LuggageDAO {
      * @throws SQLException if a database access error occurs during the data retrieval operation
      */
     void getAllLuggagesOfBooking(Integer bookingId, List<String> ticketNumbers, List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException;
+
+    void lostLuggage(String ticket, String luggageStatus);
 }

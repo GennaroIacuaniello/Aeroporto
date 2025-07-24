@@ -253,7 +253,7 @@ public class TicketDAOImpl implements TicketDAO {
      * @return the incremented ticket number formatted as a 13-digit string with leading zeros
      * @throws NumberFormatException if the input ticket number is not a valid numeric string
      */
-    public String increaseTicketNumber(String ticketNumber) {
+    private String increaseTicketNumber(String ticketNumber) {
 
         try {
             BigInteger number = new BigInteger(ticketNumber);

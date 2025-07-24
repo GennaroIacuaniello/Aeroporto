@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -284,4 +285,19 @@ public interface FlightDAO {
     void InsertAFlight(String flightId, String companyName, Timestamp departureTimestamp, Timestamp arrivalTimestamp,
                        int maxSeats, String otherCity, boolean flightType) throws SQLException;
 
+    void getBookedSeats(String flightId, Integer bookingId, List<Integer> bookedSeats);
+
+    int startCheckin(String flightId) throws SQLException;
+
+    int searchGate(String idFlight);
+
+    void setGate(int idGate, String idFlight);
+
+    int setStatus (String status, String idFlight);
+
+    int addDelay(int delay, String idFlight);
+
+    void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets);
+
+    ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets);
 }

@@ -106,4 +106,6 @@ public interface TicketDAO {
                                     List<String> passengerSSNs, List<String> firstNames,
                                     List<String> lastNames, List<Date> birthDates) throws SQLException;
 
+
+    String generateTicketNumber(int offset);
 }
