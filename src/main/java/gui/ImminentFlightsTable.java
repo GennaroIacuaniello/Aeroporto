@@ -185,10 +185,12 @@ public class ImminentFlightsTable extends JTable {
 
         //setting Table looks
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        this.setShowGrid(false);
+        this.setShowVerticalLines(false);
 
         this.setBackground(Color.WHITE);
         this.getTableHeader().setBackground(Color.LIGHT_GRAY);
+
+        this.getColumnModel().getColumn(this.getColumnCount() - 1).setMaxWidth(50);
 
         //Making the header visible and adding a scrollbar as needed
         tableScrollContainer = new JScrollPane(this);
