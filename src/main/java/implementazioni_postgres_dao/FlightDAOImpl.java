@@ -395,51 +395,52 @@ public class FlightDAOImpl implements FlightDAO {
             query += " ORDER BY departure_time DESC;";
 
 
-        }
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
 
-            for(int i = 0; i < searchParam.size(); i++){
+                for(int i = 0; i < searchParam.size(); i++){
 
-                statement.setObject( i + 1, searchParam.get(i));
+                    statement.setObject( i + 1, searchParam.get(i));
+
+                }
+
+                ResultSet rs = statement.executeQuery();
+
+                while (rs.next()){
+
+                    ids.add(rs.getString("id_flight"));
+                    companyNames.add(rs.getString("company_name"));
+
+                    Timestamp tmpTS = rs.getTimestamp("departure_time");
+                    dates.add(new java.sql.Date(tmpTS.getTime()));
+                    departureTimes.add(new java.sql.Time(tmpTS.getTime()));
+
+                    tmpTS = rs.getTimestamp("arrival_time");
+                    arrivalTimes.add(new java.sql.Time(tmpTS.getTime()));
+
+                    status.add(rs.getString("flight_status"));
+
+                    delays.add(rs.getInt("flight_delay"));
+
+                    maxSeats.add(rs.getInt("max_seats"));
+                    freeSeats.add(rs.getInt("free_seats"));
+
+                    cities.add(rs.getString("destination_or_origin"));
+
+                    types.add(rs.getBoolean("flight_type"));
+
+                }
+
+                rs.close();
+
+                //connection.close(); non serve perchè la fa in automatico il try-with-resources
+
 
             }
 
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()){
-
-                ids.add(rs.getString("id_flight"));
-                companyNames.add(rs.getString("company_name"));
-
-                Timestamp tmpTS = rs.getTimestamp("departure_time");
-                dates.add(new java.sql.Date(tmpTS.getTime()));
-                departureTimes.add(new java.sql.Time(tmpTS.getTime()));
-
-                tmpTS = rs.getTimestamp("arrival_time");
-                arrivalTimes.add(new java.sql.Time(tmpTS.getTime()));
-
-                status.add(rs.getString("flight_status"));
-
-                delays.add(rs.getInt("flight_delay"));
-
-                maxSeats.add(rs.getInt("max_seats"));
-                freeSeats.add(rs.getInt("free_seats"));
-
-                cities.add(rs.getString("destination_or_origin"));
-
-                types.add(rs.getBoolean("flight_type"));
-
-            }
-
-            rs.close();
-
-            //connection.close(); non serve perchè la fa in automatico il try-with-resources
-
-
         }
-
+        
     }
 
     /**
