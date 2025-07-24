@@ -23,8 +23,6 @@ import java.util.List;
  *   <li><strong>Flexible Booking Status:</strong> Support for both confirmed and pending reservation states</li>
  *   <li><strong>Comprehensive Validation:</strong> Complete passenger data validation before booking confirmation</li>
  *   <li><strong>Seat Management:</strong> Integration with flight capacity management and seat availability checking</li>
- *   <li><strong>User Feedback:</strong> Real-time validation feedback and error messaging through floating messages</li>
- *   <li><strong>Navigation Integration:</strong> Seamless integration with application navigation and workflow management</li>
  * </ul>
  * <p>
  * The interface is designed with a dual-action approach allowing customers to either:
@@ -47,15 +45,6 @@ import java.util.List;
  * The class integrates seamlessly with the broader booking management system through the
  * {@link Controller} interface, ensuring proper data persistence and application state
  * management throughout the booking creation process.
- * </p>
- * <p>
- * Visual design follows consistent application styling with responsive layout management
- * and intuitive user interaction patterns. Error messaging and validation feedback are
- * provided through {@link FloatingMessage} components for clear user communication.
- * </p>
- * <p>
- * The booking creation workflow supports navigation integration allowing users to seamlessly
- * return to previous application states after successful booking completion or cancellation.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -85,19 +74,7 @@ public class Book extends BookingModifyPage {
      *   <li>Establishing window properties including size, position, and display state</li>
      *   <li>Integrating with the application's disposable object management system</li>
      *   <li>Configuring the interface for new booking creation workflows</li>
-     *   <li>Setting up the main frame visibility and user interaction readiness</li>
      * </ul>
-     * <p>
-     * The constructor leverages the parent class initialization to establish the core
-     * booking interface structure while preparing the interface specifically for new
-     * reservation creation rather than existing booking modification.
-     * </p>
-     * <p>
-     * Window management includes proper integration with the calling objects hierarchy
-     * to ensure seamless navigation and resource management throughout the application
-     * lifecycle. The interface becomes immediately visible and ready for user interaction
-     * upon construction completion.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and navigation
      * @param controller the system controller providing access to flight management, booking operations, and data persistence
@@ -127,7 +104,6 @@ public class Book extends BookingModifyPage {
      * <ul>
      *   <li><strong>Capacity Validation:</strong> Real-time checking of available seats against current passenger count</li>
      *   <li><strong>Dynamic Panel Creation:</strong> Automatic creation of new {@link PassengerPanel} instances for additional passengers</li>
-     *   <li><strong>User Feedback:</strong> Immediate error messaging when seat capacity is exceeded</li>
      *   <li><strong>Interface Integration:</strong> Seamless integration with the existing passenger management interface</li>
      * </ul>
      * <p>
@@ -141,11 +117,6 @@ public class Book extends BookingModifyPage {
      * integration into the existing passenger management system, including seat selection
      * and booking coordination. The new panel inherits all standard passenger input
      * capabilities and validation features.
-     * </p>
-     * <p>
-     * Error handling provides clear user feedback through {@link FloatingMessage}
-     * components when seat capacity is exceeded, informing customers about availability
-     * constraints and preventing booking errors.
      * </p>
      * <p>
      * The button is styled consistently with the application design and positioned
@@ -186,23 +157,9 @@ public class Book extends BookingModifyPage {
      * the action buttons in an intuitive and accessible manner.
      * </p>
      * <p>
-     * The confirmation panel includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Dual Action Options:</strong> Both immediate confirmation and pending save capabilities</li>
-     *   <li><strong>Structured Layout:</strong> Grid-based organization for optimal button placement and user interaction</li>
-     *   <li><strong>Visual Consistency:</strong> Transparent background to maintain application design coherence</li>
-     *   <li><strong>Immediate Visibility:</strong> Panel becomes visible immediately upon creation for user interaction</li>
-     * </ul>
-     * <p>
      * The panel serves as the primary decision point in the booking creation workflow,
      * allowing customers to choose between immediate booking confirmation with complete
      * passenger information or saving incomplete reservations for future completion.
-     * </p>
-     * <p>
-     * Layout management uses {@link GridBagLayout} to provide precise control over
-     * button positioning and sizing, ensuring optimal user experience across different
-     * screen sizes and interface configurations.
      * </p>
      * <p>
      * The method coordinates the creation of both confirmation and pending save buttons
@@ -246,30 +203,6 @@ public class Book extends BookingModifyPage {
      *   <li><strong>Error Feedback:</strong> Clear messaging when passenger data is incomplete or invalid</li>
      *   <li><strong>Status Management:</strong> Automatic assignment of "CONFIRMED" status to successful bookings</li>
      * </ul>
-     * <p>
-     * Validation processing uses the inherited {@link #checkConfirmButton()} method to
-     * verify that all required passenger information fields are completed and valid.
-     * This includes personal information, seat assignments, and any required documentation.
-     * </p>
-     * <p>
-     * Successful validation triggers booking creation through the {@link Controller#addBooking}
-     * method with "CONFIRMED" status, ensuring immediate reservation confirmation and
-     * availability in the system for operational purposes.
-     * </p>
-     * <p>
-     * Navigation integration automatically returns customers to the previous application
-     * state after successful booking confirmation, providing seamless workflow completion
-     * and preventing interface confusion or navigation errors.
-     * </p>
-     * <p>
-     * Error handling provides specific feedback about incomplete passenger data through
-     * {@link FloatingMessage} components, helping customers understand what information
-     * needs to be completed for successful booking confirmation.
-     * </p>
-     * <p>
-     * Button styling and positioning maintain application design consistency while
-     * ensuring prominent visibility for this critical booking action.
-     * </p>
      *
      * @param controller the system controller providing access to booking creation operations and validation services
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper workflow management
@@ -322,31 +255,6 @@ public class Book extends BookingModifyPage {
      *   <li><strong>Navigation Management:</strong> Automatic return to previous application state after successful save</li>
      *   <li><strong>User Feedback:</strong> Clear messaging for both successful saves and invalid empty bookings</li>
      * </ul>
-     * <p>
-     * Validation processing uses the inherited {@link #checkSavePendingButton()} method
-     * to verify that the booking contains at least some valid passenger information,
-     * preventing completely empty reservations while allowing partial completion.
-     * </p>
-     * <p>
-     * Successful validation triggers booking creation through the {@link Controller#addBooking}
-     * method with "PENDING" status, ensuring the reservation is preserved in the system
-     * but marked as incomplete for future completion requirements.
-     * </p>
-     * <p>
-     * Error handling provides specific feedback when attempting to save completely empty
-     * bookings, guiding customers to add at least minimal passenger information before
-     * the booking can be preserved in the system.
-     * </p>
-     * <p>
-     * Navigation integration ensures customers are returned to the appropriate application
-     * state after successful pending save operations, maintaining workflow continuity
-     * and preventing interface confusion.
-     * </p>
-     * <p>
-     * Button positioning and styling maintain visual balance with the confirmation button
-     * while providing clear distinction between immediate confirmation and pending save
-     * actions for intuitive user understanding.
-     * </p>
      *
      * @param controller the system controller providing access to booking creation operations and validation services
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper workflow management
@@ -390,30 +298,10 @@ public class Book extends BookingModifyPage {
      * is immediately available.
      * </p>
      * <p>
-     * The initialization process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Default Panel Creation:</strong> Automatic creation of one passenger panel for immediate use</li>
-     *   <li><strong>Controller Integration:</strong> Proper integration with system controllers for data management</li>
-     *   <li><strong>Seat Management:</strong> Connection with booked seats tracking for availability management</li>
-     *   <li><strong>Panel Registration:</strong> Integration with the passenger panels collection for system tracking</li>
-     * </ul>
-     * <p>
      * The created passenger panel includes all standard passenger information entry
      * capabilities including personal details, seat selection, and any required
      * documentation fields. The panel is immediately ready for customer interaction
      * and data entry.
-     * </p>
-     * <p>
-     * Integration with the broader passenger management system ensures that the
-     * initial panel participates fully in validation, data processing, and booking
-     * creation workflows. The panel maintains consistent behavior with dynamically
-     * added passenger panels.
-     * </p>
-     * <p>
-     * This method establishes the minimum viable booking interface while supporting
-     * expansion through the passenger addition functionality provided by other
-     * interface components.
      * </p>
      *
      * @param controller the system controller providing access to passenger management, seat tracking, and booking coordination services

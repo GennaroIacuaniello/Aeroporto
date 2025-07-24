@@ -31,49 +31,6 @@ import java.util.ArrayList;
  *   <li><strong>Pagination System:</strong> Advanced pagination for managing large numbers of passengers with intuitive controls</li>
  *   <li><strong>Resource Management:</strong> Comprehensive disposal and cleanup mechanisms for proper resource handling</li>
  * </ul>
- * <p>
- * The class implements a sophisticated UI hierarchy with the main frame containing:
- * </p>
- * <ul>
- *   <li><strong>Top Panel:</strong> Houses title, navigation bar, and user information components</li>
- *   <li><strong>Main Panel:</strong> Contains flight information, search functionality, passenger displays, and controls</li>
- *   <li><strong>Passenger Page:</strong> Dynamic passenger panel container with grid-based layout</li>
- *   <li><strong>Modify Panel:</strong> Control panel for pagination and specialized booking operations</li>
- *   <li><strong>Confirm Panel:</strong> Abstract confirmation interface defined by concrete implementations</li>
- * </ul>
- * <p>
- * Flight information display provides comprehensive flight details including company information,
- * route details, scheduling data, duration calculations, current status, and real-time seat
- * availability. The information is presented in a structured table format for clear visibility
- * and easy reference during booking operations.
- * </p>
- * <p>
- * Passenger management includes a sophisticated pagination system that displays up to 3 passengers
- * per page, providing navigation controls for efficient browsing of large passenger lists. The
- * system includes search functionality that allows users to quickly locate specific passengers
- * using ticket numbers.
- * </p>
- * <p>
- * The class integrates with the broader airport management system through the {@link Controller}
- * interface, providing access to flight management, booking operations, and passenger data.
- * Integration includes proper resource management and state synchronization across different
- * system components.
- * </p>
- * <p>
- * Concrete implementations extend this class to provide specialized functionality for different
- * user roles and booking scenarios, including customer self-service booking operations,
- * administrative booking management, and specialized workflows like check-in procedures.
- * </p>
- * <p>
- * The class implements proper disposal mechanisms through the {@link DisposableObject} interface,
- * ensuring that all GUI components, database connections, and system resources are properly
- * cleaned up when booking interfaces are closed or replaced.
- * </p>
- * <p>
- * Layout management uses {@link GridBagLayout} with the {@link Constraints} utility for precise
- * component positioning and responsive design. The interface maintains consistent visual styling
- * and behavior across different screen sizes and system configurations.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -316,28 +273,12 @@ public abstract class BookingPage extends DisposableObject {
      * The initialization process includes:
      * </p>
      * <ul>
-     *   <li><strong>Constraints Initialization:</strong> Sets up layout management utilities</li>
      *   <li><strong>Main Frame Setup:</strong> Configures the primary application window</li>
      *   <li><strong>Top Panel Creation:</strong> Establishes header components and navigation</li>
      *   <li><strong>Main Panel Setup:</strong> Creates core booking interface components</li>
      *   <li><strong>Initial Navigation:</strong> Sets the interface to display the first page</li>
      *   <li><strong>Visibility Management:</strong> Makes the interface visible and ready for interaction</li>
      * </ul>
-     * <p>
-     * The constructor leverages the calling objects list for proper resource management
-     * and navigation hierarchy maintenance. This ensures that the booking interface
-     * integrates properly with the broader application navigation system.
-     * </p>
-     * <p>
-     * Window configuration includes appropriate sizing, positioning, and behavior
-     * settings based on the provided parameters, ensuring optimal display across
-     * different screen configurations and user preferences.
-     * </p>
-     * <p>
-     * Controller integration provides access to flight information, booking data,
-     * and passenger management capabilities, enabling the interface to interact
-     * effectively with the underlying airport management system.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and navigation
      * @param controller the system controller providing access to flight management, booking operations, and data persistence
@@ -385,16 +326,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Layout Manager:</strong> Establishes GridBagLayout for precise component positioning</li>
      *   <li><strong>Navigation Integration:</strong> Adds the booking page to the calling objects hierarchy</li>
      * </ul>
-     * <p>
-     * The method integrates the booking interface into the application's navigation
-     * hierarchy by adding it to the calling objects list. This ensures proper resource
-     * management and enables seamless navigation between different application components.
-     * </p>
-     * <p>
-     * Window behavior is configured for proper application lifecycle management,
-     * including appropriate response to window close events and integration with
-     * the overall application shutdown procedures.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper integration
      * @param dimension the preferred window size for optimal display
@@ -432,20 +363,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Navigator Bar Panel:</strong> Application-wide navigation controls</li>
      *   <li><strong>User Panel:</strong> Current user information and account controls</li>
      * </ul>
-     * <p>
-     * The panel uses GridBagLayout for precise component positioning and maintains
-     * consistent spacing and alignment throughout the header area. All components
-     * are configured for optimal visibility and user interaction.
-     * </p>
-     * <p>
-     * Integration with the controller enables dynamic content updates and proper
-     * state management for navigation and user information components. This ensures
-     * that header information remains current and relevant throughout booking operations.
-     * </p>
-     * <p>
-     * The top panel is configured for horizontal expansion to utilize available
-     * screen width while maintaining proper component proportions and visual balance.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper navigation integration
      * @param controller the system controller providing access to navigation and user management capabilities
@@ -476,20 +393,6 @@ public abstract class BookingPage extends DisposableObject {
      * The title panel uses the standardized TitlePanel component to ensure visual
      * consistency throughout the application.
      * </p>
-     * <p>
-     * The title panel displays "AEROPORTO DI NAPOLI" branding, providing clear
-     * identification of the airport management system and maintaining consistent
-     * visual identity across all user interfaces.
-     * </p>
-     * <p>
-     * Layout configuration spans two columns of the parent grid to provide
-     * appropriate visual weight and prominence for the airport branding. The
-     * panel is positioned at the top of the interface for immediate visibility.
-     * </p>
-     * <p>
-     * The component is immediately made visible and integrated into the top panel
-     * layout structure, ensuring proper display hierarchy and visual organization.
-     * </p>
      */
     protected void addTitlePanel () {
 
@@ -509,27 +412,6 @@ public abstract class BookingPage extends DisposableObject {
      * users with access to different areas of the airport management system while
      * maintaining booking context. The navigation bar enables seamless transitions
      * between different application functions.
-     * </p>
-     * <p>
-     * The navigation bar panel integrates with the calling objects hierarchy to
-     * provide proper navigation state management and resource cleanup during
-     * navigation transitions. This ensures that booking contexts are properly
-     * maintained or disposed as appropriate.
-     * </p>
-     * <p>
-     * Controller integration enables the navigation bar to access application
-     * state information and provide contextually appropriate navigation options
-     * based on current user permissions and booking status.
-     * </p>
-     * <p>
-     * Layout configuration spans two columns to provide adequate space for
-     * navigation controls while maintaining visual balance with other header
-     * components. The panel is configured with transparent background to
-     * integrate seamlessly with the overall header design.
-     * </p>
-     * <p>
-     * The navigation bar is immediately made visible and positioned appropriately
-     * within the top panel structure for optimal user accessibility and visual flow.
      * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper navigation state management
@@ -554,27 +436,6 @@ public abstract class BookingPage extends DisposableObject {
      * providing users with access to their account information, login status, and
      * user-specific controls. The user panel enables account management functionality
      * while maintaining booking workflow continuity.
-     * </p>
-     * <p>
-     * The user panel integrates with the calling objects hierarchy to provide
-     * proper navigation and resource management for user-related operations.
-     * This ensures that user actions are properly tracked and managed within
-     * the application's navigation system.
-     * </p>
-     * <p>
-     * Controller integration enables the user panel to access current user
-     * information, authentication state, and user-specific permissions for
-     * displaying appropriate controls and information.
-     * </p>
-     * <p>
-     * Layout positioning places the user panel in the top-right area of the
-     * header, following conventional interface design patterns for user
-     * information display. The panel is configured for right-alignment to
-     * provide visual balance with left-aligned navigation components.
-     * </p>
-     * <p>
-     * The user panel is immediately made visible and integrated into the
-     * header layout structure for immediate user access and identification.
      * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper user action management
@@ -610,23 +471,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Modify Panel:</strong> Control interface for booking operations</li>
      *   <li><strong>Confirm Panel:</strong> Abstract confirmation interface for concrete implementations</li>
      * </ul>
-     * <p>
-     * The panel uses GridBagLayout for precise component positioning and responsive
-     * design. Components are organized in a logical vertical flow that guides users
-     * through the booking process from flight information review to passenger
-     * management and final confirmation.
-     * </p>
-     * <p>
-     * The main panel is configured with a white background to provide clear contrast
-     * for content elements and ensure optimal readability across all booking components.
-     * Layout constraints are configured for proper expansion and filling of available
-     * space while maintaining component proportions.
-     * </p>
-     * <p>
-     * Integration with the controller enables all sub-components to access flight
-     * information, booking data, and system functionality required for comprehensive
-     * booking operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper integration
      * @param controller the system controller providing access to flight management, booking operations, and system functionality
@@ -677,26 +521,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Status:</strong> Current flight operational status</li>
      *   <li><strong>Free Seats:</strong> Real-time available seat count</li>
      * </ul>
-     * <p>
-     * The flight information table is configured as read-only to prevent accidental
-     * modifications while providing clear presentation of flight data. Column headers
-     * are fixed to prevent reordering and maintain consistent information layout.
-     * </p>
-     * <p>
-     * Duration calculation is performed dynamically using Java time utilities to
-     * provide accurate flight duration information based on departure and arrival
-     * times. This ensures that duration information is always current and accurate.
-     * </p>
-     * <p>
-     * The panel uses BorderLayout to provide proper table header and content
-     * organization, ensuring that column headers remain visible and properly
-     * aligned with flight data columns.
-     * </p>
-     * <p>
-     * Integration with the controller provides access to real-time flight information
-     * including status updates and seat availability, ensuring that displayed
-     * information reflects current operational conditions.
-     * </p>
      *
      * @param controller the system controller providing access to flight information and real-time data
      */
@@ -742,13 +566,6 @@ public abstract class BookingPage extends DisposableObject {
      * navigation to specific passengers when dealing with large passenger lists.
      * </p>
      * <p>
-     * Search panel components include:
-     * </p>
-     * <ul>
-     *   <li><strong>Search Field:</strong> Text input for ticket number entry</li>
-     *   <li><strong>Search Button:</strong> Trigger for search operation execution</li>
-     * </ul>
-     * <p>
      * The search field is configured with appropriate width to accommodate typical
      * ticket number formats while maintaining visual balance with other interface
      * components. Users can enter ticket numbers for precise passenger location.
@@ -757,18 +574,6 @@ public abstract class BookingPage extends DisposableObject {
      * The search button is configured with an action listener that triggers the
      * passenger search functionality when activated. The button is set as non-focusable
      * to prevent interference with keyboard navigation patterns.
-     * </p>
-     * <p>
-     * Panel layout uses FlowLayout with left alignment to provide intuitive
-     * left-to-right search flow that matches typical user interaction patterns.
-     * The panel maintains transparent background for visual integration with
-     * the overall interface design.
-     * </p>
-     * <p>
-     * Search functionality provides immediate feedback through the passenger
-     * pagination system, automatically navigating to the page containing the
-     * searched passenger or displaying appropriate error messages for unsuccessful
-     * searches.
      * </p>
      */
     protected void addSearchPanel () {
@@ -817,27 +622,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Automatic Navigation:</strong> Navigates to the page containing the searched passenger</li>
      *   <li><strong>Error Feedback:</strong> Displays appropriate error messages for unsuccessful searches</li>
      * </ul>
-     * <p>
-     * The search algorithm uses early termination to improve performance, stopping
-     * immediately when a matching ticket number is found. This ensures efficient
-     * search operations even with large passenger lists.
-     * </p>
-     * <p>
-     * Page calculation uses integer division to determine which page (based on the
-     * three-passenger per page layout) should display the located passenger. The
-     * interface then automatically navigates to the calculated page using the
-     * pagination system.
-     * </p>
-     * <p>
-     * Error handling provides user-friendly feedback through {@link FloatingMessage}
-     * components when no matching passenger is found. Error messages include the
-     * searched ticket number for user reference and clarity.
-     * </p>
-     * <p>
-     * The method maintains the search field content after search operations,
-     * allowing users to modify search terms or retry searches without re-entering
-     * ticket numbers.
-     * </p>
      */
     protected void searchPassenger () {
 
@@ -872,27 +656,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Page State Update:</strong> Updates current page tracking and display label</li>
      *   <li><strong>Navigation Control Management:</strong> Enables/disables navigation buttons based on page position</li>
      * </ul>
-     * <p>
-     * Visibility management ensures smooth transitions between pages by properly
-     * hiding current page passengers before showing target page passengers. This
-     * prevents visual conflicts and provides clean page transitions.
-     * </p>
-     * <p>
-     * The method processes up to 3 passenger panels per page, calculating appropriate
-     * passenger indices based on the current and target page numbers. This calculation
-     * ensures that the correct passengers are displayed for each page position.
-     * </p>
-     * <p>
-     * Navigation button state management provides intuitive user feedback by enabling
-     * the previous page button only when not on the first page and enabling the next
-     * page button only when additional pages are available. This prevents navigation
-     * errors and provides clear visual feedback about navigation options.
-     * </p>
-     * <p>
-     * Page label updates provide immediate visual feedback about the current page
-     * position, helping users understand their location within the passenger list
-     * and navigate effectively.
-     * </p>
      *
      * @param page the zero-based target page index to navigate to
      */
@@ -931,32 +694,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Seat Management Setup:</strong> Initializes booked seats tracking through controller integration</li>
      *   <li><strong>Passenger Population:</strong> Loads initial passenger data through abstract method implementation</li>
      * </ul>
-     * <p>
-     * The passenger page uses GridBagLayout to provide precise control over passenger
-     * panel positioning, ensuring consistent alignment and spacing across different
-     * passenger counts and page configurations. The layout supports up to 3 passengers
-     * per page for optimal screen utilization.
-     * </p>
-     * <p>
-     * Booked seats collection is initialized to track seat allocations and prevent
-     * booking conflicts during passenger management operations. This collection is
-     * populated through controller integration to reflect current seat availability.
-     * </p>
-     * <p>
-     * Passenger panels collection maintains all passenger information panels associated
-     * with the current booking operation. This collection supports dynamic addition
-     * and removal of passengers based on booking requirements and user actions.
-     * </p>
-     * <p>
-     * The passenger page is configured with transparent background to integrate
-     * seamlessly with the overall interface design while providing appropriate
-     * space allocation for passenger management operations.
-     * </p>
-     * <p>
-     * Layout constraints configure the passenger page to utilize most of the available
-     * main panel space (90% width and height) while maintaining proper margins and
-     * visual balance with other interface components.
-     * </p>
      *
      * @param controller the system controller providing access to seat management and passenger data
      */
@@ -1012,21 +749,6 @@ public abstract class BookingPage extends DisposableObject {
      * context. Different booking page types (customer, admin, modification) require
      * different approaches to passenger data management and display.
      * </p>
-     * <p>
-     * Concrete implementations should:
-     * </p>
-     * <ul>
-     *   <li>Load appropriate passenger data from the controller</li>
-     *   <li>Create passenger panels with proper configuration</li>
-     *   <li>Populate passenger information fields</li>
-     *   <li>Configure passenger panels for the specific booking context</li>
-     *   <li>Add passenger panels to the interface using the provided insertion method</li>
-     * </ul>
-     * <p>
-     * The method provides access to the controller for retrieving passenger
-     * information, seat assignments, luggage data, and other booking-related
-     * information required for comprehensive passenger display.
-     * </p>
      *
      * @param controller the system controller providing access to passenger data and booking information
      */
@@ -1049,26 +771,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Visibility Management:</strong> Sets initial visibility based on pagination requirements</li>
      *   <li><strong>Panel Configuration:</strong> Configures panel state for the booking context</li>
      * </ul>
-     * <p>
-     * Layout positioning uses modulo arithmetic to determine the appropriate row
-     * position within the current page's 3-passenger grid. This ensures that
-     * passengers are displayed in the correct vertical order within each page.
-     * </p>
-     * <p>
-     * Visibility management sets passenger panels as visible only if they are
-     * among the first 3 passengers (first page). Additional passengers are hidden
-     * initially and made visible through pagination navigation.
-     * </p>
-     * <p>
-     * Panel configuration includes setting the panel as disabled to prevent
-     * accidental modifications in display-only contexts. This is particularly
-     * important for administrative views where passenger information should
-     * be read-only.
-     * </p>
-     * <p>
-     * The method maintains the passenger panels collection in insertion order,
-     * enabling proper pagination calculations and passenger management operations.
-     * </p>
      *
      * @param passengerPanel the passenger panel to be inserted into the interface
      */
@@ -1094,19 +796,6 @@ public abstract class BookingPage extends DisposableObject {
      * control center for booking-related actions and navigation.
      * </p>
      * <p>
-     * Modification panel components include:
-     * </p>
-     * <ul>
-     *   <li><strong>Flow Panel:</strong> Container for control buttons with proper alignment</li>
-     *   <li><strong>Pagination Controls:</strong> Previous/next page buttons and current page indicator</li>
-     *   <li><strong>Specialized Controls:</strong> Space for booking-specific buttons added by concrete implementations</li>
-     * </ul>
-     * <p>
-     * The modification panel uses GridBagLayout for precise component positioning
-     * while maintaining flexibility for different control configurations across
-     * various booking page implementations.
-     * </p>
-     * <p>
      * The flow panel within the modification panel provides structured layout for
      * control buttons with right alignment, following conventional interface design
      * patterns for action controls. The flow panel ensures proper button spacing
@@ -1116,11 +805,6 @@ public abstract class BookingPage extends DisposableObject {
      * Pagination controls are added through the dedicated page change buttons method,
      * ensuring consistent pagination functionality across all booking page implementations.
      * These controls enable users to navigate through large passenger lists efficiently.
-     * </p>
-     * <p>
-     * The modification panel is configured with transparent background to integrate
-     * seamlessly with the overall interface design while providing clear separation
-     * of control functions from passenger display areas.
      * </p>
      */
     protected void addModifyPanel () {
@@ -1166,11 +850,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Next Page Button:</strong> Navigates to the following page of passengers</li>
      * </ul>
      * <p>
-     * Button configuration includes setting buttons as non-focusable to prevent
-     * interference with keyboard navigation patterns and maintaining clean visual
-     * focus management throughout the interface.
-     * </p>
-     * <p>
      * Action listeners are configured for both navigation buttons to trigger
      * appropriate page navigation operations. The listeners use the current page
      * tracking to calculate target pages and delegate to the page navigation method.
@@ -1179,11 +858,6 @@ public abstract class BookingPage extends DisposableObject {
      * Initial button state management disables the previous page button (since
      * pagination starts on the first page) and enables the next page button only
      * if more than 3 passengers are present, requiring pagination functionality.
-     * </p>
-     * <p>
-     * Button arrangement uses the flow panel's right-aligned layout to position
-     * pagination controls appropriately within the modification panel, following
-     * conventional interface design patterns for navigation controls.
      * </p>
      * <p>
      * The current page label provides immediate visual feedback about pagination
@@ -1234,21 +908,6 @@ public abstract class BookingPage extends DisposableObject {
      * Different booking page types require different confirmation options and
      * workflow management based on user roles and booking operations.
      * </p>
-     * <p>
-     * Concrete implementations should:
-     * </p>
-     * <ul>
-     *   <li>Create appropriate confirmation buttons for the booking context</li>
-     *   <li>Configure button event handlers for booking operations</li>
-     *   <li>Implement validation logic for booking confirmation</li>
-     *   <li>Integrate with navigation system for post-confirmation workflow</li>
-     *   <li>Provide appropriate user feedback for booking operations</li>
-     * </ul>
-     * <p>
-     * The method provides access to both the calling objects hierarchy for
-     * navigation management and the controller for booking operations, enabling
-     * comprehensive confirmation functionality implementation.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper navigation management
      * @param controller the system controller providing access to booking operations and validation capabilities
@@ -1262,16 +921,6 @@ public abstract class BookingPage extends DisposableObject {
      * the booking interface is closed. This is particularly useful for managing
      * shared controller instances across multiple interface components where
      * premature disposal could affect other active interfaces.
-     * </p>
-     * <p>
-     * Setting the flag to false prevents controller disposal during interface
-     * cleanup, allowing the controller to remain active for other interface
-     * components that may depend on its state and resources.
-     * </p>
-     * <p>
-     * Setting the flag to true (default behavior) enables automatic controller
-     * disposal during interface cleanup, ensuring proper resource release when
-     * the booking interface is no longer needed.
      * </p>
      *
      * @param flag true to enable controller disposal on interface cleanup, false to preserve controller resources
@@ -1289,23 +938,6 @@ public abstract class BookingPage extends DisposableObject {
      * ensures proper navigation state management and provides appropriate visual
      * feedback for pagination operations.
      * </p>
-     * <p>
-     * Page navigation includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Page Index Decrement:</strong> Reduces current page counter by one</li>
-     *   <li><strong>Label Update:</strong> Updates current page display with new page number</li>
-     *   <li><strong>Navigation Control Management:</strong> Disables previous page button when reaching first page</li>
-     * </ul>
-     * <p>
-     * The method maintains proper navigation state by disabling the previous page
-     * button when reaching the first page (page 0), preventing navigation errors
-     * and providing clear visual feedback about navigation limitations.
-     * </p>
-     * <p>
-     * Page label updates use 1-based indexing for display purposes, providing
-     * user-friendly page numbering that matches conventional pagination expectations.
-     * </p>
      */
     protected void decreaseCurrPage () {
         currPage--;
@@ -1320,11 +952,6 @@ public abstract class BookingPage extends DisposableObject {
      * This method provides access to the current page position within the
      * pagination system, enabling other components to query pagination state
      * for display or navigation purposes.
-     * </p>
-     * <p>
-     * The returned value uses zero-based indexing consistent with internal
-     * pagination calculations, where page 0 represents the first page of
-     * passenger display.
      * </p>
      *
      * @return the zero-based current page index
@@ -1341,12 +968,6 @@ public abstract class BookingPage extends DisposableObject {
      * external components to modify its state, appearance, or behavior based
      * on specific booking context requirements.
      * </p>
-     * <p>
-     * External access to the next page button allows concrete implementations
-     * to customize pagination behavior or integrate additional functionality
-     * with the standard pagination system.
-     * </p>
-     *
      * @return the next page navigation button component
      */
     protected JButton getNextButton () {
@@ -1360,11 +981,6 @@ public abstract class BookingPage extends DisposableObject {
      * This method provides access to the passenger page container, enabling
      * external components to add additional elements, modify layout properties,
      * or integrate specialized functionality with the passenger display system.
-     * </p>
-     * <p>
-     * External access to the passenger page allows concrete implementations
-     * to customize passenger display behavior or add specialized controls
-     * specific to their booking context requirements.
      * </p>
      *
      * @return the passenger page panel container
@@ -1390,22 +1006,6 @@ public abstract class BookingPage extends DisposableObject {
      *   <li><strong>Passenger Panel Cleanup:</strong> Disposes seat choosers and luggage views for all passenger panels</li>
      *   <li><strong>Component Disposal:</strong> Ensures proper cleanup of all GUI components and resources</li>
      * </ul>
-     * <p>
-     * Controller resource management checks the disposal flag to determine whether
-     * controller state should be cleared. When enabled, this ensures that flight
-     * and booking data are reset, preventing memory leaks and state conflicts.
-     * </p>
-     * <p>
-     * Passenger panel cleanup iterates through all passenger panels to dispose
-     * of associated components including seat chooser dialogs and luggage view
-     * windows. This prevents resource leaks from sub-components that may have
-     * independent lifecycles.
-     * </p>
-     * <p>
-     * The disposal process is designed to be safe for multiple invocations and
-     * handles null references gracefully to prevent exceptions during cleanup
-     * operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper cleanup coordination
      * @param controller the system controller for resource management and state cleanup
@@ -1433,11 +1033,6 @@ public abstract class BookingPage extends DisposableObject {
      * external components to query frame properties, modify frame behavior,
      * or integrate with frame-level operations such as positioning, sizing,
      * or state management.
-     * </p>
-     * <p>
-     * Frame access is particularly useful for dialog positioning, window
-     * state management, and integration with external window management
-     * systems or utilities.
      * </p>
      *
      * @return the main application frame for the booking interface
