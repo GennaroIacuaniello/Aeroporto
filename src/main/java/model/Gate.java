@@ -3,10 +3,8 @@ package model;
 /**
  * Represents an airport gate in the airport management system.
  * <p>
- * This class encapsulates the information about a physical gate at the airport
- * where aircraft park for passenger boarding and disembarkation operations.
- * Gates are identified by a unique ID number and are essential for flight
- * operations and passenger management.
+ * This class encapsulates the information about a physical gate at the airport.
+ * Gates are identified by a unique ID number.
  * </p>
  * <p>
  * The airport supports gates numbered from 1 to 20, representing the physical
@@ -18,15 +16,13 @@ package model;
  * Key features include:
  * </p>
  * <ul>
- *   <li>Unique gate identification (1-20)</li>
  *   <li>Input validation for gate numbers</li>
  *   <li>Integration with flight management</li>
  *   <li>Support for gate assignment operations</li>
  * </ul>
  * <p>
  * Gates are typically assigned to flights through the flight management system
- * and are used by various airport operations including passenger boarding,
- * ground services, and airport displays.
+ * and are used by various airport operations.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -74,8 +70,8 @@ public class Gate {
      * Gets the unique identifier of this gate.
      * <p>
      * Returns the gate number that uniquely identifies this gate
-     * within the airport. This ID is used for gate assignment,
-     * passenger information displays, and airport operations.
+     * within the airport. This ID is used for gate assignment
+     * and user information displays.
      * </p>
      *
      * @return the gate identifier (1-20)

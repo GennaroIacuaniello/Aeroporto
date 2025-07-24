@@ -11,17 +11,6 @@ import java.util.List;
  * for flights that are departing from the airport. It includes additional attributes
  * specific to departing flights such as destination location and departure delay information.
  * </p>
- * <p>
- * The class maintains information about the flight's destination and any delays that may
- * affect the departure time. The departure delay is measured in minutes and defaults to 0
- * when no delay is present. This information is crucial for airport operations,
- * passenger notifications, and gate management.
- * </p>
- * <p>
- * The class provides multiple constructors to accommodate different scenarios of
- * flight creation, from basic flight information to comprehensive details including
- * bookings, tickets, and gate assignments.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -38,8 +27,7 @@ public class Departing extends Flight{
      * The destination location of this departing flight.
      * <p>
      * This field stores the arrival location or city to which the flight
-     * is departing. This information is essential for passenger information
-     * systems and airport displays.
+     * is departing.
      * </p>
      */
     private String destination;
@@ -132,8 +120,7 @@ public class Departing extends Flight{
     /**
      * Constructs a new departing flight with delay information.
      * <p>
-     * Creates a departing flight that includes departure delay information,
-     * which is essential for real-time flight tracking and passenger notifications.
+     * Creates a departing flight that includes departure delay information.
      * </p>
      *
      * @param parId the unique identifier for the flight
@@ -160,8 +147,7 @@ public class Departing extends Flight{
      * Constructs a new departing flight with existing bookings and tickets.
      * <p>
      * Creates a departing flight that includes existing booking and ticket
-     * information, useful when reconstructing flight objects from database
-     * records or transferring flight data between systems.
+     * information, useful when reconstructing flight objects from a database.
      * </p>
      *
      * @param parId the unique identifier for the flight
@@ -221,7 +207,7 @@ public class Departing extends Flight{
      * <p>
      * Creates the most comprehensive departing flight object with all available information
      * including existing bookings, tickets, gate assignment, and delay information.
-     * This constructor provides the complete flight representation for full system integration.
+     * This constructor provides the complete flight representation.
      * </p>
      *
      * @param parId the unique identifier for the flight
@@ -252,8 +238,6 @@ public class Departing extends Flight{
      * Gets the destination location of this departing flight.
      * <p>
      * Returns the arrival location or city to which this flight is departing.
-     * This information is used for passenger information displays and airport
-     * operational systems.
      * </p>
      *
      * @return the destination location of the flight
@@ -266,7 +250,6 @@ public class Departing extends Flight{
      * Sets the destination location of this departing flight.
      * <p>
      * Updates the arrival location or city to which this flight is departing.
-     * This method allows for corrections or updates to flight destination information.
      * </p>
      *
      * @param destination the new destination location of the flight
@@ -274,34 +257,5 @@ public class Departing extends Flight{
     public void setDestination(String destination) {
         this.destination = destination;
     }
-
-    /**
-     * Gets the departure delay in minutes for this flight.
-     * <p>
-     * Returns the number of minutes this flight is delayed from its scheduled
-     * departure time. A value of 0 indicates no delay, while positive values
-     * represent the delay duration in minutes.
-     * </p>
-     *
-     * @return the departure delay in minutes
-     */
-    public int getDepartureDelay() {
-        return departureDelay;
-    }
-
-    /**
-     * Sets the departure delay in minutes for this flight.
-     * <p>
-     * Updates the departure delay information for this flight. This method is
-     * typically used when flight delays are reported or updated by air traffic
-     * control or airline operations.
-     * </p>
-     *
-     * @param departureDelay the new departure delay in minutes
-     */
-    public void setDepartureDelay(int departureDelay) {
-        this.departureDelay = departureDelay;
-    }
-
 
 }

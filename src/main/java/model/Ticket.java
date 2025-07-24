@@ -16,8 +16,8 @@ import java.util.List;
  * <p>
  * The ticket maintains essential travel information including the unique ticket
  * number, seat assignment, check-in status, and references to the associated
- * flight, booking, and passenger. Each ticket represents one passenger's
- * entitlement to travel on a specific flight.
+ * flight, booking, and passenger. Each ticket represents one passenger
+ * that will travel on a specific flight.
  * </p>
  * <p>
  * Key features include:
@@ -28,14 +28,7 @@ import java.util.List;
  *   <li>Check-in status tracking</li>
  *   <li>Flight, booking, and passenger associations</li>
  *   <li>Luggage management for the ticket holder</li>
- *   <li>Seat representation in human-readable format</li>
  * </ul>
- * <p>
- * The class provides multiple constructors to accommodate different scenarios
- * of ticket creation, from basic ticket information to comprehensive details
- * including luggage and passenger data. All tickets require valid associations
- * with flights, bookings, and passengers to maintain data integrity.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -64,8 +57,7 @@ public class Ticket {
      * <p>
      * This field represents the specific seat assignment for the passenger.
      * It can be null if no seat has been assigned yet, or -1 to indicate
-     * no seat assignment. The seat number corresponds to the aircraft's
-     * seating layout and is used for boarding and passenger services.
+     * no seat assignment.
      * </p>
      */
     private Integer seat = null;
@@ -85,8 +77,7 @@ public class Ticket {
      * <p>
      * This field maintains the reference to the flight for which this ticket
      * is valid. It is final as the flight association cannot be changed
-     * after ticket creation. This reference is essential for flight operations
-     * and passenger services.
+     * after ticket creation. This reference is essential for flight operations.
      * </p>
      *
      * @see Flight
@@ -98,7 +89,7 @@ public class Ticket {
      * <p>
      * This field maintains the reference to the booking that contains this ticket.
      * It is final as the booking association cannot be changed after ticket
-     * creation. This reference is used for customer service and payment tracking.
+     * creation.
      * </p>
      *
      * @see Booking
@@ -110,8 +101,7 @@ public class Ticket {
      * <p>
      * This field maintains the reference to the passenger who will travel
      * using this ticket. It is final as the passenger association cannot
-     * be changed after ticket creation. This reference is essential for
-     * passenger identification and services.
+     * be changed after ticket creation.
      * </p>
      *
      * @see Passenger
@@ -122,8 +112,7 @@ public class Ticket {
      * The list of luggage associated with this ticket.
      * <p>
      * This field stores all luggage items that belong to the passenger
-     * holding this ticket. The collection is implemented as an ArrayList
-     * for efficient access and modification. It defaults to an empty list.
+     * holding this ticket. It defaults to an empty list.
      * </p>
      *
      * @see Luggage
@@ -135,7 +124,6 @@ public class Ticket {
      * <p>
      * Creates a ticket with essential associations to flight, booking, and passenger.
      * The seat assignment defaults to null and check-in status defaults to false.
-     * This constructor is used for basic ticket creation scenarios.
      * </p>
      *
      * @param parTicketNumber the unique ticket number
@@ -285,7 +273,7 @@ public class Ticket {
      * <p>
      * Creates a comprehensive ticket with seat assignment, check-in status,
      * and associated luggage. This constructor establishes the ticket-luggage
-     * relationships and is used for complete ticket creation with baggage.
+     * relationships and is used for complete ticket creation with luggage.
      * </p>
      *
      * @param parTicketNumber the unique ticket number
@@ -345,8 +333,7 @@ public class Ticket {
      * <p>
      * Creates a ticket by constructing the associated flight and booking objects
      * from individual parameters. This constructor is typically used when
-     * creating tickets from database records or external data sources where
-     * separate flight and booking objects don't exist yet.
+     * creating tickets from database records.
      * </p>
      *
      * @param parTicketNumber the unique ticket number
@@ -404,9 +391,9 @@ public class Ticket {
     /**
      * Constructs a new ticket with passenger details and existing flight/booking.
      * <p>
-     * Creates a ticket with existing flight and booking objects while creating
+     * Creates a ticket with an existing flight and booking objects while creating
      * a new passenger from individual parameters. This constructor is useful
-     * when flight and booking objects already exist but passenger information
+     * when flight and booking objects already exist, but passenger information
      * needs to be created from separate data fields.
      * </p>
      *
@@ -476,7 +463,6 @@ public class Ticket {
      * <p>
      * Returns the seat assignment for this ticket. The value can be null
      * if no seat has been assigned, or -1 to indicate no seat assignment.
-     * The seat number corresponds to the aircraft's seating layout.
      * </p>
      *
      * @return the seat number, can be null or -1 for no assignment
@@ -489,8 +475,7 @@ public class Ticket {
      * Sets the seat number for this ticket.
      * <p>
      * Updates the seat assignment for this ticket. This method is used
-     * for seat selection and reassignment operations. The seat number
-     * should correspond to valid seats in the aircraft's layout.
+     * for seat selection and reassignment operations.
      * </p>
      *
      * @param seat the new seat number, can be null for no assignment
@@ -503,28 +488,13 @@ public class Ticket {
      * Gets the check-in status of this ticket.
      * <p>
      * Returns whether the passenger has completed check-in procedures
-     * for this ticket. This status affects boarding eligibility and
-     * various airport services.
+     * for this ticket..
      * </p>
      *
      * @return true if checked in, false otherwise
      */
     public boolean isCheckedIn() {
         return checkedIn;
-    }
-
-    /**
-     * Sets the check-in status for this ticket.
-     * <p>
-     * Updates the check-in status when passengers complete or reverse
-     * check-in procedures. This method is used by check-in systems
-     * and airport operations.
-     * </p>
-     *
-     * @param checkedIn the new check-in status
-     */
-    public void setCheckedIn(boolean checkedIn) {
-        this.checkedIn = checkedIn;
     }
 
     /**
@@ -592,7 +562,7 @@ public class Ticket {
      * <p>
      * Updates the complete list of luggage associated with this ticket.
      * This method establishes the ticket-luggage relationships and is
-     * used for baggage management operations. Each luggage item will
+     * used for luggage management operations. Each luggage item will
      * have its ticket reference updated to point to this ticket.
      * </p>
      *
@@ -606,45 +576,6 @@ public class Ticket {
         }
 
         this.luggages = (ArrayList<Luggage>) luggages;
-    }
-
-    /**
-     * Returns a human-readable representation of the seat assignment.
-     * <p>
-     * Converts the numeric seat assignment to a standard airline format
-     * using row numbers and letter designations (A-F). Returns "/" if
-     * no seat is assigned (null or -1). The format follows standard
-     * aircraft seating conventions.
-     * </p>
-     * <p>
-     * Examples:
-     * </p>
-     * <ul>
-     *   <li>Seat 0 → "1A"</li>
-     *   <li>Seat 5 → "1F"</li>
-     *   <li>Seat 6 → "2A"</li>
-     *   <li>No seat → "/"</li>
-     * </ul>
-     *
-     * @return the formatted seat designation or "/" for no assignment
-     */
-    public String printSeat(){
-
-        if (this.seat == null || this.seat == -1) return "/";
-
-        String literal;
-
-        switch(this.seat%6){
-            case 0: literal = "A"; break;
-            case 1: literal = "B"; break;
-            case 2: literal = "C"; break;
-            case 3: literal = "D"; break;
-            case 4: literal = "E"; break;
-            case 5: literal = "F"; break;
-            default: literal = "";
-        }
-
-        return Integer.toString((this.seat/6)+1) + literal;
     }
 
 }

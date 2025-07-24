@@ -16,23 +16,7 @@ import java.io.IOException;
  * <ul>
  *   <li>Attempting to create a gate with an ID outside the valid range (1-20)</li>
  *   <li>Invalid gate assignment operations</li>
- *   <li>Gate number conflicts or duplicate assignments</li>
- *   <li>Invalid gate references in flight operations</li>
- *   <li>Data consistency violations in gate management</li>
  * </ul>
- * <p>
- * The exception provides both a default constructor for generic gate validation errors
- * and a parameterized constructor that accepts a descriptive error message.
- * This allows for detailed error reporting and helps in debugging gate-related
- * issues within the airport management system.
- * </p>
- * <p>
- * This exception is typically caught and handled by the gate controller,
- * flight management system, and user interface components to provide appropriate
- * feedback to users when gate operations fail due to validation errors. It ensures
- * that all gate-related operations maintain data integrity and operational consistency
- * within the airport's physical infrastructure constraints.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -46,12 +30,6 @@ public class InvalidGate extends IOException {
 
     /**
      * Constructs a new InvalidGate exception with no detail message.
-     * <p>
-     * This constructor creates an exception instance without a specific
-     * error message. It is typically used when the context of the gate
-     * validation error is clear from the surrounding code or when a
-     * generic gate validation error needs to be signaled.
-     * </p>
      */
     public InvalidGate(){}
 
@@ -60,12 +38,10 @@ public class InvalidGate extends IOException {
      * <p>
      * This constructor creates an exception instance with a descriptive
      * error message that provides specific information about the gate
-     * validation failure. The message is intended for diagnostic purposes,
-     * logging, and user feedback to help identify and resolve gate-related issues.
+     * validation failure.
      * </p>
      *
      * @param message the detail message explaining the specific gate validation error.
-     *               The message is saved for later retrieval by the {@link #getMessage()} method.
      */
     public InvalidGate(String message) {
         super(message);
