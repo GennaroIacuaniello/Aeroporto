@@ -530,7 +530,7 @@ public abstract class BookingPage extends DisposableObject {
 
         flightInfoPanel.setOpaque(false);
 
-        String[] columnNames = {"COMPANY", "CITY", "DATE", "DEPARTURE TIME", "ARRIVAL TIME", "DURATION", "STATUS", "FREE SEATS"};
+        String[] columnNames = {"COMPAGNIA", "CITTA'", "DATA", "ORARIO DI PARTENZA", "ORARIO DI ARRIVO", "DURATA", "STATO", "POSTI LIBERI"};
 
         Object[][] data = new Object[1][columnNames.length];
 
@@ -584,7 +584,7 @@ public abstract class BookingPage extends DisposableObject {
 
         searchField = new JTextField(16);
 
-        searchButton = new JButton("Search");
+        searchButton = new JButton("CERCA");
         searchButton.addActionListener (new ActionListener() {
 
             @Override
