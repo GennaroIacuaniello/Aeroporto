@@ -10,9 +10,9 @@ import java.util.ArrayList;
  * Customer menu panel providing specialized customer functions and navigation for airport management operations.
  * <p>
  * This class extends {@link JPanel} to provide a comprehensive dropdown menu interface specifically
- * designed for customer users of the airport management system. The panel offers centralized
+ * designed for customer users of the airport management system. The panel offers
  * access to customer-specific functions including system navigation, flight search capabilities,
- * and booking management through an intuitive dropdown menu interface optimized for customer workflows.
+ * and booking management through a dropdown menu interface optimized for customer workflows.
  * </p>
  * <p>
  * The MenuPanelCustomer class supports comprehensive customer functionality including:
@@ -25,22 +25,6 @@ import java.util.ArrayList;
  *   <li><strong>Controller Integration:</strong> Seamless integration with system controller for customer operations</li>
  *   <li><strong>Navigation Optimization:</strong> Intelligent navigation that prevents redundant interface transitions</li>
  * </ul>
- * <p>
- * The interface is designed with customer workflow optimization, providing users with:
- * </p>
- * <ul>
- *   <li><strong>Centralized Access:</strong> Single menu button providing access to all primary customer functions</li>
- *   <li><strong>Contextual Navigation:</strong> Intelligent navigation that prevents redundant interface transitions</li>
- *   <li><strong>Interface Integration:</strong> Seamless integration with specialized customer interfaces</li>
- *   <li><strong>Professional Presentation:</strong> Clean, organized menu structure optimized for customer use</li>
- *   <li><strong>Operational Efficiency:</strong> Quick access to frequently used customer tools and functions</li>
- * </ul>
- * <p>
- * Menu architecture utilizes a dynamic popup menu system that creates menu items on-demand,
- * ensuring optimal memory usage and providing flexibility for future customer function
- * additions. The menu supports three primary customer functions: home navigation,
- * flight search operations, and booking management capabilities.
- * </p>
  * <p>
  * Navigation functionality includes intelligent duplicate prevention that checks current interface
  * state before initiating navigation transitions. This prevents unnecessary interface reloads
@@ -61,22 +45,7 @@ import java.util.ArrayList;
  * The panel integrates seamlessly with the broader customer interface ecosystem including
  * {@link HomePageCustomer}, {@link NavigatorBarPanel}, and other customer components while
  * maintaining clean separation of concerns and reusable design patterns.
- * </p>
- * <p>
- * Visual design maintains consistency with the overall airport management system aesthetic
- * through standardized button styling, popup menu presentation, and layout integration that
- * supports both standalone operation and integration within larger customer interfaces.
- * </p>
- * <p>
- * Resource management follows standard Swing component lifecycle patterns with proper component
- * initialization, event handler setup, and memory-efficient popup menu creation that supports
- * extended customer sessions without performance degradation.
- * </p>
- * <p>
- * The class serves as a primary navigation hub for customer operations, providing
- * consistent access patterns and interface behavior that support efficient customer
- * workflows and operational continuity throughout the airport management system.
- * </p>
+* </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -111,70 +80,6 @@ public class MenuPanelCustomer extends JPanel {
      *   <li><strong>Interface Coordination:</strong> Seamless integration with specialized customer interfaces</li>
      *   <li><strong>Layout Integration:</strong> Proper panel integration and component visibility management</li>
      * </ul>
-     * <p>
-     * Menu button creation establishes the primary user interaction point with Italian
-     * localization ("Menù") for customer interface consistency. The button serves
-     * as the trigger for the dynamic popup menu system and maintains standard Swing
-     * button behavior and styling throughout customer operations.
-     * </p>
-     * <p>
-     * Option configuration includes creating a dynamic list of customer functions:
-     * "Home" for system navigation, "Cerca voli" (Search Flights) for flight search operations,
-     * and "Le mie prenotazioni" (My Bookings) for booking management. The dynamic list
-     * architecture supports future expansion and modification of customer functions.
-     * </p>
-     * <p>
-     * Event handler setup includes comprehensive popup menu creation with on-demand menu
-     * item generation and specialized action listeners for each customer function.
-     * The event handling system ensures proper navigation coordination, interface lifecycle
-     * management, and integration with the calling objects hierarchy.
-     * </p>
-     * <p>
-     * Navigation integration includes intelligent duplicate prevention that examines current
-     * interface state before initiating navigation transitions. Each navigation option
-     * checks current frame title and only initiates navigation when required, preventing
-     * unnecessary interface reloads and ensuring smooth customer workflow continuity.
-     * </p>
-     * <p>
-     * Interface coordination includes proper window management for customer interface transitions.
-     * The system manages frame visibility, size preservation, location maintenance, and
-     * extended state coordination to ensure seamless transitions between customer interfaces
-     * while maintaining optimal user experience and interface consistency.
-     * </p>
-     * <p>
-     * Home navigation leverages the controller's goHome method to provide centralized
-     * navigation logic that ensures customers can return to the main dashboard from
-     * any customer interface context while maintaining proper state management and
-     * resource coordination throughout navigation operations.
-     * </p>
-     * <p>
-     * Flight search integration includes creating new {@link SearchFlightCustomerMainFrame}
-     * instances with proper parameter passing for window dimensions, location, and extended
-     * state preservation. The integration ensures that flight search interfaces maintain
-     * visual continuity and optimal customer experience throughout search operations.
-     * </p>
-     * <p>
-     * Booking management integration includes creating new {@link MyBookingsCustomerMainFrame}
-     * instances with comprehensive parameter configuration including navigation context,
-     * window state preservation, and menu-opened flag for proper interface behavior.
-     * The integration enables immediate access to booking management capabilities.
-     * </p>
-     * <p>
-     * Window management includes coordinating the visibility of parent windows during
-     * navigation transitions, ensuring that only the active customer interface is visible
-     * while maintaining proper navigation hierarchy and resource management throughout
-     * customer workflow operations.
-     * </p>
-     * <p>
-     * Layout integration includes proper component addition to the panel and immediate
-     * visibility activation, ensuring that the customer menu is available for
-     * interaction as soon as the panel is created and integrated within parent interfaces.
-     * </p>
-     * <p>
-     * The constructor completes by establishing a fully functional customer menu
-     * that provides centralized access to all primary customer functions while
-     * maintaining integration with the broader customer interface ecosystem.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper navigation state management and resource coordination
      * @param controller the system controller providing access to customer functions, navigation logic, and specialized interface management capabilities
