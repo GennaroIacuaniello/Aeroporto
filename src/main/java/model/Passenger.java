@@ -11,7 +11,7 @@ import java.sql.Date;
  * </p>
  * <p>
  * The passenger maintains essential personal information including first name,
- * last name, social security number (SSN), and birth date. The SSN is required
+ * last name, social security number (SSN), and birthdate. The SSN is required
  * and immutable as it serves as the primary identification for the passenger
  * throughout the system.
  * </p>
@@ -20,17 +20,8 @@ import java.sql.Date;
  * </p>
  * <ul>
  *   <li>Unique passenger identification via SSN</li>
- *   <li>Personal information management (name, birth date)</li>
  *   <li>Mandatory ticket association for travel validity</li>
- *   <li>Integration with booking and flight systems</li>
- *   <li>Data validation and integrity checks</li>
  * </ul>
- * <p>
- * The class provides multiple constructors to accommodate different scenarios
- * of passenger creation, from basic identification to comprehensive personal
- * information with integrated booking creation. All passengers must have a
- * valid SSN and be associated with a ticket to maintain system integrity.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -49,7 +40,8 @@ public class Passenger {
      * <p>
      * This field stores the passenger's given name and can be null if
      * not provided during passenger creation. It is mutable to allow
-     * for updates and corrections to passenger information.
+     * for updates and corrections to passenger information (only before flight's
+     * opening of check-ins).
      * </p>
      */
     private String firstName = null;
@@ -59,7 +51,8 @@ public class Passenger {
      * <p>
      * This field stores the passenger's family name and can be null if
      * not provided during passenger creation. It is mutable to allow
-     * for updates and corrections to passenger information.
+     * for updates and corrections to passenger information (only before flight's
+     * opening of check-ins).
      * </p>
      */
     private String lastName = null;
@@ -76,11 +69,12 @@ public class Passenger {
     private final String passengerSSN;
     
     /**
-     * The birth date of the passenger.
+     * The birthdate of the passenger.
      * <p>
      * This field stores the passenger's date of birth and can be null
      * if not provided during passenger creation. It is mutable to allow
-     * for updates when additional information becomes available.
+     * for updates when additional information becomes available(only before flight's
+     * opening of check-ins).
      * </p>
      */
     private Date birthDate = null;
@@ -89,7 +83,7 @@ public class Passenger {
      * Constructs a new passenger with complete personal information.
      * <p>
      * Creates a passenger with all personal details including name,
-     * SSN, and birth date. This constructor is used when complete
+     * SSN, and birthdate. This constructor is used when complete
      * passenger information is available and must be associated
      * with a valid ticket.
      * </p>
@@ -97,7 +91,7 @@ public class Passenger {
      * @param parFirstName the passenger's first name
      * @param parLastName the passenger's last name
      * @param parSSN the passenger's social security number, must not be null
-     * @param parBirthDate the passenger's birth date
+     * @param parBirthDate the passenger's birthdate
      * @param parTicket the ticket associated with this passenger
      * @throws InvalidTicket if the ticket is null
      * @throws InvalidPassengerNumber if the SSN is null
@@ -153,8 +147,6 @@ public class Passenger {
      * Constructs a new passenger with name and identification information.
      * <p>
      * Creates a passenger with name details and SSN identification.
-     * This constructor is useful when passenger names are known but
-     * birth date information is not available.
      * </p>
      *
      * @param parFirstName the passenger's first name
@@ -181,15 +173,13 @@ public class Passenger {
     }
 
     /**
-     * Constructs a new passenger with identification and birth date information.
+     * Constructs a new passenger with identification and birthdate information.
      * <p>
-     * Creates a passenger with SSN and birth date, used when age-related
-     * information is important but name details are not immediately
-     * available.
+     * Creates a passenger with SSN and birthdate.
      * </p>
      *
      * @param parSSN the passenger's social security number, must not be null
-     * @param parBirthDate the passenger's birth date
+     * @param parBirthDate the passenger's birthdate
      * @param parTicket the ticket associated with this passenger
      * @throws InvalidTicket if the ticket is null
      * @throws InvalidPassengerNumber if the SSN is null
@@ -215,14 +205,13 @@ public class Passenger {
      * <p>
      * Creates a passenger with complete personal information and
      * simultaneously creates an associated booking with the provided
-     * booking details. This constructor is used for streamlined
-     * passenger and booking creation in a single operation.
+     * booking details.
      * </p>
      *
      * @param parFirstName the passenger's first name
      * @param parLastName the passenger's last name
      * @param parSSN the passenger's social security number, must not be null
-     * @param parBirthDate the passenger's birth date
+     * @param parBirthDate the passenger's birthdate
      * @param parTicketNumber the ticket number for the booking
      * @param parSeat the seat assignment
      * @param parCheckedIn the check-in status
@@ -257,7 +246,7 @@ public class Passenger {
      * <p>
      * Returns the passenger's given name. This value can be null
      * if the first name was not provided during passenger creation
-     * or has not been set subsequently.
+     * or has not been set after.
      * </p>
      *
      * @return the passenger's first name, can be null
@@ -285,7 +274,7 @@ public class Passenger {
      * <p>
      * Returns the passenger's family name. This value can be null
      * if the last name was not provided during passenger creation
-     * or has not been set subsequently.
+     * or has not been set after.
      * </p>
      *
      * @return the passenger's last name, can be null
@@ -323,11 +312,11 @@ public class Passenger {
     }
 
     /**
-     * Gets the birth date of this passenger.
+     * Gets the birthdate of this passenger.
      * <p>
      * Returns the passenger's date of birth. This value can be null
-     * if the birth date was not provided during passenger creation
-     * or has not been set subsequently.
+     * if the birthdate was not provided during passenger creation
+     * or has not been set after.
      * </p>
      *
      * @return the passenger's birth date, can be null
@@ -337,7 +326,7 @@ public class Passenger {
     }
 
     /**
-     * Sets the birth date of this passenger.
+     * Sets the birthdate of this passenger.
      * <p>
      * Updates the passenger's date of birth. This method allows for
      * corrections or updates to passenger information when new
@@ -345,7 +334,7 @@ public class Passenger {
      * is provided.
      * </p>
      *
-     * @param birthDate the new birth date for the passenger
+     * @param birthDate the new birthdate for the passenger
      */
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;

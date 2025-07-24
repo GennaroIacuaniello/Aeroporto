@@ -96,8 +96,7 @@ public class Arriving extends Flight{
     /**
      * Constructs a new arriving flight with delay information.
      * <p>
-     * Creates an arriving flight that includes arrival delay information,
-     * which is essential for real-time flight tracking and passenger notifications.
+     * Creates an arriving flight that includes arrival delay information.
      * </p>
      *
      * @param parId the unique identifier for the flight
@@ -123,9 +122,8 @@ public class Arriving extends Flight{
     /**
      * Constructs a new arriving flight with gate assignment.
      * <p>
-     * Creates an arriving flight with a specific gate assignment, which is
-     * important for passenger boarding instructions and airport operations.
-     * Includes delay information for comprehensive flight tracking.
+     * Creates an arriving flight with a specific gate assignment.
+     * Includes delay information for flight tracking.
      * </p>
      *
      * @param parId the unique identifier for the flight
@@ -153,8 +151,7 @@ public class Arriving extends Flight{
      * Constructs a new arriving flight with existing bookings and tickets.
      * <p>
      * Creates an arriving flight that includes existing booking and ticket
-     * information, useful when reconstructing flight objects from database
-     * records or transferring flight data between systems.
+     * information, useful when reconstructing flight objects from database.
      * </p>
      *
      * @param parId the unique identifier for the flight
@@ -214,7 +211,7 @@ public class Arriving extends Flight{
      * <p>
      * Creates the most comprehensive arriving flight object with all available information
      * including existing bookings, tickets, gate assignment, and delay information.
-     * This constructor provides the complete flight representation for full system integration.
+     * This constructor provides the complete flight representation.
      * </p>
      *
      * @param parId the unique identifier for the flight
