@@ -729,24 +729,31 @@ public class FlightDAOImpl implements FlightDAO {
             connection.setAutoCommit(false);
 
             String query = "SELECT * FROM Flight WHERE id_gate = ? AND flight_status <> 'CANCELLED' AND flight_status <> 'DEPARTED' AND flight_status <> 'LANDED');";
+            ResultSet resultSet;
 
             for (int i = 1; i <= 20; i++) {
 
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setInt(1, i);
 
-                ResultSet resultSet = preparedStatement.executeQuery();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+                    preparedStatement.setInt(1, i);
+
+                    resultSet = preparedStatement.executeQuery();
+                }
 
                 if (!resultSet.next()) {
 
                     resultSet.close();
 
                     query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
-                    preparedStatement = connection.prepareStatement(query);
-                    preparedStatement.setInt(1, i);
-                    preparedStatement.setString(2, idFlight);
 
-                    preparedStatement.executeUpdate();
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+                        preparedStatement.setInt(1, i);
+                        preparedStatement.setString(2, idFlight);
+
+                        preparedStatement.executeUpdate();
+                    }
 
                     connection.commit();
 
@@ -783,13 +790,13 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public void setGate(int idGate, String idFlight) {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             connection.setAutoCommit(false);
 
-            String query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, idGate);
             preparedStatement.setString(2, idFlight);
 
@@ -829,12 +836,12 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public int setStatus (String status, String idFlight) {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
+        String query = "UPDATE Flight SET flight_status = ?::FlightStatus WHERE id_flight = ? ;";
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedStatement =  connection.prepareStatement(query)) {
 
             connection.setAutoCommit(false);
-
-            String query = "UPDATE Flight SET flight_status = ?::FlightStatus WHERE id_flight = ? ;";
-            PreparedStatement preparedStatement =  connection.prepareStatement(query);
 
             preparedStatement.setString(1, status);
             preparedStatement.setString(2, idFlight);
@@ -869,12 +876,12 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public int addDelay(int delay, String idFlight) {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
+        String query = "UPDATE Flight SET flight_delay = flight_delay + ? WHERE id_flight = ?;";
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             connection.setAutoCommit(false);
-
-            String query = "UPDATE Flight SET flight_delay = flight_delay + ? WHERE id_flight = ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setInt(1, delay);
             preparedStatement.setString(2, idFlight);
@@ -910,28 +917,32 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets) {
 
+        String query = "UPDATE Ticket SET checked_in = ? WHERE ticket_number = ?;";
+
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection()) {
 
             connection.setAutoCommit(false);
 
-            String query = "UPDATE Ticket SET checked_in = ? WHERE ticket_number = ?;";
-
             for (String ticket : trueTickets) {
 
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setBoolean(1, true);
-                preparedStatement.setString(2, ticket);
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-                preparedStatement.executeUpdate();
+                    preparedStatement.setBoolean(1, true);
+                    preparedStatement.setString(2, ticket);
+
+                    preparedStatement.executeUpdate();
+                }
             }
 
             for (String ticket : falseTickets) {
 
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setBoolean(1, false);
-                preparedStatement.setString(2, ticket);
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-                preparedStatement.executeUpdate();
+                    preparedStatement.setBoolean(1, false);
+                    preparedStatement.setString(2, ticket);
+
+                    preparedStatement.executeUpdate();
+                }
             }
 
             connection.commit();

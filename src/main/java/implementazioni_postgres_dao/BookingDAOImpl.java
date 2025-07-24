@@ -99,7 +99,6 @@ public class BookingDAOImpl implements BookingDAO {
             int generatedId;
 
             //inserisci in booking
-
             preparedQuery.setObject(1, bookingStatus);
             preparedQuery.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             preparedQuery.setInt(3, idCustomer);
@@ -129,10 +128,6 @@ public class BookingDAOImpl implements BookingDAO {
             insertLuggages(connection, ticketForLuggages, luggagesTypes);
 
             connection.commit();
-
-        } catch (SQLException e) {
-
-            LOGGER.log(Level.SEVERE, e.getSQLState());
 
         }
     }
@@ -186,36 +181,52 @@ public class BookingDAOImpl implements BookingDAO {
             connection.setAutoCommit(false);
 
             String query;
-            PreparedStatement preparedQuery;
             ResultSet resultSet;
 
             //aggiungi ticket temporaneo
             //prendo un passeggero per aggiungere ticket temporaneo
             query = "SELECT id_passenger FROM Ticket WHERE id_booking = ? LIMIT 1;";
-            preparedQuery = connection.prepareStatement(query);
-            preparedQuery.setInt(1, idBooking);
 
-            resultSet = preparedQuery.executeQuery();
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
+                preparedQuery.setInt(1, idBooking);
+
+                resultSet = preparedQuery.executeQuery();
+            }
 
             if (!resultSet.next()) throw new SQLException();
 
             query = "INSERT INTO Ticket (ticket_number, id_booking, id_passenger, id_flight) VALUES (?, ?, ?, ?);";
-            preparedQuery = connection.prepareStatement(query);
-            preparedQuery.setString(1, tmpTicket);
-            preparedQuery.setInt(2, idBooking);
-            preparedQuery.setString(3, resultSet.getString("id_passenger"));
-            preparedQuery.setString(4, idFlight);
 
-            preparedQuery.executeUpdate();
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
 
-            resultSet.close();
+                System.out.println("Errore qui1");
+
+                preparedQuery.setString(1, tmpTicket);
+                preparedQuery.setInt(2, idBooking);
+                preparedQuery.setString(3, resultSet.getString("id_passenger"));
+                preparedQuery.setString(4, idFlight);
+
+                System.out.println("Errore qui2");
+
+                preparedQuery.executeUpdate();
+
+                System.out.println("Errore qui3");
+
+                resultSet.close();
+
+                System.out.println("Errore qui4");
+            }
 
             //cancellazione vecchi tickets
             query = "DELETE FROM Ticket WHERE id_booking = ? AND ticket_number <> ?;";
-            preparedQuery = connection.prepareStatement(query);
-            preparedQuery.setInt(1, idBooking);
-            preparedQuery.setString(2, tmpTicket);
-            preparedQuery.executeUpdate();
+
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
+                preparedQuery.setInt(1, idBooking);
+                preparedQuery.setString(2, tmpTicket);
+                preparedQuery.executeUpdate();
+            }
 
             //eventuale inserimento in passenger
             insertPassengers(connection, firstNames, lastNames, birthDates, passengerSSNs);
@@ -228,24 +239,27 @@ public class BookingDAOImpl implements BookingDAO {
 
             //cancellazione ticket temporaneo
             query = "DELETE FROM Ticket WHERE ticket_number = ?;";
-            preparedQuery = connection.prepareStatement(query);
-            preparedQuery.setString(1, tmpTicket);
 
-            preparedQuery.executeUpdate();
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
+                preparedQuery.setString(1, tmpTicket);
+
+                preparedQuery.executeUpdate();
+            }
 
             //modifica stato prenotazione
             query = "UPDATE Booking SET booking_status = ?::BookingStatus WHERE id_booking = ?;";
-            preparedQuery = connection.prepareStatement(query);
-            preparedQuery.setString(1, bookingStatus);
-            preparedQuery.setInt(2, idBooking);
 
-            preparedQuery.executeUpdate();
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
+
+                preparedQuery.setString(1, bookingStatus);
+                preparedQuery.setInt(2, idBooking);
+
+                preparedQuery.executeUpdate();
+            }
 
             connection.commit();
 
-        } catch (SQLException e) {
-
-            LOGGER.log(Level.SEVERE, e.getSQLState());
         }
     }
 
@@ -276,92 +290,97 @@ public class BookingDAOImpl implements BookingDAO {
     private void insertPassengers (Connection connection, List<String> firstNames, List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs) throws SQLException {
 
         String query;
-        PreparedStatement preparedQuery;
         ResultSet resultSet;
 
         for (int i = 0; i < passengerSSNs.size(); i++) {
 
             query = "SELECT 1 FROM Passenger WHERE SSN = ?;";
-            preparedQuery = connection.prepareStatement(query);
 
-            preparedQuery.setString(1, passengerSSNs.get(i));
+            try (PreparedStatement preparedSelectQuery = connection.prepareStatement(query)){
 
-            resultSet = preparedQuery.executeQuery();
+                preparedSelectQuery.setString(1, passengerSSNs.get(i));
 
-            if (!resultSet.next()) {
+                resultSet = preparedSelectQuery.executeQuery();
 
-                String firstNameValue = firstNames.get(i);
-                String lastNameValue = lastNames.get(i);
-                Date birthDateValue = birthDates.get(i);
+                if (!resultSet.next()) {
+
+                    String firstNameValue = firstNames.get(i);
+                    String lastNameValue = lastNames.get(i);
+                    Date birthDateValue = birthDates.get(i);
 
 
-                String query1 = "INSERT INTO Passenger (SSN";
-                String query2 = ") VALUES (?";
-                String query3 = ");";
+                    String query1 = "INSERT INTO Passenger (SSN";
+                    String query2 = ") VALUES (?";
+                    String query3 = ");";
 
-                if (firstNameValue != null) {
-                    query1 += ", first_name";
-                    query2 += ", ?";
+                    if (firstNameValue != null) {
+                        query1 += ", first_name";
+                        query2 += ", ?";
+                    }
+
+                    if (lastNameValue != null) {
+                        query1 += ", last_name";
+                        query2 += ", ?";
+                    }
+
+                    if (birthDateValue != null) {
+                        query1 += ", birth_date";
+                        query2 += ", ?";
+                    }
+
+                    query = query1 + query2 + query3;
+
+                    try (PreparedStatement preparedInsertQuery = connection.prepareStatement(query)) {
+
+                        int index = 1;
+
+                        preparedInsertQuery.setString(index++, passengerSSNs.get(i));
+                        if (firstNameValue != null) preparedInsertQuery.setString(index++, firstNameValue);
+                        if (lastNameValue != null) preparedInsertQuery.setString(index++, lastNameValue);
+                        if (birthDateValue != null) preparedInsertQuery.setDate(index, birthDateValue);
+
+                        preparedInsertQuery.executeUpdate();
+                    }
+                } else {
+
+                    String firstNameValue = firstNames.get(i);
+                    String lastNameValue = lastNames.get(i);
+                    Date birthDateValue = birthDates.get(i);
+
+
+                    String query1 = "UPDATE Passenger set SSN = ?";
+                    String query2 = " WHERE SSN = ?;";
+
+                    if (firstNameValue != null) {
+                        query1 += ", first_name = ?";
+                    }
+
+                    if (lastNameValue != null) {
+                        query1 += ", last_name = ?";
+                    }
+
+                    if (birthDateValue != null) {
+                        query1 += ", birth_date = ?";
+                    }
+
+                    query = query1 + query2;
+
+                    try (PreparedStatement preparedUpdateQuery = connection.prepareStatement(query)) {
+
+                        int index = 1;
+
+                        preparedUpdateQuery.setString(index++, passengerSSNs.get(i));
+                        if (firstNameValue != null) preparedUpdateQuery.setString(index++, firstNameValue);
+                        if (lastNameValue != null) preparedUpdateQuery.setString(index++, lastNameValue);
+                        if (birthDateValue != null) preparedUpdateQuery.setDate(index++, birthDateValue);
+                        preparedUpdateQuery.setString(index, passengerSSNs.get(i));
+
+                        preparedUpdateQuery.executeUpdate();
+                    }
                 }
 
-                if (lastNameValue != null) {
-                    query1 += ", last_name";
-                    query2 += ", ?";
-                }
-
-                if (birthDateValue != null) {
-                    query1 += ", birth_date";
-                    query2 += ", ?";
-                }
-
-                query = query1 + query2 + query3;
-                preparedQuery = connection.prepareStatement(query);
-
-                int index = 1;
-
-                preparedQuery.setString(index++, passengerSSNs.get(i));
-                if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
-                if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
-                if (birthDateValue != null) preparedQuery.setDate(index, birthDateValue);
-
-                preparedQuery.executeUpdate();
-            } else {
-
-                String firstNameValue = firstNames.get(i);
-                String lastNameValue = lastNames.get(i);
-                Date birthDateValue = birthDates.get(i);
-
-
-                String query1 = "UPDATE Passenger set SSN = ?";
-                String query2 = " WHERE SSN = ?;";
-
-                if (firstNameValue != null) {
-                    query1 += ", first_name = ?";
-                }
-
-                if (lastNameValue != null) {
-                    query1 += ", last_name = ?";
-                }
-
-                if (birthDateValue != null) {
-                    query1 += ", birth_date = ?";
-                }
-
-                query = query1 + query2;
-                preparedQuery = connection.prepareStatement(query);
-
-                int index = 1;
-
-                preparedQuery.setString(index++, passengerSSNs.get(i));
-                if (firstNameValue != null) preparedQuery.setString(index++, firstNameValue);
-                if (lastNameValue != null) preparedQuery.setString(index++, lastNameValue);
-                if (birthDateValue != null) preparedQuery.setDate(index++, birthDateValue);
-                preparedQuery.setString(index, passengerSSNs.get(i));
-
-                preparedQuery.executeUpdate();
+                resultSet.close();
             }
-
-            resultSet.close();
         }
     }
 
@@ -392,7 +411,6 @@ public class BookingDAOImpl implements BookingDAO {
     private void insertTickets (Connection connection, int idBooking, String idFlight, List<String> ticketNumbers, List<String> passengerSSNs, List<Integer> seats) throws SQLException {
 
         String query;
-        PreparedStatement preparedQuery;
 
         for (int i = 0; i < ticketNumbers.size(); i++) {
 
@@ -408,17 +426,19 @@ public class BookingDAOImpl implements BookingDAO {
             }
 
             query = query1 + query2 + query3;
-            preparedQuery = connection.prepareStatement(query);
 
-            int index = 1;
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
 
-            preparedQuery.setString(index++, ticketNumbers.get(i));
-            if (seatValue != -1) preparedQuery.setInt(index++, seatValue + 1);
-            preparedQuery.setInt(index++, idBooking);
-            preparedQuery.setString(index++, passengerSSNs.get(i));
-            preparedQuery.setString(index, idFlight);
+                int index = 1;
 
-            preparedQuery.executeUpdate();
+                preparedQuery.setString(index++, ticketNumbers.get(i));
+                if (seatValue != -1) preparedQuery.setInt(index++, seatValue + 1);
+                preparedQuery.setInt(index++, idBooking);
+                preparedQuery.setString(index++, passengerSSNs.get(i));
+                preparedQuery.setString(index, idFlight);
+
+                preparedQuery.executeUpdate();
+            }
         }
     }
 
@@ -447,16 +467,15 @@ public class BookingDAOImpl implements BookingDAO {
 
         for (int i = 0; i < ticketForLuggages.size(); i++) {
 
-            String query;
-            PreparedStatement preparedQuery;
+            String query = "INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES (?::LuggageType, 'BOOKED'::LuggageStatus, ?);";
 
-            query = "INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES (?::LuggageType, 'BOOKED'::LuggageStatus, ?);";
-            preparedQuery = connection.prepareStatement(query);
+            try (PreparedStatement preparedQuery = connection.prepareStatement(query)) {
 
-            preparedQuery.setObject(1, luggagesTypes.get(i));
-            preparedQuery.setString(2, ticketForLuggages.get(i));
+                preparedQuery.setObject(1, luggagesTypes.get(i));
+                preparedQuery.setString(2, ticketForLuggages.get(i));
 
-            preparedQuery.executeUpdate();
+                preparedQuery.executeUpdate();
+            }
         }
     }
 

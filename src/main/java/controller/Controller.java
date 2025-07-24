@@ -544,6 +544,8 @@ public class Controller {
                     seats, firstNames, lastNames, birthDates, passengerSSNs, luggagesTypes, ticketsForLuggagesTypes, generateTicketNumber(passengerPanels.size() + 1), bookingStatus);
 
         } catch (SQLException e) {
+            e.printStackTrace();
+
             Controller.getLogger().log(Level.SEVERE, e.getSQLState());
         }
     }

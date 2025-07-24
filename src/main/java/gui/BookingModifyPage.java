@@ -170,6 +170,7 @@ public class BookingModifyPage extends BookingPageCustomer {
      *
      * @param controller the system controller providing access to flight capacity information and passenger management operations
      */
+    @Override
     protected void addModifyPanel (Controller controller) {
 
         modifyPanel = new JPanel();

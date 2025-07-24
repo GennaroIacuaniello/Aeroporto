@@ -490,7 +490,7 @@ public abstract class BookingPage extends DisposableObject {
         addFlightInfoPanel (controller);
         addSearchPanel ();
         addPassengerPage (controller);
-        addModifyPanel ();
+        addModifyPanel (controller);
         addConfirmPanel (callingObjects, controller);
 
         constraints.setConstraints(0, 1, 1, 1, GridBagConstraints.BOTH,
@@ -807,7 +807,7 @@ public abstract class BookingPage extends DisposableObject {
      * These controls enable users to navigate through large passenger lists efficiently.
      * </p>
      */
-    protected void addModifyPanel () {
+    protected void addModifyPanel (Controller controller) {
 
         modifyPanel = new JPanel();
 
