@@ -1,5 +1,7 @@
 package dao;
 
+import database.ConnessioneDatabase;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -58,7 +60,7 @@ import java.util.List;
 public interface BookingDAO {
 
     /**
-     * Creates a new booking with associated tickets, passengers, and luggage.
+     * Creates a new booking with associated tickets, passengers, and luggages.
      * <p>
      * This method performs a comprehensive booking creation operation that includes
      * inserting the booking record, creating associated passenger records (if they
@@ -257,9 +259,76 @@ public interface BookingDAO {
                                                List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types,
                                                List<Date> bookingDates, List<String> bookingStatus, List<Integer> bookingIds) throws SQLException;
 
-
+    /**
+     * Modifies an existing booking with new passenger, ticket, and luggage information.
+     * <p>
+     * This method performs a complex booking modification operation that maintains data
+     * consistency through the use of temporary tickets and transactional operations.
+     * The modification process completely replaces existing tickets and luggage while
+     * preserving the original booking record.
+     * </p>
+     * <p>
+     * The operation follows this sequence:
+     * </p>
+     * <ol>
+     *   <li>Creates a temporary ticket to maintain foreign key relationships</li>
+     *   <li>Deletes all existing tickets except the temporary one</li>
+     *   <li>Updates or inserts passenger information as needed</li>
+     *   <li>Creates new tickets with updated seat assignments</li>
+     *   <li>Creates new luggage records for the updated tickets</li>
+     *   <li>Removes the temporary ticket</li>
+     *   <li>Updates the booking status</li>
+     * </ol>
+     * <p>
+     * The temporary ticket mechanism ensures that the booking always has at least one
+     * associated ticket during the modification process, preventing foreign key violations
+     * and maintaining referential integrity. All operations are performed within a
+     * single transaction to ensure atomicity.
+     * </p>
+     *
+     * @param idFlight the flight identifier for the booking
+     * @param idBooking the unique identifier of the booking to modify
+     * @param ticketNumbers list of new ticket numbers for the booking
+     * @param seats list of new seat assignments (can contain -1 for no assignment)
+     * @param firstNames list of passenger first names (can contain null values)
+     * @param lastNames list of passenger last names (can contain null values)
+     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param passengerSSNs list of passenger SSN identifiers (required)
+     * @param luggagesTypes list of luggage types for new luggage items
+     * @param ticketForLuggages list of ticket numbers associated with each luggage item
+     * @param tmpTicket temporary ticket number used during the modification process
+     * @param bookingStatus new status for the booking after modification
+     * @throws SQLException if a database access error occurs during the modification process
+     */
     void modifyBooking (String idFlight, Integer idBooking, List<String> ticketNumbers, List<Integer> seats, List<String> firstNames,
                                List<String> lastNames, List<Date> birthDates, List<String> passengerSSNs, List<String> luggagesTypes, List<String> ticketForLuggages, String tmpTicket, String bookingStatus) throws SQLException;
 
+    /**
+     * Soft deletion of a booking by setting its status to cancelled
+     * <p>
+     * This method implements soft deletion by updating the booking status rather than
+     * physically removing the booking record from the database. This approach preserves
+     * data integrity and maintains audit trails for administrative and compliance purposes
+     * while effectively removing the booking from active operations.
+     * </p>
+     * <p>
+     * The soft deletion process:
+     * </p>
+     * <ul>
+     *   <li>Updates the booking_status to 'CANCELLED' for the specified booking</li>
+     *   <li>Preserves all booking data for audit and historical purposes</li>
+     *   <li>Maintains referential integrity with related tickets, passengers, and luggage</li>
+     *   <li>Allows the booking to be excluded from active booking queries when needed</li>
+     * </ul>
+     * <p>
+     * Cancelled bookings are typically filtered out of customer-facing queries but
+     * remain accessible for administrative reporting and audit purposes. This approach
+     * ensures compliance with data retention requirements while providing clear booking
+     * lifecycle management.
+     * </p>
+     *
+     * @param bookingId the unique identifier of the booking to delete/cancel
+     * @throws SQLException if a database access error occurs during the deletion operation
+     */
     void deleteBooking (int bookingId) throws SQLException;
 }

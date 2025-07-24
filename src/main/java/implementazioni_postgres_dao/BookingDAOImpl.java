@@ -983,7 +983,7 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     /**
-     * Performs a soft deletion of a booking by changing its status to 'CANCELLED'.
+     * {@inheritDoc}
      * <p>
      * This method implements soft deletion by updating the booking status rather than
      * physically removing the booking record from the database. This approach preserves
