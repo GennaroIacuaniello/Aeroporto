@@ -11,17 +11,6 @@ import java.util.List;
  * for flights that are arriving at the airport. It includes additional attributes
  * specific to arriving flights such as origin location and arrival delay information.
  * </p>
- * <p>
- * The class maintains information about the flight's origin and any delays that may
- * affect the arrival time. The arrival delay is measured in minutes and defaults to 0
- * when no delay is present. This information is crucial for airport operations,
- * passenger notifications, and gate management.
- * </p>
- * <p>
- * The class provides multiple constructors to accommodate different scenarios of
- * flight creation, from basic flight information to comprehensive details including
- * bookings, tickets, and gate assignments.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -38,8 +27,7 @@ public class Arriving extends Flight{
      * The origin location of this arriving flight.
      * <p>
      * This field stores the departure location or city from which the flight
-     * is arriving. This information is essential for passenger information
-     * systems and airport displays.
+     * is arriving.
      * </p>
      */
     private String origin;

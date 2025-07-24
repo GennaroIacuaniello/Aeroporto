@@ -110,12 +110,6 @@ public class Customer extends User{
      * list provides read access to the customer's booking history and can
      * be used for displaying booking information in user interfaces.
      * </p>
-     * <p>
-     * The returned list is the actual internal collection, so modifications
-     * to the returned list will affect the customer's booking data. For
-     * safe modification of bookings, use the {@link #setBookings(List)} method
-     * or work through the booking management system.
-     * </p>
      *
      * @return the list of bookings associated with this customer, never null
      *         but may be empty if the customer has no bookings
@@ -127,16 +121,6 @@ public class Customer extends User{
 
     /**
      * Sets the list of bookings for this customer.
-     * <p>
-     * Updates the complete list of flight bookings associated with this customer.
-     * This method replaces the entire booking collection with the provided list,
-     * which is useful for bulk updates or when loading customer data from storage.
-     * </p>
-     * <p>
-     * The provided list is cast to an {@link ArrayList} for internal storage
-     * consistency. This ensures optimal performance for booking access and
-     * modification operations within the airport management system.
-     * </p>
      *
      * @param bookings the new list of bookings to associate with this customer.
      *                Must not be null, but can be empty to clear all bookings.
