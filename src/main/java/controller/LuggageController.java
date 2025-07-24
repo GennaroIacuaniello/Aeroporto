@@ -25,30 +25,6 @@ import java.util.List;
  *   <li>Maintaining collections of luggage objects and their database identifiers</li>
  *   <li>Providing access to luggage information for customer service operations</li>
  * </ul>
- * <p>
- * The class follows a search result management pattern, maintaining synchronized collections
- * of {@link Luggage} objects and their corresponding database IDs. This enables efficient
- * retrieval and correlation of luggage data for display purposes and administrative operations.
- * </p>
- * <p>
- * Luggage operations supported by this controller include:
- * </p>
- * <ul>
- *   <li>Lost luggage reporting and status updates</li>
- *   <li>Luggage search result management for booking operations</li>
- *   <li>Integration with customer service workflows</li>
- *   <li>Support for luggage recovery operations</li>
- * </ul>
- * <p>
- * The controller maintains tight integration with the database layer through {@link LuggageDAOImpl},
- * ensuring that luggage status changes are immediately persisted and available across all
- * system components for operational consistency and customer service accuracy.
- * </p>
- * <p>
- * All luggage operations are designed to maintain data integrity and provide reliable
- * tracking capabilities throughout the luggage lifecycle, from initial booking through
- * final delivery or loss reporting.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -184,26 +160,6 @@ public class LuggageController {
      * through {@link LuggageDAOImpl} to update the status of luggage associated with
      * a specific ticket. The operation supports both lost luggage reporting and
      * status recovery operations depending on the provided status parameter.
-     * </p>
-     * <p>
-     * Common usage scenarios include:
-     * </p>
-     * <ul>
-     *   <li>Customer reporting luggage as lost (status: "LOST")</li>
-     *   <li>Administrative marking luggage as found (status: "WITHDRAWABLE")</li>
-     *   <li>System-initiated status updates during baggage handling</li>
-     *   <li>Recovery operations for previously lost luggage</li>
-     * </ul>
-     * <p>
-     * The method delegates the actual database operation to {@link LuggageDAOImpl},
-     * which handles the SQL execution and transaction management. Status updates
-     * are applied immediately to ensure real-time accuracy across all system
-     * components and customer service interfaces.
-     * </p>
-     * <p>
-     * This functionality is essential for maintaining accurate luggage tracking,
-     * enabling effective customer service, and supporting luggage recovery
-     * operations throughout the airport baggage handling system.
      * </p>
      *
      * @param ticket the ticket number associated with the luggage to update

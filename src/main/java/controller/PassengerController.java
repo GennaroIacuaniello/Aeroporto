@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * Controller class for managing passenger operations and search results in the airport management system.
  * <p>
- * This class serves as the specialized controller for passenger-related operations within the MVC
- * architecture of the airport management system. It maintains passenger search results and provides
- * methods for managing passenger data retrieved from various search and administrative operations.
+ * This class serves as the specialized controller for passenger-related operations of the airport management system.
+ * It maintains passenger search results and provides methods for managing passenger data
+ * retrieved from various search and administrative operations.
  * </p>
  * <p>
  * The PassengerController is responsible for:
@@ -22,35 +22,6 @@ import java.util.List;
  *   <li>Maintaining passenger collections for booking and flight management workflows</li>
  *   <li>Facilitating passenger data organization and retrieval for GUI components</li>
  * </ul>
- * <p>
- * The class follows a search result management pattern, maintaining collections of {@link Passenger}
- * objects that are populated by various search operations throughout the system. This enables
- * efficient passenger data handling for administrative interfaces, customer service operations,
- * and booking management workflows.
- * </p>
- * <p>
- * Passenger search results are typically populated by operations such as:
- * </p>
- * <ul>
- *   <li>Flight manifest retrieval for administrative oversight</li>
- *   <li>Booking-related searches for customer service operations</li>
- *   <li>Lost luggage operations requiring passenger identification</li>
- *   <li>Administrative reporting and passenger management functions</li>
- * </ul>
- * <p>
- * The controller maintains passenger data in ArrayList format for efficient access and manipulation,
- * while providing List interface methods for broader compatibility with GUI components and
- * business logic that require passenger information processing.
- * </p>
- * <p>
- * Integration with other controllers enables comprehensive passenger data management across
- * different system operations, ensuring that passenger information is consistently available
- * and properly organized for various administrative and operational requirements.
- * </p>
- * <p>
- * All passenger operations maintain data integrity and support the complex relationships
- * between passengers, tickets, bookings, and flights within the airport management system.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0

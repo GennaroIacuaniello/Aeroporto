@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Controller class for managing ticket operations and session state in the airport management system.
  * <p>
- * This class serves as the specialized controller for ticket-related operations within the MVC
+ * This class serves as the specialized controller for ticket-related operations within the
  * architecture of the airport management system. It maintains the current ticket session state,
  * manages ticket search results, and provides comprehensive methods for accessing ticket
  * information, passenger details, and ticket management operations.
@@ -25,41 +25,6 @@ import java.util.List;
  *   <li>Coordinating ticket information retrieval for administrative and customer service functions</li>
  *   <li>Supporting ticket lookup and identification operations</li>
  * </ul>
- * <p>
- * The class follows a dual approach for data management:
- * </p>
- * <ul>
- *   <li><strong>Session Management:</strong> Maintains a single active ticket with complete information</li>
- *   <li><strong>Search Results:</strong> Manages collections of ticket search results for administrative operations</li>
- * </ul>
- * <p>
- * Session management includes the {@link Ticket} object containing complete ticket information
- * including ticket number, seat assignment, check-in status, associated passenger data, flight
- * details, booking information, and luggage associations. This provides comprehensive access
- * to all ticket-related data through a single interface.
- * </p>
- * <p>
- * Search result management maintains collections of {@link Ticket} objects that are populated
- * by various search operations throughout the system. This enables efficient ticket data
- * handling for administrative interfaces, customer service operations, and booking management
- * workflows where multiple tickets need to be processed or displayed.
- * </p>
- * <p>
- * The controller provides extensive delegation methods that offer convenient access to related
- * information such as passenger details, flight information, and booking data through the
- * ticket's associations. This eliminates the need for calling components to navigate complex
- * object relationships directly.
- * </p>
- * <p>
- * Integration with other system components is facilitated through standardized interfaces
- * that provide ticket information for check-in procedures, passenger manifests, boarding
- * operations, and administrative reporting functions.
- * </p>
- * <p>
- * All methods maintain data consistency and provide null-safe operations where appropriate,
- * ensuring robust behavior in various application states and error conditions. The controller
- * handles both individual ticket operations and batch ticket processing scenarios.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -94,15 +59,6 @@ public class TicketController {
      * a ticket object has already been created and validated, and needs to be set
      * as the active session for subsequent operations.
      * </p>
-     * <p>
-     * This approach is useful for session management operations such as switching
-     * between different tickets, loading ticket details from cached objects, or
-     * restoring session state from previously created ticket instances.
-     * </p>
-     * <p>
-     * The method directly assigns the provided ticket object, making it immediately
-     * available for all ticket-related operations throughout the application.
-     * </p>
      *
      * @param ticket the {@link Ticket} object to set as the current session
      */
@@ -117,11 +73,6 @@ public class TicketController {
      * serves as the unique identifier for the ticket in the database and throughout
      * the system. The ticket number is used for database operations, correlation
      * with other data records, and ticket identification purposes.
-     * </p>
-     * <p>
-     * Ticket numbers are typically alphanumeric strings that uniquely identify
-     * each ticket within the airport management system and are essential for
-     * all ticket-related database operations and customer service functions.
      * </p>
      *
      * @return the unique identifier string for the current ticket
@@ -138,36 +89,11 @@ public class TicketController {
      * application's seat management system. The method returns null if no seat
      * has been assigned to the ticket.
      * </p>
-     * <p>
-     * Seat information is essential for boarding procedures, aircraft configuration
-     * management, passenger service, and ensuring proper passenger placement
-     * throughout flight operations.
-     * </p>
      *
      * @return the seat assignment for the current ticket, or null if no seat is assigned
      */
     public Integer getSeat () {
         return ticket.getSeat();
-    }
-
-    /**
-     * Retrieves the check-in status of the currently active ticket.
-     * <p>
-     * This method returns the check-in status for the current ticket, indicating
-     * whether the passenger has completed the check-in process. Check-in status
-     * is essential for boarding procedures, passenger manifests, and operational
-     * planning.
-     * </p>
-     * <p>
-     * The check-in status determines whether a passenger is cleared for boarding,
-     * has completed necessary pre-flight procedures, and is included in final
-     * passenger counts for flight operations.
-     * </p>
-     *
-     * @return true if the ticket holder is checked in, false otherwise
-     */
-    public boolean isCheckedIn () {
-        return ticket.isCheckedIn();
     }
 
     /**
@@ -177,11 +103,6 @@ public class TicketController {
      * which the current ticket is valid. The flight object contains complete
      * flight information including schedules, capacity, status, and operational
      * details.
-     * </p>
-     * <p>
-     * Flight information accessed through the ticket provides context for all
-     * ticket operations and is essential for understanding the travel details,
-     * timing, and operational requirements associated with the ticket.
      * </p>
      *
      * @return the {@link Flight} object associated with the current ticket
@@ -196,11 +117,6 @@ public class TicketController {
      * This method returns the {@link Passenger} object representing the person
      * who will travel using the current ticket. The passenger object contains
      * complete personal information, identification data, and travel documents.
-     * </p>
-     * <p>
-     * Passenger information is essential for identity verification, service
-     * delivery, security procedures, and ensuring that the correct person
-     * is associated with the ticket throughout the travel process.
      * </p>
      *
      * @return the {@link Passenger} object associated with the current ticket
@@ -217,37 +133,11 @@ public class TicketController {
      * including customer details, booking status, creation date, and other
      * tickets that may be part of the same reservation.
      * </p>
-     * <p>
-     * Booking information is essential for understanding the commercial context
-     * of the ticket, managing group reservations, and providing comprehensive
-     * customer service that considers all aspects of the travel reservation.
-     * </p>
      *
      * @return the {@link Booking} object associated with the current ticket
      */
     public Booking getBooking () {
         return ticket.getBooking();
-    }
-
-    /**
-     * Retrieves all luggage items associated with the currently active ticket.
-     * <p>
-     * This method returns a list of {@link Luggage} objects that have been
-     * associated with the current ticket. This includes both carry-on and
-     * checked luggage items, providing comprehensive luggage information for
-     * the ticket holder.
-     * </p>
-     * <p>
-     * Luggage information is essential for check-in operations, baggage handling,
-     * weight calculations, and ensuring proper luggage tracking throughout the
-     * travel process. Each luggage item contains type, status, and tracking
-     * information.
-     * </p>
-     *
-     * @return list of {@link Luggage} objects associated with the current ticket
-     */
-    public List<Luggage> getLuggages () {
-        return ticket.getLuggages();
     }
 
     /**
@@ -257,11 +147,6 @@ public class TicketController {
      * passenger without requiring explicit navigation through the ticket-passenger
      * relationship. This simplifies code that needs passenger identification
      * information for display or processing purposes.
-     * </p>
-     * <p>
-     * The first name is essential for passenger identification, service delivery,
-     * and ensuring that customer interactions are personalized and accurate
-     * throughout the travel experience.
      * </p>
      *
      * @return the first name of the passenger associated with the current ticket
@@ -278,11 +163,6 @@ public class TicketController {
      * relationship. This information is essential for passenger identification
      * and administrative operations that require complete passenger names.
      * </p>
-     * <p>
-     * The last name provides crucial identification information for security
-     * procedures, document verification, and ensuring accurate passenger
-     * processing throughout airport operations.
-     * </p>
      *
      * @return the last name of the passenger associated with the current ticket
      */
@@ -298,36 +178,11 @@ public class TicketController {
      * ticket-passenger relationship. The SSN serves as the primary key for
      * passenger identification throughout the system.
      * </p>
-     * <p>
-     * SSN information is crucial for security procedures, passenger verification,
-     * government reporting requirements, and ensuring accurate passenger
-     * identification across all airport operations and travel-related processes.
-     * </p>
      *
      * @return the SSN of the passenger associated with the current ticket
      */
     public String getSSN () {
         return ticket.getPassenger().getPassengerSSN();
-    }
-
-    /**
-     * Retrieves the birth date of the passenger associated with the currently active ticket.
-     * <p>
-     * This convenience method provides direct access to the birth date of the
-     * passenger without requiring explicit navigation through the ticket-passenger
-     * relationship. Birth date information is essential for age verification,
-     * special service requirements, and travel document validation.
-     * </p>
-     * <p>
-     * Passenger birth dates are used for various operational purposes including
-     * determining eligibility for age-based services, validating travel documents,
-     * and ensuring compliance with international travel requirements and regulations.
-     * </p>
-     *
-     * @return the birth date of the passenger associated with the current ticket
-     */
-    public Date getBirthDate () {
-        return ticket.getPassenger().getBirthDate();
     }
 
     /**

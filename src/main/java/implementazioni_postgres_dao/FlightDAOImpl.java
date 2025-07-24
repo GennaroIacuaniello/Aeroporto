@@ -754,7 +754,7 @@ public class FlightDAOImpl implements FlightDAO {
 
             connection.setAutoCommit(false);
 
-            String query = "SELECT * FROM Flight WHERE id_gate = ? AND flight_status <> 'CANCELLED';";
+            String query = "SELECT * FROM Flight WHERE id_gate = ? AND flight_status <> 'CANCELLED' AND flight_status <> 'DEPARTED' AND flight_status <> 'LANDED');";
 
             for (int i = 1; i <= 20; i++) {
 

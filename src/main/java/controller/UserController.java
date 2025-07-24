@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * Controller class for managing general user operations, authentication state, and input validation in the airport management system.
  * <p>
- * This class serves as the central controller for user-related operations within the MVC architecture of the airport
+ * This class serves as the central controller for user-related operations within the architecture of the airport
  * management system. It handles user session management, input validation, account registration, and account deletion
  * operations for both customers and administrators through a unified interface.
  * </p>
@@ -30,43 +30,6 @@ import java.util.regex.Pattern;
  *   <li>Managing account deletion operations for both user types</li>
  *   <li>Supporting authentication workflows and session management</li>
  * </ul>
- * <p>
- * The class follows a polymorphic approach using the {@link User} base class to handle both
- * {@link model.Admin} and {@link model.Customer} user types uniformly. This design enables consistent user
- * management operations while maintaining type-specific functionality through proper inheritance.
- * </p>
- * <p>
- * Session management includes both the {@link User} object containing profile information
- * (username, email, hashed password) and the unique user ID for database operations. This dual
- * approach ensures that both object-oriented operations and database queries can be performed
- * efficiently across different user types.
- * </p>
- * <p>
- * Input validation is performed using regular expressions that enforce business rules for:
- * </p>
- * <ul>
- *   <li><strong>Email validation:</strong> Standard email format with domain requirements</li>
- *   <li><strong>Username validation:</strong> Alphanumeric with limited special characters, length constraints</li>
- *   <li><strong>Format enforcement:</strong> Usernames must start with letters and end with letters or numbers</li>
- * </ul>
- * <p>
- * User registration automatically determines user type based on email domain:
- * </p>
- * <ul>
- *   <li><strong>Administrator accounts:</strong> Created for @aeroportodinapoli.it and @adn.it domains</li>
- *   <li><strong>Customer accounts:</strong> Created for all other valid email domains</li>
- * </ul>
- * <p>
- * The controller integrates with the database layer through appropriate DAO implementations
- * ({@link AdminDAOImpl} and {@link CustomerDAOImpl}) and provides user feedback through
- * {@link FloatingMessage} components for all operations including validation failures,
- * registration success/failure, and account deletion results.
- * </p>
- * <p>
- * All user operations maintain data integrity and provide comprehensive error handling with
- * appropriate user feedback. Session state is maintained in memory and is not persisted across
- * application restarts, requiring users to re-authenticate when the application is restarted.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -103,35 +66,11 @@ public class UserController {
      * which is used for database operations, user identification, and correlation
      * with other data records throughout the system.
      * </p>
-     * <p>
-     * The ID is essential for performing user-specific database operations
-     * such as booking management, profile updates, and account maintenance
-     * across both administrator and customer user types.
-     * </p>
      *
      * @return the database identifier for the current user, or null if no user is logged in
      */
     public Integer getLoggedUserId() {
         return loggedUserId;
-    }
-
-    /**
-     * Sets the database identifier for the currently logged-in user.
-     * <p>
-     * This method updates the user ID for the current session, typically
-     * used during authentication processes when establishing user sessions
-     * or when user information needs to be updated during the session.
-     * </p>
-     * <p>
-     * The ID must correspond to a valid user record in the database and
-     * should be synchronized with the user object information to maintain
-     * data consistency throughout the session.
-     * </p>
-     *
-     * @param id the database identifier to set for the current user session
-     */
-    public void setLoggedUserId(Integer id) {
-        this.loggedUserId  = id;
     }
 
     /**
@@ -141,11 +80,6 @@ public class UserController {
      * current user without requiring explicit navigation through the user object.
      * The username is used for display purposes, user identification, and
      * various user interface operations.
-     * </p>
-     * <p>
-     * The username is guaranteed to follow the system's validation rules
-     * including format constraints and length requirements as enforced
-     * during the registration and authentication processes.
      * </p>
      *
      * @return the username of the currently logged-in user
@@ -161,10 +95,6 @@ public class UserController {
      * of the current user without requiring explicit navigation through the
      * user object. The email is used for communication, user identification,
      * and determining user type (Admin vs Customer).
-     * </p>
-     * <p>
-     * The email address is guaranteed to follow valid email format patterns
-     * as enforced during the registration and validation processes.
      * </p>
      *
      * @return the email address of the currently logged-in user
@@ -199,16 +129,6 @@ public class UserController {
      * ensuring that user session information is properly synchronized and
      * available for all user-related operations throughout the application.
      * </p>
-     * <p>
-     * The method is typically used during authentication processes when user
-     * credentials have been verified and a session needs to be established
-     * with complete user information and database correlation.
-     * </p>
-     * <p>
-     * Both the user object and ID must be valid and properly correlated to
-     * ensure session consistency and enable correct user-specific operations
-     * throughout the system.
-     * </p>
      *
      * @param loggedUser the {@link User} object (Admin or Customer) to set as the current session
      * @param id the database identifier corresponding to the user
@@ -225,11 +145,6 @@ public class UserController {
      * session. The actual object type will be either {@link Admin} or {@link model.Customer}
      * depending on the user type, enabling polymorphic operations while maintaining
      * type-specific functionality.
-     * </p>
-     * <p>
-     * The user object contains complete profile information including username,
-     * email, and hashed password, providing access to all user-related data
-     * needed for system operations and user interface display.
      * </p>
      *
      * @return the current {@link User} object, or null if no user is logged in
