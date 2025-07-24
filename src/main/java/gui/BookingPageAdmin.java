@@ -408,7 +408,7 @@ public class BookingPageAdmin extends BookingPage {
      */
     protected void setSetDelayButton (Controller controller) {
 
-        setDelayButton = new JButton("SET DELAY");
+        setDelayButton = new JButton("AGGIUNGI RITARDO");
         delayTextField = new JTextField(15);
 
         setDelayButton.addActionListener(new ActionListener() {
