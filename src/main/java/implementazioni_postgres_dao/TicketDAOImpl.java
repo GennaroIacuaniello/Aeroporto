@@ -158,7 +158,7 @@ public class TicketDAOImpl implements TicketDAO {
     }
 
     /**
-     * Generates a new unique ticket number by incrementing the maximum existing ticket number.
+     * {@inheritDoc}
      * <p>
      * This method implements an atomic ticket number generation system that retrieves the
      * highest ticket number currently in the database and generates a new unique number

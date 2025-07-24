@@ -644,7 +644,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Retrieves all currently booked seats for a specific flight, excluding cancelled bookings.
+     * {@inheritDoc}
      * <p>
      * This method queries the database to find all seat assignments for tickets associated
      * with a specific flight. It excludes bookings with 'CANCELLED' status to provide
@@ -697,7 +697,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Initiates the check-in process for a flight by updating its status to 'ABOUT_TO_DEPART'.
+     * {@inheritDoc}
      * <p>
      * This method updates a flight's status to indicate that check-in procedures have
      * begun and the flight is preparing for departure. This status change typically
@@ -727,7 +727,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Searches for an available gate and assigns it to the specified flight.
+     * {@inheritDoc}
      * <p>
      * This method implements automatic gate assignment by iterating through gates 1-20
      * and finding the first available gate (not assigned to any non-cancelled flight).
@@ -791,7 +791,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Assigns a specific gate to a flight.
+     * {@inheritDoc}
      * <p>
      * This method updates the gate assignment for a specified flight, allowing manual
      * gate assignment or reassignment operations. The method uses database transactions
@@ -828,7 +828,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Updates the status of a specific flight.
+     * {@inheritDoc}
      * <p>
      * This method allows updating a flight's operational status to reflect current
      * conditions such as delays, boarding, departure, arrival, or cancellation.
@@ -876,7 +876,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Adds additional delay to a flight's current delay value.
+     * {@inheritDoc}
      * <p>
      * This method increases the flight's delay by the specified number of minutes,
      * allowing for cumulative delay tracking. The delay is added to any existing
@@ -917,7 +917,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Updates check-in status for multiple tickets in batch operations.
+     * {@inheritDoc}
      * <p>
      * This method efficiently updates the check-in status for multiple tickets using
      * separate lists for tickets to be checked in (true) and tickets to be unchecked
@@ -969,7 +969,7 @@ public class FlightDAOImpl implements FlightDAO {
     }
 
     /**
-     * Retrieves post-checkin luggage identifiers for multiple tickets.
+     * {@inheritDoc}]
      * <p>
      * This method queries the database to retrieve luggage identifiers assigned after
      * check-in for a list of tickets. These identifiers are used for luggage tracking

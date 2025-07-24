@@ -106,6 +106,41 @@ public interface TicketDAO {
                                     List<String> passengerSSNs, List<String> firstNames,
                                     List<String> lastNames, List<Date> birthDates) throws SQLException;
 
-
+    /**
+     * Generates a new unique ticket number by incrementing the maximum existing ticket number.
+     * <p>
+     * This method implements an atomic ticket number generation system that retrieves the
+     * highest ticket number currently in the database and generates a new unique number
+     * by applying the specified offset plus one additional increment. This ensures that
+     * generated ticket numbers are always unique and sequential.
+     * </p>
+     * <p>
+     * The generation process follows these steps:
+     * </p>
+     * <ol>
+     *   <li>Queries the database for the maximum existing ticket number</li>
+     *   <li>Applies the specified offset using the increment function</li>
+     *   <li>Adds one final increment to generate the new ticket number</li>
+     *   <li>Returns the formatted 13-digit ticket number with zero-padding</li>
+     * </ol>
+     * <p>
+     * The offset parameter allows for bulk ticket number generation scenarios where
+     * multiple consecutive ticket numbers need to be reserved. For single ticket
+     * generation, an offset of 0 should be used.
+     * </p>
+     * <p>
+     * The method uses database-level maximum value retrieval to ensure thread-safety
+     * and prevent duplicate ticket number generation in concurrent environments.
+     * Error handling includes comprehensive logging for operational monitoring.
+     * </p>
+     * <p>
+     * Generated ticket numbers follow a 13-digit format with leading zero padding
+     * to ensure consistent formatting and proper sorting in database operations
+     * and user interfaces.
+     * </p>
+     *
+     * @param offset the number of additional increments to apply before generating the final ticket number
+     * @return a new unique 13-digit ticket number, or empty string if generation fails
+     */
     String generateTicketNumber(int offset);
 }

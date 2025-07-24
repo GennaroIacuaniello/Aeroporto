@@ -285,19 +285,177 @@ public interface FlightDAO {
     void InsertAFlight(String flightId, String companyName, Timestamp departureTimestamp, Timestamp arrivalTimestamp,
                        int maxSeats, String otherCity, boolean flightType) throws SQLException;
 
+    /**
+     * Retrieves all currently booked seats for a specific flight, excluding cancelled bookings.
+     * <p>
+     * This method queries the database to find all seat assignments for tickets associated
+     * with a specific flight. It excludes bookings with 'CANCELLED' status to provide
+     * accurate seat availability information for booking and seat selection operations.
+     * </p>
+     * <p>
+     * The method handles seat number conversion from database storage (1-based) to
+     * application indexing (0-based) for consistency with the application's seat
+     * management system. Seats with value 0 or null in the database are not included
+     * in the results as they represent unassigned seats.
+     * </p>
+     * <p>
+     * An optional booking ID parameter allows excluding a specific booking from the
+     * results, which is useful during booking modifications where the current booking's
+     * seats should not be considered as occupied.
+     * </p>
+     *
+     * @param flightId the unique identifier of the flight to check seat availability for
+     * @param bookingId optional booking ID to exclude from results (can be null)
+     * @param bookedSeats list to be populated with booked seat numbers (0-based indexing)
+     */
     void getBookedSeats(String flightId, Integer bookingId, List<Integer> bookedSeats);
 
+    /**
+     * Initiates the check-in process for a flight by updating its status to 'ABOUT_TO_DEPART'.
+     * <p>
+     * This method updates a flight's status to indicate that check-in procedures have
+     * begun and the flight is preparing for departure. This status change typically
+     * triggers various operational processes including gate assignments, passenger
+     * notifications, and boarding preparations.
+     * </p>
+     * <p>
+     * The status change from 'PROGRAMMED' to 'ABOUT_TO_DEPART' is a critical operational
+     * transition that affects passenger check-in availability, seat assignments, and
+     * various airport management systems.
+     * </p>
+     *
+     * @param flightId the unique identifier of the flight to start check-in for
+     * @return the number of rows affected by the update operation (1 if successful, 0 if flight not found)
+     * @throws SQLException if a database access error occurs during the status update operation
+     */
     int startCheckin(String flightId) throws SQLException;
 
+    /**
+     * Searches for an available gate and assigns it to the specified flight.
+     * <p>
+     * This method implements automatic gate assignment by iterating through gates 1-20
+     * and finding the first available gate (not assigned to any non-cancelled flight).
+     * Once an available gate is found, it is immediately assigned to the specified flight.
+     * </p>
+     * <p>
+     * The method uses database transactions to ensure atomicity of the gate assignment
+     * process. It checks each gate's availability and assigns the first free gate,
+     * preventing race conditions in concurrent gate assignment operations.
+     * </p>
+     * <p>
+     * Gate availability is determined by checking if any flights are currently assigned
+     * to the gate with a status other than 'CANCELLED'. This ensures that cancelled
+     * flights do not block gate availability for operational flights.
+     * </p>
+     *
+     * @param idFlight the unique identifier of the flight to assign a gate to
+     * @return the assigned gate number (1-20) if successful, -1 if no gates are available or an error occurs
+     */
     int searchGate(String idFlight);
 
+    /**
+     * Assigns a specific gate to a flight.
+     * <p>
+     * This method updates the gate assignment for a specified flight, allowing manual
+     * gate assignment or reassignment operations. The method uses database transactions
+     * to ensure the assignment is completed atomically.
+     * </p>
+     * <p>
+     * Unlike {@link #searchGate(String)}, this method does not check gate availability
+     * and will assign the specified gate regardless of its current status. This allows
+     * for administrative override of automatic gate assignments when necessary.
+     * </p>
+     *
+     * @param idGate the gate number to assign to the flight
+     * @param idFlight the unique identifier of the flight to assign the gate to
+     */
     void setGate(int idGate, String idFlight);
 
+    /**
+     * Updates the status of a specific flight.
+     * <p>
+     * This method allows updating a flight's operational status to reflect current
+     * conditions such as delays, boarding, departure, arrival, or cancellation.
+     * The method uses PostgreSQL's enum casting to ensure proper status validation.
+     * </p>
+     * <p>
+     * Common flight status transitions include:
+     * </p>
+     * <ul>
+     *   <li>PROGRAMMED → ABOUT_TO_DEPART (check-in started)</li>
+     *   <li>ABOUT_TO_DEPART → DELAYED (departure delayed)</li>
+     *   <li>ABOUT_TO_DEPART → DEPARTED (flight has left)</li>
+     *   <li>Any status → CANCELLED (flight cancelled)</li>
+     * </ul>
+     * <p>
+     * The method uses database transactions to ensure status changes are applied
+     * atomically and consistently across the system.
+     * </p>
+     *
+     * @param status the new flight status to set (must be a valid FlightStatus enum value)
+     * @param idFlight the unique identifier of the flight to update
+     * @return the number of rows affected by the update (1 if successful, 0 if flight not found), -1 if an error occurs
+     */
     int setStatus (String status, String idFlight);
 
+    /**
+     * Adds additional delay to a flight's current delay value.
+     * <p>
+     * This method increases the flight's delay by the specified number of minutes,
+     * allowing for cumulative delay tracking. The delay is added to any existing
+     * delay value, providing accurate delay information for passengers and operations.
+     * </p>
+     * <p>
+     * Flight delays affect various system calculations including arrival and departure
+     * time displays, gate scheduling, and passenger notifications. The method uses
+     * database transactions to ensure delay updates are applied consistently.
+     * </p>
+     *
+     * @param delay the number of minutes to add to the current flight delay (must be positive)
+     * @param idFlight the unique identifier of the flight to add delay to
+     * @return the number of rows affected by the update (1 if successful, 0 if flight not found), -1 if an error occurs
+     */
     int addDelay(int delay, String idFlight);
 
+    /**
+     * Updates check-in status for multiple tickets in batch operations.
+     * <p>
+     * This method efficiently updates the check-in status for multiple tickets using
+     * separate lists for tickets to be checked in (true) and tickets to be unchecked
+     * (false). This batch approach reduces database round trips and ensures consistent
+     * check-in status updates.
+     * </p>
+     * <p>
+     * The method uses database transactions to ensure all check-in status changes
+     * are applied atomically. This is particularly important for group bookings
+     * where multiple passengers' check-in status needs to be updated simultaneously.
+     * </p>
+     *
+     * @param trueTickets list of ticket numbers to set check-in status to true
+     * @param falseTickets list of ticket numbers to set check-in status to false
+     */
     void setCheckins (ArrayList<String> trueTickets, ArrayList<String> falseTickets);
 
+    /**
+     * Retrieves post-checkin luggage identifiers for multiple tickets.
+     * <p>
+     * This method queries the database to retrieve luggage identifiers assigned after
+     * check-in for a list of tickets. These identifiers are used for luggage tracking
+     * during the baggage handling process after passengers have checked in.
+     * </p>
+     * <p>
+     * The method returns a nested list structure where each inner list contains all
+     * luggage identifiers associated with a specific ticket. This allows for proper
+     * correlation between tickets and their associated luggage items.
+     * </p>
+     * <p>
+     * Post-checkin luggage identifiers are typically assigned during the check-in
+     * process and are used for physical luggage tracking throughout the airport
+     * baggage handling system.
+     * </p>
+     *
+     * @param tickets list of ticket numbers to retrieve luggage identifiers for
+     * @return nested list where each inner list contains luggage identifiers for the corresponding ticket, null if an error occurs
+     */
     ArrayList<ArrayList<String>> getLuggagesCheckins (ArrayList<String> tickets);
 }

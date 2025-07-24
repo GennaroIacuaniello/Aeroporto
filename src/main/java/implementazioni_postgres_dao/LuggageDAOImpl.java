@@ -329,7 +329,7 @@ public class LuggageDAOImpl implements LuggageDAO {
     }
 
     /**
-     * Updates the status of a luggage item to indicate it has been lost.
+     * {@inheritDoc}
      * <p>
      * This method performs a luggage status update operation to mark luggage as lost
      * using the post-checkin luggage identifier. It uses PostgreSQL's enum casting

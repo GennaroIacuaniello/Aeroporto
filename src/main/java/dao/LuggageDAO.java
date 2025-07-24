@@ -181,5 +181,40 @@ public interface LuggageDAO {
      */
     void getAllLuggagesOfBooking(Integer bookingId, List<String> ticketNumbers, List<Integer> luggageIds, List<String> luggageTypes, List<String> luggageStatus, List<String> luggageIdsAfterCheckin) throws SQLException;
 
+    /**
+     * Updates the status of a luggage item to indicate it has been lost.
+     * <p>
+     * This method performs a luggage status update operation to mark luggage as lost
+     * using the post-checkin luggage identifier. It uses PostgreSQL's enum casting
+     * to ensure proper luggage status validation and data integrity.
+     * </p>
+     * <p>
+     * The method updates luggage status based on the post-checkin identifier
+     * (id_luggage_after_check_in) rather than the original luggage ID, as this
+     * identifier is used for physical luggage tracking after passengers have
+     * checked in and luggage has entered the baggage handling system.
+     * </p>
+     * <p>
+     * Common luggage status transitions handled by this method include:
+     * </p>
+     * <ul>
+     *   <li>LOADED → LOST (luggage loaded but went missing during handling)</li>
+     *   <li>WITHDRAWABLE → LOST (luggage ready for pickup but reported missing)</li>
+     *   <li>Any status → LOST (administrative override for lost luggage reporting)</li>
+     * </ul>
+     * <p>
+     * The method includes comprehensive error handling with logging to track
+     * luggage status update operations and any failures that may occur during
+     * the update process. This is crucial for luggage tracking and audit purposes.
+     * </p>
+     * <p>
+     * This operation is typically triggered by customer reports of missing luggage,
+     * baggage handling system notifications, or administrative actions when luggage
+     * cannot be located or delivered to passengers.
+     * </p>
+     *
+     * @param ticket the post-checkin luggage identifier used for physical tracking
+     * @param luggageStatus the new luggage status to set (typically "LOST" but can be other valid status values)
+     */
     void lostLuggage(String ticket, String luggageStatus);
 }
