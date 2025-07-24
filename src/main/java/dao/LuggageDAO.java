@@ -23,27 +23,9 @@ import java.util.List;
  *   <li>Integration with flight, booking, ticket, and passenger data systems</li>
  * </ul>
  * <p>
- * The interface supports complex queries that join multiple database tables to provide
- * complete luggage information including associated flight details, passenger information,
- * booking data, and luggage status tracking. All retrieval methods populate multiple lists
- * with related data to provide comprehensive luggage information for display and processing.
- * </p>
- * <p>
- * Luggage data includes detailed information about luggage types (carry-on or checked),
- * current status throughout the handling lifecycle, associated tickets and passengers,
- * and identification codes for tracking purposes. The interface handles luggage in various
- * states from initial booking through to final delivery or loss reporting.
- * </p>
- * <p>
  * The interface follows the DAO pattern to provide a clean separation between business logic
  * and data persistence layer, enabling different implementations for various database systems
  * while maintaining consistent functionality across the application.
- * </p>
- * <p>
- * Implementation classes should handle all database-specific operations, connection management,
- * error handling, and ensure proper transaction handling for data consistency and integrity.
- * Complex operations involving multiple entities should be handled atomically to maintain
- * system consistency.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -187,30 +169,6 @@ public interface LuggageDAO {
      * This method performs a luggage status update operation to mark luggage as lost
      * using the post-checkin luggage identifier. It uses PostgreSQL's enum casting
      * to ensure proper luggage status validation and data integrity.
-     * </p>
-     * <p>
-     * The method updates luggage status based on the post-checkin identifier
-     * (id_luggage_after_check_in) rather than the original luggage ID, as this
-     * identifier is used for physical luggage tracking after passengers have
-     * checked in and luggage has entered the baggage handling system.
-     * </p>
-     * <p>
-     * Common luggage status transitions handled by this method include:
-     * </p>
-     * <ul>
-     *   <li>LOADED → LOST (luggage loaded but went missing during handling)</li>
-     *   <li>WITHDRAWABLE → LOST (luggage ready for pickup but reported missing)</li>
-     *   <li>Any status → LOST (administrative override for lost luggage reporting)</li>
-     * </ul>
-     * <p>
-     * The method includes comprehensive error handling with logging to track
-     * luggage status update operations and any failures that may occur during
-     * the update process. This is crucial for luggage tracking and audit purposes.
-     * </p>
-     * <p>
-     * This operation is typically triggered by customer reports of missing luggage,
-     * baggage handling system notifications, or administrative actions when luggage
-     * cannot be located or delivered to passengers.
      * </p>
      *
      * @param ticket the post-checkin luggage identifier used for physical tracking

@@ -29,21 +29,9 @@ import java.util.List;
  *   <li>Comprehensive booking data retrieval for display and reporting</li>
  * </ul>
  * <p>
- * The interface supports complex search operations that allow customers to find their bookings
- * based on flight details, passenger information, travel dates, and other criteria. All search
- * methods populate multiple lists with related data to provide complete booking information
- * for display and processing purposes.
- * </p>
- * <p>
  * The interface follows the DAO pattern to provide a clean separation between business logic
  * and data persistence layer, enabling different implementations for various database systems
  * while maintaining consistent functionality across the application.
- * </p>
- * <p>
- * Implementation classes should handle all database-specific operations, connection management,
- * error handling, and ensure proper transaction handling for data consistency and integrity.
- * Complex operations involving multiple entities (bookings, tickets, passengers, luggage) should
- * be handled atomically to maintain system consistency.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -76,11 +64,6 @@ public interface BookingDAO {
      *   <li>Generates tickets with seat assignments for each passenger</li>
      *   <li>Creates luggage records associated with specific tickets</li>
      * </ul>
-     * <p>
-     * All list parameters must have consistent indexing where related data at the
-     * same index refers to the same passenger or ticket. The operation uses database
-     * transactions to ensure atomicity and data integrity.
-     * </p>
      *
      * @param idCustomer the unique identifier of the customer making the booking
      * @param idFlight the unique identifier of the flight being booked

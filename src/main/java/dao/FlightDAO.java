@@ -27,27 +27,9 @@ import java.util.List;
  *   <li>Flight creation and insertion operations for administrative purposes</li>
  * </ul>
  * <p>
- * The interface supports complex search operations that allow customers and administrators
- * to find flights based on departure/arrival cities, travel dates, times, and other criteria.
- * All retrieval methods populate multiple lists with related data to provide complete flight
- * information for display and processing purposes.
- * </p>
- * <p>
- * Flight data includes detailed information about schedules, seating capacity, delays,
- * gate assignments, and associated business entities such as bookings and passengers.
- * The interface handles both arriving flights (flight_type = false) and departing flights
- * (flight_type = true) with specialized methods for each type.
- * </p>
- * <p>
  * The interface follows the DAO pattern to provide a clean separation between business logic
  * and data persistence layer, enabling different implementations for various database systems
  * while maintaining consistent functionality across the application.
- * </p>
- * <p>
- * Implementation classes should handle all database-specific operations, connection management,
- * error handling, and ensure proper transaction handling for data consistency and integrity.
- * Complex operations involving multiple entities should be handled atomically to maintain
- * system consistency.
  * </p>
  *
  * @author Aeroporto Di Napoli

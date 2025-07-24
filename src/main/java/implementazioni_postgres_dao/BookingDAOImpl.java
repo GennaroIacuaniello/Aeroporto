@@ -36,26 +36,6 @@ import java.util.logging.Logger;
  * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
  * statements.
  * </p>
- * <p>
- * The class handles complex multi-table operations atomically using database transactions:
- * </p>
- * <ul>
- *   <li>Booking creation involves insertions into Booking, Passenger, Ticket, and Luggage tables</li>
- *   <li>Booking modifications use temporary tickets to maintain data consistency during updates</li>
- *   <li>Search operations join multiple tables to provide comprehensive booking information</li>
- *   <li>All operations maintain referential integrity through proper transaction handling</li>
- * </ul>
- * <p>
- * The implementation supports flexible search capabilities including flight-based filtering
- * (departure/arrival cities, dates, times) and passenger-based filtering (names, SSN, ticket numbers).
- * City filtering includes special handling for "Napoli" as the airport's base location.
- * </p>
- * <p>
- * All methods follow the contract defined by the {@link BookingDAO} interface and maintain
- * data consistency through proper transaction handling, error logging, and validation mechanisms.
- * The class uses soft deletion for booking cancellation to preserve audit trails and maintain
- * referential integrity.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -89,17 +69,6 @@ public class BookingDAOImpl implements BookingDAO {
      *   <li>Creates tickets with seat assignments for each passenger</li>
      *   <li>Creates luggage records associated with specific tickets</li>
      * </ol>
-     * <p>
-     * The method uses database transactions to ensure atomicity - if any step fails,
-     * all changes are rolled back to maintain data consistency. Seat values of -1
-     * indicate no seat assignment, while positive values are converted to 1-based
-     * database storage format.
-     * </p>
-     * <p>
-     * Passenger information is handled intelligently - if a passenger with the given
-     * SSN already exists, their information is updated; otherwise, a new passenger
-     * record is created. This allows for flexible passenger data management.
-     * </p>
      *
      * @param idCustomer the unique identifier of the customer making the booking
      * @param idFlight the unique identifier of the flight being booked
@@ -108,7 +77,7 @@ public class BookingDAOImpl implements BookingDAO {
      * @param seats list of seat assignments for each ticket (can contain -1 for no assignment)
      * @param firstNames list of passenger first names (can contain null values)
      * @param lastNames list of passenger last names (can contain null values)
-     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param birthDates list of passenger birthdates (can contain null values)
      * @param passengerSSNs list of passenger SSN identifiers (required, cannot be null)
      * @param luggagesTypes list of luggage types for each luggage item
      * @param ticketForLuggages list of ticket numbers associated with each luggage item
@@ -285,7 +254,7 @@ public class BookingDAOImpl implements BookingDAO {
      * <p>
      * This private helper method manages passenger data by either creating new passenger
      * records or updating existing ones based on SSN. It handles optional passenger
-     * information fields (first name, last name, birth date) by including them in the
+     * information fields (first name, last name, birthdate) by including them in the
      * SQL query only when non-null values are provided.
      * </p>
      * <p>
@@ -300,7 +269,7 @@ public class BookingDAOImpl implements BookingDAO {
      * @param connection the database connection to use for the operation
      * @param firstNames list of passenger first names (can contain null values)
      * @param lastNames list of passenger last names (can contain null values)
-     * @param birthDates list of passenger birth dates (can contain null values)
+     * @param birthDates list of passenger birthdates (can contain null values)
      * @param passengerSSNs list of passenger SSN identifiers (required)
      * @throws SQLException if a database access error occurs during passenger insertion/update
      */

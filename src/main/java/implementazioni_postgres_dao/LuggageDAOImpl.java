@@ -34,32 +34,6 @@ import java.util.logging.Logger;
  * statements.
  * </p>
  * <p>
- * The class handles complex multi-table operations that join multiple related entities:
- * </p>
- * <ul>
- *   <li>FLIGHT table for flight information and scheduling details</li>
- *   <li>BOOKING table for reservation data and customer associations</li>
- *   <li>TICKET table for individual passenger tickets and seat assignments</li>
- *   <li>PASSENGER table for passenger personal information</li>
- *   <li>LUGGAGE table for luggage specifications, status, and tracking data</li>
- *   <li>CUSTOMER table for customer account information and contact details</li>
- * </ul>
- * <p>
- * Luggage data handling includes special processing for various data types:
- * </p>
- * <ul>
- *   <li>Seat assignments: converted from 1-based database storage to 0-based application indexing</li>
- *   <li>Timestamp processing: proper conversion from database timestamps to Java Date/Time objects</li>
- *   <li>Nullable luggage IDs: handled consistently with null values for unassigned luggage</li>
- *   <li>Luggage status tracking: supports all luggage lifecycle states (BOOKED, LOADED, WITHDRAWABLE, LOST)</li>
- * </ul>
- * <p>
- * The implementation supports various luggage operational scenarios including customer service
- * inquiries, lost luggage recovery operations, booking management, and administrative reporting.
- * All methods maintain data integrity through proper transaction handling and provide
- * comprehensive error logging for operational monitoring.
- * </p>
- * <p>
  * All methods follow the contract defined by the {@link LuggageDAO} interface and maintain
  * data consistency through proper error handling, connection management, and resource cleanup.
  * The class uses appropriate SQL data types including PostgreSQL enums for luggage status
@@ -335,20 +309,6 @@ public class LuggageDAOImpl implements LuggageDAO {
      * using the post-checkin luggage identifier. It uses PostgreSQL's enum casting
      * to ensure proper luggage status validation and data integrity.
      * </p>
-     * <p>
-     * The method updates luggage status based on the post-checkin identifier
-     * (id_luggage_after_check_in) rather than the original luggage ID, as this
-     * identifier is used for physical luggage tracking after passengers have
-     * checked in and luggage has entered the baggage handling system.
-     * </p>
-     * <p>
-     * Common luggage status transitions handled by this method include:
-     * </p>
-     * <ul>
-     *   <li>LOADED → LOST (luggage loaded but went missing during handling)</li>
-     *   <li>WITHDRAWABLE → LOST (luggage ready for pickup but reported missing)</li>
-     *   <li>Any status → LOST (administrative override for lost luggage reporting)</li>
-     * </ul>
      * <p>
      * The method includes comprehensive error handling with logging to track
      * luggage status update operations and any failures that may occur during

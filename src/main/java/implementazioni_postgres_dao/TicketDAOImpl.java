@@ -34,22 +34,6 @@ import java.util.logging.Logger;
  * statements.
  * </p>
  * <p>
- * The class handles complex data processing and conversion operations:
- * </p>
- * <ul>
- *   <li>Seat number conversion from 1-based database storage to 0-based application indexing</li>
- *   <li>Ticket number generation using BigInteger for large number handling</li>
- *   <li>Proper null handling for optional seat assignments</li>
- *   <li>Passenger data association with ticket information</li>
- *   <li>Check-in status management and reporting</li>
- * </ul>
- * <p>
- * The ticket numbering system uses a 13-digit format with zero-padding to ensure consistent
- * ticket identification across the system. The generation process is atomic and thread-safe
- * through database-level operations that retrieve the maximum existing ticket number and
- * increment it appropriately.
- * </p>
- * <p>
  * All methods follow the contract defined by the {@link TicketDAO} interface and maintain
  * data consistency through proper transaction handling, error logging, and validation mechanisms.
  * The class provides essential functionality for booking management, check-in operations,
@@ -179,16 +163,6 @@ public class TicketDAOImpl implements TicketDAO {
      * multiple consecutive ticket numbers need to be reserved. For single ticket
      * generation, an offset of 0 should be used.
      * </p>
-     * <p>
-     * The method uses database-level maximum value retrieval to ensure thread-safety
-     * and prevent duplicate ticket number generation in concurrent environments.
-     * Error handling includes comprehensive logging for operational monitoring.
-     * </p>
-     * <p>
-     * Generated ticket numbers follow a 13-digit format with leading zero padding
-     * to ensure consistent formatting and proper sorting in database operations
-     * and user interfaces.
-     * </p>
      *
      * @param offset the number of additional increments to apply before generating the final ticket number
      * @return a new unique 13-digit ticket number, or empty string if generation fails
@@ -238,16 +212,6 @@ public class TicketDAOImpl implements TicketDAO {
      *   <li>Providing proper error handling for invalid input formats</li>
      *   <li>Ensuring sequential ticket number generation</li>
      * </ul>
-     * <p>
-     * The 13-digit format provides sufficient capacity for ticket numbering while
-     * maintaining consistent string length for database storage and display purposes.
-     * The method is used internally by the ticket generation system and can be used
-     * for manual ticket number manipulation when needed.
-     * </p>
-     * <p>
-     * Input validation ensures that only valid numeric strings are processed,
-     * with appropriate error messages for debugging and system monitoring.
-     * </p>
      *
      * @param ticketNumber the current ticket number as a string to be incremented
      * @return the incremented ticket number formatted as a 13-digit string with leading zeros

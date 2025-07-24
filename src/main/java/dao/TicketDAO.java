@@ -22,26 +22,9 @@ import java.util.List;
  *   <li>Integration with booking, passenger, and flight data systems</li>
  * </ul>
  * <p>
- * The interface supports complex queries that provide complete ticket information including
- * seat assignments, check-in status, passenger details, and booking associations. All retrieval
- * methods populate multiple lists with related data to provide comprehensive ticket information
- * for display and processing purposes.
- * </p>
- * <p>
- * Ticket data includes detailed information about ticket numbers, seat assignments, check-in
- * status, and associated passenger information. The interface handles tickets throughout their
- * lifecycle from initial booking through check-in and boarding processes.
- * </p>
- * <p>
  * The interface follows the DAO pattern to provide a clean separation between business logic
  * and data persistence layer, enabling different implementations for various database systems
  * while maintaining consistent functionality across the application.
- * </p>
- * <p>
- * Implementation classes should handle all database-specific operations, connection management,
- * error handling, and ensure proper transaction handling for data consistency and integrity.
- * Complex operations involving multiple entities should be handled atomically to maintain
- * system consistency.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -127,16 +110,6 @@ public interface TicketDAO {
      * The offset parameter allows for bulk ticket number generation scenarios where
      * multiple consecutive ticket numbers need to be reserved. For single ticket
      * generation, an offset of 0 should be used.
-     * </p>
-     * <p>
-     * The method uses database-level maximum value retrieval to ensure thread-safety
-     * and prevent duplicate ticket number generation in concurrent environments.
-     * Error handling includes comprehensive logging for operational monitoring.
-     * </p>
-     * <p>
-     * Generated ticket numbers follow a 13-digit format with leading zero padding
-     * to ensure consistent formatting and proper sorting in database operations
-     * and user interfaces.
      * </p>
      *
      * @param offset the number of additional increments to apply before generating the final ticket number

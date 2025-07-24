@@ -32,32 +32,6 @@ import java.util.logging.Logger;
  *   <li>Operational flight management including gate assignments, status updates, and delays</li>
  *   <li>Check-in management and seat assignment operations</li>
  * </ul>
- * <p>
- * All database operations use prepared statements to prevent SQL injection attacks and ensure
- * data security. The class implements proper connection management using the singleton
- * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
- * statements.
- * </p>
- * <p>
- * The class handles complex multi-table operations and provides specialized functionality for:
- * </p>
- * <ul>
- *   <li>Real-time flight information with delay calculations and current status</li>
- *   <li>Dynamic search queries with special handling for "Napoli" as the airport's base location</li>
- *   <li>Comprehensive flight data aggregation joining multiple related tables</li>
- *   <li>Operational management including gate assignments and flight status transitions</li>
- *   <li>Seat management with conversion between application (0-based) and database (1-based) indexing</li>
- * </ul>
- * <p>
- * The implementation supports flexible search capabilities including city-based filtering
- * with special logic for the airport's base city, date and time range filtering with support
- * for overnight time spans, and comprehensive result ordering for optimal user experience.
- * </p>
- * <p>
- * All methods follow the contract defined by the {@link FlightDAO} interface and maintain
- * data consistency through proper transaction handling, error logging, and validation mechanisms.
- * The class uses appropriate SQL data types and handles null values consistently across all operations.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
