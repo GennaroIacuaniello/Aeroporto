@@ -46,6 +46,7 @@ public class GateController {
      * assigned, it creates the {@link GateChooser} interface to allow manual
      * gate selection by the administrator.
      * </p>
+     * <p>IL ONE PIECE ESISTE!</p>
      *
      * @param callingButton the UI button that triggered the gate assignment workflow,
      *                     used for displaying gate information and user feedback
