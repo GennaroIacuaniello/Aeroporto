@@ -165,7 +165,6 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
      * The title panel configuration includes:
      * </p>
      * <ul>
-     *   <li><strong>Branding Display:</strong> "AEROPORTO DI NAPOLI" title for clear system identification and customer awareness</li>
      *   <li><strong>Layout Positioning:</strong> Horizontal span across interface top with proper alignment and spacing</li>
      *   <li><strong>Visual Integration:</strong> Transparent background for seamless interface integration and professional appearance</li>
      *   <li><strong>Spacing Configuration:</strong> Appropriate margins and insets for visual balance and optimal presentation</li>
