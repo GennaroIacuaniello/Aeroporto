@@ -2323,9 +2323,10 @@ CREATE OR REPLACE FUNCTION fun_only_aToDep_flight_can_become_dep()
 RETURNS TRIGGER
 AS $$
 BEGIN
-	--non servono controlli sul flight_type, basta controllare OLD.flight_status, 
-	--dato che solo un volo departing può diventare ABOUT_TO_DEPART
-	IF NEW.flight_status = 'DEPARTED' THEN
+
+	--serve un controllo su flight_type, altrimenti blocco per errore i voli arriving,
+	--che non potranno mai diventare departed
+	IF OLD.flight_type = true AND NEW.flight_status = 'DEPARTED' THEN
 	
 		IF OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
 
@@ -2525,7 +2526,7 @@ BEGIN
 		--questo if serve perché solo un volo PROGRAMMED può essere impostato ad ABOUT_TO_DEPART
 		IF input_old_flight_status <> 'PROGRAMMED' THEN
 
-			RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', input_old_id_flight;
 
 		END IF;
 
@@ -2619,7 +2620,7 @@ BEGIN
 		--questo if serve perché solo un volo PROGRAMMED o ABOUT_TO_DEPART può essere impostato a DEPARTED
 		IF input_old_flight_status <> 'PROGRAMMED' AND input_old_flight_status <> 'ABOUT_TO_DEPART' THEN
 
-			RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', OLD.id_flight;
+			RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', input_old_id_flight;
 
 		END IF;
 
