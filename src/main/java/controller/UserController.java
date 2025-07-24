@@ -61,11 +61,6 @@ public class UserController {
 
     /**
      * Retrieves the database identifier of the currently logged-in user.
-     * <p>
-     * This method returns the unique database ID for the current user session,
-     * which is used for database operations, user identification, and correlation
-     * with other data records throughout the system.
-     * </p>
      *
      * @return the database identifier for the current user, or null if no user is logged in
      */
@@ -75,12 +70,6 @@ public class UserController {
 
     /**
      * Retrieves the username of the currently logged-in user.
-     * <p>
-     * This convenience method provides direct access to the username of the
-     * current user without requiring explicit navigation through the user object.
-     * The username is used for display purposes, user identification, and
-     * various user interface operations.
-     * </p>
      *
      * @return the username of the currently logged-in user
      */
@@ -90,12 +79,6 @@ public class UserController {
 
     /**
      * Retrieves the email address of the currently logged-in user.
-     * <p>
-     * This convenience method provides direct access to the email address
-     * of the current user without requiring explicit navigation through the
-     * user object. The email is used for communication, user identification,
-     * and determining user type (Admin vs Customer).
-     * </p>
      *
      * @return the email address of the currently logged-in user
      */
@@ -105,16 +88,6 @@ public class UserController {
 
     /**
      * Retrieves the hashed password of the currently logged-in user.
-     * <p>
-     * This method provides access to the user's hashed password for authentication
-     * and security operations. The password is stored in hashed format for security
-     * purposes and should never be used to display or transmit plaintext passwords.
-     * </p>
-     * <p>
-     * The hashed password is used for authentication verification, password
-     * update operations, and maintaining session security throughout the
-     * user's interaction with the system.
-     * </p>
      *
      * @return the hashed password of the currently logged-in user
      */
@@ -124,11 +97,6 @@ public class UserController {
 
     /**
      * Establishes a user session with the provided user object and database ID.
-     * <p>
-     * This method sets both the user object and database ID simultaneously,
-     * ensuring that user session information is properly synchronized and
-     * available for all user-related operations throughout the application.
-     * </p>
      *
      * @param loggedUser the {@link User} object (Admin or Customer) to set as the current session
      * @param id the database identifier corresponding to the user
@@ -140,12 +108,6 @@ public class UserController {
 
     /**
      * Retrieves the currently logged-in user object.
-     * <p>
-     * This method returns the {@link User} object representing the current user
-     * session. The actual object type will be either {@link Admin} or {@link model.Customer}
-     * depending on the user type, enabling polymorphic operations while maintaining
-     * type-specific functionality.
-     * </p>
      *
      * @return the current {@link User} object, or null if no user is logged in
      */
@@ -171,16 +133,6 @@ public class UserController {
      *   <li>Requires proper domain structure with at least one dot followed by letters</li>
      *   <li>Prevents consecutive special characters and ensures proper placement</li>
      * </ul>
-     * <p>
-     * The validation pattern: {@code [a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.|_][a-zA-Z0-9]+)*[.][a-zA-Z]+}
-     * ensures that emails follow a practical format while preventing common malformed
-     * email patterns that could cause system issues.
-     * </p>
-     * <p>
-     * Note: In a production environment, this validation would typically be enhanced
-     * with additional verification mechanisms such as email confirmation workflows
-     * to ensure email deliverability and user identity verification.
-     * </p>
      *
      * @param mail the email address string to validate
      * @return true if the email format is invalid or exceeds length limits, false if valid
@@ -213,16 +165,6 @@ public class UserController {
      *   <li>Middle characters can include letters, numbers, dots, hyphens, and underscores</li>
      *   <li>Cannot consist entirely of special characters</li>
      * </ul>
-     * <p>
-     * The validation pattern: {@code [a-zA-Z]+(\\w|\\.|-)*[a-zA-Z0-9]} ensures that
-     * usernames are readable, professional, and compatible with system requirements
-     * while preventing potentially problematic character combinations.
-     * </p>
-     * <p>
-     * This validation helps maintain consistent username standards across the system
-     * and prevents issues with database storage, user interface display, and system
-     * integration that could arise from improperly formatted usernames.
-     * </p>
      *
      * @param username the username string to validate
      * @return true if the username format is invalid or doesn't meet length requirements, false if valid
@@ -254,22 +196,6 @@ public class UserController {
      *   <li>Database insertion through appropriate DAO implementations</li>
      *   <li>Comprehensive error handling and user feedback</li>
      * </ul>
-     * <p>
-     * User type determination logic:
-     * </p>
-     * <ul>
-     *   <li><strong>Administrator accounts:</strong> Created for emails containing "@aeroportodinapoli.it" or "@adn.it"</li>
-     *   <li><strong>Customer accounts:</strong> Created for all other valid email domains</li>
-     * </ul>
-     * <p>
-     * The method provides comprehensive user feedback through {@link FloatingMessage} components:
-     * </p>
-     * <ul>
-     *   <li><strong>Warning messages:</strong> For validation failures and existing user conflicts</li>
-     *   <li><strong>Success messages:</strong> For successful registration with login instructions</li>
-     *   <li><strong>Error messages:</strong> For database connectivity or system issues</li>
-     * </ul>
-     * <p>
      * Error handling includes specific exception types to provide appropriate user feedback:
      * </p>
      * <ul>
@@ -331,23 +257,6 @@ public class UserController {
      *   <li>Database deletion operation with the current user's ID</li>
      *   <li>Error handling and user feedback for operation results</li>
      * </ul>
-     * <p>
-     * Account deletion is handled through type-specific DAO implementations:
-     * </p>
-     * <ul>
-     *   <li><strong>Administrator accounts:</strong> Deleted through {@link AdminDAOImpl#deleteAdmin(Integer)}</li>
-     *   <li><strong>Customer accounts:</strong> Deleted through {@link CustomerDAOImpl#deleteCustomer(Integer)}</li>
-     * </ul>
-     * <p>
-     * The method provides error feedback through {@link FloatingMessage} components
-     * when database operations fail, ensuring that users are informed of any issues
-     * that prevent successful account deletion.
-     * </p>
-     * <p>
-     * Note: This operation is irreversible and will permanently remove all user data
-     * including bookings, preferences, and historical information. In a production
-     * environment, this might be enhanced with confirmation dialogs and data archiving.
-     * </p>
      *
      * @param button the UI button reference for displaying error messages if deletion fails
      * @return true if the account was successfully deleted, false if database errors occurred
