@@ -12,17 +12,6 @@ import java.util.List;
  * essential flight information such as flight identification, company details, scheduling,
  * seating capacity, and associated bookings and tickets.
  * </p>
- * <p>
- * The flight ID is stored as a final field to ensure immutability after object creation,
- * while other flight details can be modified through their respective setter methods.
- * The class maintains collections of bookings and tickets associated with the flight,
- * providing comprehensive flight management capabilities.
- * </p>
- * <p>
- * Flight status is managed through the {@link FlightStatus} enumeration, with the default
- * status being {@code PROGRAMMED}. The class also supports gate assignment for better
- * airport operations management.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -40,8 +29,7 @@ public class Flight {
      * The unique identifier for this flight.
      * <p>
      * This field represents the flight number or code that uniquely identifies
-     * the flight within the airport management system. It is declared as final
-     * to ensure immutability after object creation.
+     * the flight.
      * </p>
      */
     private final String id;
@@ -49,8 +37,7 @@ public class Flight {
     /**
      * The name of the airline company operating this flight.
      * <p>
-     * This field stores the airline company name and can be modified after
-     * flight creation through the {@link #setCompanyName(String)} method.
+     * This field stores the airline company name.
      * </p>
      */
     private String companyName;
@@ -58,8 +45,7 @@ public class Flight {
     /**
      * The date when this flight is scheduled to operate.
      * <p>
-     * This field represents the flight date and can be modified through
-     * the {@link #setDate(Date)} method for rescheduling purposes.
+     * This field represents the flight date.
      * </p>
      */
     private Date date;
@@ -67,8 +53,7 @@ public class Flight {
     /**
      * The scheduled departure time for this flight.
      * <p>
-     * This field stores the time when the flight is scheduled to depart
-     * and can be updated through the {@link #setDepartureTime(Time)} method.
+     * This field stores the time when the flight is scheduled to depart.
      * </p>
      */
     private Time departureTime;
@@ -76,8 +61,7 @@ public class Flight {
     /**
      * The scheduled arrival time for this flight.
      * <p>
-     * This field stores the time when the flight is scheduled to arrive
-     * at its destination and can be updated through the {@link #setArrivalTime(Time)} method.
+     * This field stores the time when the flight is scheduled to arrive.
      * </p>
      */
     private Time arrivalTime;
@@ -97,9 +81,8 @@ public class Flight {
     /**
      * The maximum number of seats available on this flight.
      * <p>
-     * This field represents the total seating capacity of the aircraft
-     * assigned to this flight. It can be modified through the
-     * {@link #setMaxSeats(int)} method.
+     * This field represents the total seating capacity of the airplane
+     * assigned to this flight.
      * </p>
      */
     private int maxSeats;
@@ -118,8 +101,7 @@ public class Flight {
      * The list of bookings associated with this flight.
      * <p>
      * This field stores all booking records for passengers who have reserved
-     * seats on this flight. The collection is implemented as an {@link ArrayList}
-     * for efficient access and modification operations.
+     * seats on this flight.
      * </p>
      *
      * @see Booking
@@ -131,7 +113,6 @@ public class Flight {
      * <p>
      * This field stores all ticket records for passengers traveling on this flight.
      * Each ticket corresponds to a specific passenger and seat assignment.
-     * The collection is implemented as an {@link ArrayList} for efficient operations.
      * </p>
      *
      * @see Ticket
@@ -243,8 +224,7 @@ public class Flight {
     /**
      * Constructs a new Flight with gate assignment.
      * <p>
-     * Creates a flight with detailed information including gate assignment
-     * for better airport operations management.
+     * Creates a flight with detailed information including gate assignment.
      * </p>
      *
      * @param parId the unique identifier for the flight. Must not be null or empty.
@@ -317,8 +297,7 @@ public class Flight {
      * Constructs a new Flight with complete information including gate assignment.
      * <p>
      * Creates a flight with all available details including existing bookings,
-     * tickets, and gate assignment. This is the most comprehensive constructor
-     * for creating fully populated flight objects.
+     * tickets, and gate assignment. This is the most comprehensive constructor.
      * </p>
      *
      * @param parId the unique identifier for the flight. Must not be null or empty.
@@ -371,8 +350,7 @@ public class Flight {
     /**
      * Gets the airline company name operating this flight.
      * <p>
-     * Returns the name of the airline company responsible for operating
-     * this flight.
+     * Returns the name of the airline company of the flight.
      * </p>
      *
      * @return the company name, never null
@@ -384,8 +362,7 @@ public class Flight {
     /**
      * Sets the airline company name for this flight.
      * <p>
-     * Updates the airline company name. This method allows for company
-     * changes due to operational requirements or airline partnerships.
+     * Updates the airline company name.
      * </p>
      *
      * @param companyName the new company name. Should not be null or empty.
@@ -397,7 +374,7 @@ public class Flight {
     /**
      * Gets the scheduled date of this flight.
      * <p>
-     * Returns the date when this flight is scheduled to operate.
+     * Returns the date when this flight is scheduled to depart.
      * </p>
      *
      * @return the flight date, never null
@@ -409,8 +386,7 @@ public class Flight {
     /**
      * Sets the scheduled date for this flight.
      * <p>
-     * Updates the flight date. This method is useful for rescheduling
-     * flights due to operational requirements or weather conditions.
+     * Updates the flight date.
      * </p>
      *
      * @param date the new flight date. Must not be null.
@@ -432,19 +408,6 @@ public class Flight {
     }
 
     /**
-     * Sets the scheduled departure time for this flight.
-     * <p>
-     * Updates the departure time. This method allows for schedule
-     * adjustments due to operational requirements or delays.
-     * </p>
-     *
-     * @param departureTime the new departure time. Must not be null.
-     */
-    public void setDepartureTime(Time departureTime) {
-        this.departureTime = departureTime;
-    }
-
-    /**
      * Gets the scheduled arrival time of this flight.
      * <p>
      * Returns the time when this flight is scheduled to arrive at
@@ -455,19 +418,6 @@ public class Flight {
      */
     public Time getArrivalTime() {
         return arrivalTime;
-    }
-
-    /**
-     * Sets the scheduled arrival time for this flight.
-     * <p>
-     * Updates the arrival time. This method allows for schedule
-     * adjustments due to operational requirements or delays.
-     * </p>
-     *
-     * @param arrivalTime the new arrival time. Must not be null.
-     */
-    public void setArrivalTime(Time arrivalTime) {
-        this.arrivalTime = arrivalTime;
     }
 
     /**
@@ -501,7 +451,7 @@ public class Flight {
     /**
      * Gets the maximum number of seats available on this flight.
      * <p>
-     * Returns the total seating capacity of the aircraft assigned
+     * Returns the total seating capacity of the airplane assigned
      * to this flight.
      * </p>
      *
@@ -514,8 +464,7 @@ public class Flight {
     /**
      * Sets the maximum number of seats for this flight.
      * <p>
-     * Updates the maximum seating capacity. This method may be used
-     * when aircraft are substituted or seat configurations change.
+     * Updates the maximum seating capacity.
      * </p>
      *
      * @param maxSeats the new maximum number of seats. Must be positive.
@@ -570,8 +519,7 @@ public class Flight {
      * Sets the list of bookings for this flight.
      * <p>
      * Updates the complete list of bookings associated with this flight.
-     * This method is useful for bulk updates or when loading flight
-     * data from storage.
+     * This method is useful when loading flight data from storage.
      * </p>
      *
      * @param bookings the new list of bookings. Must not be null but can be empty.
@@ -582,7 +530,7 @@ public class Flight {
     }
 
     /**
-     * Gets the list of tickets issued for this flight.
+     * Gets the list of tickets sold for this flight.
      * <p>
      * Returns all ticket records for passengers traveling on this flight.
      * Each ticket corresponds to a specific passenger and seat assignment.
@@ -599,8 +547,7 @@ public class Flight {
      * Sets the list of tickets for this flight.
      * <p>
      * Updates the complete list of tickets associated with this flight.
-     * This method is useful for bulk updates or when loading flight
-     * data from storage.
+     * This method is useful when loading flight data from storage.
      * </p>
      *
      * @param tickets the new list of tickets. Must not be null but can be empty.
@@ -636,26 +583,6 @@ public class Flight {
      */
     public void setGate(Gate gate) {
         this.gate = gate;
-    }
-
-    /**
-     * Gets the localized month name for this flight's date.
-     * <p>
-     * Returns the Italian name of the month when this flight is scheduled.
-     * This method is useful for display purposes in the Italian locale.
-     * </p>
-     * <p>
-     * The returned month names are: Gennaio, Febbraio, Marzo, Aprile, Maggio,
-     * Giugno, Luglio, Agosto, Settembre, Ottobre, Novembre, Dicembre.
-     * </p>
-     *
-     * @return the Italian name of the month for this flight's date
-     */
-    public String getMonthName(){
-
-        String[] monthNames = {"Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"};
-
-        return monthNames[this.getDate().getMonth()];
     }
 
 }

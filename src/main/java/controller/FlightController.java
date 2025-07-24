@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * Controller class for managing flight operations and session state in the airport management system.
+ * Controller class for managing flight operations in the airport management system.
  * <p>
- * This class serves as the specialized controller for flight-related operations within the MVC
- * architecture of the airport management system. It maintains the current flight session state,
+ * This class serves as the specialized controller for flight-related operations within
+ * the airport management system. It maintains the current flight session state,
  * manages flight search results, and provides comprehensive methods for accessing flight
  * information, passenger details, and flight management operations.
  * </p>
@@ -45,25 +45,9 @@ import java.util.logging.Level;
  *   <li><strong>Booking Results:</strong> Manages flight collections associated with booking operations</li>
  * </ul>
  * <p>
- * Flight type handling includes specialized support for both {@link Arriving} and {@link Departing}
- * flight types, with appropriate constructors, data access methods, and business logic for each
- * flight direction. The controller abstracts the complexity of flight type differences from
- * calling components while maintaining type-specific functionality.
- * </p>
- * <p>
  * Integration with the {@link FlightDAOImpl} provides database persistence capabilities for
  * flight search operations, check-in procedures, status updates, and comprehensive flight
  * data retrieval with proper error handling and logging.
- * </p>
- * <p>
- * The controller supports complex flight search operations with multiple filtering criteria
- * including departure/arrival cities, date ranges, time ranges, and flight characteristics.
- * Search results are processed to create appropriate flight objects based on flight types.
- * </p>
- * <p>
- * All methods maintain data consistency and provide null-safe operations where appropriate,
- * ensuring robust behavior in various application states and error conditions. The controller
- * handles both customer-facing operations and administrative flight management functions.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -96,120 +80,9 @@ public class FlightController {
     private ArrayList<Flight> searchBookingResult;
 
     /**
-     * Creates and sets an arriving flight session using comprehensive flight information.
-     * <p>
-     * This method creates a new {@link Arriving} flight object with complete flight details
-     * including delay information and establishes it as the current flight session. It is
-     * typically used when loading existing arriving flights from the database or when
-     * setting up flight contexts for operational procedures.
-     * </p>
-     * <p>
-     * The method handles arriving flights specifically, setting the origin city and arrival
-     * delay information that are characteristic of flights coming into the airport. The
-     * flight is fully initialized with capacity information (both maximum and current free seats)
-     * and operational status.
-     * </p>
-     * <p>
-     * This method is commonly used in administrative operations, flight status displays,
-     * and operational management where complete arriving flight information is required
-     * including delay tracking and capacity management.
-     * </p>
-     *
-     * @param parId unique flight identifier for database correlation and display
-     * @param parCompanyName airline company name operating the flight
-     * @param parDate scheduled flight date
-     * @param parDepartureTime scheduled departure time from origin
-     * @param parArrivalTime scheduled arrival time at destination
-     * @param parStatus current operational status of the flight
-     * @param parMaxSeats maximum passenger capacity of the aircraft
-     * @param parFreeSeats current number of available seats for booking
-     * @param parOrigin origin city name for the arriving flight
-     * @param parArrivalDelay current arrival delay in minutes (0 if on time)
-     */
-    public void setArrivingFlight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
-                                  Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parOrigin, int parArrivalDelay) {
-
-            flight = new Arriving(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parOrigin, parArrivalDelay);
-
-    }
-
-    /**
-     * Creates and sets a departing flight session using comprehensive flight information.
-     * <p>
-     * This method creates a new {@link Departing} flight object with complete flight details
-     * including delay information and establishes it as the current flight session. It is
-     * specifically designed for flights departing from the airport, handling destination
-     * information and departure delay tracking.
-     * </p>
-     * <p>
-     * The method handles departing flights specifically, setting the destination city and
-     * departure delay information that are characteristic of flights leaving the airport.
-     * The flight is fully initialized with current capacity information reflecting real-time
-     * seat availability and booking status.
-     * </p>
-     * <p>
-     * This method is commonly used in flight management operations, departure board displays,
-     * and check-in procedures where complete departing flight information is required
-     * including delay management and seat availability tracking.
-     * </p>
-     *
-     * @param parId unique flight identifier for database correlation and display
-     * @param parCompanyName airline company name operating the flight
-     * @param parDate scheduled flight date
-     * @param parDepartureTime scheduled departure time from airport
-     * @param parArrivalTime scheduled arrival time at destination
-     * @param parStatus current operational status of the flight
-     * @param parMaxSeats maximum passenger capacity of the aircraft
-     * @param parFreeSeats current number of available seats for booking
-     * @param parDestination destination city name for the departing flight
-     * @param parDepartureDelay current departure delay in minutes (0 if on time)
-     */
-    public void setDepartingFlight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
-                                   Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parDestination, int parDepartureDelay) {
-
-        flight = new Departing(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parDestination, parDepartureDelay);
-
-    }
-
-    /**
-     * Creates and sets a departing flight session using basic flight information without delay.
-     * <p>
-     * This method creates a new {@link Departing} flight object using essential flight
-     * information and establishes it as the current flight session. It is designed for
-     * scenarios where delay information is not available or not relevant, such as
-     * initial flight creation or basic flight setup operations.
-     * </p>
-     * <p>
-     * The method uses the default delay-free constructor for departing flights, setting
-     * up the flight with standard operational parameters. The flight capacity is set
-     * to maximum seats, indicating a newly created or fully available flight.
-     * </p>
-     * <p>
-     * This method is typically used in flight creation workflows, administrative
-     * flight setup operations, or when loading flight information where delay
-     * data is not immediately available or required.
-     * </p>
-     *
-     * @param parId unique flight identifier for database correlation and display
-     * @param parCompanyName airline company name operating the flight
-     * @param parDate scheduled flight date
-     * @param parDepartureTime scheduled departure time from airport
-     * @param parArrivalTime scheduled arrival time at destination
-     * @param parStatus current operational status of the flight
-     * @param parMaxSeats maximum passenger capacity of the aircraft
-     * @param parDestination destination city name for the departing flight
-     */
-    public void setDepartingFlight(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
-                                   Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, String parDestination) {
-
-        flight = new Departing(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parDestination);
-
-    }
-
-    /**
      * Performs comprehensive flight search operations for customer flight selection.
      * <p>
-     * This method executes a complex flight search operation using multiple filtering
+     * This method executes a flight search operation using multiple filtering
      * criteria to find flights matching customer requirements. It interfaces with the
      * database through {@link FlightDAOImpl} to retrieve flight information and processes
      * the results to create appropriate flight objects for customer selection.
@@ -222,29 +95,12 @@ public class FlightController {
      *   <li>Arrival city - flights going to a specific destination</li>
      *   <li>Date range - flights within specified date boundaries</li>
      *   <li>Time range - flights departing within specific time windows</li>
-     *   <li>Flight characteristics - capacity, status, and availability filters</li>
      * </ul>
      * <p>
      * The method processes database results and creates appropriate flight objects
      * based on flight types. {@link Departing} flights are created for outbound
      * flights while {@link Arriving} flights are created for inbound flights,
      * ensuring proper flight behavior and information display.
-     * </p>
-     * <p>
-     * Search results are stored in the controller's search result collection,
-     * making them available for customer selection operations and subsequent
-     * booking processes. The method handles both successful search operations
-     * and database connection failures with appropriate error messaging.
-     * </p>
-     * <p>
-     * Flight objects are created with complete information including delays,
-     * capacity details, and operational status to provide comprehensive
-     * flight information for customer decision-making.
-     * </p>
-     * <p>
-     * Error handling includes user-friendly error messages displayed through
-     * {@link FloatingMessage} components when database operations fail,
-     * ensuring that customers receive appropriate feedback about search issues.
      * </p>
      *
      * @param departingCity the departure city name for filtering (null for no filter)
@@ -310,18 +166,9 @@ public class FlightController {
      * Sets the current flight session using an existing {@link Flight} object.
      * <p>
      * This method establishes a flight session by directly assigning a pre-constructed
-     * {@link Flight} object as the current active flight. It is typically used when
+     * {@link Flight} object as the current active flight. It is used when
      * a flight object has already been created and validated, and needs to be set
      * as the active session for subsequent operations.
-     * </p>
-     * <p>
-     * This approach is useful for session management operations such as switching
-     * between different flights, loading flight details from cached objects, or
-     * restoring session state from previously created flight instances.
-     * </p>
-     * <p>
-     * The method directly assigns the provided flight object, making it immediately
-     * available for all flight-related operations throughout the application.
      * </p>
      *
      * @param flight the {@link Flight} object to set as the current session
@@ -334,19 +181,7 @@ public class FlightController {
      * Sets the current flight session using a flight from the search results by index.
      * <p>
      * This method establishes a flight session by selecting a specific flight from
-     * the search results collection based on the provided index. It enables users
-     * to select flights from search results and set them as the active session
-     * for booking or detailed viewing operations.
-     * </p>
-     * <p>
-     * The method retrieves the flight at the specified index from the search results
-     * and sets it as the current active flight, making all flight information and
-     * operations available for the selected flight.
-     * </p>
-     * <p>
-     * This functionality is essential for customer flight selection workflows where
-     * users browse search results and select specific flights for booking or
-     * detailed information viewing.
+     * the search results collection based on the provided index.
      * </p>
      *
      * @param index the zero-based index of the flight in the search results to set as active
@@ -363,17 +198,6 @@ public class FlightController {
      * current active flight. This is particularly useful for booking management
      * operations where flights need to be selected based on their unique identifiers.
      * </p>
-     * <p>
-     * The method performs a linear search through the booking search results,
-     * comparing flight IDs to find the matching flight. Once found, the flight
-     * is set as the active session, enabling all flight-related operations for
-     * the selected flight.
-     * </p>
-     * <p>
-     * This functionality is essential for booking modification workflows, administrative
-     * operations, and scenarios where flights need to be selected based on database
-     * identifiers rather than user interface indices.
-     * </p>
      *
      * @param flightId the unique identifier of the flight to set as the active session
      */
@@ -387,46 +211,11 @@ public class FlightController {
     }
 
     /**
-     * Sets the current flight session using a flight from booking results by index.
-     * <p>
-     * This method establishes a flight session by selecting a specific flight from
-     * the booking search results collection based on the provided index. It enables
-     * selection of flights from booking-related search operations for administrative
-     * or management purposes.
-     * </p>
-     * <p>
-     * The method retrieves the flight at the specified index from the booking search
-     * results and sets it as the current active flight, making all flight information
-     * and operations available for the selected flight within the booking context.
-     * </p>
-     * <p>
-     * This functionality is useful for administrative interfaces, booking management
-     * operations, and scenarios where flights need to be selected from booking-specific
-     * search results rather than general customer search results.
-     * </p>
-     *
-     * @param index the zero-based index of the flight in the booking search results to set as active
-     */
-    public void setBookingResultSelectedFlight(int index) {
-        this.flight = searchBookingResult.get(index);
-    }
-
-    /**
      * Retrieves the currently active flight object.
      * <p>
      * This method returns the {@link Flight} object representing the current flight
      * session. The returned object contains complete flight information including
      * schedules, capacity, status, bookings, tickets, and passenger data.
-     * </p>
-     * <p>
-     * The method is used throughout the application to access flight information
-     * for display purposes, business logic operations, and data processing that
-     * requires flight context.
-     * </p>
-     * <p>
-     * If no flight is currently active, this method returns null. Calling code
-     * should check for null values to handle cases where no flight session is
-     * established.
      * </p>
      *
      * @return the {@link Flight} object for the current session, or null if no flight is active
@@ -443,11 +232,6 @@ public class FlightController {
      * throughout the system. The ID is used for database operations, correlation
      * with other data records, and flight identification purposes.
      * </p>
-     * <p>
-     * Flight IDs are typically alphanumeric strings that uniquely identify
-     * each flight within the airport management system and are essential
-     * for all flight-related database operations.
-     * </p>
      *
      * @return the unique identifier string for the current flight
      */
@@ -459,12 +243,7 @@ public class FlightController {
      * Retrieves the airline company name for the currently active flight.
      * <p>
      * This method returns the name of the airline company operating the current
-     * flight. Company names are used for display purposes, filtering operations,
-     * and business logic that needs to differentiate between different airlines.
-     * </p>
-     * <p>
-     * The company name provides essential information for passengers and staff
-     * to identify the airline responsible for operating the flight.
+     * flight.
      * </p>
      *
      * @return the airline company name for the current flight
@@ -477,9 +256,7 @@ public class FlightController {
      * Retrieves the airline company name for a specific flight in the search results.
      * <p>
      * This method returns the airline company name for a flight at the specified
-     * index within the search results collection. It enables access to company
-     * information for flights in search results without setting them as the
-     * active flight session.
+     * index within the search results collection.
      * </p>
      * <p>
      * This functionality is essential for displaying flight search results,
@@ -495,54 +272,11 @@ public class FlightController {
     }
 
     /**
-     * Retrieves the airline company name for a specific flight in the booking search results.
-     * <p>
-     * This method returns the airline company name for a flight at the specified
-     * index within the booking search results collection. It provides access to
-     * company information for flights in booking-related search operations.
-     * </p>
-     * <p>
-     * This functionality is useful for administrative interfaces, booking management
-     * displays, and operations that need to show airline information for flights
-     * within booking contexts.
-     * </p>
-     *
-     * @param index the zero-based index of the flight in the booking search results
-     * @return the airline company name for the flight at the specified index
-     */
-    public String getBookingResultSelectedFlightCompanyName (int index) {
-        return searchBookingResult.get(index).getCompanyName();
-    }
-
-    /**
-     * Retrieves the scheduled date of the currently active flight.
-     * <p>
-     * This method returns the date on which the current flight is scheduled to
-     * operate. The date is essential for flight identification, scheduling
-     * operations, and passenger information display.
-     * </p>
-     * <p>
-     * Flight dates are used throughout the application for temporal operations,
-     * filtering, sorting, and ensuring that flight information is presented
-     * in the correct chronological context.
-     * </p>
-     *
-     * @return the scheduled date of the current flight
-     */
-    public Date getFlightDate () {
-        return flight.getDate();
-    }
-
-    /**
      * Retrieves the scheduled departure time of the currently active flight.
      * <p>
      * This method returns the time at which the current flight is scheduled to
      * depart. For departing flights, this represents departure from the local
      * airport; for arriving flights, this represents departure from the origin.
-     * </p>
-     * <p>
-     * Departure times are crucial for flight scheduling, passenger coordination,
-     * and operational planning throughout the airport management system.
      * </p>
      *
      * @return the scheduled departure time of the current flight
@@ -555,13 +289,7 @@ public class FlightController {
      * Retrieves the scheduled departure time for a specific flight in the search results.
      * <p>
      * This method returns the departure time for a flight at the specified index
-     * within the search results collection. It enables access to timing information
-     * for flights in search results without setting them as the active flight session.
-     * </p>
-     * <p>
-     * This functionality is essential for displaying flight search results with
-     * complete timing information, enabling users to compare departure times
-     * and make scheduling decisions.
+     * within the search results collection.
      * </p>
      *
      * @param index the zero-based index of the flight in the search results
@@ -575,14 +303,7 @@ public class FlightController {
      * Retrieves the scheduled departure time for a flight in booking results by flight ID.
      * <p>
      * This method searches through the booking search results to find a flight
-     * with the specified ID and returns its departure time. This is useful for
-     * booking management operations where timing information is needed based
-     * on flight identifiers.
-     * </p>
-     * <p>
-     * The method performs a linear search through the booking search results,
-     * comparing flight IDs to find the matching flight and extract its departure
-     * time for operational or display purposes.
+     * with the specified ID and returns its departure time.
      * </p>
      *
      * @param flightId the unique identifier of the flight to retrieve departure time for
@@ -603,11 +324,6 @@ public class FlightController {
      * arrive at its destination. For departing flights, this represents arrival
      * at the destination; for arriving flights, this represents arrival at the
      * local airport.
-     * </p>
-     * <p>
-     * Arrival times are essential for flight coordination, ground services
-     * planning, passenger information, and operational scheduling throughout
-     * the airport management system.
      * </p>
      *
      * @return the scheduled arrival time of the current flight
