@@ -660,16 +660,6 @@ public class BookingDAOImpl implements BookingDAO {
      *   <li>Time range filtering supporting both same-day and overnight spans</li>
      *   <li>Dynamic query construction based on provided parameters</li>
      * </ul>
-     * <p>
-     * Time filtering handles overnight time ranges by using OR logic when the initial
-     * time is after the final time, searching for flights departing after the initial
-     * time OR before the final time.
-     * </p>
-     * <p>
-     * Results are ordered by flight departure time in descending order to show the
-     * most recent bookings first, which is typically most relevant for customer
-     * service and booking management operations.
-     * </p>
      *
      * @param departingCity the departure city name for filtering (can be null or empty)
      * @param arrivingCity the arrival city name for filtering (can be null or empty)
@@ -837,18 +827,6 @@ public class BookingDAOImpl implements BookingDAO {
      *   <li>SSN matching with case-insensitive partial matching (ILIKE)</li>
      *   <li>Ticket number matching with case-insensitive partial matching (ILIKE)</li>
      * </ul>
-     * <p>
-     * All filter parameters are optional and use SQL ILIKE for flexible matching.
-     * The method returns distinct results to avoid duplicates when multiple passengers
-     * in the same booking match the criteria. Results are ordered by flight departure
-     * time in descending order to show the most recent bookings first.
-     * </p>
-     * <p>
-     * This search method is particularly useful for customer service operations where
-     * representatives need to find bookings based on passenger information rather than
-     * flight details, enabling support for customers who may not remember exact flight
-     * information but can provide passenger details.
-     * </p>
      *
      * @param firstName the passenger first name for filtering (can be null or empty)
      * @param lastName the passenger last name for filtering (can be null or empty)
@@ -987,12 +965,6 @@ public class BookingDAOImpl implements BookingDAO {
      *   <li>Maintains referential integrity with related tickets, passengers, and luggage</li>
      *   <li>Allows the booking to be excluded from active booking queries when needed</li>
      * </ul>
-     * <p>
-     * Cancelled bookings are typically filtered out of customer-facing queries but
-     * remain accessible for administrative reporting and audit purposes. This approach
-     * ensures compliance with data retention requirements while providing clear booking
-     * lifecycle management.
-     * </p>
      *
      * @param bookingId the unique identifier of the booking to delete/cancel
      * @throws SQLException if a database access error occurs during the deletion operation

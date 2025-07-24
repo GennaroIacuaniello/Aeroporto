@@ -16,7 +16,7 @@ import java.util.List;
  * <p>
  * This class provides concrete implementations for all administrator-related database operations
  * defined in the {@link AdminDAO} interface. It handles all administrator account management
- * functions including authentication, account creation, updates, and deletion operations
+ *  functions, including authentication, account creation, updates, and deletion operations
  * using PostgreSQL database connectivity.
  * </p>
  * <p>
@@ -29,31 +29,6 @@ import java.util.List;
  *   <li>Soft deletion of administrator accounts through status flags</li>
  *   <li>Cross-table validation to prevent username/email conflicts with customer accounts</li>
  * </ul>
- * <p>
- * All database operations use prepared statements to prevent SQL injection attacks and ensure
- * data security. The class implements proper connection management using the singleton
- * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
- * statements.
- * </p>
- * <p>
- * Administrator accounts are subject to stricter validation rules compared to customer accounts:
- * </p>
- * <ul>
- *   <li>Email addresses are mandatory for all administrator accounts</li>
- *   <li>Usernames must be unique across both Admin and Customer tables</li>
- *   <li>Email addresses must be unique across both Admin and Customer tables</li>
- *   <li>Only active (non-deleted) accounts are considered during authentication and validation</li>
- * </ul>
- * <p>
- * The class handles authentication failures by throwing {@link UserNotFoundException} when
- * credentials don't match any active administrator accounts. Account creation and update
- * operations throw {@link UserAlreadyExistsException} when attempting to use credentials
- * that already exist in the system.
- * </p>
- * <p>
- * All methods follow the contract defined by the {@link AdminDAO} interface and maintain
- * data consistency through proper transaction handling and validation mechanisms.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0

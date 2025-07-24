@@ -16,7 +16,7 @@ import java.util.List;
  * <p>
  * This class provides concrete implementations for all customer-related database operations
  * defined in the {@link CustomerDAO} interface. It handles all customer account management
- * functions including authentication, account creation, updates, and deletion operations
+ *  functions, including authentication, account creation, updates, and deletion operations
  * using PostgreSQL database connectivity.
  * </p>
  * <p>
@@ -29,31 +29,6 @@ import java.util.List;
  *   <li>Soft deletion of customer accounts through status flags</li>
  *   <li>Cross-table validation to prevent username/email conflicts with administrator accounts</li>
  * </ul>
- * <p>
- * All database operations use prepared statements to prevent SQL injection attacks and ensure
- * data security. The class implements proper connection management using the singleton
- * {@link ConnessioneDatabase} pattern and handles resource cleanup through try-with-resources
- * statements.
- * </p>
- * <p>
- * Customer accounts have more flexible requirements compared to administrator accounts:
- * </p>
- * <ul>
- *   <li>Email addresses are optional for customer accounts (can be null during creation)</li>
- *   <li>Usernames must be unique across both Customer and Admin tables</li>
- *   <li>Email addresses must be unique across both Customer and Admin tables when provided</li>
- *   <li>Only active (non-deleted) accounts are considered during authentication and validation</li>
- * </ul>
- * <p>
- * The class handles authentication failures by throwing {@link UserNotFoundException} when
- * credentials don't match any active customer accounts. Account creation and update
- * operations throw {@link UserAlreadyExistsException} when attempting to use credentials
- * that already exist in the system.
- * </p>
- * <p>
- * All methods follow the contract defined by the {@link CustomerDAO} interface and maintain
- * data consistency through proper transaction handling and validation mechanisms.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -200,14 +175,6 @@ public class CustomerDAOImpl implements CustomerDAO {
      *   <li>Active status (is_deleted = false) by default</li>
      *   <li>Auto-generated unique customer ID</li>
      * </ul>
-     * <p>
-     * Unlike administrator accounts, customer accounts allow null email addresses during
-     * creation, providing flexibility for customers who prefer not to provide email information.
-     * </p>
-     * <p>
-     * The method uses prepared statements for both validation and insertion operations,
-     * ensuring secure parameter binding and SQL injection prevention.
-     * </p>
      *
      * @param mail the email address for the new customer account, can be null
      * @param username the username for the new customer account, must not be null and must be unique
