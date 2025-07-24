@@ -53,22 +53,6 @@ public class LuggageController {
 
     /**
      * Retrieves the collection of luggage objects from search results.
-     * <p>
-     * This method returns the list of {@link Luggage} objects that were retrieved
-     * from search operations, typically used for administrative functions, customer
-     * service operations, or luggage management tasks where luggage information
-     * needs to be displayed or processed.
-     * </p>
-     * <p>
-     * The search results contain luggage objects with complete information including
-     * identification, type, status, and ticket associations, enabling comprehensive
-     * luggage management and customer service support.
-     * </p>
-     * <p>
-     * The returned collection maintains correlation with the corresponding database
-     * IDs, enabling efficient data operations and selection workflows for luggage
-     * management purposes.
-     * </p>
      *
      * @return list of {@link Luggage} objects from search operations, or null if no results are available
      */
@@ -78,22 +62,6 @@ public class LuggageController {
 
     /**
      * Sets the collection of luggage objects for search results.
-     * <p>
-     * This method establishes the list of {@link Luggage} objects returned from
-     * search operations, converting the input list to an ArrayList for internal
-     * consistency and performance optimization. The search results are used for
-     * administrative functions and luggage management operations.
-     * </p>
-     * <p>
-     * The method ensures that luggage search results are properly stored and
-     * available for subsequent retrieval and manipulation operations throughout
-     * luggage management workflows and customer service interfaces.
-     * </p>
-     * <p>
-     * This method is typically called by search operations in the main controller
-     * or by administrative functions that need to populate luggage result sets
-     * for display or processing purposes.
-     * </p>
      *
      * @param searchBookingResult list of {@link Luggage} objects to set as search results
      */
@@ -103,23 +71,6 @@ public class LuggageController {
 
     /**
      * Retrieves the collection of database IDs corresponding to luggage search results.
-     * <p>
-     * This method returns the list of database identifiers that correspond to the
-     * luggage objects in the search results. The IDs maintain synchronized indexing
-     * with the luggage objects, enabling efficient correlation between display
-     * data and database operations.
-     * </p>
-     * <p>
-     * The database IDs are essential for performing operations on selected luggage
-     * items, such as status updates, administrative actions, or detailed information
-     * retrieval. They provide the link between user interface selections and
-     * database records.
-     * </p>
-     * <p>
-     * The returned list maintains the same size and order as the corresponding
-     * luggage objects list, ensuring proper data correlation for luggage
-     * management operations.
-     * </p>
      *
      * @return list of database identifiers corresponding to search result luggage, or null if no results are available
      */
@@ -129,23 +80,6 @@ public class LuggageController {
 
     /**
      * Sets the collection of database IDs corresponding to luggage search results.
-     * <p>
-     * This method establishes the list of database identifiers that correspond to
-     * luggage search results, converting the input list to an ArrayList for internal
-     * consistency. The IDs must maintain synchronized indexing with the luggage
-     * objects to ensure proper correlation between display data and database operations.
-     * </p>
-     * <p>
-     * Proper synchronization between luggage objects and their database IDs is
-     * essential for maintaining data integrity and enabling correct luggage
-     * selection and operation targeting in administrative and customer service
-     * functions.
-     * </p>
-     * <p>
-     * This method is typically called in conjunction with setting the luggage
-     * search results to ensure that both collections are properly initialized
-     * and correlated.
-     * </p>
      *
      * @param searchBookingResultIds list of database identifiers to set for search results
      */
