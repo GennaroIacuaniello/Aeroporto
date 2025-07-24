@@ -383,11 +383,12 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
                 searchBookingPanel.filteredPassengerSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
 
             }else{
-                
+
                 new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
                         callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), true);
 
-                callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
+
+                callingObjects.remove(callingObjects.size() - 2);
                 mainFrame.dispose();
 
             }
