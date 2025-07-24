@@ -302,7 +302,7 @@ public class PassengerPanel extends JPanel {
 
         this.setOpaque(false);
 
-        passengerLabel = new JLabel ("Passenger");
+        passengerLabel = new JLabel ("Passeggero");
 
         //info
         passengerNameField = new JTextField(DISPLAYED_NAME_TEXT, 20);
@@ -329,7 +329,7 @@ public class PassengerPanel extends JPanel {
             this.seatButton.setEnabled(passengerPanels.getFirst().getSeatButton().isEnabled());
 
         //bagagli
-        luggagesViewButton = new JButton("Luggages");
+        luggagesViewButton = new JButton("Bagagli");
 
         luggagesView = new LuggagesView ();
 
@@ -776,7 +776,7 @@ public class PassengerPanel extends JPanel {
     public void setTicketNumber (String ticketNumber) {
 
         this.ticketNumber = ticketNumber;
-        this.passengerLabel.setText("Passenger: " + ticketNumber);
+        this.passengerLabel.setText("Passeggero: " + ticketNumber);
     }
 
     /**

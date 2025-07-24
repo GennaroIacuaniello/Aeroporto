@@ -115,7 +115,7 @@ public class RemovePassengerButton extends JButton {
     public RemovePassengerButton(BookingPage book, List<PassengerPanel> passengerPanels,
                                  ArrayList<RemovePassengerButton> removePassengerButtons, int idx) {
 
-        super("Remove Passenger");
+        super("Rimuovi Passeggero");
 
         index = idx;
 
