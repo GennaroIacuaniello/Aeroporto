@@ -2617,16 +2617,14 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF input_old_flight_type = false AND input_new_flight_type = false THEN
 	
-		
-		--questo if serve perché solo un volo PROGRAMMED o ABOUT_TO_DEPART può essere impostato a DEPARTED
-		IF input_old_flight_status <> 'PROGRAMMED' AND input_old_flight_status <> 'ABOUT_TO_DEPART' THEN
-
-			RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', input_old_id_flight;
-
-		END IF;
-
-
 		IF input_old_flight_status <> 'DEPARTED' AND input_new_flight_status = 'DEPARTED' THEN
+
+			--questo if serve perché solo un volo PROGRAMMED o ABOUT_TO_DEPART può essere impostato a DEPARTED
+			IF input_old_flight_status <> 'PROGRAMMED' AND input_old_flight_status <> 'ABOUT_TO_DEPART' THEN
+
+				RAISE EXCEPTION 'Il volo verso Napoli % non era in stato ''programmato'' o ''in partenza'', non può diventare ''decollato''!', input_old_id_flight;
+
+			END IF;
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
 									 WHERE B.id_flight = input_old_id_flight AND B.booking_status <> 'CANCELLED') LOOP
