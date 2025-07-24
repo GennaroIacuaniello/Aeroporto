@@ -371,6 +371,8 @@ public class MyBookingsCustomerMainFrame extends DisposableObject {
     public void doOnRestore (List<DisposableObject> callingObjects, Controller controller) {
 
         if(searchBookingPanel.isSearchPerformed()){
+
+            controller.clearSearchBookingResultCache();
             if ( searchBookingPanel.getActiveFilter().equals("FLIGHT")) {
 
                 searchBookingPanel.filteredFlightSearch(callingObjects, controller, searchBookingPanel.getSearchButton());
