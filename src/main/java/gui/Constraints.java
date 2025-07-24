@@ -23,35 +23,6 @@ import java.awt.*;
  *   <li><strong>Weight Distribution:</strong> Space allocation priorities for resizing behavior</li>
  *   <li><strong>Margin Control:</strong> External spacing through Insets configuration</li>
  * </ul>
- * <p>
- * The class provides multiple convenience methods with different parameter combinations
- * to accommodate various layout scenarios commonly encountered in the application's
- * GUI design. Each method delegates to a comprehensive configuration method while
- * providing sensible defaults for omitted parameters.
- * </p>
- * <p>
- * Default weight values are set to 0.01 for both horizontal and vertical directions,
- * providing minimal but non-zero weights that allow for predictable layout behavior
- * during container resizing operations. These defaults can be overridden through
- * method parameters when specific weight distribution is required.
- * </p>
- * <p>
- * The encapsulated {@link GridBagConstraints} object maintains all configuration
- * state and can be retrieved for direct use with layout managers. The wrapper
- * design ensures consistent constraint configuration across the application while
- * reducing boilerplate code in GUI component setup.
- * </p>
- * <p>
- * Usage patterns include component positioning in complex layouts such as booking
- * pages, passenger panels, search interfaces, and administrative control panels.
- * The class supports both simple positioning scenarios and complex multi-component
- * layouts requiring precise spacing and alignment control.
- * </p>
- * <p>
- * Thread safety is not provided as GUI components are typically accessed from
- * the Event Dispatch Thread. Multiple Constraints instances should be used when
- * concurrent layout operations are required across different components.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -81,21 +52,6 @@ public class Constraints {
      * weights are set to 0.01 for both horizontal (weightx) and vertical (weighty)
      * directions, ensuring minimal but non-zero weight distribution.
      * </p>
-     * <p>
-     * The default weight configuration provides several benefits:
-     * </p>
-     * <ul>
-     *   <li><strong>Predictable Behavior:</strong> Non-zero weights prevent layout collapse during container resizing</li>
-     *   <li><strong>Minimal Impact:</strong> Small weight values allow explicit weight specifications to dominate</li>
-     *   <li><strong>Consistent Baseline:</strong> Uniform default behavior across all GUI components</li>
-     *   <li><strong>Flexible Override:</strong> Default values can be easily overridden through method parameters</li>
-     * </ul>
-     * <p>
-     * All other constraint parameters remain at their {@link GridBagConstraints}
-     * default values until explicitly configured through the setConstraints methods.
-     * This approach ensures predictable initialization while maintaining flexibility
-     * for specific layout requirements.
-     * </p>
      */
     public Constraints() {
         gridBagConstraints = new GridBagConstraints();
@@ -123,21 +79,6 @@ public class Constraints {
      *   <li><strong>Weight Distribution:</strong> Proportional space allocation during container resizing</li>
      *   <li><strong>External Margins:</strong> Component spacing through Insets configuration</li>
      * </ul>
-     * <p>
-     * Grid positioning uses zero-based indexing where (0,0) represents the
-     * top-left grid cell. Negative values for gridx or gridy indicate relative
-     * positioning, while GridBagConstraints.RELATIVE specifies automatic placement.
-     * </p>
-     * <p>
-     * Fill behavior controls how components expand within their allocated grid
-     * space using constants from {@link GridBagConstraints} such as NONE,
-     * HORIZONTAL, VERTICAL, or BOTH for different expansion scenarios.
-     * </p>
-     * <p>
-     * Weight values determine proportional space distribution during container
-     * resizing operations. Higher weight values receive proportionally more
-     * space allocation, with zero weights preventing component expansion.
-     * </p>
      *
      * @param gridx the horizontal grid position (zero-based indexing)
      * @param gridy the vertical grid position (zero-based indexing)
@@ -181,16 +122,6 @@ public class Constraints {
      * enables weight customization without margin complexity for common layout
      * scenarios.
      * </p>
-     * <p>
-     * Weight specification enables precise control over space distribution during
-     * container resizing operations. Components with higher weight values receive
-     * proportionally more additional space, while zero weights prevent expansion.
-     * </p>
-     * <p>
-     * Common usage scenarios include main content areas requiring expansion,
-     * button panels with specific proportional sizing, and complex multi-panel
-     * layouts where different regions require different resizing behavior.
-     * </p>
      *
      * @param gridx the horizontal grid position (zero-based indexing)
      * @param gridy the vertical grid position (zero-based indexing)
@@ -217,22 +148,6 @@ public class Constraints {
      * weight values (0.01) established during construction. This method is suitable
      * for layouts requiring specific spacing without complex weight distribution
      * requirements.
-     * </p>
-     * <p>
-     * The method delegates to the comprehensive setConstraints method while
-     * providing default weight values of 0.01f for both horizontal and vertical
-     * directions. These default weights ensure predictable layout behavior while
-     * allowing margin customization.
-     * </p>
-     * <p>
-     * Margin configuration through {@link Insets} provides external spacing
-     * around components within their allocated grid areas. The Insets constructor
-     * parameters specify top, left, bottom, and right margins respectively.
-     * </p>
-     * <p>
-     * Common usage scenarios include form layouts requiring consistent spacing
-     * between elements, button groups with specific margin requirements, and
-     * content panels where spacing is more critical than weight distribution.
      * </p>
      *
      * @param gridx the horizontal grid position (zero-based indexing)
@@ -261,29 +176,6 @@ public class Constraints {
      * suitable for straightforward layouts where precise weight and margin control
      * are not required.
      * </p>
-     * <p>
-     * The method delegates to the comprehensive setConstraints method while
-     * providing default values of 0.01f for both weight parameters and empty
-     * Insets(0,0,0,0) for margin configuration. These defaults ensure predictable
-     * behavior suitable for most common layout scenarios.
-     * </p>
-     * <p>
-     * This method represents the most commonly used configuration pattern in the
-     * application, providing essential layout control while minimizing parameter
-     * complexity. It covers the majority of GUI component positioning requirements
-     * throughout the airport management system interface.
-     * </p>
-     * <p>
-     * The default weight values prevent layout collapse during container resizing
-     * while maintaining minimal impact on explicit weight specifications in other
-     * components. The zero margins provide clean component arrangement without
-     * additional spacing complexity.
-     * </p>
-     * <p>
-     * Usage scenarios include standard component positioning in forms, dialog
-     * layouts, panel arrangements, and any situation where basic grid positioning
-     * is sufficient without advanced spacing or weight requirements.
-     * </p>
      *
      * @param gridx the horizontal grid position (zero-based indexing)
      * @param gridy the vertical grid position (zero-based indexing)
@@ -308,23 +200,6 @@ public class Constraints {
      * object that contains all configuration parameters set through the various
      * setConstraints methods. The returned object can be used directly with
      * {@link GridBagLayout} for component positioning.
-     * </p>
-     * <p>
-     * The returned GridBagConstraints object maintains all configuration state
-     * including grid positioning, size specifications, fill behavior, padding
-     * values, anchor positioning, weight distribution, and margin settings.
-     * Modifications to the returned object will affect subsequent layout operations.
-     * </p>
-     * <p>
-     * Common usage pattern involves configuring constraints through setConstraints
-     * methods and then retrieving the GridBagConstraints object for immediate
-     * use with container.add(component, constraints.getGridBagConstraints()).
-     * </p>
-     * <p>
-     * The method provides direct access to the constraint configuration without
-     * creating defensive copies, enabling efficient layout operations while
-     * maintaining the flexibility to modify constraints between component
-     * additions if required.
      * </p>
      *
      * @return the configured GridBagConstraints object containing all layout parameters
