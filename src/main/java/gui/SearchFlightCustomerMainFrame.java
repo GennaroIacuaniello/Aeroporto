@@ -13,16 +13,16 @@ import java.util.List;
  * This class extends {@link DisposableObject}.
  * </p>
  * <p>
- * The SearchFlightCustomerMainFrame class supports comprehensive customer flight operations including:
+ * The SearchFlightCustomerMainFrame class supports customer flight operations including:
  * </p>
  * <ul>
- *   <li><strong>Flight Search Functionality:</strong> Advanced search capabilities with multiple criteria including routes, dates, and times</li>
+ *   <li><strong>Flight Search Functionality:</strong> Search capabilities with multiple criteria including routes, dates, and times</li>
  *   <li><strong>Real-time Availability:</strong> Current flight availability and seat information display with dynamic updates</li>
  *   <li><strong>Booking Integration:</strong> Direct booking initiation from search results with seamless workflow transitions</li>
  *   <li><strong>Customer Navigation:</strong> Integrated navigation controls for accessing different customer areas and functions</li>
  *   <li><strong>User Session Management:</strong> Current customer information display and account management integration</li>
  *   <li><strong>Menu-Based Access:</strong> Support for customer menu navigation and direct interface access patterns</li>
- *   <li><strong>State Restoration:</strong> Advanced state management for maintaining search results and interface continuity</li>
+ *   <li><strong>State Restoration:</strong> State management for maintaining search results and interface continuity</li>
  * </ul>
  * <p>
  * Layout architecture utilizes {@link GridBagLayout} for precise component positioning and optimal
@@ -165,7 +165,6 @@ public class SearchFlightCustomerMainFrame extends DisposableObject {
      * The title panel configuration includes:
      * </p>
      * <ul>
-     *   <li><strong>Branding Display:</strong> "AEROPORTO DI NAPOLI" title for clear system identification and customer awareness</li>
      *   <li><strong>Layout Positioning:</strong> Horizontal span across interface top with proper alignment and spacing</li>
      *   <li><strong>Visual Integration:</strong> Transparent background for seamless interface integration and professional appearance</li>
      *   <li><strong>Spacing Configuration:</strong> Appropriate margins and insets for visual balance and optimal presentation</li>

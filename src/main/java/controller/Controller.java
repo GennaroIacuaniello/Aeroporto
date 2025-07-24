@@ -1323,6 +1323,7 @@ public class Controller {
      * interfere with new search operations or booking workflows. It resets the
      * search result state to a clean condition for subsequent operations.
      * </p>
+     * <p>
      * Controllers affected by this cleanup include:
      * </p>
      * <ul>

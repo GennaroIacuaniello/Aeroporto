@@ -214,7 +214,7 @@ public class SearchFlightResultPanel extends JPanel {
     }
 
     /**
-     * Custom table model providing comprehensive flight data management and Italian-localized presentation for customer flight results display.
+     * Custom table model providing comprehensive flight data management and presentation for customer flight results display.
      * <p>
      * This private static class extends {@link AbstractTableModel} to provide flight data
      * management and presentation capabilities for customer flight results.
@@ -308,7 +308,7 @@ public class SearchFlightResultPanel extends JPanel {
          *   <li><strong>Controller Integration:</strong> System controller reference establishment for business logic access</li>
          *   <li><strong>Data Binding:</strong> Comprehensive flight information collection assignment with type casting</li>
          *   <li><strong>Collection Management:</strong> ArrayList references establishment for all flight data categories</li>
-         *   <li><strong>Business Logic Access:</strong> Controller integration for flight type determination and route formatting</li>
+         *   <li><strong>Logic Access:</strong> Controller integration for flight type determination and route formatting</li>
          * </ul>
          *
          * @param controller the system controller providing access to flight information services and business logic coordination
@@ -612,11 +612,8 @@ public class SearchFlightResultPanel extends JPanel {
         /**
          * Renders custom empty state messaging with professional typography and centered alignment for optimal customer communication.
          * <p>
-         * This overridden method from JTable provides sophisticated custom painting functionality
-         * that displays centered Italian messages when the table contains no flight results. The
-         * method includes standard table painting followed by conditional empty state message
-         * rendering with anti-aliasing, professional typography, and precise center alignment
-         * for optimal customer guidance during no-results scenarios throughout flight search workflows.
+         * This overridden method from JTable provides custom painting functionality
+         * that displays centered messages when the table contains no flight results.
          * </p>
          * <p>
          * The custom painting process includes:
@@ -624,46 +621,7 @@ public class SearchFlightResultPanel extends JPanel {
          * <ul>
          *   <li><strong>Standard Painting:</strong> Parent paintComponent invocation for normal table rendering</li>
          *   <li><strong>Empty State Detection:</strong> Row count verification for message display activation</li>
-         *   <li><strong>Graphics Enhancement:</strong> Graphics2D casting and anti-aliasing activation for smooth text rendering</li>
-         *   <li><strong>Typography Configuration:</strong> Italic Segoe UI font setup with appropriate sizing and color</li>
-         *   <li><strong>Center Alignment:</strong> Precise message positioning calculations for optimal visual presentation</li>
-         *   <li><strong>Message Rendering:</strong> Professional text drawing with proper coordinate calculation</li>
          * </ul>
-         * <p>
-         * Standard painting includes calling the parent paintComponent method to ensure proper
-         * table rendering for normal scenarios while preparing the graphics context for additional
-         * custom painting operations during empty state scenarios.
-         * </p>
-         * <p>
-         * Empty state detection verifies that the table row count is zero before proceeding
-         * with empty state message rendering. The detection ensures that custom messaging
-         * is only displayed when appropriate while maintaining standard functionality for
-         * populated table scenarios throughout customer flight result presentation.
-         * </p>
-         * <p>
-         * Graphics enhancement includes Graphics2D casting for advanced rendering capabilities
-         * and anti-aliasing activation for smooth text presentation. The enhancement ensures
-         * professional text rendering quality and optimal readability throughout empty state
-         * message display operations within the airport management system interface.
-         * </p>
-         * <p>
-         * Typography configuration establishes italic Segoe UI font (16pt) with gray color
-         * for subtle yet clear message presentation. The typography maintains consistency
-         * with airport management system design standards while providing appropriate
-         * visual weight for customer guidance messaging.
-         * </p>
-         * <p>
-         * Center alignment includes sophisticated coordinate calculations using FontMetrics
-         * to determine precise message positioning for optimal visual presentation. The
-         * calculations ensure that empty state messages are properly centered both horizontally
-         * and vertically within the available table space.
-         * </p>
-         * <p>
-         * Message rendering utilizes precise coordinate calculation with string width and height
-         * determination for optimal positioning. The rendering includes proper baseline adjustment
-         * and ensures clear message presentation throughout empty result scenarios and customer
-         * guidance operations within the airport management system interface.
-         * </p>
          *
          * @param g the Graphics context for painting operations and custom message rendering
          */
