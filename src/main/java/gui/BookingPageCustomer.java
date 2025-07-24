@@ -30,50 +30,6 @@ import java.util.List;
  *   <li><strong>Navigation Integration:</strong> Seamless integration with application navigation and workflow management</li>
  *   <li><strong>Resource Management:</strong> Proper cleanup and state management for customer operations</li>
  * </ul>
- * <p>
- * The interface is designed with customer workflow optimization allowing customers to:
- * </p>
- * <ul>
- *   <li><strong>View Booking Details:</strong> Comprehensive display of all passenger information and booking status</li>
- *   <li><strong>Modify Reservations:</strong> Initiate booking modification workflows when operationally appropriate</li>
- *   <li><strong>Cancel Bookings:</strong> Delete reservations with proper validation and confirmation</li>
- *   <li><strong>Navigate Seamlessly:</strong> Return to previous application states after operations completion</li>
- * </ul>
- * <p>
- * Passenger information display includes comprehensive loading of all booking-associated passenger
- * data including personal information, seat assignments, luggage details, and booking metadata.
- * The interface presents passengers in paginated format for optimal usability with large bookings.
- * </p>
- * <p>
- * Booking modification functionality includes sophisticated status validation to ensure modifications
- * are only initiated when flight and booking status permit such operations. The system validates
- * both flight operational status and booking confirmation status before allowing modification workflows.
- * </p>
- * <p>
- * Booking cancellation provides secure deletion capabilities with comprehensive validation to prevent
- * inappropriate cancellations. The system ensures that only programmed flights with confirmed or
- * pending bookings can be cancelled by customers.
- * </p>
- * <p>
- * The class integrates seamlessly with the broader booking management system through the {@link Controller}
- * interface, ensuring proper data access, operation validation, and state management throughout
- * customer booking operations.
- * </p>
- * <p>
- * Visual design maintains consistency with the overall application styling while providing
- * customer-specific interface elements. Error messaging and operational feedback are provided
- * through {@link FloatingMessage} components for clear customer communication.
- * </p>
- * <p>
- * Resource management includes proper cleanup of passenger-related components during navigation
- * transitions, ensuring optimal interface performance and preventing resource leaks during
- * customer workflow operations.
- * </p>
- * <p>
- * The customer booking interface supports navigation integration while maintaining booking
- * context and operational state. Integration with the calling objects hierarchy ensures
- * proper resource management and seamless transitions between customer operations.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -137,23 +93,6 @@ public class BookingPageCustomer extends BookingPage {
      *   <li>Configuring customer-specific confirmation panel with modification and cancellation controls</li>
      *   <li>Setting up immediate visibility for customer interaction readiness</li>
      * </ul>
-     * <p>
-     * The constructor leverages the parent class initialization to establish the core
-     * booking interface structure while adding customer-specific functionality including
-     * booking modification initiation and secure cancellation capabilities.
-     * </p>
-     * <p>
-     * Customer control integration includes the creation and configuration of the
-     * confirmation panel that houses booking modification and cancellation buttons.
-     * These controls are positioned and configured for optimal customer workflow
-     * efficiency and operational safety.
-     * </p>
-     * <p>
-     * Window management ensures proper integration with the calling objects hierarchy
-     * for seamless navigation and resource management throughout customer operations.
-     * The interface becomes immediately visible and ready for customer interaction
-     * upon construction completion.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and navigation
      * @param controller the system controller providing access to booking management, customer operations, and data persistence
@@ -190,37 +129,6 @@ public class BookingPageCustomer extends BookingPage {
      *   <li><strong>Luggage Information Display:</strong> Detailed luggage information including types, tickets, and status</li>
      *   <li><strong>Panel Configuration:</strong> Proper passenger panel setup for customer viewing</li>
      * </ul>
-     * <p>
-     * Personal information extraction includes comprehensive data retrieval covering passenger
-     * names (first and last), identification codes (SSN/CF), and birth date information for
-     * complete customer visibility into their booking details and passenger information.
-     * </p>
-     * <p>
-     * Operational data loading includes seat assignment information, ticket number display,
-     * and booking metadata that enables customers to understand their reservation status
-     * and operational details for travel planning and preparation.
-     * </p>
-     * <p>
-     * Luggage information integration provides detailed luggage management data including
-     * luggage types, associated tickets, and current status for each passenger. This
-     * comprehensive luggage data supports customer travel planning and operational
-     * preparation for their flight experience.
-     * </p>
-     * <p>
-     * Panel configuration includes proper passenger panel setup with all loaded information
-     * displayed in a user-friendly format that enables customers to review their booking
-     * details and make informed decisions about potential modifications or cancellations.
-     * </p>
-     * <p>
-     * The method integrates seamlessly with the inherited pagination system to manage
-     * large numbers of passengers efficiently, ensuring optimal customer interface
-     * performance and usability across different booking sizes and passenger counts.
-     * </p>
-     * <p>
-     * Data validation ensures that null values are handled gracefully, displaying only
-     * available information while maintaining interface stability and preventing display
-     * errors that could impact customer experience.
-     * </p>
      *
      * @param controller the system controller providing access to booking data, passenger information, and luggage management
      */
@@ -273,42 +181,7 @@ public class BookingPageCustomer extends BookingPage {
      *   <li><strong>Status Validation Integration:</strong> Comprehensive flight and booking status checking</li>
      *   <li><strong>Navigation Management:</strong> Seamless workflow transitions and state management</li>
      *   <li><strong>Error Handling:</strong> Clear feedback for invalid operations and status conflicts</li>
-     *   <li><strong>Resource Management:</strong> Proper cleanup during workflow transitions</li>
      * </ul>
-     * <p>
-     * The panel serves as the primary customer control center for booking operations,
-     * providing customers with intuitive access to modification and cancellation capabilities
-     * while ensuring that all operations are properly validated and executed within
-     * operational constraints and business rules.
-     * </p>
-     * <p>
-     * Booking modification control includes sophisticated validation that checks both flight
-     * operational status and booking confirmation status before initiating modification
-     * workflows. Successful validation transitions customers to the {@link BookingModifyPage}
-     * interface with proper state preservation and resource management.
-     * </p>
-     * <p>
-     * Booking cancellation control provides secure deletion capabilities with comprehensive
-     * validation to ensure that only appropriate bookings can be cancelled. Successful
-     * validation triggers booking deletion through the controller and returns customers
-     * to the previous application state.
-     * </p>
-     * <p>
-     * Layout management uses {@link FlowLayout} with right alignment to provide intuitive
-     * control organization that follows conventional interface design patterns for action
-     * buttons. The layout ensures proper button spacing and visual hierarchy for optimal
-     * customer interaction.
-     * </p>
-     * <p>
-     * Error handling provides specific feedback for validation failures, helping customers
-     * understand why certain operations may not be available and providing clear guidance
-     * about booking status requirements for modification and cancellation operations.
-     * </p>
-     * <p>
-     * Resource management includes proper cleanup of passenger-related components during
-     * workflow transitions, ensuring that luggage view windows are properly hidden and
-     * interface resources are managed efficiently during navigation operations.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper workflow and navigation management
      * @param controller the system controller providing access to booking operations, status validation, and workflow coordination
@@ -386,38 +259,7 @@ public class BookingPageCustomer extends BookingPage {
      * <ul>
      *   <li><strong>Flight Status Checking:</strong> Validates that the flight is in "PROGRAMMED" operational status</li>
      *   <li><strong>Booking Status Validation:</strong> Ensures booking is either "CONFIRMED" or "PENDING" status</li>
-     *   <li><strong>Combined Logic Evaluation:</strong> Applies logical AND operation for comprehensive authorization</li>
-     *   <li><strong>Business Rule Enforcement:</strong> Maintains operational integrity and customer service standards</li>
      * </ul>
-     * <p>
-     * Flight status validation ensures that booking operations are only permitted when
-     * the flight is in "PROGRAMMED" status, preventing customer operations on flights
-     * that have departed, been cancelled, or are in other non-modifiable operational
-     * states that would compromise operational integrity.
-     * </p>
-     * <p>
-     * Booking status validation verifies that the booking is in either "CONFIRMED" or
-     * "PENDING" status, ensuring that customers can modify or cancel active reservations
-     * while preventing operations on bookings that may have been previously cancelled
-     * or are in other non-operational states.
-     * </p>
-     * <p>
-     * Combined logic evaluation uses Boolean AND operation to ensure that both flight
-     * and booking status requirements are satisfied before authorizing customer operations.
-     * This comprehensive approach prevents operational conflicts and maintains system
-     * integrity throughout customer workflow operations.
-     * </p>
-     * <p>
-     * Business rule enforcement ensures that customer operations align with airport
-     * operational procedures and industry standards for booking management, preventing
-     * customers from performing operations that could impact flight operations or
-     * compromise service delivery.
-     * </p>
-     * <p>
-     * The method returns a Boolean value that determines whether customer operations
-     * should be permitted, enabling calling methods to provide appropriate feedback
-     * and workflow management based on current operational conditions.
-     * </p>
      *
      * @param controller the system controller providing access to flight status and booking status information
      * @return true if both flight and booking status permit customer operations, false if operations should be restricted

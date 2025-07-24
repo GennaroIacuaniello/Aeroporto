@@ -157,29 +157,6 @@ public class CheckinPassengers extends BookingPageAdmin{
      *   <li>Configuring interactive checkbox controls for individual passenger check-in selection</li>
      *   <li>Setting up immediate visibility for operational readiness</li>
      * </ul>
-     * <p>
-     * The constructor leverages the parent class initialization to establish the core
-     * administrative interface structure while adding specialized check-in functionality
-     * including interactive passenger selection, gate management, and batch processing
-     * capabilities.
-     * </p>
-     * <p>
-     * Passenger collection initialization creates separate tracking for passengers
-     * selected for check-in and those remaining unchecked, enabling precise control
-     * over check-in operations and maintaining clear operational state throughout
-     * the check-in process.
-     * </p>
-     * <p>
-     * Interactive checkbox setup configures individual passenger panels with check-in
-     * selection controls, integrating current passenger check-in status from the
-     * flight controller to provide accurate operational state representation.
-     * </p>
-     * <p>
-     * Window management ensures proper integration with the calling objects hierarchy
-     * for seamless navigation and resource management throughout check-in operations.
-     * The interface becomes immediately visible and ready for check-in processing
-     * upon construction completion.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper resource management and navigation
      * @param controller the system controller providing access to flight management, check-in operations, and data persistence
@@ -251,38 +228,7 @@ public class CheckinPassengers extends BookingPageAdmin{
      *   <li><strong>Gate Management Controls:</strong> Gate assignment and modification functionality</li>
      *   <li><strong>Check-in Confirmation Controls:</strong> Batch passenger check-in processing</li>
      *   <li><strong>Delay Management Controls:</strong> Inherited flight delay configuration capabilities</li>
-     *   <li><strong>Structured Layout:</strong> Grid-based organization for optimal control placement and workflow efficiency</li>
-     *   <li><strong>Visual Consistency:</strong> Transparent background maintaining application design coherence</li>
-     *   <li><strong>Immediate Visibility:</strong> Panel becomes visible immediately upon creation for operational readiness</li>
      * </ul>
-     * <p>
-     * The panel serves as the primary operational control center for check-in operations,
-     * providing check-in staff with centralized access to essential flight management
-     * capabilities and specialized check-in functionality within a unified interface.
-     * </p>
-     * <p>
-     * Control organization follows operational workflow patterns with logical grouping
-     * of related functions. Flight status controls are positioned for immediate access,
-     * gate management is centrally located for operational efficiency, check-in confirmation
-     * is prominently positioned, and delay configuration is positioned for administrative
-     * convenience.
-     * </p>
-     * <p>
-     * Layout management uses {@link GridBagLayout} to provide precise control over
-     * button positioning and sizing, ensuring optimal check-in staff experience across
-     * different screen sizes and operational configurations. The layout accommodates
-     * various control types including buttons, input fields, and specialized components.
-     * </p>
-     * <p>
-     * The method coordinates the creation of specialized check-in controls through
-     * dedicated methods, ensuring proper separation of concerns and maintainable
-     * check-in interface configuration management.
-     * </p>
-     * <p>
-     * Panel integration with the main frame ensures proper positioning within the
-     * overall interface hierarchy while maintaining check-in control accessibility
-     * and operational workflow efficiency.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper navigation and resource management
      * @param controller the system controller providing access to flight operations, check-in management, and administrative capabilities
@@ -317,43 +263,10 @@ public class CheckinPassengers extends BookingPageAdmin{
      * capabilities with integrated validation and operational coordination.
      * </p>
      * <p>
-     * The gate assignment button functionality includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Gate Selection Integration:</strong> Direct integration with gate management systems for real-time gate availability</li>
-     *   <li><strong>Dynamic Button State:</strong> Button behavior adapts based on current gate assignment status</li>
-     *   <li><strong>Operational Coordination:</strong> Ensures proper integration with flight management systems for gate updates</li>
-     *   <li><strong>Interface Management:</strong> Proper component lifecycle management for gate selection dialogs</li>
-     *   <li><strong>Visual Consistency:</strong> Maintains application design consistency with proper button styling and positioning</li>
-     * </ul>
-     * <p>
      * Gate management integration creates dynamic gate assignment capabilities based on
      * current flight gate status. For flights without assigned gates, the button triggers
      * new gate assignment processes, while flights with existing gates provide gate
      * modification capabilities through dedicated chooser interfaces.
-     * </p>
-     * <p>
-     * Component lifecycle management ensures that gate selection dialogs are properly
-     * created, displayed, and managed throughout the check-in workflow. The button
-     * maintains references to active gate selection components for proper resource
-     * management and cleanup operations.
-     * </p>
-     * <p>
-     * Operational coordination includes integration with the controller's gate management
-     * capabilities to ensure that gate assignments are properly validated, applied, and
-     * coordinated across the airport management system. This ensures operational
-     * consistency and proper gate allocation management.
-     * </p>
-     * <p>
-     * Visual integration includes proper button styling consistent with check-in
-     * interface design patterns. The button is configured as non-focusable to maintain
-     * clean interface behavior and positioned appropriately within the confirmation
-     * panel layout structure.
-     * </p>
-     * <p>
-     * Button state management includes automatic disabling after gate assignment
-     * operations to prevent operational conflicts and provide clear visual feedback
-     * about gate assignment completion.
      * </p>
      *
      * @param controller the system controller providing access to gate management and operational coordination capabilities
@@ -398,29 +311,6 @@ public class CheckinPassengers extends BookingPageAdmin{
      *   <li><strong>Gate Modification:</strong> Provides gate change functionality for flights with existing gate assignments</li>
      *   <li><strong>Component Integration:</strong> Coordinates with appropriate gate management components based on operation type</li>
      * </ul>
-     * <p>
-     * New gate assignment processing delegates to the gate controller's new gate
-     * functionality, providing comprehensive gate assignment workflows that include
-     * gate availability checking, assignment validation, and operational coordination
-     * with other airport systems.
-     * </p>
-     * <p>
-     * Gate modification operations create dedicated {@link GateChooser} components
-     * that provide staff with interfaces for selecting alternative gates. The chooser
-     * integrates with gate availability systems to ensure only appropriate gates
-     * are presented for selection.
-     * </p>
-     * <p>
-     * Component integration ensures that gate assignment operations are properly
-     * coordinated with the check-in interface lifecycle. The method maintains
-     * references to active gate selection components for proper resource management
-     * and cleanup operations.
-     * </p>
-     * <p>
-     * The method provides seamless integration between different gate management
-     * workflows while maintaining consistent user experience and operational
-     * behavior across various gate assignment scenarios.
-     * </p>
      *
      * @param controller the system controller providing access to gate management capabilities and operational coordination
      */
@@ -439,42 +329,9 @@ public class CheckinPassengers extends BookingPageAdmin{
      * status updates, and user feedback for successful check-in completion.
      * </p>
      * <p>
-     * The check-in confirmation button functionality includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Batch Processing:</strong> Simultaneous processing of multiple passenger check-ins</li>
-     *   <li><strong>Luggage Integration:</strong> Automatic coordination with luggage check-in systems</li>
-     *   <li><strong>Status Updates:</strong> Comprehensive passenger and luggage status updates</li>
-     *   <li><strong>Collection Management:</strong> Proper management of passenger selection collections</li>
-     *   <li><strong>User Feedback:</strong> Clear confirmation messaging for successful operations</li>
-     * </ul>
-     * <p>
-     * Batch processing functionality leverages the flight controller's check-in processing
-     * capabilities to handle multiple passengers simultaneously. The processing includes
-     * validation of selected passengers, status updates, and coordination with related
-     * operational systems.
-     * </p>
-     * <p>
-     * Luggage integration ensures that passenger check-in operations are properly
-     * coordinated with luggage processing systems. The method processes luggage check-in
-     * information for all successfully checked-in passengers, maintaining operational
-     * integrity across passenger and baggage handling systems.
-     * </p>
-     * <p>
      * Collection management includes proper handling of passenger selection lists,
      * ensuring that check-in operations are applied to the correct passengers while
      * maintaining clear operational state throughout the processing workflow.
-     * </p>
-     * <p>
-     * User feedback provides immediate confirmation of successful check-in operations
-     * through {@link FloatingMessage} components, enabling check-in staff to understand
-     * operation completion and proceed with subsequent operational tasks.
-     * </p>
-     * <p>
-     * The button is configured with appropriate styling and positioning within the
-     * check-in control panel for optimal operational access and workflow efficiency.
-     * Visual consistency is maintained with other operational controls while ensuring
-     * prominent visibility for this critical operational function.
      * </p>
      *
      * @param controller the system controller providing access to check-in processing, luggage coordination, and operational status management
@@ -518,43 +375,16 @@ public class CheckinPassengers extends BookingPageAdmin{
      * check-in status and provides real-time collection management for operational efficiency.
      * </p>
      * <p>
-     * The check-in checkbox configuration process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Status Integration:</strong> Loads current passenger check-in status from flight controller</li>
-     *   <li><strong>Interactive Controls:</strong> Adds checkbox controls to each passenger panel for individual selection</li>
-     *   <li><strong>Event Handling:</strong> Configures checkbox event handlers for real-time collection management</li>
-     *   <li><strong>Collection Synchronization:</strong> Maintains synchronized passenger collections based on checkbox states</li>
-     *   <li><strong>Operational State Management:</strong> Provides clear operational state tracking throughout check-in process</li>
-     * </ul>
-     * <p>
      * Status integration retrieves current passenger check-in status from the flight
      * controller to ensure that checkbox controls accurately reflect operational reality.
      * This prevents operational conflicts and provides check-in staff with accurate
      * information about passenger check-in states.
      * </p>
      * <p>
-     * Interactive controls are added to each passenger panel through the addCheckinCheckBox
-     * method, providing consistent checkbox functionality across all passengers. The
-     * checkboxes are initialized with current check-in status to provide accurate
-     * operational representation.
-     * </p>
-     * <p>
      * Event handling configuration includes action listeners for each checkbox that
      * automatically manage passenger collections based on checkbox state changes.
      * Selected passengers are added to the check-in collection while deselected
      * passengers are moved to the non-check-in collection.
-     * </p>
-     * <p>
-     * Collection synchronization ensures that passenger selection state is properly
-     * maintained throughout the check-in process. The method handles addition and
-     * removal operations to maintain accurate operational state and prevent
-     * processing conflicts.
-     * </p>
-     * <p>
-     * The method provides real-time operational state management, enabling check-in
-     * staff to dynamically adjust passenger selections and immediately see the impact
-     * on operational collections and processing readiness.
      * </p>
      *
      * @param controller the system controller providing access to current passenger check-in status and flight management data
@@ -600,43 +430,7 @@ public class CheckinPassengers extends BookingPageAdmin{
      *   <li><strong>Passenger Panel Cleanup:</strong> Comprehensive disposal of seat choosers and luggage views for all passenger panels</li>
      *   <li><strong>Gate Management Cleanup:</strong> Specialized cleanup for gate chooser dialogs and gate button state reset</li>
      *   <li><strong>Administrative Component Cleanup:</strong> Inherited cleanup for status chooser dialogs and administrative controls</li>
-     *   <li><strong>Control State Reset:</strong> Proper reset of check-in control states for potential reuse</li>
      * </ul>
-     * <p>
-     * Controller resource management includes conditional cleanup of flight and booking
-     * data based on the controller disposal flag. When enabled, this ensures that
-     * controller state is properly reset to prevent memory leaks and state conflicts
-     * in scenarios where controllers may be shared across multiple interface components.
-     * </p>
-     * <p>
-     * Passenger panel cleanup includes comprehensive disposal of associated components
-     * such as seat chooser dialogs and luggage view windows for all passenger panels
-     * managed by the check-in interface. This prevents resource leaks from sub-components
-     * that may have independent lifecycles and resource requirements.
-     * </p>
-     * <p>
-     * Gate management cleanup includes specialized handling for gate chooser dialogs
-     * and gate button state management. The cleanup process ensures that gate chooser
-     * dialogs are properly disposed and that the gate button is reset to enabled state
-     * for potential interface reuse.
-     * </p>
-     * <p>
-     * Administrative component cleanup includes inherited cleanup for status chooser
-     * dialogs and other administrative controls from the parent class. This ensures
-     * complete cleanup of all inherited administrative interface components.
-     * </p>
-     * <p>
-     * Control state reset includes re-enabling operational controls such as the gate
-     * button and status button while ensuring that associated dialog components are
-     * properly disposed. This cleanup ensures that check-in interface components are
-     * left in a clean state that supports proper resource reclamation.
-     * </p>
-     * <p>
-     * The disposal process is designed to be safe for multiple invocations and
-     * handles null references gracefully to prevent exceptions during cleanup
-     * operations. This ensures robust cleanup behavior regardless of the current
-     * state of check-in interface components.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for proper cleanup coordination
      * @param controller the system controller for resource management and state cleanup coordination
@@ -677,12 +471,6 @@ public class CheckinPassengers extends BookingPageAdmin{
      * to active gate selection components, ensuring that these dialogs are properly
      * cleaned up during interface disposal operations. This prevents resource leaks
      * and ensures complete cleanup of all check-in related components.
-     * </p>
-     * <p>
-     * The method supports the gate management workflow by providing a clean integration
-     * point between gate assignment operations and interface resource management.
-     * External gate management components can register their dialog instances to
-     * participate in the interface cleanup lifecycle.
      * </p>
      *
      * @param gateChooser the gate chooser dialog instance to be registered for resource management
