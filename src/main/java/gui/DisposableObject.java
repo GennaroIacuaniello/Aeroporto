@@ -19,7 +19,6 @@ import java.util.List;
  * <ul>
  *   <li><strong>Resource Disposal:</strong> Standardized cleanup procedures for component resources and state</li>
  *   <li><strong>State Restoration:</strong> Component state recovery for navigation return scenarios</li>
- *   <li><strong>Navigation Integration:</strong> Seamless integration with application navigation hierarchy</li>
  *   <li><strong>Memory Management:</strong> Proper resource cleanup to prevent memory leaks</li>
  *   <li><strong>Frame Access:</strong> Standardized access to component's main window frame</li>
  *   <li><strong>Controller Integration:</strong> Consistent controller resource management across components</li>
@@ -35,11 +34,6 @@ import java.util.List;
  *   <li><strong>Specialized Interfaces:</strong> {@link CheckinPassengers}, {@link BookingModifyPage}</li>
  * </ul>
  * <p>
- * Navigation hierarchy management enables the application to maintain a stack of active components,
- * supporting complex navigation patterns including forward navigation, backward navigation, and
- * component replacement while ensuring proper resource management at each transition.
- * </p>
- * <p>
  * Resource disposal follows a standardized pattern where components clean up their allocated resources,
  * dispose of child components, reset controller state when appropriate, and prepare for garbage
  * collection. This ensures that navigation operations do not accumulate memory leaks over time.
@@ -48,21 +42,6 @@ import java.util.List;
  * State restoration enables components to recover their operational state when returning from
  * navigation operations. This is particularly important for search interfaces, user session
  * management, and maintaining user workflow continuity across navigation operations.
- * </p>
- * <p>
- * The abstract nature of this class ensures that all GUI components implement essential lifecycle
- * methods while providing flexibility for component-specific resource management and state
- * handling requirements.
- * </p>
- * <p>
- * Integration with the {@link Controller} system ensures that component lifecycle operations
- * are properly coordinated with business logic, data persistence, and system state management
- * throughout the application's operational lifetime.
- * </p>
- * <p>
- * Thread safety is not provided as GUI components are accessed from the Event Dispatch Thread.
- * Component implementations should ensure that lifecycle operations are performed on the
- * appropriate thread to maintain Swing threading requirements.
  * </p>
  *
  * @author Aeroporto Di Napoli
@@ -95,16 +74,6 @@ public abstract class DisposableObject {
      *   <li><strong>Cache Clearing:</strong> Removing cached data that is no longer needed</li>
      *   <li><strong>Event Listener Removal:</strong> Unregistering event listeners to prevent memory leaks</li>
      * </ul>
-     * <p>
-     * The method receives the complete navigation hierarchy through the callingObjects parameter,
-     * enabling components to perform cleanup operations that may require interaction with
-     * parent or sibling components in the navigation stack.
-     * </p>
-     * <p>
-     * Controller integration allows components to perform business logic cleanup operations
-     * such as clearing search caches, resetting temporary data, or updating persistent
-     * state as appropriate for the component's role in the application.
-     * </p>
      * <p>
      * Implementation examples include:
      * </p>
@@ -165,11 +134,6 @@ public abstract class DisposableObject {
      * state may have changed during navigation, ensuring that the component displays current
      * and accurate information upon restoration.
      * </p>
-     * <p>
-     * Performance considerations should be taken into account, as restoration operations may
-     * involve database queries or network operations that could impact user experience if
-     * not handled efficiently.
-     * </p>
      *
      * @param callingObjects the list of parent objects in the application navigation hierarchy for restoration coordination
      * @param controller the system controller for accessing current system state and business logic
@@ -194,7 +158,6 @@ public abstract class DisposableObject {
      *   <li><strong>Position Management:</strong> Managing window screen position for user experience continuity</li>
      *   <li><strong>State Management:</strong> Handling window maximization and minimization states</li>
      *   <li><strong>Disposal Operations:</strong> Properly disposing of windows during component cleanup</li>
-     *   <li><strong>Title Management:</strong> Accessing window titles for navigation logic and user feedback</li>
      * </ul>
      * <p>
      * The returned frame should be the primary window associated with the component that
@@ -206,17 +169,6 @@ public abstract class DisposableObject {
      * across component transitions, including preserving window size and position when
      * navigating between components and ensuring proper window state management.
      * </p>
-     * <p>
-     * The frame reference should remain constant throughout the component's lifecycle,
-     * as navigation operations may cache frame references for performance optimization
-     * and state management purposes.
-     * </p>
-     * <p>
-     * Implementation should ensure that the returned frame is properly initialized and
-     * configured before being returned, as navigation operations may immediately perform
-     * operations on the returned frame reference.
-     * </p>
-     *
      * @return the main JFrame instance associated with this component for navigation and window management
      */
     public abstract JFrame getFrame();

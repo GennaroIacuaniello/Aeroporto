@@ -14,50 +14,16 @@ import java.awt.event.ActionListener;
  * cleanup after a specified duration.
  * </p>
  * <p>
- * The DisposeTimers class implements comprehensive timed disposal operations including:
- * </p>
- * <ul>
- *   <li><strong>Visibility Duration Control:</strong> Maintains full visibility for a specified period</li>
- *   <li><strong>Fade-out Animation:</strong> Gradual opacity reduction for smooth visual transition</li>
- *   <li><strong>Automatic Disposal:</strong> Complete window cleanup and resource deallocation</li>
- *   <li><strong>Timer Coordination:</strong> Synchronized timer management for sequential animation phases</li>
- *   <li><strong>Resource Management:</strong> Proper cleanup of all timer resources and window references</li>
- * </ul>
- * <p>
- * The disposal process follows a three-phase animation sequence:
- * </p>
- * <ol>
- *   <li><strong>Visibility Phase (1500ms):</strong> Window remains fully visible at original opacity</li>
- *   <li><strong>Fade-out Phase (1000ms):</strong> Gradual opacity reduction from current value to 0.0</li>
- *   <li><strong>Disposal Phase:</strong> Complete window disposal and timer cleanup</li>
- * </ol>
- * <p>
  * Timer coordination ensures smooth transitions between animation phases with proper resource
  * management throughout the disposal lifecycle. Each timer is configured with appropriate
  * repeat settings and cleanup procedures to prevent resource leaks and ensure complete
  * disposal completion.
  * </p>
  * <p>
- * The fade-out animation uses incremental opacity reduction (0.01 per 10ms interval) to
- * create smooth visual transitions that enhance user experience for temporary notification
- * displays. The animation respects the window's current opacity level, accommodating
- * scenarios where windows may have been created with non-standard opacity values.
- * </p>
- * <p>
  * Integration with {@link FloatingMessage} components enables automatic disposal of temporary
  * notification windows without requiring manual cleanup by calling code. This reduces
  * complexity in notification management while ensuring proper resource cleanup and
  * preventing window accumulation.
- * </p>
- * <p>
- * The class is designed as a one-time use utility where each instance manages the disposal
- * of a single window. Multiple DisposeTimers instances should be created for managing
- * multiple windows requiring timed disposal functionality.
- * </p>
- * <p>
- * Thread safety is provided through Swing's Event Dispatch Thread execution model, as
- * all timer operations execute on the EDT. The class should only be instantiated and
- * used from the Event Dispatch Thread to maintain proper Swing threading compliance.
  * </p>
  * <p>
  * Performance considerations include minimal resource overhead through efficient timer
@@ -132,25 +98,6 @@ public class DisposeTimers {
      * the dispose() method and performs comprehensive cleanup of all timer resources
      * including stopping active timers and disabling repeat functionality.
      * </p>
-     * <p>
-     * Timer activation sequence immediately starts both the disposal timer and start
-     * delay timer, initiating the complete disposal process. The timers execute
-     * independently but coordinate through their action listeners to ensure proper
-     * sequence progression and resource management.
-     * </p>
-     * <p>
-     * Resource management throughout the disposal process ensures that all timer
-     * references are properly cleaned up, preventing memory leaks and ensuring
-     * complete disposal of both the target window and the disposal management
-     * infrastructure.
-     * </p>
-     * <p>
-     * The constructor completes immediately after timer initialization and activation,
-     * with all subsequent disposal operations handled asynchronously through the
-     * timer execution framework. This ensures non-blocking disposal initiation
-     * while maintaining complete automation of the disposal process.
-     * </p>
-     *
      * @param window the JWindow instance to be disposed with fade-out animation after the specified duration
      */
     public DisposeTimers(JWindow window) {

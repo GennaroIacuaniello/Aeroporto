@@ -20,7 +20,6 @@ import java.awt.*;
  *   <li><strong>Configurable Border Styling:</strong> Customizable border colors with automatic repainting for dynamic styling</li>
  *   <li><strong>Layout Manager Integration:</strong> Full compatibility with standard Swing layout managers</li>
  *   <li><strong>Transparent Background Support:</strong> Opaque false configuration for optimal integration with parent containers</li>
- *   <li><strong>High-Quality Rendering:</strong> Graphics2D anti-aliasing for professional visual presentation</li>
  * </ul>
  * <p>
  * The component is designed with modern UI principles, providing users with:
@@ -32,12 +31,6 @@ import java.awt.*;
  *   <li><strong>Flexible Styling:</strong> Dynamic color changes support various message types and interface states</li>
  *   <li><strong>Seamless Integration:</strong> Transparent background enables proper layering with parent components</li>
  * </ul>
- * <p>
- * Rendering architecture utilizes advanced Graphics2D capabilities to provide high-quality visual output
- * with anti-aliasing enabled for smooth curve rendering. The rendering system includes precise coordinate
- * calculations for optimal corner radius application and consistent visual appearance across different
- * screen resolutions and display configurations.
- * </p>
  * <p>
  * Color management provides independent control over background and border colors through dedicated
  * field storage and override methods. The color system ensures immediate visual updates through
@@ -55,43 +48,6 @@ import java.awt.*;
  * the airport management system. The rounded panel serves as the container for message content,
  * providing type-specific styling with customizable background and border colors that distinguish
  * different message categories including information, warnings, and error notifications.
- * </p>
- * <p>
- * Performance optimization includes efficient painting algorithms that minimize computational
- * overhead during rendering operations. The painting system utilizes cached color values and
- * optimized Graphics2D operations to ensure smooth visual performance during interface updates
- * and dynamic color changes throughout message display workflows.
- * </p>
- * <p>
- * Visual design follows modern interface design principles with consistent corner radius
- * application and professional color management. The 30-pixel corner radius provides optimal
- * visual balance between subtle styling and clear geometric definition, ensuring professional
- * appearance without excessive visual distraction.
- * </p>
- * <p>
- * Integration architecture enables seamless use across multiple interface contexts including
- * message displays, dialog panels, and specialized interface components. The component maintains
- * design consistency while providing flexible styling options for different usage scenarios
- * throughout the airport management system.
- * </p>
- * <p>
- * The class follows standard Swing component patterns with proper component lifecycle management,
- * event handling integration, and parent class method overrides. The implementation maintains
- * compatibility with existing Swing applications while providing enhanced visual capabilities
- * for modern interface requirements.
- * </p>
- * <p>
- * Resource management includes efficient color object handling and optimized repainting logic
- * that minimizes system resource usage during extended application sessions. The component
- * ensures optimal performance without compromising visual quality or interface responsiveness
- * throughout airport management system operations.
- * </p>
- * <p>
- * The RoundedPanel serves as a critical visual enhancement component throughout the airport
- * management system, providing consistent rounded corner styling that elevates the overall
- * interface aesthetic while maintaining full functional compatibility with standard Swing
- * component architecture and layout management systems.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -175,12 +131,6 @@ public class RoundedPanel extends JPanel {
      * are properly initialized for immediate visual presentation upon component
      * display and integration within parent container layouts.
      * </p>
-     * <p>
-     * The constructor provides immediate readiness for integration within various
-     * interface contexts including FloatingMessage displays, dialog panels, and
-     * specialized interface components throughout the airport management system
-     * while maintaining full layout manager compatibility.
-     * </p>
      *
      * @param layout the LayoutManager to be used for organizing child components within the rounded panel
      */
@@ -195,7 +145,7 @@ public class RoundedPanel extends JPanel {
      * Performs custom painting with rounded corners and anti-aliased rendering for professional visual appearance.
      * <p>
      * This method overrides the standard JPanel painting behavior to provide enhanced visual
-     * rendering with rounded corners, custom color application, and high-quality anti-aliasing.
+     * rendering with rounded corners and custom color application.
      * The painting implementation creates professional-looking interface elements with smooth
      * curved edges and precise color control for optimal visual presentation throughout
      * the airport management system interface.
@@ -206,7 +156,6 @@ public class RoundedPanel extends JPanel {
      * <ul>
      *   <li><strong>Corner Radius Configuration:</strong> 30-pixel radius establishment for consistent rounded corner appearance</li>
      *   <li><strong>Dimension Calculation:</strong> Component width and height determination for precise rendering boundaries</li>
-     *   <li><strong>Graphics Enhancement:</strong> Graphics2D casting and anti-aliasing activation for smooth visual output</li>
      *   <li><strong>Background Rendering:</strong> Filled rounded rectangle creation with custom background color</li>
      *   <li><strong>Border Drawing:</strong> Outlined rounded rectangle creation with custom border color</li>
      * </ul>
@@ -223,12 +172,6 @@ public class RoundedPanel extends JPanel {
      * corner radius application across different component sizes.
      * </p>
      * <p>
-     * Graphics enhancement includes Graphics2D casting for advanced rendering capabilities
-     * and anti-aliasing activation (RenderingHints.VALUE_ANTIALIAS_ON) to ensure smooth
-     * curve rendering. The anti-aliasing provides professional visual quality with
-     * smooth edges that enhance overall interface appearance.
-     * </p>
-     * <p>
      * Background rendering fills the rounded rectangle area with the custom backgroundColor,
      * providing complete visual coverage within the rounded boundaries. The background
      * rendering uses precise coordinate calculations (width-1, height-1) to ensure
@@ -239,12 +182,6 @@ public class RoundedPanel extends JPanel {
      * providing visual definition and separation from parent containers. The border
      * drawing maintains the same corner radius as the background for consistent
      * visual integration and professional appearance.
-     * </p>
-     * <p>
-     * The painting method ensures consistent visual appearance across different display
-     * configurations and screen resolutions while maintaining optimal performance through
-     * efficient Graphics2D operations and minimal computational overhead during
-     * rendering operations throughout interface updates.
      * </p>
      *
      * @param g the Graphics context for painting operations and visual rendering
@@ -277,39 +214,6 @@ public class RoundedPanel extends JPanel {
      * immediate visual feedback when border colors are modified throughout interface
      * operations and message display workflows.
      * </p>
-     * <p>
-     * Border color modification includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Color Storage:</strong> Updates the internal roundBorderColor field with the new color value</li>
-     *   <li><strong>Immediate Update:</strong> Triggers automatic component repainting for instant visual changes</li>
-     *   <li><strong>Visual Consistency:</strong> Ensures consistent border appearance across all rounded corners</li>
-     *   <li><strong>Type-Specific Styling:</strong> Enables dynamic color changes for different message categories</li>
-     * </ul>
-     * <p>
-     * Color storage updates the internal roundBorderColor field with the provided color
-     * value, ensuring that subsequent painting operations use the new border color.
-     * The color storage maintains color consistency throughout component lifecycle
-     * and interface state changes.
-     * </p>
-     * <p>
-     * Immediate update functionality includes automatic repaint() invocation to trigger
-     * component repainting with the new border color. The immediate update ensures
-     * that color changes are visually reflected without requiring external repainting
-     * requests or interface refresh operations.
-     * </p>
-     * <p>
-     * Visual consistency ensures that the new border color is applied uniformly across
-     * all rounded corners and border segments, maintaining professional appearance
-     * and consistent visual integration with the custom background color and
-     * overall component styling throughout the interface.
-     * </p>
-     * <p>
-     * Type-specific styling enables dynamic border color changes for different message
-     * categories in the FloatingMessage system, allowing information messages, warnings,
-     * and error notifications to display distinct visual styling while maintaining
-     * consistent rounded corner appearance and professional interface design.
-     * </p>
      *
      * @param color the new Color to be used for the rounded border outline and visual definition
      */
@@ -331,17 +235,9 @@ public class RoundedPanel extends JPanel {
      * Background color management includes:
      * </p>
      * <ul>
-     *   <li><strong>Custom Color Storage:</strong> Updates the internal backgroundColor field for independent color management</li>
      *   <li><strong>Parent Coordination:</strong> Delegates to parent JPanel setBackground for system compatibility</li>
      *   <li><strong>Immediate Update:</strong> Triggers automatic component repainting for instant visual changes</li>
-     *   <li><strong>Rendering Integration:</strong> Ensures custom painting operations use the updated background color</li>
      * </ul>
-     * <p>
-     * Custom color storage updates the internal backgroundColor field with the provided
-     * color value, ensuring that custom painting operations use the new background color
-     * for rounded rectangle filling. The custom storage enables precise color control
-     * independent from parent component color management systems.
-     * </p>
      * <p>
      * Parent coordination includes calling the parent JPanel setBackground method to
      * maintain compatibility with standard Swing color management systems. The parent
@@ -353,18 +249,6 @@ public class RoundedPanel extends JPanel {
      * component repainting with the new background color. The immediate update ensures
      * that color changes are visually reflected without requiring external repainting
      * requests or interface refresh operations throughout dynamic styling scenarios.
-     * </p>
-     * <p>
-     * Rendering integration ensures that the paintComponent method uses the updated
-     * backgroundColor field during rounded rectangle filling operations. The rendering
-     * integration provides consistent color application across all visual elements
-     * and maintains professional appearance throughout color change operations.
-     * </p>
-     * <p>
-     * The method supports dynamic background color changes for different message types
-     * in the FloatingMessage system and other interface components, enabling type-specific
-     * visual styling while maintaining consistent rounded corner appearance and
-     * professional interface design throughout the airport management system.
      * </p>
      *
      * @param bg the new Color to be used for the background filling and visual appearance
@@ -384,39 +268,6 @@ public class RoundedPanel extends JPanel {
      * provides access to the independently managed background color used during custom painting
      * operations, enabling color coordination and consistency checking throughout interface
      * components and styling management systems.
-     * </p>
-     * <p>
-     * Background color access includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Independent Color Return:</strong> Returns the custom backgroundColor field rather than parent color</li>
-     *   <li><strong>Consistency Support:</strong> Enables color coordination across multiple interface components</li>
-     *   <li><strong>Rendering Coordination:</strong> Provides access to the actual color used during painting operations</li>
-     *   <li><strong>Interface Integration:</strong> Supports color-based logic and conditional styling throughout the system</li>
-     * </ul>
-     * <p>
-     * Independent color return ensures that the method returns the actual color used
-     * during custom painting operations rather than the standard JPanel background color.
-     * The independent return enables precise color tracking and management throughout
-     * dynamic styling operations and interface state changes.
-     * </p>
-     * <p>
-     * Consistency support enables color coordination across multiple RoundedPanel instances
-     * and related interface components. The color access supports consistent visual
-     * theming and coordinated color schemes throughout the airport management system
-     * interface while maintaining individual component color independence.
-     * </p>
-     * <p>
-     * Rendering coordination provides access to the exact color used during paintComponent
-     * operations, enabling external components to coordinate their styling with the
-     * rounded panel appearance. The rendering coordination supports complex interface
-     * layouts with coordinated color schemes and visual consistency.
-     * </p>
-     * <p>
-     * Interface integration supports color-based conditional logic throughout the system,
-     * enabling components to adapt their behavior based on current background colors.
-     * The integration enables sophisticated visual effects and coordinated styling
-     * throughout dynamic interface operations and message display workflows.
      * </p>
      *
      * @return the current custom background Color used for rounded rectangle filling and visual appearance
