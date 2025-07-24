@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * Comprehensive booking search panel providing advanced search and filtering capabilities for customer booking management in the airport management system.
  * <p>
- * This class extends {@link JPanel} to provide sophisticated booking search functionality within the
- * {@link MyBookingsCustomerMainFrame} interface. The SearchBookingPanel serves as the primary search
+ * This class extends {@link JPanel} to provide booking search functionality within the
+ * {@link MyBookingsCustomerMainFrame} frame. The SearchBookingPanel serves as the primary search
  * and filtering interface for customers to locate their existing bookings using various criteria
  * including flight information and passenger details, with comprehensive result display and
  * management capabilities throughout customer booking workflows.
@@ -35,95 +35,6 @@ import java.util.List;
  *   <li><strong>Menu Integration:</strong> Specialized behavior for menu-initiated access with automatic data loading</li>
  *   <li><strong>Error Handling:</strong> Comprehensive input validation with user-friendly error messaging through FloatingMessage</li>
  * </ul>
- * <p>
- * The interface is designed with customer workflow optimization, providing users with:
- * </p>
- * <ul>
- *   <li><strong>Intuitive Filter Selection:</strong> Clear flight/passenger filter buttons with dynamic panel switching</li>
- *   <li><strong>Comprehensive Input Fields:</strong> All necessary search criteria with proper validation and formatting</li>
- *   <li><strong>Real-time Search:</strong> Immediate search execution with dynamic result updating and error feedback</li>
- *   <li><strong>Professional Styling:</strong> Consistent visual design with airport management system branding and usability standards</li>
- *   <li><strong>Responsive Layout:</strong> Adaptive interface layout that maintains functionality across different window sizes</li>
- * </ul>
- * <p>
- * Search architecture utilizes a sophisticated dual-mode system that enables customers to search
- * for their bookings using either flight-specific criteria or passenger-specific information.
- * The architecture includes dynamic interface switching, comprehensive input validation, and
- * real-time result presentation through the integrated {@link SearchBookingResultPanel} component.
- * </p>
- * <p>
- * Flight-based search capabilities include origin and destination city filtering, comprehensive
- * date range selection with {@link DatePicker} components, and time range filtering with
- * {@link TimePicker} components. The flight search validates input consistency and provides
- * comprehensive error messaging for invalid search criteria combinations.
- * </p>
- * <p>
- * Passenger-based search functionality enables customers to locate bookings using personal
- * information including first name, last name, passenger SSN (codice fiscale), and ticket
- * number. The passenger search provides flexible filtering options that enable partial
- * information searches for enhanced customer convenience.
- * </p>
- * <p>
- * Result display integration utilizes the {@link SearchBookingResultPanel} component to present
- * search results in a comprehensive, customer-friendly format. The result display includes
- * booking information, flight details, passenger data, and interactive elements for detailed
- * booking management and modification operations.
- * </p>
- * <p>
- * Menu integration provides specialized functionality when the panel is accessed through the
- * customer menu system, automatically loading all customer bookings for immediate display.
- * The menu integration enhances customer experience by providing immediate booking access
- * without requiring manual search operations.
- * </p>
- * <p>
- * Controller integration enables comprehensive search operations through the {@link Controller}
- * system, providing access to booking search functionality, flight data management, and
- * customer-specific booking retrieval. The integration ensures data consistency and proper
- * error handling throughout search operations.
- * </p>
- * <p>
- * Layout management utilizes {@link GridBagLayout} for precise component positioning and
- * optimal space utilization. The layout includes proper component spacing, alignment management,
- * and responsive design principles that maintain functionality across different display
- * configurations and customer usage scenarios.
- * </p>
- * <p>
- * Error handling includes comprehensive input validation with {@link FloatingMessage} integration
- * for user-friendly error presentation. The error handling covers invalid date ranges, incomplete
- * city specifications, incorrect time ranges, and other input validation scenarios with clear
- * Italian-language error messages for customer guidance.
- * </p>
- * <p>
- * Visual design follows airport management system standards with professional styling,
- * consistent color schemes, and optimal typography. The design includes proper border
- * management, background styling, and component appearance configuration that maintains
- * visual consistency throughout the customer booking management interface.
- * </p>
- * <p>
- * Performance optimization includes efficient search operations, optimized result updating,
- * and responsive user interface management. The optimization ensures smooth customer
- * interaction during search operations while maintaining data accuracy and system
- * responsiveness throughout booking management workflows.
- * </p>
- * <p>
- * The class integrates seamlessly with the broader customer booking management ecosystem
- * including {@link MyBookingsCustomerMainFrame}, {@link SearchBookingResultPanel}, and
- * {@link Controller} systems while maintaining clean separation of concerns and reusable
- * component design patterns throughout the airport management system.
- * </p>
- * <p>
- * State management includes comprehensive tracking of active filter modes, search
- * performance status, and result data persistence throughout navigation operations
- * and interface transitions. The state management ensures consistent behavior and
- * data integrity during customer booking search and management activities.
- * </p>
- * <p>
- * The SearchBookingPanel serves as a critical component of the customer booking
- * management system, providing essential search and filtering capabilities that
- * enable efficient booking location and management while maintaining interface
- * consistency, user experience quality, and operational effectiveness throughout
- * customer interactions with the airport management system.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -527,6 +438,9 @@ public class SearchBookingPanel extends JPanel {
         this.add(resultsScrollPane, constraints.getGridBagConstraints());
 
         if(ifOpenedFromMenu){
+            bookingDates = new ArrayList<>();
+            bookingStatus = new ArrayList<>();
+            flightIds = new ArrayList<>();
             controller.getAllBooksLoogedCustomer(bookingDates, bookingStatus, flightIds, searchButton);
         }else{
             this.bookingDates = (ArrayList<Date>) controller.getBookingController().getSearchBookingResultDates();
