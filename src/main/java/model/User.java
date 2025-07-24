@@ -65,7 +65,7 @@ public class User {
      * Returns the current username that identifies this user in the system.
      * </p>
      *
-     * @return the username of this user, never null
+     * @return the username of this user, never null or empty.
      */
     public String getUsername() {
         return this.username;
@@ -78,7 +78,7 @@ public class User {
      * This method allows for username changes after user creation.
      * </p>
      *
-     * @param parUsername the new username to set. Should not be null or empty.
+     * @param parUsername the new username to set.  never null or empty.
      */
     public void setUsername(String parUsername) {
         this.username = parUsername;
@@ -92,7 +92,7 @@ public class User {
      * the original plaintext password.
      * </p>
      *
-     * @return the hashed password of this user, never null
+     * @return the hashed password of this user, never null or empty.
      */
     public String getPassword() {
 

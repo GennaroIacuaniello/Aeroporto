@@ -6,13 +6,7 @@ package model;
  * This class extends the {@link User} class to provide administrator-specific functionality
  * within the airport management system. Administrators have elevated privileges compared to
  * regular customers and can perform administrative tasks such as flight management,
- * passenger check-in operations, and system configuration.
- * </p>
- * <p>
- * Unlike regular customers, administrators are required to have an email address for
- * account creation and communication purposes. This class inherits all basic user
- * functionality from the {@link User} parent class while serving as a marker class
- * to distinguish administrative users from regular customers in the system.
+ * passenger check-in operations, and lost luggage management.
  * </p>
  * <p>
  * Administrative users can access specialized interfaces and perform operations such as:
@@ -22,7 +16,6 @@ package model;
  *   <li>Processing passenger check-ins</li>
  *   <li>Handling lost luggage reports</li>
  *   <li>Adding new flights to the system</li>
- *   <li>Managing booking confirmations</li>
  * </ul>
  *
  * @author Aeroporto Di Napoli
@@ -35,9 +28,7 @@ public class Admin extends User{
     /**
      * Constructs a new Admin with the specified username, email, and hashed password.
      * <p>
-     * Creates an administrator user account with all required information. Unlike regular
-     * customers, administrators must provide an email address during account creation
-     * as it is used for administrative communications and system notifications.
+     * Creates an administrator user account with all required information.
      * </p>
      * <p>
      * The password should be provided in hashed format for security purposes and

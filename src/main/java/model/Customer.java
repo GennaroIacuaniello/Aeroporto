@@ -7,30 +7,23 @@ import java.util.List;
  * <p>
  * This class extends the {@link User} class to provide customer-specific functionality
  * within the airport management system. Customers are regular users who can book flights,
- * manage their reservations, and perform standard passenger operations.
+ * manage their bookings, and perform standard passenger operations.
  * </p>
  * <p>
- * Unlike administrators, customers do not require an email address for account creation,
- * allowing for more flexible registration options. This class maintains a collection of
- * bookings associated with the customer, providing easy access to their travel history
- * and active reservations.
+ * This class maintains a collection of bookings associated with the customer,
+ *  providing easy access to their travel history and active bookings.
  * </p>
  * <p>
  * Customer users can access customer-specific interfaces and perform operations such as:
  * </p>
  * <ul>
- *   <li>Searching and viewing available flights</li>
+ *   <li>Searching and viewing flights</li>
  *   <li>Creating new flight bookings</li>
  *   <li>Managing existing bookings (view, modify, cancel)</li>
- *   <li>Checking in for flights</li>
+ *   <li>Checking-in for flights</li>
  *   <li>Managing luggage associated with bookings</li>
  *   <li>Viewing booking history and status</li>
  * </ul>
- * <p>
- * The bookings collection is maintained as an {@link ArrayList} to provide efficient
- * access and modification of the customer's reservation data. All booking operations
- * are designed to maintain data consistency and integrity within the airport management system.
- * </p>
  *
  * @author Aeroporto Di Napoli
  * @version 1.0
@@ -43,8 +36,8 @@ public class Customer extends User{
     /**
      * The list of bookings associated with this customer.
      * <p>
-     * This field stores all flight bookings made by the customer, including active,
-     * completed, and cancelled reservations. The collection is implemented as an
+     * This field stores all flight bookings made by the customer, including confirmed,
+     * pending, and cancelled bookings. The collection is implemented as an
      * {@link ArrayList} for efficient access and modification operations.
      * </p>
      * <p>
@@ -59,11 +52,11 @@ public class Customer extends User{
     private ArrayList<Booking> bookings;
 
     /**
-     * Constructs a new Customer with username, email, and hashed password.
+     * Constructs a new Customer with a username, an email, and a hashed password.
      * <p>
      * Creates a customer user account with the specified credentials. The customer
-     * is initialized with an empty bookings list, ready to accept new flight
-     * reservations. This constructor is typically used for new customer registration.
+     * is initialized with an empty bookings list.
+     * This constructor is typically used for new customer registration.
      * </p>
      * <p>
      * The password should be provided in hashed format for security purposes and
@@ -73,10 +66,10 @@ public class Customer extends User{
      *
      * @param parUsername the username for the customer account. Must not be null or empty.
      *                   This serves as the primary identifier for login purposes.
-     * @param parEmail the email address for the customer account. Can be null if not provided,
-     *                as email is not mandatory for customer accounts.
+     * @param parEmail the email address for the customer account. Must not be null or empty.
+     *
      * @param parHashedPassword the hashed password for the customer account. Must not be null or empty.
-     *                         The password is stored in hashed format for security purposes.
+     *                         The password is stored in a hashed format for security purposes.
      * @see User#User(String, String, String)
      */
     public Customer(String parUsername, String parEmail, String parHashedPassword){
@@ -89,27 +82,18 @@ public class Customer extends User{
      * <p>
      * Creates a customer user account with the specified credentials and associates
      * it with an existing list of bookings. This constructor is typically used when
-     * loading customer data from persistent storage or when migrating existing
-     * booking data to a customer account.
-     * </p>
-     * <p>
-     * The provided bookings list is cast to an {@link ArrayList} for internal storage
-     * consistency. The original list reference is maintained to preserve any existing
-     * booking relationships and data integrity.
+     * loading customer data from persistent storage.
      * </p>
      *
      * @param parUsername the username for the customer account. Must not be null or empty.
      *                   This serves as the primary identifier for login purposes.
-     * @param parEmail the email address for the customer account. Can be null if not provided,
-     *                as email is not mandatory for customer accounts.
+     * @param parEmail the email address for the customer account. Must not be null or empty.
+     *
      * @param parHashedPassword the hashed password for the customer account. Must not be null or empty.
-     *                         The password is stored in hashed format for security purposes.
+     *                         The password is stored in a hashed format for security purposes.
      * @param parBookings the list of existing bookings to associate with this customer.
-     *                   Must not be null, but can be empty. The list will be converted
-     *                   to an ArrayList for internal storage.
-     * @throws IllegalArgumentException if username, hashedPassword, or parBookings is null,
-     *                                or if username or hashedPassword is empty
-     * @throws ClassCastException if the provided bookings list cannot be cast to ArrayList
+     *                   Must not be null, but can be empty.
+     *
      * @see User#User(String, String, String)
      * @see Booking
      */
