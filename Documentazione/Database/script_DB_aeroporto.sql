@@ -2874,7 +2874,7 @@ AFTER UPDATE OF booking_status ON BOOKING
 FOR EACH ROW
 EXECUTE FUNCTION fun_upd_free_seats_on_canc_booking();
 
---Non serve invece il trigger per decremenrare i free_seats se una prenotazione passa da 'CANCELLED' a qualcos'altro, perché non è possibile 'ripristinare' una prenotazione
+--Non serve invece il trigger per decrementare i free_seats se una prenotazione passa da 'CANCELLED' a qualcos'altro, perché non è possibile 'ripristinare' una prenotazione
 
 -------------------------------------------------------------------------------------------------------------------------
 --080
@@ -3727,45 +3727,6 @@ CREATE OR REPLACE TRIGGER block_ins_tickets_canc_bookings
 BEFORE INSERT ON TICKET
 FOR EACH ROW
 EXECUTE FUNCTION fun_block_ins_tickets_canc_bookings();
-
--------------------------------------------------------------------------------------------------------------------------
---102
---TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
-
-CREATE OR REPLACE FUNCTION fun_block_ins_luggages_not_prog_flights()
-RETURNS TRIGGER
-AS $$
-DECLARE
-	
-	associated_ticket TICKET%ROWTYPE;
-
-	associated_flight FLIGHT%ROWTYPE;
-
-BEGIN
-	
-	SELECT * INTO associated_ticket
-	FROM TICKET T
-	WHERE T.ticket_number = NEW.id_ticket;
-
-	SELECT * INTO associated_flight 
-	FROM FLIGHT F
-	WHERE F.id_flight = associated_ticket.id_flight;
-
-	IF associated_flight.flight_status <> 'PROGRAMMED' THEN
-
-		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi bagagli!', associated_flight.id_flight;
-
-	END IF;
-
-	RETURN NEW;
-
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE TRIGGER block_ins_luggages_not_prog_flights
-BEFORE INSERT ON LUGGAGE
-FOR EACH ROW
-EXECUTE FUNCTION fun_block_ins_luggages_not_prog_flights();
 
 -------------------------------------------------------------------------------------------------------------------------
 --103
