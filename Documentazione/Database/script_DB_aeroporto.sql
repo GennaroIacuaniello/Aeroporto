@@ -1693,7 +1693,7 @@ EXECUTE FUNCTION fun_valid_luggage_type();
 --052
 --TRIGGER SE IL BLIGLIETTO NON è CHECKED_IN, IL LUGGAGE_STATUS PUò ESSERE SOLO BOOKED
 
-CREATE OR REPLACE FUNCTION fun_lug_status_only_booked_if_booking_canc()
+CREATE OR REPLACE FUNCTION fun_lug_status_only_booked_if_ticket_not_ck_in()
 RETURNS TRIGGER
 AS $$
 DECLARE
@@ -1721,10 +1721,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER lug_status_only_booked_if_booking_canc
+CREATE OR REPLACE TRIGGER lug_status_only_booked_if_ticket_not_ck_in
 BEFORE INSERT OR UPDATE OF luggage_status ON Luggage
 FOR EACH ROW
-EXECUTE FUNCTION fun_lug_status_only_booked_if_booking_canc();
+EXECUTE FUNCTION fun_lug_status_only_booked_if_ticket_not_ck_in();
 
 -------------------------------------------------------------------------------------------------------------------------
 --053
