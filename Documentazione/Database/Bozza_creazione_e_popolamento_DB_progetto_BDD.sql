@@ -1483,7 +1483,8 @@ CREATE TABLE Luggage (
 
 
 	CONSTRAINT ticket_FK FOREIGN KEY(id_ticket) REFERENCES Ticket(ticket_number) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR LENGTH(id_luggage_after_check_in) > 13)
+	--CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR LENGTH(id_luggage_after_check_in) > 13)
+	CONSTRAINT correctness_of_id_luggage_after_check_in_minimal_length CHECK( id_luggage_after_check_in IS NULL OR id_luggage_after_check_in ILIKE (id_ticket || '_%'))
 	--questa check serve per come è costruito id_luggage_after_check_in, 
 	--ossia come concatenazione di ticket_number del passeggero associato + 'numero del bagaglio'
 );
