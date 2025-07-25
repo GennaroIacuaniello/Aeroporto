@@ -1301,11 +1301,9 @@ BEGIN
 	
 		END IF;
 	
-	
 		UPDATE FLIGHT
 		SET free_seats = free_seats - 1
 		WHERE id_flight = NEW.id_flight;
-
 
 	END IF;
 	RETURN NEW;
@@ -1398,7 +1396,7 @@ EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_conf_book();
 
 -------------------------------------------------------------------------------------------------------------------------
 --044
---TRIGGER SOLO PER I VOLI ABOUT_TO_DEPART, DEPARTED, ABOUT_TO_ARRIVE o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
+--TRIGGER SOLO PER I VOLI ABOUT_TO_DEPART, DELAYED, DEPARTED, ABOUT_TO_ARRIVE o LANDED UN BIGLIETTO PUÒ ESSERE CHECKED_IN
 
 CREATE OR REPLACE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan()
 RETURNS TRIGGER
@@ -1415,7 +1413,7 @@ BEGIN
 
 	IF NEW.checked_in = true THEN
 
-		IF associated_flight.flight_status <> 'ABOUT_TO_DEPART' AND associated_flight.flight_status <> 'DEPARTED' AND associated_flight.flight_status <> 'ABOUT_TO_ARRIVE' AND associated_flight.flight_status <> 'LANDED' THEN
+		IF associated_flight.flight_status <> 'ABOUT_TO_DEPART' AND associated_flight.flight_status <> 'DELAYED' AND associated_flight.flight_status <> 'DEPARTED' AND associated_flight.flight_status <> 'ABOUT_TO_ARRIVE' AND associated_flight.flight_status <> 'LANDED' THEN
 
 			RAISE EXCEPTION 'Il volo % non è in partenza/partito/sta per atterrare/atterrato, non si può essere CHECKED-in!', NEW.id_flight;
 		
@@ -1435,7 +1433,7 @@ EXECUTE FUNCTION fun_check_ticket_checked_in_only_if_flight_aToDep_dep_lan();
 
 -------------------------------------------------------------------------------------------------------------------------
 --045
---TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, ABOUT_TO_ARRIVE O LANDED
+--TRIGGER IL CHECK-IN È ANNULLABILE SOLO SE IL VOLO NON È DEPARTED, ABOUT_TO_ARRIVE O LANDED (O DELAYED MA SOLO PER I VOLI ARRIVING)
 
 CREATE OR REPLACE FUNCTION fun_check_canc_check_in_only_if_flight_not_dep_lan()
 RETURNS TRIGGER
@@ -1456,6 +1454,12 @@ BEGIN
 
 			RAISE EXCEPTION 'Il volo % è già partito, non si può annullare il check-in!', NEW.id_flight;
 		
+		END IF;
+
+		IF associated_flight.flight_type = false AND associated_flight.flight_status = 'DELAYED' THEN
+
+			RAISE EXCEPTION 'Il volo % è già partito, non si può annullare il check-in!', NEW.id_flight;
+
 		END IF;
 
 	END IF;
