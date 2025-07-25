@@ -1193,7 +1193,7 @@ EXECUTE FUNCTION fun_only_mod_seat_checked_in_if_flight_aToDep();
 
 -------------------------------------------------------------------------------------------------------------------------
 --039
---TRIGGER SE UN VOLO È DEPARTED o ABOUT_TO_ARRIVE O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
+--TRIGGER SE UN VOLO È DEPARTED o ABOUT_TO_ARRIVE (O DELAYED SOLO PER GLI ARRIVING) O LANDED, I DATI DI UN TICKET NON POSSONO PIÙ ESSERE MODIFICATI
 
 CREATE OR REPLACE FUNCTION fun_block_mod_ticket_if_flight_dep_or_more()
 RETURNS TRIGGER
@@ -1211,6 +1211,13 @@ BEGIN
 	IF associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 
 		RAISE EXCEPTION 'Il volo % è in stato %, non si possono modificare i dati del biglietto con ticket_number %!',
+														NEW.id_flight, associated_flight.flight_status, NEW.ticket_number;
+
+	END IF;
+
+	IF associated_flight.flight_type = false AND associated_flight.flight_status = 'DELAYED' THEN
+
+		RAISE EXCEPTION 'Il volo per Napoli % è in stato %, non si possono modificare i dati del biglietto con ticket_number %!',
 														NEW.id_flight, associated_flight.flight_status, NEW.ticket_number;
 
 	END IF;
