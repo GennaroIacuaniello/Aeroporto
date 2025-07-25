@@ -1807,7 +1807,7 @@ EXECUTE FUNCTION fun_check_id_lug_after_check_in_not_null_if_ticket_checked_in()
 
 -------------------------------------------------------------------------------------------------------------------------
 --055
---TRIGGER IL LUGGAGE_STATUS (DEI BAGAGLI DELLE PRENOTAZIONI NON CANCELLATE) NON PUÒ ESSERE BOOKED SE IL VOLO È DEPARTED, ABOUTTOARRIVE O LANDED
+--TRIGGER IL LUGGAGE_STATUS (DEI BAGAGLI DELLE PRENOTAZIONI NON CANCELLATE) NON PUÒ ESSERE BOOKED SE IL VOLO È DEPARTED, ABOUTTOARRIVE O LANDED (O DELAYED MA SOLO PER I VOLI ARRIVING)
 
 CREATE OR REPLACE FUNCTION fun_valid_luggage_status_after_departure()
 RETURNS TRIGGER
@@ -1839,6 +1839,13 @@ BEGIN
 
 			IF associated_flight.flight_status = 'DEPARTED' OR associated_flight.flight_status = 'ABOUT_TO_ARRIVE' OR associated_flight.flight_status = 'LANDED' THEN
 	
+				RAISE EXCEPTION 'Il volo % del passeggero con ticket number % è già partito, il bagaglio % non può avere stato ''prenotato''!', 
+																	associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
+		
+			END IF;
+
+			IF associated_flight.flight_type = false AND associated_flight.flight_status = 'DELAYED' THEN
+
 				RAISE EXCEPTION 'Il volo % del passeggero con ticket number % è già partito, il bagaglio % non può avere stato ''prenotato''!', 
 																	associated_ticket.id_flight, associated_ticket.ticket_number, NEW.id_luggage;
 		
