@@ -3729,26 +3729,31 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_block_ins_tickets_canc_bookings();
 
 -------------------------------------------------------------------------------------------------------------------------
---103
---TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER TICKET GIà CON CHECKE_IN A TRUE
---e questo (insieme al trigger successivo) garantisce anche non possano essere inseriti bagagli per voli già partiti
+--102
+--TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER VOLI NON PROGRAMMED
 
-CREATE OR REPLACE FUNCTION fun_block_ins_luggages_checked_in_tickets()
+CREATE OR REPLACE FUNCTION fun_block_ins_luggages_not_prog_flights()
 RETURNS TRIGGER
 AS $$
 DECLARE
 	
 	associated_ticket TICKET%ROWTYPE;
 
+	associated_flight FLIGHT%ROWTYPE;
+
 BEGIN
 	
-	SELECT * INTO associated_ticket 
+	SELECT * INTO associated_ticket
 	FROM TICKET T
 	WHERE T.ticket_number = NEW.id_ticket;
 
-	IF associated_ticket.checked_in = true THEN
+	SELECT * INTO associated_flight 
+	FROM FLIGHT F
+	WHERE F.id_flight = associated_ticket.id_flight;
 
-		RAISE EXCEPTION 'Per il biglietto con numero % è già stato fatto il check-in, non è possibile inserire nuovi bagagli!', associated_ticket.ticket_number;
+	IF associated_flight.flight_status <> 'PROGRAMMED' THEN
+
+		RAISE EXCEPTION 'Il volo % non è in stato ''programmato'', non è possibile inserire nuovi bagagli!', associated_flight.id_flight;
 
 	END IF;
 
@@ -3757,15 +3762,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_ins_luggages_checked_in_tickets
+CREATE OR REPLACE TRIGGER block_ins_luggages_not_prog_flights
 BEFORE INSERT ON LUGGAGE
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_ins_luggages_checked_in_tickets();
+EXECUTE FUNCTION fun_block_ins_luggages_not_prog_flights();
 
 -------------------------------------------------------------------------------------------------------------------------
 --104
 --TRIGGER NON SI POSSONO INSERIRE BAGAGLI (BEFORE INSERT ON) PER PRENOTAZIONI CANCELLED
---e questo (insieme al trigger precedente) garantisce anche non possano essere inseriti bagagli per voli già partiti
 
 CREATE OR REPLACE FUNCTION fun_block_ins_luggages_canc_bookings()
 RETURNS TRIGGER
