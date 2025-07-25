@@ -2880,7 +2880,7 @@ EXECUTE FUNCTION fun_upd_free_seats_on_canc_booking();
 --080
 --TRIGGER CHE IMPEDISCE DI METTERE UNA PRENOTAZIONE DA CANCELLED A QUALCOS'ALTRO
 
-CREATE OR REPLACE FUNCTION fun_block_restore_CANCELLED_booking()
+CREATE OR REPLACE FUNCTION fun_block_restore_cancelled_booking()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -2896,10 +2896,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_restore_CANCELLED_booking
+CREATE OR REPLACE TRIGGER block_restore_cancelled_booking
 BEFORE UPDATE OF booking_status ON BOOKING
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_restore_CANCELLED_booking();
+EXECUTE FUNCTION fun_block_restore_cancelled_booking();
 
 -------------------------------------------------------------------------------------------------------------------------
 --081
