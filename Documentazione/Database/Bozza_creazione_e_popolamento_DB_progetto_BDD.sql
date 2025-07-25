@@ -342,7 +342,7 @@ CREATE TABLE Flight (
 	CONSTRAINT free_seats_not_negative CHECK(free_seats >= 0),
 	CONSTRAINT max_free_seats CHECK(free_seats <= max_seats),
 	CONSTRAINT destination_or_origin_not_empty CHECK(LENGTH(destination_or_origin) > 0),
-	CONSTRAINT destination_or_origin_never_Napoli CHECK(destination_or_origin NOT LIKE 'Napoli'),
+	CONSTRAINT destination_or_origin_never_Napoli CHECK(destination_or_origin NOT ILIKE 'Napoli'),
 	--perché a priori, che sia departing o arriving, memorizziamo sempre l' "altra città", non Napoli
 	CONSTRAINT flight_delay_not_negative CHECK(flight_delay >= 0),
 	CONSTRAINT correctness_of_id_gate CHECK(id_gate IS NULL OR id_gate BETWEEN 1 AND 20) --l'aeroporto di Napoli ha 20 gate
