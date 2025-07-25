@@ -477,7 +477,7 @@ EXECUTE FUNCTION fun_blocked_upd_departing_delay_if_dep_or_more();
 --019
 --TRIGGER NON SI PUÒ MODIFICARE IL FLIGHT_DELAY PER UN VOLO ARRIVING LANDED
 
-CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_delay_if_dep()
+CREATE OR REPLACE FUNCTION fun_blocked_upd_arriving_delay_if_land()
 RETURNS TRIGGER
 AS $$
 BEGIN
@@ -501,10 +501,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER blocked_upd_arriving_delay_if_dep
+CREATE OR REPLACE TRIGGER blocked_upd_arriving_delay_if_land
 BEFORE UPDATE OF flight_delay ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_blocked_upd_arriving_delay_if_dep();
+EXECUTE FUNCTION fun_blocked_upd_arriving_delay_if_land();
 
 -------------------------------------------------------------------------------------------------------------------------
 --020
