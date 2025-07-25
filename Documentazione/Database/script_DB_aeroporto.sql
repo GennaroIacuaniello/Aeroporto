@@ -2265,7 +2265,7 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 		
-	IF NEW.flight_status = 'ABOUT_TO_DEPART' OR NEW.flight_status = 'DELAYED' OR THEN
+	IF NEW.flight_status = 'ABOUT_TO_DEPART' OR NEW.flight_status = 'DELAYED' THEN
 	
 		IF (NEW.departure_time::date) > CURRENT_DATE + 1 THEN
 		--posso aprire i check-in (e quindi mettere ad ABOUT_TO_DEPART) al più il giorno prima della partenza del volo
