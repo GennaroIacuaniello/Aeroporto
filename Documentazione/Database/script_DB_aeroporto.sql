@@ -1745,7 +1745,7 @@ BEGIN
 	IF OLD.checked_in = false AND NEW.checked_in = true THEN
 
 		FOR selected_luggage IN (SELECT * FROM LUGGAGE L
-								 WHERE L.id_ticket = NEW.ticket_number) LOOP
+								 WHERE L.id_ticket = NEW.ticket_number ORDER BY L.id_luggage) LOOP
 
 			UPDATE LUGGAGE
 			SET id_luggage_after_check_in = NEW.ticket_number || i
@@ -2495,17 +2495,38 @@ FOR EACH ROW
 EXECUTE FUNCTION fun_arriving_f_can_become_land_only_if_dep_or_aToArr();
 
 -------------------------------------------------------------------------------------------------------------------------
---072
---TRIGGER UN VOLO LANDED NON Può PIù CAMBIARE FLIGHT_STATUS
-CREATE OR REPLACE FUNCTION fun_block_mod_flight_status_if_landed()
+--072 (090.1)
+--TRIGGER UN VOLO NON PUò MAI 'TORNARE INDIETRO' COME STATO 
+
+CREATE OR REPLACE FUNCTION fun_block_go_back_flight_status()
 RETURNS TRIGGER
 AS $$
 BEGIN
-	
-	IF OLD.flight_status = 'LANDED' AND NEW.flight_status <> 'LANDED' THEN
 
-		RAISE EXCEPTION 'Il volo % è già atterrato, non può più cambiare stato!', OLD.id_flight;
-		
+	IF OLD.flight_status = 'CANCELLED' AND NEW.flight_status <> 'CANCELLED' THEN
+
+		RAISE EXCEPTION 'Il volo % era cancellato, non è possibile ripristinarlo!', OLD.id_flight;
+	
+	ELSIF OLD.flight_status = 'ABOUT_TO_DEPART' AND ( NEW.flight_status <> 'DELAYED' AND NEW.flight_status <> 'DEPARTED') THEN
+
+		RAISE EXCEPTION 'Il volo % era in stato %, non può diventare %!', OLD.id_flight, OLD.flight_status, NEW.flight_status;
+	
+	ELSIF OLD.flight_status = 'DELAYED' AND NEW.flight_status = 'PROGRAMMED' THEN
+
+		RAISE EXCEPTION 'Il volo % era in stato ''in ritardo'', non è possibile rimetterlo a ''programmato''!', OLD.id_flight;
+
+	ELSIF OLD.flight_status = 'DEPARTED' AND (NEW.flight_status <> 'ABOUT_TO_ARRIVE' AND NEW.flight_status <> 'DELAYED' AND NEW.flight_status <> 'LANDED' ) THEN
+
+		RAISE EXCEPTION 'Il volo % era in stato ''decollato'', non è possibile rimetterlo a %!', OLD.id_flight, NEW.flight_status;
+
+	ELSIF OLD.flight_status = 'ABOUT_TO_ARRIVE' AND (NEW.flight_status <> 'DELAYED' AND NEW.flight_status <> 'LANDED') THEN
+
+		RAISE EXCEPTION 'Il volo % era in stato ''in arrivo'', non è possibile rimetterlo a %!', OLD.id_flight, NEW.flight_status;
+
+	ELSIF OLD.flight_status = 'LANDED' AND NEW.flight_status <> 'LANDED' THEN
+
+		RAISE EXCEPTION 'Il volo % era in stato ''atterrato'', non è possibile rimetterlo a %!', OLD.id_flight, NEW.flight_status;
+
 	END IF;
 
 	RETURN NEW;
@@ -2513,10 +2534,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER block_mod_flight_status_if_landed
+CREATE OR REPLACE TRIGGER block_go_back_flight_status
 BEFORE UPDATE OF flight_status ON FLIGHT
 FOR EACH ROW
-EXECUTE FUNCTION fun_block_mod_flight_status_if_landed();
+EXECUTE FUNCTION fun_block_go_back_flight_status();
 
 -------------------------------------------------------------------------------------------------------------------------
 --073
@@ -2610,7 +2631,7 @@ EXECUTE FUNCTION fun_change_booking_status_when_dep_aToDep();
 --075
 --TRIGGER QUANDO IL FLIGHT STATUS DI UN VOLO ARRIVING DIVENTA 'DEPARTED', SIMULIAMO UNA CONNESSIONE CON L'AEROPORTO DI PARTENZA:
 --LE PRENOTAZIONI 'PENDING' DIVENTANO 'CANCELLED', E FARE IN MODO CHE VENGANO AGGIORNATI ANCHE I FREE_SEATS DI CONSEGUENZA
---CIRCA IL 90% DEI SUOI PASSEGGERI CON PRENOTAZIONI CONFIRMED AVRANNO FATTO IL CHECK-IN, 
+--CIRCA IL 90% DEI SUOI PASSEGGERI CON PRENOTAZIONI CONFIRMED AVRÀ FATTO IL CHECK-IN, 
 --E TUTTI I LUGGAGE_STATUS DEI BAGAGLI DEI SUOI PASSEGGERI CON CHECKED_IN A TRUE VENGONO MESSI A LOADED
 
 CREATE OR REPLACE FUNCTION actual_func_simulate_connection_when_arriving_departed(input_old_id_flight VARCHAR(15), input_old_flight_type BOOLEAN, input_old_flight_status FlightStatus, input_new_flight_type BOOLEAN, input_new_flight_status FlightStatus )
