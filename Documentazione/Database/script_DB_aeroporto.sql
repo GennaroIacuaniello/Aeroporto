@@ -3933,7 +3933,7 @@ BEGIN
 
 	IF OLD.flight_status = 'CANCELLED' THEN
 
-		RAISE EXCEPTION 'Il volo % è stata cancellata, non può essere modificata!', OLD.id_flight;
+		RAISE EXCEPTION 'Il volo % è stata cancellato, non può essere modificato!', OLD.id_flight;
 
 	END IF;
 
