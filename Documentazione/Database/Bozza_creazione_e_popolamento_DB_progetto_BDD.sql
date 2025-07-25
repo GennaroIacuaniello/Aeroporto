@@ -778,7 +778,7 @@ BEFORE UPDATE OF id_flight ON BOOKING
 FOR EACH ROW
 EXECUTE FUNCTION fun_correctness_of_id_flight_booking_with_tickets();
 
---Qui non serve il BEFORE INSERT, perchè non posso avere inserito TICKET per una prenotazione che ancora non c'era
+--Qui non serve il BEFORE INSERT, perchè non posso aver inserito TICKET per una prenotazione che ancora non c'era
 
 -------------------------------------------------------------------------------------------------------------------------
 --030
