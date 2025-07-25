@@ -2522,14 +2522,15 @@ BEGIN
 	--serve if old and new per controllare che un volo non abbia cambiato tipo (cosa non consentita)
 	IF input_old_flight_type = true AND input_new_flight_type = true THEN
 		
-		--questo if serve perché solo un volo PROGRAMMED può essere impostato ad ABOUT_TO_DEPART
-		IF input_old_flight_status <> 'PROGRAMMED' THEN
-
-			RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', input_old_id_flight;
-
-		END IF;
 
 		IF input_old_flight_status <> 'ABOUT_TO_DEPART' AND input_new_flight_status = 'ABOUT_TO_DEPART' THEN
+
+			--questo if serve perché solo un volo PROGRAMMED può essere impostato ad ABOUT_TO_DEPART
+			IF input_old_flight_status <> 'PROGRAMMED' THEN
+
+				RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''programmato'', non può diventare ''in partenza''!', input_old_id_flight;
+
+			END IF;
 		
 			FOR selected_booking IN (SELECT * FROM BOOKING B
 										WHERE B.id_flight = input_old_id_flight AND B.booking_status = 'PENDING') LOOP
