@@ -16,6 +16,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.time.Duration;
+
 
 /**
  * Controller class for managing flight operations in the airport management system.
@@ -1007,7 +1009,9 @@ public class FlightController {
         for (int i = 0; i < departingFlights.size(); i++) {
             result[i][0] = departingFlights.get(i).getId();
             result[i][1] = departingFlights.get(i).getCompanyName();
-            result[i][2] = departingFlights.get(i).getDate();
+            result[i][2] = departingFlights.get(i).getDate().toLocalDate().plusDays(Duration.between(
+                    departingFlights.get(i).getDepartureTime().toLocalTime(),
+                    departingFlights.get(i).getDepartureTime().toLocalTime().plusMinutes(departingFlights.get(i).getArrivalDelay())).isNegative()? 1 : 0);
             result[i][3] = "Napoli -> " + departingFlights.get(i).getOrigin();
             result[i][4] = departingFlights.get(i).getDepartureTime().toLocalTime().plusMinutes(departingFlights.get(i).getArrivalDelay());
             result[i][5] = Controller.translateFlightStatus(departingFlights.get(i).getStatus());
