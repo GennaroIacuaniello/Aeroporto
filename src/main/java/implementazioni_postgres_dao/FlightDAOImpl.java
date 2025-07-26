@@ -670,7 +670,8 @@ public class FlightDAOImpl implements FlightDAO {
 
         String query = "SELECT id_gate FROM Flight WHERE id_gate <> null AND " +
                 "((flight_type = true AND (flight_status = 'ABOUT_TO_DEPART' OR flight_status = 'DELAYED') ) " +
-                "OR (flight_type = false AND (flight_status = 'DEPARTED' OR flight_status = 'ABOUT_TO_ARRIVE' OR (flight_status = 'LANDED' AND arrival_time > CURRENT_TIMESTAMP - INTERVAL '1 HOUR'))));";
+                "OR (flight_type = false AND (flight_status = 'DEPARTED' OR flight_status = 'ABOUT_TO_ARRIVE' OR" +
+                "(flight_status = 'LANDED' AND arrival_time > CURRENT_TIMESTAMP - INTERVAL '1 HOUR'))));";
         ResultSet resultSet;
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
@@ -680,39 +681,15 @@ public class FlightDAOImpl implements FlightDAO {
 
             resultSet = preparedSelectStatement.executeQuery();
 
-            if (!resultSet.next()) {
-
-                System.out.println("ciao");
-
-                resultSet.close();
-
-                query = "UPDATE Flight SET id_gate = 1 WHERE id_flight = ?;";
-
-                try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
-
-                    preparedUpdateStatement.setString(1, idFlight);
-
-                    preparedUpdateStatement.executeUpdate();
-                }
-
-                //setGate(1, idFlight);
-
-                connection.commit();
-
-                return 1;
-            }
-
             ArrayList<Integer> gates = new ArrayList<Integer>();
 
-            do {
-                gates.add(resultSet.getInt("id_gate"));
-            } while (resultSet.next());
+            while (resultSet.next()) gates.add(resultSet.getInt("id_gate"));
 
             resultSet.close();
 
             for (int i = 1; i <= 20; i++) {
 
-                System.out.print(i);
+                System.out.println(i);
 
                 boolean flag = false;
 
