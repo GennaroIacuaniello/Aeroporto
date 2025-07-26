@@ -1,6 +1,8 @@
 package gui;
 
 import controller.Controller;
+import model.Gate;
+import model.InvalidGate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,6 +63,8 @@ public class GateChooser {
      */
     private JComboBox comboBox;
 
+    private JButton confirmButton;
+
     /**
      * Constructs a new GateChooser dialog for gate selection and assignment operations.
      * <p>
@@ -106,7 +110,7 @@ public class GateChooser {
         comboBox.setSelectedIndex(0);
         mainFrame.add(comboBox);
 
-        JButton confirmButton = new JButton("CONFERMA");
+        confirmButton = new JButton("CONFERMA");
         confirmButton.addActionListener(new ActionListener() {
 
             @Override
@@ -142,13 +146,21 @@ public class GateChooser {
      */
     private void setGate (int id, Controller controller, JButton callingButton) {
 
-        if (id > 0) {
+        try {
 
-            controller.getGateController().setGate(id, controller);
+            if (id > 0) {
 
-            callingButton.setText("Gate: " + id);
+                controller.getGateController().setGate(id, controller);
 
-            mainFrame.dispose();
+                callingButton.setText("Gate: " + id);
+
+                controller.getFlightController().getFlight().setGate(new Gate((byte) id));
+
+                mainFrame.dispose();
+            }
+        } catch (InvalidGate e) {
+
+            new FloatingMessage("Impossibile aggiornare il gate", confirmButton, FloatingMessage.ERROR_MESSAGE);
         }
     }
 }

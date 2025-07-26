@@ -3,6 +3,8 @@ package controller;
 import gui.CheckinPassengers;
 import gui.GateChooser;
 import implementazioni_postgres_dao.FlightDAOImpl;
+import model.Gate;
+import model.InvalidGate;
 
 import javax.swing.*;
 
@@ -58,9 +60,14 @@ public class GateController {
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 
         int idGate = flightDAO.searchGate(controller.getFlightController().getFlight().getId());
-
-        if (idGate != -1) callingButton.setText("GATE: " + idGate);
-        else checkinPassengers.setGateChooser(new GateChooser(controller, callingButton, callingFrame));
+        try {
+            if (idGate != -1) {
+                callingButton.setText("GATE: " + idGate);
+                controller.getFlightController().getFlight().setGate(new Gate((byte)idGate));
+            } else checkinPassengers.setGateChooser(new GateChooser(controller, callingButton, callingFrame));
+        } catch (InvalidGate e) {
+            checkinPassengers.setGateChooser(new GateChooser(controller, callingButton, callingFrame));
+        }
     }
 
     /**
