@@ -668,43 +668,68 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public int searchGate(String idFlight) {
 
-        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();) {
+        String query = "SELECT id_gate FROM Flight WHERE id_gate <> null AND " +
+                "((flight_type = true AND (flight_status = 'ABOUT_TO_DEPART' OR flight_status = 'DELAYED') ) " +
+                "OR (flight_type = false AND (flight_status = 'DEPARTED' OR flight_status = 'ABOUT_TO_ARRIVE' OR (flight_status = 'LANDED' AND arrival_time > CURRENT_TIMESTAMP - INTERVAL '1 HOUR'))));";
+        ResultSet resultSet;
+
+        try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
+            PreparedStatement preparedSelectStatement = connection.prepareStatement(query)) {
 
             connection.setAutoCommit(false);
 
-            String query = "SELECT * FROM Flight WHERE id_gate = ? AND flight_status <> 'CANCELLED' AND flight_status <> 'DEPARTED' AND flight_status <> 'LANDED');";
-            ResultSet resultSet;
+            resultSet = preparedSelectStatement.executeQuery();
+
+            if (!resultSet.next()) {
+
+                resultSet.close();
+
+                query = "UPDATE Flight SET id_gate = 1 WHERE id_flight = ?;";
+
+                try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
+
+                    preparedUpdateStatement.setString(1, idFlight);
+
+                    preparedUpdateStatement.executeUpdate();
+                }
+
+                connection.commit();
+
+                return 1;
+            }
+
+            ArrayList<Integer> gates = new ArrayList<Integer>();
+
+            while (resultSet.next()) gates.add(resultSet.getInt("id_gate"));
 
             for (int i = 1; i <= 20; i++) {
 
+                boolean flag = false;
 
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                for (Integer gate : gates) {
 
-                    preparedStatement.setInt(1, i);
-
-                    resultSet = preparedStatement.executeQuery();
+                    if (gate.equals(i)) {
+                        flag = true;
+                        break;
+                    }
                 }
 
-                if (!resultSet.next()) {
-
-                    resultSet.close();
+                if (!flag) {
 
                     query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
 
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
 
-                        preparedStatement.setInt(1, i);
-                        preparedStatement.setString(2, idFlight);
+                        preparedUpdateStatement.setInt(1, i);
+                        preparedUpdateStatement.setString(2, idFlight);
 
-                        preparedStatement.executeUpdate();
+                        preparedUpdateStatement.executeUpdate();
                     }
 
                     connection.commit();
 
                     return i;
                 }
-
-                resultSet.close();
             }
 
             return -1;

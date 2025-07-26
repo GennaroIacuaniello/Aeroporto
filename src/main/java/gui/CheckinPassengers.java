@@ -273,7 +273,8 @@ public class CheckinPassengers extends BookingPageAdmin{
      */
     protected void setGateButton (Controller controller) {
 
-        gateButton = new JButton("GATE");
+        if (controller.getFlightController().getFlight().getGate() == null) gateButton = new JButton("GATE");
+        else gateButton = new JButton("GATE: " + controller.getFlightController().getFlight().getGate().getId());
 
         gateButton.addActionListener(new ActionListener() {
 
@@ -281,8 +282,6 @@ public class CheckinPassengers extends BookingPageAdmin{
             public void actionPerformed (ActionEvent e) {
 
                 setGate(controller);
-
-                gateButton.setEnabled(false);
             }
         });
 
@@ -318,6 +317,11 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(gateButton, controller, this);
         else gateChooser = new GateChooser(controller, gateButton);
+
+        confirmPanel.revalidate();
+        confirmPanel.repaint();
+
+        System.out.println(gateButton.getText());
     }
 
     /**
