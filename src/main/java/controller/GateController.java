@@ -53,14 +53,14 @@ public class GateController {
      * @param controller the main {@link Controller} instance providing access to flight information
      * @param checkinPassengers the {@link CheckinPassengers} interface managing the check-in workflow
      */
-    public void newGate(JButton callingButton, Controller controller, CheckinPassengers checkinPassengers) {
+    public void newGate(JFrame callingFrame,JButton callingButton, Controller controller, CheckinPassengers checkinPassengers) {
 
         FlightDAOImpl flightDAO = new FlightDAOImpl();
 
         int idGate = flightDAO.searchGate(controller.getFlightController().getFlight().getId());
 
         if (idGate != -1) callingButton.setText("GATE: " + idGate);
-        else checkinPassengers.setGateChooser(new GateChooser(controller, callingButton));
+        else checkinPassengers.setGateChooser(new GateChooser(controller, callingButton, callingFrame));
     }
 
     /**

@@ -49,7 +49,7 @@ public class GateChooser {
      * for optimal component organization.
      * </p>
      */
-    private final JFrame mainFrame;
+    private JDialog mainFrame;
     
     /**
      * Dropdown selection component for gate choice.
@@ -59,7 +59,7 @@ public class GateChooser {
      * that prevents invalid selections and ensures proper gate assignment.
      * </p>
      */
-    private final JComboBox comboBox;
+    private JComboBox comboBox;
 
     /**
      * Constructs a new GateChooser dialog for gate selection and assignment operations.
@@ -83,50 +83,16 @@ public class GateChooser {
      * @param controller the system controller providing access to gate management and database operations
      * @param callingButton the button that triggered gate selection, used for state management and re-enabling after operations
      */
-    public GateChooser(Controller controller, JButton callingButton) {
+    public GateChooser(Controller controller, JButton callingButton, JFrame callingFrame) {
 
-        mainFrame = new JFrame("Gate Chooser");
+        mainFrame = new JDialog(callingFrame, "Gate Chooser", true);
+
         mainFrame.setLayout(new FlowLayout(FlowLayout.CENTER));
-        mainFrame.setAlwaysOnTop(true);
+        mainFrame.setLocationRelativeTo(callingFrame);
+        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainFrame.setSize(500, 200);
 
-        mainFrame.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                callingButton.setEnabled(true);
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                //
-            }
-        });
-
-        JLabel label = new JLabel("Attualmente non ci sono gate liberi, selezionare un gate tra 1 e 20:");
+        JLabel label = new JLabel("Seleziona un gate manualmente:");
         mainFrame.add(label);
 
         comboBox = new JComboBox();
@@ -153,7 +119,6 @@ public class GateChooser {
         confirmButton.setFocusable(false);
         mainFrame.add(confirmButton);
 
-        mainFrame.setSize(500, 200);
         mainFrame.setVisible(true);
     }
 
@@ -181,24 +146,9 @@ public class GateChooser {
 
             controller.getGateController().setGate(id, controller);
 
-            callingButton.setEnabled(true);
+            callingButton.setText("Gate: " + id);
 
             mainFrame.dispose();
         }
-    }
-
-    /**
-     * Provides access to the dialog's main window frame for resource management.
-     * <p>
-     * This method returns the main JFrame instance that contains the gate selection
-     * interface, enabling external components to perform window management operations
-     * such as disposal, positioning, or state management. The method is typically
-     * used by calling components for proper resource cleanup during interface disposal.
-     * </p>
-     *
-     * @return the main JFrame instance containing the gate selection interface
-     */
-    public JFrame getMainFrame() {
-        return mainFrame;
     }
 }

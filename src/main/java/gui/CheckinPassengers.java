@@ -281,7 +281,7 @@ public class CheckinPassengers extends BookingPageAdmin{
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                setGate(controller);
+                setGate(controller, mainFrame);
             }
         });
 
@@ -313,10 +313,10 @@ public class CheckinPassengers extends BookingPageAdmin{
      *
      * @param controller the system controller providing access to gate management capabilities and operational coordination
      */
-    protected void setGate (Controller controller) {
+    protected void setGate (Controller controller, JFrame callingFrame) {
 
-        if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(gateButton, controller, this);
-        else gateChooser = new GateChooser(controller, gateButton);
+        if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(callingFrame ,gateButton, controller, this);
+        else gateChooser = new GateChooser(controller, gateButton, mainFrame);
 
         confirmPanel.revalidate();
         confirmPanel.repaint();
@@ -453,9 +453,6 @@ public class CheckinPassengers extends BookingPageAdmin{
 
             if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
         }
-
-        gateButton.setEnabled(true);
-        if (gateChooser != null) gateChooser.getMainFrame().dispose();
 
         statusButton.setEnabled(true);
         if (statusChooser != null) statusChooser.getMainFrame().dispose();

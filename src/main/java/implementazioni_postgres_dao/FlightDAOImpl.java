@@ -684,14 +684,16 @@ public class FlightDAOImpl implements FlightDAO {
 
                 resultSet.close();
 
-                query = "UPDATE Flight SET id_gate = 1 WHERE id_flight = ?;";
+                /*query = "UPDATE Flight SET id_gate = 1 WHERE id_flight = ?;";
 
                 try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
 
                     preparedUpdateStatement.setString(1, idFlight);
 
                     preparedUpdateStatement.executeUpdate();
-                }
+                }*/
+
+                setGate(1, idFlight);
 
                 connection.commit();
 
@@ -716,7 +718,7 @@ public class FlightDAOImpl implements FlightDAO {
 
                 if (!flag) {
 
-                    query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
+                    /*query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
 
                     try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
 
@@ -724,7 +726,9 @@ public class FlightDAOImpl implements FlightDAO {
                         preparedUpdateStatement.setString(2, idFlight);
 
                         preparedUpdateStatement.executeUpdate();
-                    }
+                    }*/
+
+                    setGate(i, idFlight);
 
                     connection.commit();
 
