@@ -668,7 +668,7 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public int searchGate(String idFlight) {
 
-        String query = "SELECT id_gate FROM Flight WHERE id_gate <> null AND " +
+        String query = "SELECT id_gate FROM Flight WHERE id_gate is not null AND " +
                 "((flight_type = true AND (flight_status = 'ABOUT_TO_DEPART' OR flight_status = 'DELAYED') ) " +
                 "OR (flight_type = false AND (flight_status = 'DEPARTED' OR flight_status = 'ABOUT_TO_ARRIVE' OR" +
                 "(flight_status = 'LANDED' AND arrival_time > CURRENT_TIMESTAMP - INTERVAL '1 HOUR'))));";
