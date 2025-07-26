@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/Documentazione/Database/Bozza_creazione_e_popolamento_DB_progetto_BDD.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/implementazioni_postgres_dao/FlightDAOImpl.java" dialect="GenericSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
