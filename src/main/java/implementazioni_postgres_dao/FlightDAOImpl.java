@@ -682,18 +682,20 @@ public class FlightDAOImpl implements FlightDAO {
 
             if (!resultSet.next()) {
 
+                System.out.println("ciao");
+
                 resultSet.close();
 
-                /*query = "UPDATE Flight SET id_gate = 1 WHERE id_flight = ?;";
+                query = "UPDATE Flight SET id_gate = 1 WHERE id_flight = ?;";
 
                 try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
 
                     preparedUpdateStatement.setString(1, idFlight);
 
                     preparedUpdateStatement.executeUpdate();
-                }*/
+                }
 
-                setGate(1, idFlight);
+                //setGate(1, idFlight);
 
                 connection.commit();
 
@@ -702,13 +704,21 @@ public class FlightDAOImpl implements FlightDAO {
 
             ArrayList<Integer> gates = new ArrayList<Integer>();
 
-            while (resultSet.next()) gates.add(resultSet.getInt("id_gate"));
+            do {
+                gates.add(resultSet.getInt("id_gate"));
+            } while (resultSet.next());
+
+            resultSet.close();
 
             for (int i = 1; i <= 20; i++) {
+
+                System.out.print(i);
 
                 boolean flag = false;
 
                 for (Integer gate : gates) {
+
+                    System.out.println("    " + gate);
 
                     if (gate.equals(i)) {
                         flag = true;
@@ -718,7 +728,7 @@ public class FlightDAOImpl implements FlightDAO {
 
                 if (!flag) {
 
-                    /*query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
+                    query = "UPDATE Flight SET id_gate = ? WHERE id_flight = ?;";
 
                     try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
 
@@ -726,9 +736,9 @@ public class FlightDAOImpl implements FlightDAO {
                         preparedUpdateStatement.setString(2, idFlight);
 
                         preparedUpdateStatement.executeUpdate();
-                    }*/
+                    }
 
-                    setGate(i, idFlight);
+                    //setGate(i, idFlight);
 
                     connection.commit();
 
@@ -739,6 +749,7 @@ public class FlightDAOImpl implements FlightDAO {
             return -1;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getSQLState());
 
             return -1;
