@@ -563,7 +563,7 @@ public abstract class BookingPage extends DisposableObject {
         }
 
 
-        data[0][6] = Controller.translateFlightStatus(controller.getFlightController().getFlightStatus().toString())
+        data[0][6] = Controller.translateFlightStatus(controller.getFlightController().getFlightStatus().toString());
         data[0][7] = controller.getFlightController().getFreeSeats();
 
         flightInfoTable = new JTable(data, columnNames);
