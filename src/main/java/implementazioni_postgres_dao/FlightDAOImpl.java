@@ -241,10 +241,10 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public void searchFlight (String departingCity, String arrivingCity, LocalDate initialDate, LocalDate finalDate, LocalTime initialTime, LocalTime finalTime,
                               List<String> ids, List<String> companyNames, List<java.sql.Date> dates, List<Time> departureTimes, List<Time> arrivalTimes,
-                              List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types) throws SQLException{
+                              List<Integer> delays, List<String> status, List<Integer> maxSeats, List<Integer> freeSeats, List<String> cities, List<Boolean> types, List<Integer> gates) throws SQLException{
 
 
-        String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type " +
+        String query = "SELECT id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate " +
                         "FROM FLIGHT " +
                         "WHERE ";
 
@@ -361,6 +361,13 @@ public class FlightDAOImpl implements FlightDAO {
                     cities.add(rs.getString("destination_or_origin"));
 
                     types.add(rs.getBoolean("flight_type"));
+
+                    if(rs.getInt("id_gate") > 0){
+                        gates.add(rs.getInt("id_gate"));
+                    }else{
+                        gates.add(null);
+                    }
+
 
                 }
 

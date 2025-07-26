@@ -144,6 +144,34 @@ public class Departing extends Flight{
     }
 
     /**
+     * Constructs a new departing flight with gate assignment.
+     * <p>
+     * Creates an arriving flight with a specific gate assignment.
+     * Includes delay information for flight tracking.
+     * </p>
+     *
+     * @param parId the unique identifier for the flight
+     * @param parCompanyName the name of the airline company
+     * @param parDate the date when the flight is scheduled
+     * @param parDepartureTime the scheduled departure time from origin
+     * @param parArrivalTime the scheduled arrival time at this airport
+     * @param parStatus the current status of the flight
+     * @param parMaxSeats the maximum number of seats on the flight
+     * @param parFreeSeats the number of available seats
+     * @param parDestination the destination location of the flight
+     * @param parDepartureDelay the departure delay in minutes
+     * @param parGate the assigned gate for this flight
+     */
+    public Departing(String parId, String parCompanyName, Date parDate, Time parDepartureTime,
+                     Time parArrivalTime, FlightStatus parStatus, int parMaxSeats, int parFreeSeats, String parDestination, int parDepartureDelay, Gate parGate){
+
+        super(parId, parCompanyName, parDate, parDepartureTime, parArrivalTime, parStatus, parMaxSeats, parFreeSeats, parGate);
+        this.destination = parDestination;
+        this.departureDelay = parDepartureDelay;
+
+    }
+
+    /**
      * Constructs a new departing flight with existing bookings and tickets.
      * <p>
      * Creates a departing flight that includes existing booking and ticket

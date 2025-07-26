@@ -108,12 +108,13 @@ public class FlightController {
                                                   JButton searchButton){
 
         ArrayList<Boolean> types = new ArrayList<>();
+        ArrayList<Integer> gates = new ArrayList<>();
 
         try{
             FlightDAO flightDAO = new FlightDAOImpl();
 
             flightDAO.searchFlight(departingCity, arrivingCity, initialDate, finalDate, initialTime, finalTime, ids, companyNames,
-                                    dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats, cities, types);
+                                    dates, departureTimes, arrivalTimes, delays, status, maxSeats, freeSeats, cities, types, gates);
 
             searchResult = new ArrayList<>(0);
 
@@ -127,17 +128,22 @@ public class FlightController {
 
             boolean type = types.get(i);
 
-            if(type){   //alloco Departing
+            try{
+                if(type){   //alloco Departing
 
-                searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
-                                                FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+                    searchResult.add(new Departing( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                                                    FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i), (gates.get(i) == null ? null : new Gate(gates.get(i).byteValue()))));
 
-            }else{              //alloco Arriving
+                }else{              //alloco Arriving
 
-                searchResult.add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
-                                               FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i)));
+                    searchResult.add(new Arriving( ids.get(i), companyNames.get(i), dates.get(i), departureTimes.get(i), arrivalTimes.get(i),
+                                                   FlightStatus.valueOf(status.get(i).toUpperCase()), maxSeats.get(i), freeSeats.get(i), cities.get(i), delays.get(i),  (gates.get(i) == null ? null : new Gate(gates.get(i).byteValue()))));
 
 
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                new FloatingMessage("Errore nella connessione al Database! (Gate)", searchButton, FloatingMessage.ERROR_MESSAGE);
             }
 
         }
