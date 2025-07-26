@@ -849,7 +849,7 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public int addDelay(int delay, String idFlight) {
 
-        String query = "UPDATE Flight SET flight_delay = flight_delay + ? WHERE id_flight = ?;";
+        String query = "UPDATE Flight SET flight_delay = flight_delay + ?, flight_status = ?::FlightStatus WHERE id_flight = ?;";
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -857,7 +857,8 @@ public class FlightDAOImpl implements FlightDAO {
             connection.setAutoCommit(false);
 
             preparedStatement.setInt(1, delay);
-            preparedStatement.setString(2, idFlight);
+            preparedStatement.setString(2, "DELAYED");
+            preparedStatement.setString(3, idFlight);
 
             int result = preparedStatement.executeUpdate();
 
