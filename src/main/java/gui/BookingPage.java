@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -539,11 +538,17 @@ public abstract class BookingPage extends DisposableObject {
         data[0][2] = controller.getFlightController().getDateString();
         data[0][3] = controller.getFlightController().getDepartureTime();
         data[0][4] = controller.getFlightController().getArrivalTime();
-        LocalTime departureTime = controller.getFlightController().getDepartureTime().toLocalTime();
-        LocalTime arrivalTime = controller.getFlightController().getArrivalTime().toLocalTime();
 
-        int hours = Duration.between(departureTime, arrivalTime).toHoursPart();
-        int minutes = Duration.between(departureTime, arrivalTime).toMinutesPart();
+        Duration duration = Duration.between(controller.getFlightController().getDepartureTime().toLocalTime(), controller.getFlightController().getArrivalTime().toLocalTime());
+
+        if (duration.isNegative()) {
+
+            duration = duration.plusDays(1);
+
+        }
+
+        int hours = duration.toHoursPart();
+        int minutes = duration.toMinutesPart();
 
         if(hours < 10){
             if(minutes < 10)
@@ -557,7 +562,8 @@ public abstract class BookingPage extends DisposableObject {
                 data[0][5] =   hours +  ":" + minutes + " ore";
         }
 
-        data[0][6] = controller.getFlightController().getFlightStatus();
+
+        data[0][6] = Controller.translateFlightStatus(controller.getFlightController().getFlightStatus().toString())
         data[0][7] = controller.getFlightController().getFreeSeats();
 
         flightInfoTable = new JTable(data, columnNames);

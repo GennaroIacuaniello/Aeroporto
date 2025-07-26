@@ -3290,44 +3290,27 @@ INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Flight
 
 INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
-('AZ1001', 'Aeroitalia', '2025-08-01 10:00:00', '2025-08-01 11:00:00', 'PROGRAMMED', 150, 150, 'Roma', 0, true, null),
-('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'PROGRAMMED', 200, 200, 'Londra', 0, false, null),
-('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'PROGRAMMED', 180, 180, 'Francoforte', 0, true, null),
-('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'PROGRAMMED', 160, 160, 'Parigi', 0, false, null),
-('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'PROGRAMMED', 250, 250, 'New York', 0, true, null),
-('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'PROGRAMMED', 300, 300, 'Dubai', 0, false, null),
-('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'PROGRAMMED', 220, 220, 'Doha', 0, true, null),
-('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'PROGRAMMED', 190, 190, 'Istanbul', 0, false, null),
-('DL9009', 'Delta Airlines', '2025-07-23 16:00:00', '2025-07-23 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
-('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurigo', 0, false, null),
-('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublino', 0, true, null),
-('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'PROGRAMMED', 120, 120, 'Barcellona', 60, false, null),
-('GI0015', 'Aeroitalia', '2025-07-01 10:00:00', '2025-07-01 12:00:00', 'LANDED', 150, 150, 'Milano', 0, true, 15);
+('GI0015', 'Aeroitalia', '2025-07-01 10:00:00', '2025-07-01 12:00:00', 'LANDED', 150, 150, 'Milano', 0, true, 15),
+('TEST01', 'Aeroitalia', '2025-05-01 10:00:00', '2025-05-01 12:00:00', 'CANCELLED', 150, 150, 'Torino', 0, true, null),
+('TEST02', 'British Airways', '2025-07-28 20:00:00', '2025-07-28 22:00:00', 'PROGRAMMED', 12, 12, 'Londra', 0, true, null),
 
 -- Dati per la tabella Passenger
 
 INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES
 ('Mario', 'Rossi', '1980-01-15', 'MRORSS80A15H501F'),
 ('Anna', 'Bianchi', '1992-03-22', 'NNABNC92C22G273J'),
-('Giuseppe', 'Verdi', '1975-07-01', 'GSPVRD75G01L219K'),
-('Maria', 'Gialli', '1998-11-30', 'MRAGLL98S70F839A'),
-('Paolo', 'Neri', '1985-05-10', 'PAONRI85E10C351B'),
-('Laura', 'Brambilla', '1990-09-05', 'LRAZMZ90P05D612C'),
-('Luca', 'Colombo', '1983-02-18', 'LCACLM83B18E089D'),
-('Sara', 'Ferrari', '1995-06-25', 'SRAFRA95F25H701E'),
-('Marco', 'Ricci', '1970-12-03', 'MRCRCC70T03L389G'),
 ('Elena', 'Esposito', '1988-04-08', 'ELNSPT88D08I170H'),
-('Francesco', 'Russo', '1982-01-01', 'FRNRSS82A01F111A'),
 ('Sofia', 'Mancini', '1991-02-02', 'SFAMNC91B02G222B'),
-('Alessandro', 'Costa', '1977-03-03', 'LSSCSC77C03H333C'),
-('Chiara', 'Romano', '1993-04-04', 'CHRRMN93D04I444D'),
-('Simone', 'Gallo', '1986-05-05', 'SMNGLL86E05J555E'),
-('Valentina', 'Fontana', '1994-06-06', 'VLTFNT94F06K666F'),
-('Andrea', 'Conti', '1979-07-07', 'NDRCNT79G07L777G'),
-('Beatrice', 'Greco', '1996-08-08', 'BTBGRC96H08M888H'),
-('Giovanni', 'Riva', '1981-09-09', 'GVNRIV81I09N999I'),
-('Francesca', 'Mariani', '1989-10-10', 'FRNMRA89R10O000J'),
-('Virginia Antonia', 'Esposito', '1989-10-10', 'SPSVGN04M61G964D');
+('Nome01', 'Cognome01', '2000-01-01', 'TSTTSTS99T99S001T'),
+('Nome02', 'Cognome02', '2000-01-01', 'TSTTSTS99T99S002T'),
+('Nome03', 'Cognome03', '2000-01-01', 'TSTTSTS99T99S003T'),
+('Nome04', 'Cognome04', '2000-01-01', 'TSTTSTS99T99S004T'),
+('Nome05', 'Cognome05', '2000-01-01', 'TSTTSTS99T99S005T'),
+('Nome06', 'Cognome06', '2000-01-01', 'TSTTSTS99T99S006T'),
+('Nome07', 'Cognome07', '2000-01-01', 'TSTTSTS99T99S007T'),
+('Nome08', 'Cognome08', '2000-01-01', 'TSTTSTS99T99S008T'),
+('Nome09', 'Cognome09', '2000-01-01', 'TSTTSTS99T99S009T'),
+('Virginia Antonia', 'Esposito', '2004-08-21', 'SPSVGN04M61G964D');
 
 -- Dati per la tabella Booking
 

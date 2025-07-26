@@ -947,7 +947,7 @@ public class FlightController {
             result[i][2] = arrivingFlights.get(i).getDate();
             result[i][3] = arrivingFlights.get(i).getOrigin() + " -> Napoli";
             result[i][4] = arrivingFlights.get(i).getArrivalTime().toLocalTime().plusMinutes(arrivingFlights.get(i).getArrivalDelay());
-            result[i][5] = Controller.translateFlightStatus(arrivingFlights.get(i).getStatus());
+            result[i][5] = Controller.translateFlightStatus(arrivingFlights.get(i).getStatus().toString());
             if(arrivingFlights.get(i).getGate() != null){
                 result[i][6] = arrivingFlights.get(i).getGate().getId();
             }else{
@@ -1016,7 +1016,7 @@ public class FlightController {
             result[i][2] = departingFlights.get(i).getDate();
             result[i][3] = "Napoli -> " + departingFlights.get(i).getOrigin();
             result[i][4] = departingFlights.get(i).getDepartureTime().toLocalTime().plusMinutes(departingFlights.get(i).getArrivalDelay());
-            result[i][5] = Controller.translateFlightStatus(departingFlights.get(i).getStatus());
+            result[i][5] = Controller.translateFlightStatus(departingFlights.get(i).getStatus().toString());
             if(departingFlights.get(i).getGate() != null){
                 result[i][6] = departingFlights.get(i).getGate().getId();
             }else{

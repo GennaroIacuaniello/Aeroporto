@@ -428,9 +428,9 @@ public class Controller {
      * @param status the {@link FlightStatus} enumeration value to translate
      * @return the Italian translation of the flight status, or null if the status is not recognized
      */
-    public static String translateFlightStatus(FlightStatus status){
+    public static String translateFlightStatus(String status){
 
-        switch (status.toString()){
+        switch (status){
             case "PROGRAMMED":
                 return "In programma";
             case "CANCELLED":
