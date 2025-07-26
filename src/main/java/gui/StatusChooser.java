@@ -163,11 +163,11 @@ public class StatusChooser {
 
         comboBox.addItem("STATO");
 
-        comboBox.addItem("PROGRAMMED");
-        comboBox.addItem("CANCELLED");
-        comboBox.addItem("DEPARTED");
-        comboBox.addItem("ABOUT_TO_DEPART");
-        comboBox.addItem("LANDED");
+        comboBox.addItem("In programma");
+        comboBox.addItem("Cancellato");
+        comboBox.addItem("Partito");
+        comboBox.addItem("In partenza");
+        comboBox.addItem("Atterrato");
 
         comboBox.setSelectedIndex(0);
         mainFrame.add(comboBox);

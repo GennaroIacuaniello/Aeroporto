@@ -665,7 +665,7 @@ public abstract class BookingPage extends DisposableObject {
      * <p>
      * This method handles the complex task of managing passenger panel visibility across
      * multiple pages, ensuring that only the appropriate passengers are displayed for
-     * the current page while maintaining proper navigation state. The pagination system
+     * the current page while maintaining a proper navigation state. The pagination system
      * supports up to 3 passengers per page for optimal screen utilization and usability.
      * </p>
      * <p>
@@ -787,7 +787,7 @@ public abstract class BookingPage extends DisposableObject {
      * Passenger panel insertion includes:
      * </p>
      * <ul>
-     *   <li><strong>Layout Positioning:</strong> Calculates appropriate grid position based on passenger count</li>
+     *   <li><strong>Layout Positioning:</strong> Calculates the appropriate grid position based on passenger count</li>
      *   <li><strong>Panel Registration:</strong> Adds the panel to the passenger panels collection</li>
      *   <li><strong>Visibility Management:</strong> Sets initial visibility based on pagination requirements</li>
      *   <li><strong>Panel Configuration:</strong> Configures panel state for the booking context</li>
@@ -881,7 +881,7 @@ public abstract class BookingPage extends DisposableObject {
      * if more than 3 passengers are present, requiring pagination functionality.
      * </p>
      * <p>
-     * The current page label provides immediate visual feedback about pagination
+     * The current page label provides immediate visual feedback about the pagination
      * state, displaying page numbers in user-friendly format (1-based indexing)
      * for intuitive user understanding.
      * </p>
@@ -971,7 +971,7 @@ public abstract class BookingPage extends DisposableObject {
      * Retrieves the current page index for pagination state queries.
      * <p>
      * This method provides access to the current page position within the
-     * pagination system, enabling other components to query pagination state
+     * pagination system, enabling other components to query the pagination state
      * for display or navigation purposes.
      * </p>
      *
