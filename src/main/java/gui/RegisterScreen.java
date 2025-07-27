@@ -332,7 +332,7 @@ public class RegisterScreen extends DisposableObject {
         mainFrame.setVisible(false);
         new LogInScreen(callingObjects, controller, mainFrame.getSize());
         doOnDispose(callingObjects, controller);
-        mainFrame.dispose();
+        //mainFrame.dispose();
     }
 
     /**

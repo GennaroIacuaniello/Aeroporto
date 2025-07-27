@@ -172,8 +172,11 @@ public class LogInScreen extends DisposableObject {
             callingObjects.clear();
 
             this.setMainFrame(callingObjects, controller, startingSize);
+            return;
+        }else{
+            callingObjects.addLast(this);
         }
-        callingObjects.addLast(this);
+        
         //some additional manual setup
         loginMenuScrollContainer.getVerticalScrollBar().setUnitIncrement(4);
         passwordField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true;");
