@@ -133,13 +133,10 @@ public class SearchFlightResultPanel extends JPanel {
 
                         controller.getFlightController().setFlight(index);
 
-                        if(controller.loadAndCheckIfOpenMyBookingsOrNewBooking()){
-                            new MyBookingsCustomerMainFrame(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState(), false);
-                        }else{
-                            new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
-                                    callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
-                        }
+                        controller.loadAndCheckIfOpenMyBookingsOrNewBooking();
+
+                        new Book(callingObjects, controller, callingObjects.getLast().getFrame().getSize(),
+                                callingObjects.getLast().getFrame().getLocation(), callingObjects.getLast().getFrame().getExtendedState());
 
                         callingObjects.get(callingObjects.size() - 2).getFrame().setVisible(false);
 
