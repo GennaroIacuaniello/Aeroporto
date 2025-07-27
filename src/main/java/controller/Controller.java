@@ -16,6 +16,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.sql.Date;
 import java.util.logging.Level;
@@ -1524,6 +1525,17 @@ public class Controller {
 
         flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
 
+        System.out.println(flightController.getFlight().getBookings().size());
+
+        for (Booking booking : flightController.getFlight().getBookings()) {
+
+            System.out.println("    " + booking.getTickets().size());
+
+            for (Ticket ticket : booking.getTickets()) {
+
+                System.out.println("        " + ticket.getLuggages().size());
+            }
+        }
     }
 
     /**
