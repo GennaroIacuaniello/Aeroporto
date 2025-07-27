@@ -376,7 +376,7 @@ public class BookingPageAdmin extends BookingPage {
 
             } else new FloatingMessage("Lo stato del volo è rimasto invariato (controlla la data di partenza)", checkinButton, FloatingMessage.ERROR_MESSAGE);
 
-        } else if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("ABOUT_TO_DEPART")) {
+        } else if (controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("ABOUT_TO_DEPART") || controller.getFlightController().getFlightStatus().toString().equalsIgnoreCase("DELAYED")) {
 
             new CheckinPassengers(callingObjects, controller, mainFrame.getSize(), mainFrame.getLocation(), mainFrame.getExtendedState(), false);
 
