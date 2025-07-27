@@ -3317,7 +3317,7 @@ INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, fligh
 --PROGRAMMED arriving flight per riempire
 ('TEST12', 'Aeroitalia', '2025-08-05 11:30:00', '2025-08-05 13:00:00', 'PROGRAMMED', 150, 150, 'Trento', 0, false, null),
 --PROGRAMMED arriving flight per riempire
-('TEST13', 'Air Transat', '2025-08-09 10:30:00', '2025-08-09 16:30:00', 'PROGRAMMED', 200, 200, 'Calgary', 0, false, null);
+('TEST13', 'Air Transat', '2025-08-09 10:30:00', '2025-08-09 16:30:00', 'PROGRAMMED', 180, 180, 'Calgary', 0, false, null);
 
 
 -- Dati per la tabella Passenger
