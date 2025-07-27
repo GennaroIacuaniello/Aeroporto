@@ -1483,6 +1483,9 @@ public class Controller {
                         ticketController.getSearchBookingResult().add(new Ticket(ticketNumbers.get(i), seats.get(i), checkedIns.get(i), flightController.getSearchBookingResultFlightById(flightIds.get(i)),
                                 bookingController.getSearchBookingResultBooksById(bookingIds.get(i)),
                                 firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
+
+                        bookingController.getSearchBookingResult().getLast().getTickets().add(ticketController.getSearchBookingResult().getLast());
+
                         Passenger tmp = ticketController.getSearchBookingResult().getLast().getPassenger();
                         if (!actualSSNs.contains(tmp.getPassengerSSN())) {
                             actualSSNs.add(tmp.getPassengerSSN());
