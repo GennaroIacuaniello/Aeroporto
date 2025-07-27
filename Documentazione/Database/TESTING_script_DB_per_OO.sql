@@ -3301,15 +3301,15 @@ INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, fligh
 --ABOUT_TO_DEPART departing flight da rendere DELAYED
 ('TEST04', 'Ryanair', '2025-07-28 14:00:00', '2025-07-28 16:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Parigi', 0, true, 5),
 --DEPARTED departing FLIGHT
-('TEST05', 'Japan Airline', '2025-07-28 10:00:00', '2025-07-28 22:00:00', 'DEPARTED', 150, 150, 'Tokyo', 0, true, 9),
+('TEST05', 'Japan Airline', '2025-07-27 10:00:00', '2025-07-28 22:00:00', 'DEPARTED', 150, 150, 'Tokyo', 0, true, 9),
 --ABOUT_TO_ARRIVE arriving flight
-('TEST06', 'Air Transat', '2025-07-28 08:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Calgary', 0, false, 2),
+('TEST06', 'Air Transat', '2025-07-27 08:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Calgary', 0, false, 2),
 --ABOUT_TO_ARRIVE arriving flight da rendere DELAYED
-('TEST07', 'Aeroitalia', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Pisa', 0, false, 4),
+('TEST07', 'Aeroitalia', '2025-07-27 10:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Pisa', 0, false, 4),
 --DEPARTED arriving flight
-('TEST08', 'Qantas Airways Limited', '2025-07-28 10:00:00', '2025-07-28 20:00:00', 'DEPARTED', 150, 150, 'Sydney', 0, false, null),
+('TEST08', 'Qantas Airways Limited', '2025-07-27 10:00:00', '2025-07-28 20:00:00', 'DEPARTED', 150, 150, 'Sydney', 0, false, null),
 --LANDED arriving flight
-('TEST09', 'Aeroitalia', '2025-07-28 08:00:00', '2025-07-28 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8);
+('TEST09', 'Aeroitalia', '2025-07-27 08:00:00', '2025-07-28 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8);
 
 -- Dati per la tabella Passenger
 
