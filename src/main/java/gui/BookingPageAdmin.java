@@ -279,7 +279,7 @@ public class BookingPageAdmin extends BookingPage {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                statusChooser = new StatusChooser(controller, statusButton, callingObjects);
+                statusChooser = new StatusChooser(controller, mainFrame, callingObjects);
             }
         });
 
@@ -518,8 +518,5 @@ public class BookingPageAdmin extends BookingPage {
 
             if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
         }
-
-        statusButton.setEnabled(true);
-        if (statusChooser != null) statusChooser.getMainFrame().dispose();
     }
 }

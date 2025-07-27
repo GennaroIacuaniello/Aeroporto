@@ -52,7 +52,7 @@ public class StatusChooser {
      * administrative flight status modification workflows.
      * </p>
      */
-    private final JFrame mainFrame;
+    private final JDialog mainFrame;
 
     /**
      * Confirmation button for processing selected flight status changes.
@@ -110,51 +110,19 @@ public class StatusChooser {
      * </ul>
      *
      * @param controller the system controller providing access to flight management services and status update functionality
-     * @param callingButton the administrative button that triggered status selection for proper state management and interface coordination
      * @param disposableObjects the list of navigation objects for proper resource management and workflow coordination during status transitions
      */
-    public StatusChooser(Controller controller, JButton callingButton, List<DisposableObject> disposableObjects) {
+    public StatusChooser(Controller controller, JFrame callingFrame, List<DisposableObject> disposableObjects) {
 
-        mainFrame = new JFrame("Flight status chooser");
+        mainFrame = new JDialog(callingFrame, "Flight status chooser", true);
         mainFrame.setLayout(new FlowLayout(FlowLayout.CENTER));
-        mainFrame.setAlwaysOnTop(true);
+        //.setLocationRelativeTo(callingFrame);
+        mainFrame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        mainFrame.setSize(500, 200);
 
-        mainFrame.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                //
-            }
+        Point point = new Point(callingFrame.getX() + callingFrame.getWidth()/2, callingFrame.getY() + callingFrame.getHeight()/2);
 
-            @Override
-            public void windowClosing(WindowEvent e) {
-                callingButton.setEnabled(true);
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-                //
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                //
-            }
-        });
+        mainFrame.setLocation((int)(point.getX() - 250), (int)(point.getY() - 100));
 
         JLabel label = new JLabel("Seleziona lo stato:");
         mainFrame.add(label);
@@ -164,10 +132,12 @@ public class StatusChooser {
         comboBox.addItem("STATO");
 
         comboBox.addItem("In programma");
-        comboBox.addItem("Cancellato");
-        comboBox.addItem("Partito");
         comboBox.addItem("In partenza");
+        comboBox.addItem("Partito");
+        comboBox.addItem("In arrivo");
         comboBox.addItem("Atterrato");
+        comboBox.addItem("In ritardo");
+        comboBox.addItem("Cancellato");
 
         comboBox.setSelectedIndex(0);
         mainFrame.add(comboBox);
@@ -181,11 +151,9 @@ public class StatusChooser {
 
                 if (comboBox.getSelectedIndex() != 0) {
 
-                    if (controller.getFlightController().setFlightStatus(comboBox.getSelectedItem()) == 1) {
+                    if (controller.getFlightController().setFlightStatus(controller.translateFlightStatusBack((String)comboBox.getSelectedItem())) == 1) {
 
-                        callingButton.setEnabled(true);
-
-                        if (comboBox.getSelectedIndex() == 2) controller.goHome(disposableObjects);
+                        if (comboBox.getSelectedIndex() == 7) controller.goHome(disposableObjects);
 
                         mainFrame.dispose();
                     } else
@@ -199,24 +167,6 @@ public class StatusChooser {
         confirmButton.setFocusable(false);
         mainFrame.add(confirmButton);
 
-        callingButton.setEnabled(false);
-
-        mainFrame.setSize(500, 200);
         mainFrame.setVisible(true);
-    }
-
-    /**
-     * Returns the main dialog frame for external component integration and window management operations.
-     * <p>
-     * This method provides access to the underlying JFrame component for administrative interface
-     * coordination, window management operations, and external component integration requirements.
-     * The method enables proper dialog lifecycle management and supports advanced administrative
-     * interface coordination throughout flight status management and operational oversight workflows.
-     * </p>
-     *
-     * @return the main dialog frame for external component integration and administrative window management operations
-     */
-    public JFrame getMainFrame() {
-        return mainFrame;
     }
 }

@@ -450,6 +450,28 @@ public class Controller {
         }
     }
 
+    public static String translateFlightStatusBack(String status){
+
+        switch (status){
+            case "In programma":
+                return "PROGRAMMED";
+            case "Cancellato":
+                return "CANCELLED";
+            case "In ritardo":
+                return "DELAYED";
+            case "In partenza":
+                return "ABOUT_TO_DEPART";
+            case "Partito":
+                return "DEPARTED";
+            case "In arrivo":
+                return "ABOUT_TO_ARRIVE";
+            case "Atterrato":
+                return "LANDED";
+            default:
+                return null;
+        }
+    }
+
     /**
      * Modifies an existing booking with updated passenger information and status.
      * <p>

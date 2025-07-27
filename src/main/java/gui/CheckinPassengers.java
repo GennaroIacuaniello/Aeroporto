@@ -453,9 +453,6 @@ public class CheckinPassengers extends BookingPageAdmin{
 
             if (passengerPanel.getLuggagesView() != null) passengerPanel.getLuggagesView().dispose();
         }
-
-        statusButton.setEnabled(true);
-        if (statusChooser != null) statusChooser.getMainFrame().dispose();
     }
 
     /**
