@@ -2503,7 +2503,7 @@ RETURNS TRIGGER
 AS $$
 BEGIN
 
-	IF NEW.flight_status <> 'CANCELLED' THEN
+	IF (OLD.flight_status <> NEW.flight_status) AND NEW.flight_status <> 'CANCELLED' THEN
 
 		IF OLD.flight_status = 'CANCELLED' AND NEW.flight_status <> 'CANCELLED' THEN
 
