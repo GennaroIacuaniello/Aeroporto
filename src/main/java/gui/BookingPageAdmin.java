@@ -412,20 +412,11 @@ public class BookingPageAdmin extends BookingPage {
     protected void setSetDelayButton (Controller controller) {
 
         JButton setDelayButton = new JButton("AGGIUNGI RITARDO");
-        JTextField delayTextField = new JTextField("delay", 15);
+        JTextField delayTextField = new JTextField("", 15);
 
-        System.out.println("delay: " + delayTextField.getText());
 
         delayTextField.setEditable(true);
         delayTextField.setVisible(true);
-
-        delayTextField.addFocusListener(new FocusAdapter() {
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                System.out.println("delay: " + delayTextField.getText());
-            }
-        });
 
         setDelayButton.addActionListener(new ActionListener() {
 

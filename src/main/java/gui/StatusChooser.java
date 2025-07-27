@@ -153,7 +153,11 @@ public class StatusChooser {
 
                     if (controller.getFlightController().setFlightStatus(controller.translateFlightStatusBack((String)comboBox.getSelectedItem())) == 1) {
 
+                        controller.getFlightController().setStatus((String)comboBox.getSelectedItem());
+
                         if (comboBox.getSelectedIndex() == 7) controller.goHome(disposableObjects);
+
+                        if (comboBox.getSelectedIndex() == 3) controller.goBack(disposableObjects);
 
                         mainFrame.dispose();
                     } else

@@ -325,8 +325,6 @@ public class CheckinPassengers extends BookingPageAdmin{
 
         confirmPanel.revalidate();
         confirmPanel.repaint();
-
-        System.out.println(gateButton.getText());
     }
 
     /**

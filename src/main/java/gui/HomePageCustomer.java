@@ -553,7 +553,7 @@ public class HomePageCustomer extends DisposableObject {
     public void doOnRestore(java.util.List<DisposableObject> callingObjects, Controller controller){
 
         new HomePageCustomer(callingObjects, controller);
-        
+
         callingObjects.remove(callingObjects.size() - 2);
 
         mainFrame.dispose();

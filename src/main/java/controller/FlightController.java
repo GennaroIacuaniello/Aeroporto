@@ -1077,4 +1077,9 @@ public class FlightController {
         }
         return true;
     }
+
+    public void setStatus (String status) {
+
+        flight.setStatus(FlightStatus.valueOf(Controller.translateFlightStatusBack(status)));
+    }
 }
