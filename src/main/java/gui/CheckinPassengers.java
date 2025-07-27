@@ -244,6 +244,16 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.setVisible(true);
     }
 
+    /**
+     * Checks if a booking needs to be inserted
+     * <p>
+     * This method calls the controller to check if a booking is in a confirmed status or pending status,
+     * to decide if all the passengers of the booking need to be inserted in the passengerPage.
+     * </p>
+     * @param controller the system controller providing access to flight operations, status management, and administrative capabilities
+     * @param index states the position of the booking in the bookings List of the Flight of the FlightController
+     * @return true if the booking needs to be inserted, false if not
+     */
     @Override
     protected boolean checkBookingStatus (Controller controller, int index) {
         return controller.getFlightController().checkBookingConfirm(index);
@@ -297,26 +307,6 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.add(gateButton, constraints.getGridBagConstraints());
     }
 
-    /**
-     * Processes gate assignment operations with dynamic behavior based on current gate status.
-     * <p>
-     * This method handles gate assignment operations by determining the appropriate action
-     * based on the current gate assignment status of the flight. The method provides
-     * different functionality for new gate assignments versus gate modifications,
-     * ensuring appropriate operational behavior for various gate management scenarios.
-     * </p>
-     * <p>
-     * The gate assignment process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Status Evaluation:</strong> Determines current gate assignment status based on button text</li>
-     *   <li><strong>New Gate Assignment:</strong> Initiates new gate assignment process for flights without assigned gates</li>
-     *   <li><strong>Gate Modification:</strong> Provides gate change functionality for flights with existing gate assignments</li>
-     *   <li><strong>Component Integration:</strong> Coordinates with appropriate gate management components based on operation type</li>
-     * </ul>
-     *
-     * @param controller the system controller providing access to gate management capabilities and operational coordination
-     */
     /*protected void setGate (Controller controller, JFrame callingFrame) {
 
         if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(callingFrame ,gateButton, controller, this);

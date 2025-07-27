@@ -211,6 +211,16 @@ public class BookingPageAdmin extends BookingPage {
         }
     }
 
+    /**
+     * Checks if a booking needs to be inserted
+     * <p>
+     * This method calls the controller to check if a booking is in a confirmed status,
+     * to decide if all the passengers of the booking need to be inserted in the passengerPage.
+     * </p>
+      * @param controller the system controller providing access to flight operations, status management, and administrative capabilities
+     * @param index states the position of the booking in the bookings List of the Flight of the FlightController
+     * @return true if the booking needs to be inserted, false if not
+     */
     protected boolean checkBookingStatus (Controller controller, int index) {
         return controller.getFlightController().checkBookingConfirmOrPending(index);
     }
@@ -454,28 +464,6 @@ public class BookingPageAdmin extends BookingPage {
                 GridBagConstraints.NONE, 0, 0, GridBagConstraints.CENTER);
         confirmPanel.add(delayPanel, constraints.getGridBagConstraints());
     }
-
-    /**
-     * Processes flight delay configuration with comprehensive validation and system integration.
-     * <p>
-     * This method handles the complete delay configuration process including input validation,
-     * delay value processing, system integration, and feedback provision. The method ensures
-     * that delay values are properly validated, formatted, and applied to the flight management
-     * system with appropriate error handling and user feedback throughout the process.
-     * </p>
-     * <p>
-     * The delay configuration process includes:
-     * </p>
-     * <ul>
-     *   <li><strong>Input Validation:</strong> Comprehensive validation of delay input including format and value checking</li>
-     *   <li><strong>Value Processing:</strong> Proper parsing and formatting of delay values for system integration</li>
-     *   <li><strong>System Integration:</strong> Application of validated delay values through flight controller</li>
-     *   <li><strong>Success Feedback:</strong> Clear confirmation messaging for successful delay configuration</li>
-     *   <li><strong>Error Handling:</strong> Comprehensive error handling with specific error messaging for different failure scenarios</li>
-     * </ul>
-     *
-     * @param controller the system controller providing access to flight delay management and logging capabilities
-     */
 
     /**
      * Performs comprehensive resource cleanup and disposal operations for administrative components.

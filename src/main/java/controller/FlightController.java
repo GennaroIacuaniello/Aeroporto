@@ -564,6 +564,12 @@ public class FlightController {
         return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED);
     }
 
+    /**
+     * Checks if a specific booking within the current flight has confirmed or pending status.
+     *
+     * @param index the zero-based index of the booking within the flight's booking collection
+     * @return true if the booking at the specified index has CONFIRMED status, false otherwise
+     */
     public boolean checkBookingConfirmOrPending (int index) {
 
         return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED) || flight.getBookings().get(index).getStatus().equals(BookingStatus.PENDING);
@@ -1078,6 +1084,15 @@ public class FlightController {
         return true;
     }
 
+    /**
+     * Sets the status of the flight
+     * <p>
+     * This method sets the attributo flight_status of the Flight object in this coontroller,
+     * to do this, the method takes a String and translates it from Italian to English, then
+     * it converts the string into a FlightStatus calling the static method FlightStatus.valueOf.
+     * </p>
+     * @param status string containing the status to assign
+     */
     public void setStatus (String status) {
 
         flight.setStatus(FlightStatus.valueOf(Controller.translateFlightStatusBack(status)));
