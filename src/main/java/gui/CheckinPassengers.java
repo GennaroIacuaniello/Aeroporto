@@ -90,16 +90,6 @@ import java.util.List;
 public class CheckinPassengers extends BookingPageAdmin{
 
     /**
-     * Button for gate assignment and management operations.
-     * <p>
-     * This button provides gate assignment functionality, enabling check-in
-     * staff to assign or modify flight gate allocations. The button integrates
-     * with gate management systems for comprehensive gate coordination.
-     * </p>
-     */
-    protected JButton gateButton;
-    
-    /**
      * Button for confirming batch check-in operations.
      * <p>
      * This button triggers the processing of selected passenger check-ins,
@@ -278,6 +268,9 @@ public class CheckinPassengers extends BookingPageAdmin{
      */
     protected void setGateButton (Controller controller) {
 
+        JButton gateButton;
+        CheckinPassengers thisClass = this;
+
         if (controller.getFlightController().getFlight().getGate() == null) gateButton = new JButton("GATE");
         else gateButton = new JButton("GATE: " + controller.getFlightController().getFlight().getGate().getId());
 
@@ -286,7 +279,13 @@ public class CheckinPassengers extends BookingPageAdmin{
             @Override
             public void actionPerformed (ActionEvent e) {
 
-                setGate(controller, mainFrame);
+                //setGate(controller, mainFrame);
+
+                if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(mainFrame ,gateButton, controller, thisClass);
+                else gateChooser = new GateChooser(controller, gateButton, mainFrame);
+
+                confirmPanel.revalidate();
+                confirmPanel.repaint();
             }
         });
 
@@ -318,14 +317,14 @@ public class CheckinPassengers extends BookingPageAdmin{
      *
      * @param controller the system controller providing access to gate management capabilities and operational coordination
      */
-    protected void setGate (Controller controller, JFrame callingFrame) {
+    /*protected void setGate (Controller controller, JFrame callingFrame) {
 
         if (gateButton.getText().equals("GATE")) controller.getGateController().newGate(callingFrame ,gateButton, controller, this);
         else gateChooser = new GateChooser(controller, gateButton, mainFrame);
 
         confirmPanel.revalidate();
         confirmPanel.repaint();
-    }
+    }*/
 
     /**
      * Creates and configures the check-in confirmation button with batch processing integration.
