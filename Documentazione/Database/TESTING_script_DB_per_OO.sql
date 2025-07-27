@@ -3309,7 +3309,15 @@ INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, fligh
 --DEPARTED arriving flight
 ('TEST08', 'Qantas Airways Limited', '2025-07-27 10:00:00', '2025-07-28 20:00:00', 'DEPARTED', 150, 150, 'Sydney', 0, false, null),
 --LANDED arriving flight
-('TEST09', 'Aeroitalia', '2025-07-27 08:00:00', '2025-07-28 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8);
+('TEST09', 'Aeroitalia', '2025-07-27 08:00:00', '2025-07-28 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8),
+--PROGRAMMED departing flight per riempire
+('TEST10', 'Aeroitalia', '2025-08-21 08:00:00', '2025-08-21 09:00:00', 'PROGRAMMED', 150, 150, 'Grosseto', 0, true, null),
+--PROGRAMMED departing flight per riempire
+('TEST11', 'New York Air', '2025-08-05 10:00:00', '2025-08-05 16:00:00', 'PROGRAMMED', 150, 150, 'New york', 0, true, null),
+--PROGRAMMED arriving flight per riempire
+('TEST12', 'Aeroitalia', '2025-08-05 11:30:00', '2025-08-05 13:00:00', 'PROGRAMMED', 150, 150, 'Trento', 0, false, null),
+--PROGRAMMED arriving flight per riempire
+('TEST13', 'Air Transat', '2025-08-09 10:30:00', '2025-08-09 16:30:00', 'PROGRAMMED', 200, 200, 'Calgary', 0, false, null);
 
 -- Dati per la tabella Passenger
 
@@ -3444,11 +3452,11 @@ INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES
 ('CARRY_ON', 'BOOKED', '0000000000049'),
 ('CHECKED', 'BOOKED', '0000000000049'),
 -- Per ticket 0000000000050 (Booking 7)
-(null, 'BOOKED', '0000000000050'),
+('CHECKED', 'BOOKED', '0000000000050'),
 ('CARRY_ON', 'BOOKED', '0000000000050'),
 -- Per ticket 0000000000051 (Booking 7)
-(null, 'BOOKED', '0000000000051'),
-(null, 'BOOKED', '0000000000051'),
+('CHECKED', 'BOOKED', '0000000000051'),
+('CHECKED', 'BOOKED', '0000000000051'),
 -- Per ticket 0000000000052 (Booking 7)
 ('CHECKED', 'BOOKED', '0000000000052'),
 ('CARRY_ON', 'BOOKED', '0000000000052');
