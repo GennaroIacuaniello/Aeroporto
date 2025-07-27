@@ -1468,6 +1468,7 @@ public class Controller {
                             firstNames.get(i), lastNames.get(i), passengerSSNs.get(i), birthDates.get(i)));
 
                     bookingController.getSearchBookingResultIds().add(bookingIds.get(i));
+                    flightController.getSearchBookingResultFlightById(flightIds.get(i)).getBookings().add(bookingController.getSearchBookingResult().getLast());
 
                     actualTicketNumbers.add(ticketNumbers.get(i));
                     ticketController.getSearchBookingResult().add(bookingController.getSearchBookingResult().getLast().getTickets().getLast());
@@ -1523,7 +1524,7 @@ public class Controller {
 
         flightController.setFlight(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getFlight());
 
-        flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
+        /*flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
 
         System.out.println(flightController.getFlight().getBookings().size());
 
@@ -1535,7 +1536,7 @@ public class Controller {
 
                 System.out.println("        " + ticket.getLuggages().size());
             }
-        }
+        }*/
     }
 
     /**
