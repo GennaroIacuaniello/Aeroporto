@@ -141,7 +141,7 @@ public class HomePageAdmin extends DisposableObject {
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
 
-        mainFrame.setMinimumSize(new Dimension(1420, 1080));
+        mainFrame.setMinimumSize(new Dimension(1000, 800));
 
         mainFrame.getContentPane().setBackground(new Color(240, 242, 245));
 

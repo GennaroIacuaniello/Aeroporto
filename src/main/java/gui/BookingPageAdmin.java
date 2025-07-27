@@ -4,8 +4,7 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -106,7 +105,7 @@ public class BookingPageAdmin extends BookingPage {
          * validation and feedback mechanisms to ensure proper delay configuration.
          * </p>
          */
-        protected JButton setDelayButton;
+        //protected JButton setDelayButton;
         
         /**
          * Text field for delay value input by administrators.
@@ -116,7 +115,7 @@ public class BookingPageAdmin extends BookingPage {
          * ensure only valid delay values are accepted and processed by the system.
          * </p>
          */
-        protected JTextField delayTextField;
+        //protected JTextField delayTextField;
 
     /**
      * Constructs a new BookingPageAdmin interface for administrative flight management.
@@ -412,15 +411,53 @@ public class BookingPageAdmin extends BookingPage {
      */
     protected void setSetDelayButton (Controller controller) {
 
-        setDelayButton = new JButton("AGGIUNGI RITARDO");
-        delayTextField = new JTextField(15);
+        JButton setDelayButton = new JButton("AGGIUNGI RITARDO");
+        JTextField delayTextField = new JTextField("delay", 15);
+
+        System.out.println("delay: " + delayTextField.getText());
+
+        delayTextField.setEditable(true);
+        delayTextField.setVisible(true);
+
+        delayTextField.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                System.out.println("delay: " + delayTextField.getText());
+            }
+        });
 
         setDelayButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                addDelay(controller);
+                //addDelay(controller);
+
+                try {
+
+                    //delayTextField.setText("20");
+
+                    /*System.out.println("empty" + delayTextField.getText().isEmpty());
+
+                    System.out.println("lenght: " + delayTextField.getText().length());
+
+                    System.out.println("delay: " + delayTextField.getText());
+
+                    System.out.println("delay: " + delayTextField.getText().trim());*/
+
+                    int delay = Integer.parseInt(delayTextField.getText().trim());
+
+                    //System.out.println("delay: " + delay);
+
+                    if (controller.getFlightController().addDelay(delay) == 1)
+                        new FloatingMessage("Ritardo settato correttamente", setDelayButton, FloatingMessage.SUCCESS_MESSAGE);
+                    else new FloatingMessage("Il ritardo non è stato settato correttamente", setDelayButton, FloatingMessage.ERROR_MESSAGE);
+
+                } catch (NumberFormatException ex) {
+                    //Controller.getLogger().log(Level.SEVERE, ex.getMessage());
+                    new FloatingMessage("Ritardo non valido", setDelayButton, FloatingMessage.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -429,6 +466,7 @@ public class BookingPageAdmin extends BookingPage {
 
         JPanel delayPanel = new JPanel();
         delayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        delayPanel.setVisible(true);
 
         delayPanel.add(setDelayButton);
         delayPanel.add(delayTextField);
@@ -459,19 +497,19 @@ public class BookingPageAdmin extends BookingPage {
      *
      * @param controller the system controller providing access to flight delay management and logging capabilities
      */
-    protected void addDelay(Controller controller) {
+    /*protected void addDelay(Controller controller) {
 
         try {
 
-            /*delayTextField.setText("20");
+            //delayTextField.setText("20");
 
-            System.out.println("empty" + delayTextField.getText().isEmpty());
+            /*System.out.println("empty" + delayTextField.getText().isEmpty());
 
             System.out.println("lenght: " + delayTextField.getText().length());
 
             System.out.println("delay: " + delayTextField.getText());
 
-            System.out.println("delay: " + delayTextField.getText().trim());*/
+            System.out.println("delay: " + delayTextField.getText().trim());
 
             int delay = Integer.parseInt(delayTextField.getText().trim());
 
@@ -485,7 +523,7 @@ public class BookingPageAdmin extends BookingPage {
             Controller.getLogger().log(Level.SEVERE, e.getMessage());
             new FloatingMessage("Ritardo non valido", setDelayButton, FloatingMessage.ERROR_MESSAGE);
         }
-    }
+    }*/
 
     /**
      * Performs comprehensive resource cleanup and disposal operations for administrative components.
