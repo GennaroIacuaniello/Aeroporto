@@ -178,7 +178,7 @@ public class BookingPageAdmin extends BookingPage {
 
         for (int j = 0; j < controller.getFlightController().getBookingsSize(); j++) {
 
-            if (controller.getFlightController().checkBookingConfirm(j)) {
+            if (checkBookingStatus(controller, j)) {
 
                 for (int i = 0; i < controller.getFlightController().getBookingSize(j); i++) {
                     PassengerPanel passengerPanel = new PassengerPanel(controller, passengerPanels, bookedSeats);
@@ -210,6 +210,10 @@ public class BookingPageAdmin extends BookingPage {
                 }
             }
         }
+    }
+
+    protected boolean checkBookingStatus (Controller controller, int index) {
+        return controller.getFlightController().checkBookingConfirmOrPending(index);
     }
 
     /**

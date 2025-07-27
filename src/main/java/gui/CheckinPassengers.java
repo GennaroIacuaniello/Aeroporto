@@ -254,6 +254,11 @@ public class CheckinPassengers extends BookingPageAdmin{
         confirmPanel.setVisible(true);
     }
 
+    @Override
+    protected boolean checkBookingStatus (Controller controller, int index) {
+        return controller.getFlightController().checkBookingConfirm(index);
+    }
+
     /**
      * Creates and configures the gate assignment button with gate management integration.
      * <p>
