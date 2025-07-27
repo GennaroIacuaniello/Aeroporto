@@ -1524,7 +1524,7 @@ public class Controller {
 
         flightController.setFlight(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getFlight());
 
-        /*flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
+        //flightController.getFlight().getBookings().add(luggageController.getSearchBookingResult().get(luggageIndex).getTicket().getBooking());
 
         System.out.println(flightController.getFlight().getBookings().size());
 
@@ -1536,7 +1536,7 @@ public class Controller {
 
                 System.out.println("        " + ticket.getLuggages().size());
             }
-        }*/
+        }
     }
 
     /**
