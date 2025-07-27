@@ -828,6 +828,7 @@ public class PassengerPanel extends JPanel {
         for (int i = 0; i < luggagesView.getLuggagesPanels().size(); i++) {
 
             luggagesView.getLuggagesPanels().get(i).getComboBox().setEnabled(flag);
+            luggagesView.getRemoveLuggageButtons().get(i).setEnabled(flag);
 
         }
     }

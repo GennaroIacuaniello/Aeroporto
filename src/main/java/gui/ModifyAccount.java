@@ -278,6 +278,14 @@ public class ModifyAccount extends JDialog {
                     if (controller.updateUser(mailTextField.getText(), usernameTextField.getText(),
                             oldPasswordField.getHashedPassword(), confirmButton)) {
                         controller.goHome(callingObjects);
+
+                        /*if (!controller.isLoggedAdmin()) {
+
+                            controller.goBack(callingObjects);
+
+                            new HomePageCustomer(callingObjects, controller);
+                        }*/
+
                         dispose();
                     }
                 }else if(newPasswordField.isValidPassword()){

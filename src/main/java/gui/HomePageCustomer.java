@@ -551,7 +551,14 @@ public class HomePageCustomer extends DisposableObject {
      */
     @Override
     public void doOnRestore(java.util.List<DisposableObject> callingObjects, Controller controller){
-        if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
+
+        new HomePageCustomer(callingObjects, controller);
+        
+        callingObjects.remove(callingObjects.size() - 2);
+
+        mainFrame.dispose();
+
+        /*if(!userPanel.getUserGreeted().equals(controller.getUserController().getUsername())){
             userPanel.setVisible(false);
             mainFrame.remove(userPanel);
             addUserPanel(callingObjects, controller);
@@ -562,7 +569,7 @@ public class HomePageCustomer extends DisposableObject {
         mainFrame.remove(arrivingPanel);
         mainFrame.remove(departingPanel);
         addArrivingPanel(controller);
-        addDepartingPanel(controller);
+        addDepartingPanel(controller);*/
     }
 
     /**
