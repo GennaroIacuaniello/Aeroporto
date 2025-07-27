@@ -135,13 +135,13 @@ public class HomePageAdmin extends DisposableObject {
     private void setMainFrame(List<DisposableObject> callingObjects) {
 
         mainFrame = new JFrame("Home");
-        mainFrame.setSize(1080, 720);
+        mainFrame.setSize(1080, 800);
         mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
         callingObjects.addLast(this);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new GridBagLayout());
 
-        mainFrame.setMinimumSize(new Dimension(1000, 800));
+        mainFrame.setMinimumSize(new Dimension(1080, 800));
 
         mainFrame.getContentPane().setBackground(new Color(240, 242, 245));
 
