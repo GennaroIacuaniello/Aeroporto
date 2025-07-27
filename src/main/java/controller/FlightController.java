@@ -564,6 +564,11 @@ public class FlightController {
         return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED);
     }
 
+    public boolean checkBookingConfirmOrPending (int index) {
+
+        return flight.getBookings().get(index).getStatus().equals(BookingStatus.CONFIRMED) || flight.getBookings().get(index).getStatus().equals(BookingStatus.PENDING);
+    }
+
     /**
      * Updates the operational status of the currently active flight.
      *
