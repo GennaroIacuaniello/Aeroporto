@@ -427,19 +427,7 @@ public class BookingPageAdmin extends BookingPage {
 
                 try {
 
-                    //delayTextField.setText("20");
-
-                    /*System.out.println("empty" + delayTextField.getText().isEmpty());
-
-                    System.out.println("lenght: " + delayTextField.getText().length());
-
-                    System.out.println("delay: " + delayTextField.getText());
-
-                    System.out.println("delay: " + delayTextField.getText().trim());*/
-
                     int delay = Integer.parseInt(delayTextField.getText().trim());
-
-                    //System.out.println("delay: " + delay);
 
                     if (controller.getFlightController().addDelay(delay) == 1)
                         new FloatingMessage("Ritardo settato correttamente", setDelayButton, FloatingMessage.SUCCESS_MESSAGE);
@@ -488,33 +476,6 @@ public class BookingPageAdmin extends BookingPage {
      *
      * @param controller the system controller providing access to flight delay management and logging capabilities
      */
-    /*protected void addDelay(Controller controller) {
-
-        try {
-
-            //delayTextField.setText("20");
-
-            /*System.out.println("empty" + delayTextField.getText().isEmpty());
-
-            System.out.println("lenght: " + delayTextField.getText().length());
-
-            System.out.println("delay: " + delayTextField.getText());
-
-            System.out.println("delay: " + delayTextField.getText().trim());
-
-            int delay = Integer.parseInt(delayTextField.getText().trim());
-
-            //System.out.println("delay: " + delay);
-
-            if (controller.getFlightController().addDelay(delay) == 1)
-                new FloatingMessage("Ritardo settato correttamente", setDelayButton, FloatingMessage.SUCCESS_MESSAGE);
-            else new FloatingMessage("Il ritardo non è stato settato correttamente", setDelayButton, FloatingMessage.ERROR_MESSAGE);
-
-        } catch (NumberFormatException e) {
-            Controller.getLogger().log(Level.SEVERE, e.getMessage());
-            new FloatingMessage("Ritardo non valido", setDelayButton, FloatingMessage.ERROR_MESSAGE);
-        }
-    }*/
 
     /**
      * Performs comprehensive resource cleanup and disposal operations for administrative components.

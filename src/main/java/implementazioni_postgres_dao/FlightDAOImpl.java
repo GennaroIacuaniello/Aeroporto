@@ -696,13 +696,9 @@ public class FlightDAOImpl implements FlightDAO {
 
             for (int i = 1; i <= 20; i++) {
 
-                System.out.println(i);
-
                 boolean flag = false;
 
                 for (Integer gate : gates) {
-
-                    System.out.println("    " + gate);
 
                     if (gate.equals(i)) {
                         flag = true;
@@ -721,8 +717,6 @@ public class FlightDAOImpl implements FlightDAO {
 
                         preparedUpdateStatement.executeUpdate();
                     }
-
-                    //setGate(i, idFlight);
 
                     connection.commit();
 
