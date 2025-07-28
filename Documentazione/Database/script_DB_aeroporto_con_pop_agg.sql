@@ -3290,204 +3290,204 @@ INSERT INTO Customer (username, mail, hashed_password, is_deleted) VALUES
 -- Dati per la tabella Flight
 
 INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, flight_status, max_seats, free_seats, destination_or_origin, flight_delay, flight_type, id_gate) VALUES
-('AZ1001', 'Aeroitalia', '2025-08-01 10:00:00', '2025-08-01 11:00:00', 'PROGRAMMED', 150, 150, 'Roma', 0, true, null),
-('BA2002', 'British Airways', '2025-08-02 14:30:00', '2025-08-02 16:30:00', 'PROGRAMMED', 200, 200, 'Londra', 0, false, null),
-('LH3003', 'Lufthansa', '2025-08-03 09:15:00', '2025-08-03 11:15:00', 'PROGRAMMED', 180, 180, 'Francoforte', 0, true, null),
-('AF4004', 'Air France', '2025-08-04 18:00:00', '2025-08-04 20:00:00', 'PROGRAMMED', 160, 160, 'Parigi', 0, false, null),
-('UA5005', 'United Airlines', '2025-08-05 07:45:00', '2025-08-05 10:45:00', 'PROGRAMMED', 250, 250, 'New York', 0, true, null),
-('EK6006', 'Emirates', '2025-08-06 22:00:00', '2025-08-07 05:00:00', 'PROGRAMMED', 300, 300, 'Dubai', 0, false, null),
-('QR7007', 'Qatar Airways', '2025-08-07 11:00:00', '2025-08-07 14:00:00', 'PROGRAMMED', 220, 220, 'Doha', 0, true, null),
-('TK8008', 'Turkish Airlines', '2025-08-08 13:00:00', '2025-08-08 16:00:00', 'PROGRAMMED', 190, 190, 'Istanbul', 0, false, null),
-('DL9009', 'Delta Airlines', '2025-07-23 16:00:00', '2025-07-23 19:00:00', 'PROGRAMMED', 210, 210, 'Atlanta', 0, true, null),
-('LX1010', 'Swiss International Air Lines', '2025-08-10 08:30:00', '2025-08-10 10:30:00', 'PROGRAMMED', 170, 170, 'Zurigo', 0, false, null),
-('FR1111', 'Ryanair', '2025-08-11 10:00:00', '2025-08-11 12:00:00', 'CANCELLED', 100, 100, 'Dublino', 0, true, null),
-('VY1212', 'Vueling', '2025-08-12 14:00:00', '2025-08-12 16:00:00', 'PROGRAMMED', 120, 120, 'Barcellona', 60, false, null),
-('GI0015', 'Aeroitalia', '2025-07-01 10:00:00', '2025-07-01 12:00:00', 'LANDED', 150, 150, 'Milano', 0, true, 15);
+--LANDED departing flight
+('GI0015', 'Aeroitalia', '2025-07-01 10:00:00', '2025-07-01 12:00:00', 'LANDED', 150, 150, 'Milano', 0, true, 15),
+--CANCELLED flight
+('TEST01', 'Aeroitalia', '2025-05-01 10:00:00', '2025-05-01 12:00:00', 'CANCELLED', 150, 150, 'Torino', 0, true, null),
+--PROGRAMMED departing flight da riempire in esecuzione (6 posti disponibili)
+('TEST02', 'British Airways', '2025-07-28 20:00:00', '2025-07-28 22:00:00', 'PROGRAMMED', 12, 12, 'Londra', 0, true, null),
+--ABOUT_TO_DEPART departing flight
+('TEST03', 'Swiss International Air Lines', '2025-07-28 19:00:00', '2025-07-28 20:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Ginevra', 0, true, 11),
+--ABOUT_TO_DEPART departing flight da rendere DELAYED
+('TEST04', 'Ryanair', '2025-07-28 14:00:00', '2025-07-28 16:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Parigi', 0, true, 5),
+--DEPARTED departing FLIGHT
+('TEST05', 'Japan Airline', '2025-07-28 10:00:00', '2025-07-28 22:00:00', 'DEPARTED', 150, 150, 'Tokyo', 0, true, 9),
+--ABOUT_TO_ARRIVE arriving flight
+('TEST06', 'Air Transat', '2025-07-28 08:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Calgary', 0, false, 2),
+--ABOUT_TO_ARRIVE arriving flight da rendere DELAYED
+('TEST07', 'Aeroitalia', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Pisa', 0, false, 4),
+--DEPARTED arriving flight
+('TEST08', 'Qantas Airways Limited', '2025-07-28 10:00:00', '2025-07-28 20:00:00', 'DEPARTED', 150, 150, 'Sydney', 0, false, null),
+--LANDED arriving flight
+('TEST09', 'Aeroitalia', '2025-07-28 08:00:00', '2025-07-28 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8),
+--PROGRAMMED departing flight per riempire
+('TEST10', 'Aeroitalia', '2025-08-21 08:00:00', '2025-08-21 09:00:00', 'PROGRAMMED', 150, 150, 'Grosseto', 0, true, null),
+--PROGRAMMED departing flight per riempire
+('TEST11', 'New York Air', '2025-08-05 10:00:00', '2025-08-05 16:00:00', 'PROGRAMMED', 150, 150, 'New york', 0, true, null),
+--PROGRAMMED arriving flight per riempire
+('TEST12', 'Aeroitalia', '2025-08-05 11:30:00', '2025-08-05 13:00:00', 'PROGRAMMED', 150, 150, 'Trento', 0, false, null),
+--PROGRAMMED arriving flight per riempire
+('TEST13', 'Air Transat', '2025-08-09 10:30:00', '2025-08-09 16:30:00', 'PROGRAMMED', 180, 180, 'Calgary', 0, false, null);
+
 
 -- Dati per la tabella Passenger
 
 INSERT INTO Passenger (first_name, last_name, birth_date, SSN) VALUES
 ('Mario', 'Rossi', '1980-01-15', 'MRORSS80A15H501F'),
 ('Anna', 'Bianchi', '1992-03-22', 'NNABNC92C22G273J'),
-('Giuseppe', 'Verdi', '1975-07-01', 'GSPVRD75G01L219K'),
-('Maria', 'Gialli', '1998-11-30', 'MRAGLL98S70F839A'),
-('Paolo', 'Neri', '1985-05-10', 'PAONRI85E10C351B'),
-('Laura', 'Brambilla', '1990-09-05', 'LRAZMZ90P05D612C'),
-('Luca', 'Colombo', '1983-02-18', 'LCACLM83B18E089D'),
-('Sara', 'Ferrari', '1995-06-25', 'SRAFRA95F25H701E'),
-('Marco', 'Ricci', '1970-12-03', 'MRCRCC70T03L389G'),
 ('Elena', 'Esposito', '1988-04-08', 'ELNSPT88D08I170H'),
-('Francesco', 'Russo', '1982-01-01', 'FRNRSS82A01F111A'),
 ('Sofia', 'Mancini', '1991-02-02', 'SFAMNC91B02G222B'),
-('Alessandro', 'Costa', '1977-03-03', 'LSSCSC77C03H333C'),
-('Chiara', 'Romano', '1993-04-04', 'CHRRMN93D04I444D'),
-('Simone', 'Gallo', '1986-05-05', 'SMNGLL86E05J555E'),
-('Valentina', 'Fontana', '1994-06-06', 'VLTFNT94F06K666F'),
-('Andrea', 'Conti', '1979-07-07', 'NDRCNT79G07L777G'),
-('Beatrice', 'Greco', '1996-08-08', 'BTBGRC96H08M888H'),
-('Giovanni', 'Riva', '1981-09-09', 'GVNRIV81I09N999I'),
-('Francesca', 'Mariani', '1989-10-10', 'FRNMRA89R10O000J'),
-('Virginia Antonia', 'Esposito', '1989-10-10', 'SPSVGN04M61G964D');
+('Nome01', 'Cognome01', '2000-01-01', 'TSTTST99T99S001T'),
+('Nome02', 'Cognome02', '2000-01-01', 'TSTTST99T99S002T'),
+('Nome03', 'Cognome03', '2000-01-01', 'TSTTST99T99S003T'),
+('Nome04', 'Cognome04', '2000-01-01', 'TSTTST99T99S004T'),
+('Nome05', 'Cognome05', '2000-01-01', 'TSTTST99T99S005T'),
+('Nome06', 'Cognome06', '2000-01-01', 'TSTTST99T99S006T'),
+('Nome07', 'Cognome07', '2000-01-01', 'TSTTST99T99S007T'),
+('Nome08', 'Cognome08', '2000-01-01', 'TSTTST99T99S008T'),
+('Nome09', 'Cognome09', '2000-01-01', 'TSTTST99T99S009T'),
+(null, null, null, 'NLLTST99T99S001T'),
+('Virginia Antonia', 'Esposito', '2004-08-21', 'SPSVGN04M61G964D');
 
 -- Dati per la tabella Booking
 
 INSERT INTO Booking (booking_status, booking_time, buyer, id_flight) VALUES
-('CONFIRMED', '2025-07-10 10:30:00', 1, 'AZ1001'), -- ID Booking 1
-('PENDING', '2025-07-11 11:00:00', 2, 'BA2002'), -- ID Booking 2
-('CONFIRMED', '2025-07-12 12:15:00', 3, 'LH3003'), -- ID Booking 3
-('PENDING', '2025-07-13 13:45:00', 4, 'AF4004'), -- ID Booking 4
-('CONFIRMED', '2025-07-14 09:00:00', 5, 'UA5005'), -- ID Booking 5
-('PENDING', '2025-07-15 14:00:00', 6, 'EK6006'), -- ID Booking 6
-('CONFIRMED', '2025-07-10 15:30:00', 7, 'QR7007'), -- ID Booking 7
-('PENDING', '2025-07-11 16:00:00', 8, 'TK8008'), -- ID Booking 8
-('CONFIRMED', '2025-07-12 17:15:00', 9, 'DL9009'), -- ID Booking 9
-('PENDING', '2025-07-13 18:45:00', 10, 'LX1010'), -- ID Booking 10
-('CANCELLED', '2025-07-09 09:00:00', 1, 'FR1111'), -- ID Booking 11,
-('CONFIRMED', '2025-07-10 10:00:00', 3, 'FR1111'), -- ID Booking 12,
-('CONFIRMED', '2025-07-14 11:00:00', 5, 'VY1212'), -- ID Booking 13,
-('PENDING', '2025-07-15 12:00:00', 7, 'VY1212'), -- ID Booking 14,
-('CONFIRMED', '2025-07-16 09:30:00', 1, 'AZ1001'), -- ID Booking 15
-('CONFIRMED', '2025-07-16 09:35:00', 2, 'AZ1001'), -- ID Booking 16
-('CONFIRMED', '2025-06-19 09:35:00', 1, 'GI0015'), -- ID Booking 17
-('CONFIRMED', '2025-06-19 09:40:00', 1, 'GI0015'), -- ID Booking 18
-('CONFIRMED', '2025-06-19 09:50:00', 1, 'GI0015'); -- ID Booking 19
+('CONFIRMED', '2025-06-19 09:35:00', 1, 'GI0015'), -- ID Booking 1
+('CONFIRMED', '2025-06-19 09:40:00', 1, 'GI0015'), -- ID Booking 2
+('CONFIRMED', '2025-06-19 09:50:00', 1, 'GI0015'), -- ID Booking 3
+
+('CONFIRMED', '2025-06-19 09:55:00', 1, 'TEST01'), -- ID Booking 4
+('CANCELLED', '2025-06-19 09:56:00', 1, 'TEST01'), -- ID Booking 5
+
+('CONFIRMED', '2025-06-19 09:57:00', 1, 'TEST02'), -- ID Booking 6
+('PENDING', '2025-06-19 09:58:00', 1, 'TEST02'), -- ID Booking 7
+
+('CONFIRMED', '2025-06-19 09:59:00', 1, 'TEST03'), -- ID Booking 8
+
+('CONFIRMED', '2025-06-19 10:00:00', 1, 'TEST04'), -- ID Booking 9
+
+('CONFIRMED', '2025-06-19 10:01:00', 1, 'TEST05'), -- ID Booking 10
+
+('CONFIRMED', '2025-06-19 10:02:00', 1, 'TEST06'), -- ID Booking 11
+
+('CONFIRMED', '2025-06-19 10:03:00', 1, 'TEST07'), -- ID Booking 12
+
+('CONFIRMED', '2025-06-19 10:04:00', 1, 'TEST08'), -- ID Booking 13
+
+('CONFIRMED', '2025-06-19 10:05:00', 1, 'TEST09'); -- ID Booking 14
 
 
 -- Dati per la tabella Ticket
 
 INSERT INTO Ticket (ticket_number, seat, checked_in, id_booking, id_passenger, id_flight) VALUES
-
--- Booking 1 (CONFIRMED, AZ1001) - 3 tickets
-('0000000000001', 1, false, 1, 'MRORSS80A15H501F', 'AZ1001'),
-('0000000000002', 2, false, 1, 'NNABNC92C22G273J', 'AZ1001'),
-('0000000000003', 3, false, 1, 'GSPVRD75G01L219K', 'AZ1001'),
--- Booking 2 (PENDING, BA2002) - 2 tickets
-('0000000000004', NULL, false, 2, 'MRAGLL98S70F839A', 'BA2002'),
-('0000000000005', NULL, false, 2, 'PAONRI85E10C351B', 'BA2002'),
--- Booking 3 (CONFIRMED, LH3003) - 3 tickets, some CHECKED-in
-('0000000000006', 4, false, 3, 'LRAZMZ90P05D612C', 'LH3003'),
-('0000000000007', 5, false, 3, 'LCACLM83B18E089D', 'LH3003'),
-('0000000000008', 6, false, 3, 'SRAFRA95F25H701E', 'LH3003'),
--- Booking 4 (PENDING, AF4004) - 2 tickets
-('0000000000009', NULL, false, 4, 'MRCRCC70T03L389G', 'AF4004'),
-('0000000000010', NULL, false, 4, 'ELNSPT88D08I170H', 'AF4004'),
--- Booking 5 (CONFIRMED, UA5005) - 3 tickets
-('0000000000011', 1, false, 5, 'FRNRSS82A01F111A', 'UA5005'),
-('0000000000012', 2, false, 5, 'SFAMNC91B02G222B', 'UA5005'),
-('0000000000013', 3, false, 5, 'LSSCSC77C03H333C', 'UA5005'),
--- Booking 6 (PENDING, EK6006) - 2 tickets
-('0000000000014', NULL, false, 6, 'CHRRMN93D04I444D', 'EK6006'),
-('0000000000015', NULL, false, 6, 'SMNGLL86E05J555E', 'EK6006'),
--- Booking 7 (CONFIRMED, QR7007) - 3 tickets
-('0000000000016', 1, false, 7, 'VLTFNT94F06K666F', 'QR7007'),
-('0000000000017', 2, false, 7, 'NDRCNT79G07L777G', 'QR7007'),
-('0000000000018', 3, false, 7, 'BTBGRC96H08M888H', 'QR7007'),
--- Booking 8 (PENDING, TK8008) - 2 tickets
-('0000000000019', NULL, false, 8, 'GVNRIV81I09N999I', 'TK8008'),
-('0000000000020', NULL, false, 8, 'FRNMRA89R10O000J', 'TK8008'),
--- Booking 9 (CONFIRMED, DL9009) - 3 tickets
-('0000000000021', 1, false, 9, 'MRORSS80A15H501F', 'DL9009'),
-('0000000000022', 2, false, 9, 'NNABNC92C22G273J', 'DL9009'),
-('0000000000023', 3, false, 9, 'GSPVRD75G01L219K', 'DL9009'),
--- Booking 10 (PENDING, LX1010) - 2 tickets
-('0000000000024', NULL, false, 10, 'MRAGLL98S70F839A', 'LX1010'),
-('0000000000025', NULL, false, 10, 'PAONRI85E10C351B', 'LX1010'),
--- Booking 11 (CANCELLED, FR1111) - 2 tickets
-('0000000000026', 1, false, 11, 'LRAZMZ90P05D612C', 'FR1111'),
-('0000000000027', 2, false, 11, 'LCACLM83B18E089D', 'FR1111'),
--- Booking 12 (CONFIRMED for CANCELLED flight, FR1111) - 2 tickets
-('0000000000028', 3, false, 12, 'SRAFRA95F25H701E', 'FR1111'),
-('0000000000029', 4, false, 12, 'MRCRCC70T03L389G', 'FR1111'),
--- Booking 13 (CONFIRMED, VY1212 - DELAYED flight) - 2 tickets
-('0000000000030', 1, false, 13, 'ELNSPT88D08I170H', 'VY1212'),
-('0000000000031', 2, false, 13, 'FRNRSS82A01F111A', 'VY1212'),
--- Booking 14 (PENDING, VY1212 - DELAYED flight) - 2 tickets
-('0000000000032', NULL, false, 14, 'SFAMNC91B02G222B', 'VY1212'),
-('0000000000033', NULL, false, 14, 'LSSCSC77C03H333C', 'VY1212'),
--- Booking 15 (CONFIRMED, AZ1001 - PROGRAMMED flight) - 2 tickets
-('0000000000034', NULL, false, 15, 'SFAMNC91B02G222B', 'AZ1001'),
-('0000000000035', NULL, false, 15, 'LSSCSC77C03H333C', 'AZ1001'),
--- Booking 16 (CONFIRMED, AZ1001 - PROGRAMMED flight) - 2 tickets
-('0000000000036', NULL, false, 16, 'MRORSS80A15H501F', 'AZ1001'),
-('0000000000037', NULL, false, 16, 'NNABNC92C22G273J', 'AZ1001'),
--- Booking 17 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
-('0000000000038', 1, true, 17, 'MRORSS80A15H501F', 'GI0015'),
-('0000000000039', 4, true, 17, 'NNABNC92C22G273J', 'GI0015'),
--- Booking 18 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
-('0000000000040', 51, true, 18, 'SFAMNC91B02G222B', 'GI0015'),
-('0000000000041', 52, true, 18, 'ELNSPT88D08I170H', 'GI0015'),
--- Booking 19 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
-('0000000000042', 2, true, 19, 'SPSVGN04M61G964D', 'GI0015'),
-('0000000000043', 3, true, 19, 'SPSVGN04M61G964D', 'GI0015');
+-- Booking 1 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
+('0000000000038', 1, true, 1, 'MRORSS80A15H501F', 'GI0015'),
+('0000000000039', 4, true, 1, 'NNABNC92C22G273J', 'GI0015'),
+-- Booking 2 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
+('0000000000040', 51, true, 2, 'SFAMNC91B02G222B', 'GI0015'),
+('0000000000041', 52, true, 2, 'ELNSPT88D08I170H', 'GI0015'),
+-- Booking 3 (CONFIRMED, GI0015 - LANDED flight) - 2 tickets
+('0000000000042', 2, true, 3, 'SPSVGN04M61G964D', 'GI0015'),
+('0000000000043', 3, true, 3, 'SPSVGN04M61G964D', 'GI0015'),
+-- Booking 4 (CONFIRMED, TEST01 - CANCELLED flight) - 2 tickets
+('0000000000044', 1, false, 4, 'ELNSPT88D08I170H', 'TEST01'),
+('0000000000045', 2, false, 4, 'TSTTST99T99S005T', 'TEST01'),
+-- Booking 5 (CANCELLED, TEST01 - CANCELLED flight) - 2 tickets
+('0000000000046', 3, false, 5, 'TSTTST99T99S006T', 'TEST01'),
+('0000000000047', 4, false, 5, 'TSTTST99T99S002T', 'TEST01'),
+-- Booking 6 (CONFIRMED, TEST02 - PROGRAMMED flight) - 2 tickets
+('0000000000048', 1, false, 6, 'TSTTST99T99S001T', 'TEST02'),
+('0000000000049', 2, false, 6, 'TSTTST99T99S002T', 'TEST02'),
+-- Booking 7 (PENDING, TEST02 - PROGRAMMED flight) - 4 tickets
+('0000000000050', null, false, 7, 'NLLTST99T99S001T', 'TEST02'),
+('0000000000051', null, false, 7, 'TSTTST99T99S004T', 'TEST02'),
+('0000000000052', 3, false, 7, 'TSTTST99T99S005T', 'TEST02'),
+('0000000000053', 4, false, 7, 'TSTTST99T99S006T', 'TEST02'),
+-- Booking 8 (CONFIRMED, TEST03 - ABOUT_TO_DEPART flight) - 5 tickets
+('0000000000054', null, false, 8, 'TSTTST99T99S003T', 'TEST03'),
+('0000000000055', null, false, 8, 'TSTTST99T99S004T', 'TEST03'),
+('0000000000056', 3, false, 8, 'TSTTST99T99S005T', 'TEST03'),
+('0000000000057', 4, false, 8, 'TSTTST99T99S006T', 'TEST03'),
+('0000000000058', null, false, 8, 'TSTTST99T99S007T', 'TEST03'),
+-- Booking 9 (CONFIRMED, TEST04 - ABOUT_TO_DEPART flight) - 5 tickets
+('0000000000059', 1, true, 9, 'TSTTST99T99S003T', 'TEST04'),
+('0000000000060', 2, true, 9, 'TSTTST99T99S004T', 'TEST04'),
+('0000000000061', 3, true, 9, 'TSTTST99T99S005T', 'TEST04'),
+('0000000000062', 4, true, 9, 'TSTTST99T99S008T', 'TEST04'),
+('0000000000063', 5, true, 9, 'TSTTST99T99S009T', 'TEST04'),
+-- Booking 10 (CONFIRMED, TEST05 - DEPARTED flight) - 5 tickets
+('0000000000064', 1, true, 10, 'TSTTST99T99S006T', 'TEST05'),
+('0000000000065', 2, true, 10, 'TSTTST99T99S007T', 'TEST05'),
+('0000000000066', 3, true, 10, 'TSTTST99T99S001T', 'TEST05'),
+('0000000000067', 4, true, 10, 'TSTTST99T99S008T', 'TEST05'),
+('0000000000068', 5, true, 10, 'TSTTST99T99S009T', 'TEST05'),
+-- Booking 11 (CONFIRMED, TEST06 - ABOUT_TO_ARRIVE flight) - 5 tickets
+('0000000000069', 1, true, 11, 'TSTTST99T99S001T', 'TEST06'),
+('0000000000070', 2, true, 11, 'TSTTST99T99S002T', 'TEST06'),
+('0000000000071', 3, true, 11, 'TSTTST99T99S003T', 'TEST06'),
+('0000000000072', 4, true, 11, 'TSTTST99T99S004T', 'TEST06'),
+('0000000000073', 5, true, 11, 'TSTTST99T99S005T', 'TEST06'),
+-- Booking 12 (CONFIRMED, TEST07 - ABOUT_TO_ARRIVE flight) - 5 tickets
+('0000000000074', 1, true, 12, 'TSTTST99T99S001T', 'TEST07'),
+('0000000000075', 2, true, 12, 'TSTTST99T99S002T', 'TEST07'),
+('0000000000076', 3, true, 12, 'TSTTST99T99S003T', 'TEST07'),
+('0000000000077', 4, true, 12, 'TSTTST99T99S004T', 'TEST07'),
+('0000000000078', 5, true, 12, 'TSTTST99T99S005T', 'TEST07'),
+-- Booking 13 (CONFIRMED, TEST08 - DEPARTED flight) - 5 tickets
+('0000000000080', 1, true, 13, 'TSTTST99T99S003T', 'TEST08'),
+('0000000000081', 2, true, 13, 'TSTTST99T99S004T', 'TEST08'),
+('0000000000082', 3, true, 13, 'TSTTST99T99S005T', 'TEST08'),
+('0000000000083', 4, true, 13, 'TSTTST99T99S006T', 'TEST08'),
+('0000000000084', 5, true, 13, 'TSTTST99T99S009T', 'TEST08'),
+-- Booking 14 (CONFIRMED, TEST08 - LANDED flight) - 5 tickets
+('0000000000085', 1, true, 14, 'TSTTST99T99S003T', 'TEST09'),
+('0000000000086', 2, true, 14, 'TSTTST99T99S004T', 'TEST09'),
+('0000000000087', 3, true, 14, 'TSTTST99T99S005T', 'TEST09'),
+('0000000000088', 4, true, 14, 'TSTTST99T99S006T', 'TEST09'),
+('0000000000089', 5, true, 14, 'TSTTST99T99S009T', 'TEST09');
 
 
 -- Dati per la tabella Luggage
 
 INSERT INTO Luggage (luggage_type, luggage_status, id_ticket) VALUES
+-- Per ticket 0000000000044 (Booking 4)
+('CHECKED', 'BOOKED', '0000000000044'),
+('CARRY_ON', 'BOOKED', '0000000000044'),
+-- Per ticket 0000000000047 (Booking 5)
+('CARRY_ON', 'BOOKED', '0000000000047'),
+-- Per ticket 0000000000048 (Booking 6)
+('CHECKED', 'BOOKED', '0000000000048'),
+('CARRY_ON', 'BOOKED', '0000000000048'),
+-- Per ticket 0000000000049 (Booking 6)
+('CHECKED', 'BOOKED', '0000000000049'),
+('CARRY_ON', 'BOOKED', '0000000000049'),
+('CHECKED', 'BOOKED', '0000000000049'),
+-- Per ticket 0000000000050 (Booking 7)
+('CHECKED', 'BOOKED', '0000000000050'),
+('CARRY_ON', 'BOOKED', '0000000000050'),
+-- Per ticket 0000000000051 (Booking 7)
+('CHECKED', 'BOOKED', '0000000000051'),
+('CHECKED', 'BOOKED', '0000000000051'),
+-- Per ticket 0000000000052 (Booking 7)
+('CHECKED', 'BOOKED', '0000000000052'),
+('CARRY_ON', 'BOOKED', '0000000000052');
 
--- Per ticket 0000000000001 (Booking 1)
-('CHECKED', 'BOOKED', '0000000000001'),
-('CARRY_ON', 'BOOKED', '0000000000001'),
--- Per ticket 0000000000002 (Booking 1)
-('CHECKED', 'BOOKED', '0000000000002'),
--- Per ticket 0000000000003 (Booking 1)
-('CARRY_ON', 'BOOKED', '0000000000003'),
-('CHECKED', 'BOOKED', '0000000000003'),
--- Per ticket 0000000000004 (Booking 2)
-(NULL, 'BOOKED', '0000000000004'),
--- Per ticket 0000000000006 (Booking 3)
-('CHECKED', 'BOOKED', '0000000000006'),
-('CARRY_ON', 'BOOKED', '0000000000006'),
--- Per ticket 0000000000007 (Booking 3)
-('CHECKED', 'BOOKED', '0000000000007'),
--- Per ticket 0000000000008 (Booking 3)
-('CHECKED', 'BOOKED', '0000000000008'),
-('CARRY_ON', 'BOOKED', '0000000000008'),
--- Per ticket 0000000000009 (Booking 4)
-(NULL, 'BOOKED', '0000000000009'),
--- Per ticket 0000000000011 (Booking 5)
-('CHECKED', 'BOOKED', '0000000000011'),
-('CARRY_ON', 'BOOKED', '0000000000011'),
--- Per ticket 0000000000012 (Booking 5)
-('CHECKED', 'BOOKED', '0000000000012'),
--- Per ticket 0000000000013 (Booking 5)
-('CARRY_ON', 'BOOKED', '0000000000013'),
-('CHECKED', 'BOOKED', '0000000000013'),
--- Per ticket 0000000000014 (Booking 6)
-(NULL, 'BOOKED', '0000000000014'),
--- Per ticket 0000000000016 (Booking 7)
-('CHECKED', 'BOOKED', '0000000000016'),
-('CARRY_ON', 'BOOKED', '0000000000016'),
--- Per ticket 0000000000017 (Booking 7)
-('CHECKED', 'BOOKED', '0000000000017'),
--- Per ticket 0000000000018 (Booking 7)
-('CARRY_ON', 'BOOKED', '0000000000018'),
-('CHECKED', 'BOOKED', '0000000000018'),
--- Per ticket 0000000000019 (Booking 8)
-(NULL, 'BOOKED', '0000000000019'),
--- Per ticket 0000000000021 (Booking 9)
-('CHECKED', 'BOOKED', '0000000000021'),
-('CARRY_ON', 'BOOKED', '0000000000021'),
--- Per ticket 0000000000022 (Booking 9)
-('CHECKED', 'BOOKED', '0000000000022'),
--- Per ticket 0000000000023 (Booking 9)
-('CARRY_ON', 'BOOKED', '0000000000023'),
-('CHECKED', 'BOOKED', '0000000000023'),
--- Per ticket 0000000000024 (Booking 10)
-(NULL, 'BOOKED', '0000000000024'),
--- Per ticket 0000000000026 (Booking 11)
-('CHECKED', 'BOOKED', '0000000000026'),
--- Per ticket 0000000000028 (Booking 12)
-('CHECKED', 'BOOKED', '0000000000028'),
-('CARRY_ON', 'BOOKED', '0000000000028');
 
 INSERT INTO Luggage (luggage_type, luggage_status, id_ticket, id_luggage_after_check_in) VALUES
--- Per ticket 0000000000039 (Booking 17)
+-- Per ticket 0000000000039 (Booking 1)
 ('CHECKED', 'LOST', '0000000000039', '00000000000390' ),
 ('CARRY_ON', 'LOST', '0000000000039', '00000000000391'),
--- Per ticket 0000000000042 (Booking 19)
+-- Per ticket 0000000000038 (Booking 1)
+('CHECKED', 'LOST', '0000000000038', '00000000000380'),
+('CHECKED', 'WITHDRAWABLE', '0000000000038', '00000000000381'),
+-- Per ticket 0000000000042 (Booking 3)
 ('CHECKED', 'LOST', '0000000000042', '00000000000420'),
-('CARRY_ON', 'WITHDRAWABLE', '0000000000042', '00000000000421');
+('CARRY_ON', 'WITHDRAWABLE', '0000000000042', '00000000000421'),
+-- Per ticket 0000000000069 (Booking 11)
+('CHECKED', 'LOADED', '0000000000069','00000000000690'),
+('CARRY_ON', 'LOADED', '0000000000069','00000000000691'),
+-- Per ticket 0000000000085 (Booking 14)
+('CHECKED', 'WITHDRAWABLE', '0000000000085', '00000000000850'),
+('CARRY_ON', 'LOST', '0000000000085', '00000000000851'),
+-- Per ticket 0000000000086 (Booking 14)
+('CHECKED', 'WITHDRAWABLE', '0000000000086', '00000000000860'),
+('CARRY_ON', 'WITHDRAWABLE', '0000000000086', '00000000000861'),
+-- Per ticket 0000000000087 (Booking 14)
+('CHECKED', 'WITHDRAWABLE', '0000000000087', '00000000000870'),
+('CARRY_ON', 'LOST', '0000000000087', '00000000000871'),
+-- Per ticket 0000000000089 (Booking 14)
+('CHECKED', 'WITHDRAWABLE', '0000000000089', '00000000000890'),
+('CARRY_ON', 'WITHDRAWABLE', '0000000000089', '00000000000891');
 
 
 -------------------------------------------------------------------------------------------------------------------------
