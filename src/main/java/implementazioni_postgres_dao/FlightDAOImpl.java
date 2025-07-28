@@ -838,7 +838,9 @@ public class FlightDAOImpl implements FlightDAO {
      */
     public int addDelay(int delay, String idFlight) {
 
-        String query = "UPDATE Flight SET flight_delay = flight_delay + ?, flight_status = ?::FlightStatus WHERE id_flight = ?;";
+        String query = "UPDATE Flight SET flight_delay = flight_delay + ? WHERE id_flight = ?;";
+        ResultSet resultSet;
+        String flightStatus;
 
         try (Connection connection = ConnessioneDatabase.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -846,10 +848,32 @@ public class FlightDAOImpl implements FlightDAO {
             connection.setAutoCommit(false);
 
             preparedStatement.setInt(1, delay);
-            preparedStatement.setString(2, "DELAYED");
-            preparedStatement.setString(3, idFlight);
+            preparedStatement.setString(2, idFlight);
 
             int result = preparedStatement.executeUpdate();
+
+            query = "SELECT flight_status FROM Flight WHERE id_flight = ?;";
+
+            try (PreparedStatement preparedUpdateStatement = connection.prepareStatement(query)) {
+
+                preparedUpdateStatement.setString(1, idFlight);
+
+                resultSet = preparedUpdateStatement.executeQuery();
+
+                if (resultSet.next()) flightStatus = resultSet.getString("flight_status");
+                else throw new SQLException();
+
+                if (!flightStatus.equals("DELAYED")) {
+
+                    query =  "UPDATE Flight SET flight_status = 'DELAYED' WHERE id_flight = ?;";
+
+                    try (PreparedStatement preparedDeleteStatement = connection.prepareStatement(query)) {
+
+                        preparedDeleteStatement.setString(1, idFlight);
+                        preparedDeleteStatement.executeUpdate();
+                    }
+                }
+            }
 
             connection.commit();
 
