@@ -2149,7 +2149,7 @@ BEGIN
 		IF OLD.flight_status <> 'DEPARTED' AND NEW.flight_status = 'DEPARTED' THEN
 
 			--questo if serve perché solo un volo ABOUT_TO_DEPART può essere impostato a DEPARTED
-			IF OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
+			IF OLD.flight_status <> 'ABOUT_TO_DEPART' AND OLD.flight_status <> 'DELAYED'THEN
 
 				RAISE EXCEPTION 'Il volo da Napoli % non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
 
@@ -2345,7 +2345,7 @@ BEGIN
 	--che non potranno mai diventare departed
 	IF OLD.flight_type = true AND NEW.flight_status = 'DEPARTED' THEN
 	
-		IF OLD.flight_status <> 'ABOUT_TO_DEPART' THEN
+		IF OLD.flight_status <> 'ABOUT_TO_DEPART' AND OLD.flight_status <> 'DELAYED'THEN
 
 			RAISE EXCEPTION 'Il volo % non era in stato ''in partenza'', non può diventare ''partito''!', OLD.id_flight;
 
