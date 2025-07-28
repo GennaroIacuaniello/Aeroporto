@@ -2374,7 +2374,7 @@ BEGIN
 		
 	IF OLD.flight_status <> 'DELAYED' AND NEW.flight_status = 'DELAYED' THEN
 	
-		IF OLD.flight_status <> 'ABOUT_TO_DEPART' AND OLD.flight_status <> 'DEPARTED' AND OLD.flight_status <> 'ABOUT_TO_ARRIVE' THEN
+		IF OLD.flight_status <> 'PROGRAMMED' AND OLD.flight_status <> 'ABOUT_TO_DEPART' AND OLD.flight_status <> 'DEPARTED' AND OLD.flight_status <> 'ABOUT_TO_ARRIVE' THEN
 
 			RAISE EXCEPTION 'Il volo % non era in stato ''programmato'' o ''in partenza'', non può diventare ''in ritardo''!', OLD.id_flight;
 
