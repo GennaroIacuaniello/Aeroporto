@@ -3295,21 +3295,21 @@ INSERT INTO Flight (id_flight, company_name, departure_time, arrival_time, fligh
 --CANCELLED flight
 ('TEST01', 'Aeroitalia', '2025-05-01 10:00:00', '2025-05-01 12:00:00', 'CANCELLED', 150, 150, 'Torino', 0, true, null),
 --PROGRAMMED departing flight da riempire in esecuzione (6 posti disponibili)
-('TEST02', 'British Airways', '2025-07-28 20:00:00', '2025-07-28 22:00:00', 'PROGRAMMED', 12, 12, 'Londra', 0, true, null),
+('TEST02', 'British Airways', '2025-07-29 20:00:00', '2025-07-29 22:00:00', 'PROGRAMMED', 12, 12, 'Londra', 0, true, null),
 --ABOUT_TO_DEPART departing flight
-('TEST03', 'Swiss International Air Lines', '2025-07-28 19:00:00', '2025-07-28 20:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Ginevra', 0, true, 11),
+('TEST03', 'Swiss International Air Lines', '2025-07-29 19:00:00', '2025-07-29 20:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Ginevra', 0, true, 11),
 --ABOUT_TO_DEPART departing flight da rendere DELAYED
-('TEST04', 'Ryanair', '2025-07-28 14:00:00', '2025-07-28 16:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Parigi', 0, true, 5),
+('TEST04', 'Ryanair', '2025-07-29 14:00:00', '2025-07-29 16:00:00', 'ABOUT_TO_DEPART', 30, 30, 'Parigi', 0, true, 5),
 --DEPARTED departing FLIGHT
-('TEST05', 'Japan Airline', '2025-07-28 10:00:00', '2025-07-28 22:00:00', 'DEPARTED', 150, 150, 'Tokyo', 0, true, 9),
+('TEST05', 'Japan Airline', '2025-07-29 10:00:00', '2025-07-29 22:00:00', 'DEPARTED', 150, 150, 'Tokyo', 0, true, 9),
 --ABOUT_TO_ARRIVE arriving flight
-('TEST06', 'Air Transat', '2025-07-28 08:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Calgary', 0, false, 2),
+('TEST06', 'Air Transat', '2025-07-29 08:00:00', '2025-07-29 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Calgary', 0, false, 2),
 --ABOUT_TO_ARRIVE arriving flight da rendere DELAYED
-('TEST07', 'Aeroitalia', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Pisa', 0, false, 4),
+('TEST07', 'Aeroitalia', '2025-07-29 10:00:00', '2025-07-29 14:00:00', 'ABOUT_TO_ARRIVE', 150, 150, 'Pisa', 0, false, 4),
 --DEPARTED arriving flight
-('TEST08', 'Qantas Airways Limited', '2025-07-28 10:00:00', '2025-07-28 20:00:00', 'DEPARTED', 150, 150, 'Sydney', 0, false, null),
+('TEST08', 'Qantas Airways Limited', '2025-07-29 10:00:00', '2025-07-29 20:00:00', 'DEPARTED', 150, 150, 'Sydney', 0, false, null),
 --LANDED arriving flight
-('TEST09', 'Aeroitalia', '2025-07-28 08:00:00', '2025-07-28 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8),
+('TEST09', 'Aeroitalia', '2025-07-29 08:00:00', '2025-07-29 09:00:00', 'LANDED', 150, 150, 'Roma', 0, false, 8),
 --PROGRAMMED departing flight per riempire
 ('TEST10', 'Aeroitalia', '2025-08-21 08:00:00', '2025-08-21 09:00:00', 'PROGRAMMED', 150, 150, 'Grosseto', 0, true, null),
 --PROGRAMMED departing flight per riempire
